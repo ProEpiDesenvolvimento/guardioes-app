@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "title": "Primeira imagem",
+      "imagePath": img1,
+    },
+    {
+      "id": 2,
+      "title": "Segunda imagem",
+      "imagePath": img1,
+    },
+    {
+      "id": 3,
+      "title": "Terceira imagem",
+      "imagePath": img1,
+    },
+    {
+      "id": 4,
+      "title": "Quarta imagem",
+      "imagePath": img1,
+    },
+    {
+      "id": 5,
+      "title": "Quinta imagem",
+      "imagePath": img1,
+    },
+];
