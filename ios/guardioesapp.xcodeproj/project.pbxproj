@@ -16,6 +16,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* guardioesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* guardioesappTests.m */; };
+		3C9008E4242047AE0086D022 /* roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9008E3242047AE0086D022 /* roboto.ttf */; };
 		4E9621BB8367B537E1C86D6A /* libPods-guardioesappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */; };
 		67DE0FF2FF69BF2513AD33B3 /* libPods-guardioesapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD232F028C384D36231E2F1 /* libPods-guardioesapp.a */; };
 		8C9F85A9E256AEE03ED0D3D6 /* libPods-guardioesapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */; };
@@ -56,6 +57,7 @@
 		2D02E47B1E0B4A5D006451C7 /* guardioesapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "guardioesapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* guardioesapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "guardioesapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C9008E3242047AE0086D022 /* roboto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = roboto.ttf; sourceTree = "<group>"; };
 		5F29C1279822AFAE02AC8156 /* Pods-guardioesapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp/Pods-guardioesapp.debug.xcconfig"; sourceTree = "<group>"; };
 		68E569044C4288A548F3E06C /* Pods-guardioesapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOSTests/Pods-guardioesapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* guardioesapp */ = {
 			isa = PBXGroup;
 			children = (
+				3C9008E3242047AE0086D022 /* roboto.ttf */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -194,7 +197,6 @@
 				D68B3371A2A7FA693CE8427C /* Pods-guardioesappTests.debug.xcconfig */,
 				2BC55096F5C4780024F16D9F /* Pods-guardioesappTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -309,6 +311,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -339,6 +342,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				3C9008E4242047AE0086D022 /* roboto.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
