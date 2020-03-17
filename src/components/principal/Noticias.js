@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, WebView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
 import translate from '../../../locales/i18n';
 
 // create a component
