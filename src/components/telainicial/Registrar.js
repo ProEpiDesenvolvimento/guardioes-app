@@ -50,10 +50,8 @@ class Registrar extends Component {
             userRace: 'Blanco',
             userDob: null,
             userToken: null,
-            cca2: 'BR',
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
-            residenceCCA2: 'BR'
         }
     }
 
@@ -100,6 +98,25 @@ class Registrar extends Component {
             { key: 'Palenquero', label: translate("raceChoices.palenquero")},
             { key: 'Raizal', label: translate("raceChoices.raizal")},
             { key: 'Rom-Gitano', label: translate("raceChoices.romGitano")}
+        ];
+
+        const country = [
+            { key: 'Brazil', label: "Brasil"},
+            { key: 'Colombia', label: "Colombia"},
+            { key: 'Guatemala', label: "Guatemala"},
+            { key: 'Argentina', label: "Argentina"},
+            { key: 'Portugual', label: "Portugual"},
+            { key: 'SaoTome', label: "São Tomé"},
+            { key: 'Principe', label: "Principe"},
+            { key: 'Chile', label: "Chile"},
+            { key: 'Bolivia', label: "Bolivia"},
+            { key: 'Equador', label: "Equador"},
+            { key: 'Paraguai', label: "Paraguai"},
+            { key: 'Peru', label: "Peru"},
+            { key: 'Uruguai', label: "Uruguai"},
+            { key: 'Venezuela', label: "Venezuela"},
+            { key: 'Angola', label: "Angola"},
+            { key: 'CaboVerde', label: "Cabo Verde"},
         ];
 
         return (
@@ -172,18 +189,16 @@ class Registrar extends Component {
                             />
                         </View>
 
-                        <View style={styles.viewChildPais}>
-                            <View style={{ marginRight: '10%' }} ><Text style={styles.commomTextView}>{translate("register.country")}</Text></View>
-                            <View style={{ alignSelf: 'center' }}>
-                                <CountryPicker
-                                    onChange={value => {
-                                        this.setState({ cca2: value.cca2, userCountry: value.name })
-                                    }}
-                                    cca2={this.state.cca2}
-                                    translation="eng"
+                        <View style={styles.viewChildSexoRaca}>
+                            <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                            
+                                <ModalSelector
+                                    style={{width: '80%', height: '70%'}}
+                                    data={country}
+                                    initValue={this.state.userCountry}
+                                    onChange={(option) => this.setState({ userCountry: option.key })}
                                 />
-                                <Text style={styles.textCountry}>{this.state.userCountry}</Text>
-                            </View>
+                            
                         </View>
                     </View>
 
@@ -199,19 +214,13 @@ class Registrar extends Component {
                         <View>
                             {!this.state.residenceCountryCheckbox ?
                                 <View>
-                                    <CountryPicker
-                                        style={{ height: '15%' }}
-                                        onChange={value => {
-                                            this.setState({
-                                                residenceCCA2: value.cca2,
-                                                residence: value.name,
-                                                residenceText: value.name,
-                                            })
-                                        }}
-                                        cca2={this.state.residenceCCA2}
-                                        translation="eng"
-                                    />
-                                    <Text style={{ alignSelf: 'center' }}>{this.state.residenceText}</Text>
+                                    <ModalSelector
+                                    style={{width: '80%', height: '70%', alignSelf: 'center'}}
+                                    data={country}
+                                    initValue={this.state.residenceText}
+                                    onChange={(option) => this.setState({ residenceText: option.key })}
+                                />
+                                
                                 </View>
                                 : null
                             }

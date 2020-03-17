@@ -107,6 +107,25 @@ class Registrar extends Component {
             { key: 'Outros', label: "Outros" }
         ];
 
+        const country = [
+            { key: 'Brazil', label: "Brasil"},
+            { key: 'Colombia', label: "Colombia"},
+            { key: 'Guatemala', label: "Guatemala"},
+            { key: 'Argentina', label: "Argentina"},
+            { key: 'Portugual', label: "Portugual"},
+            { key: 'SaoTome', label: "São Tomé"},
+            { key: 'Principe', label: "Principe"},
+            { key: 'Chile', label: "Chile"},
+            { key: 'Bolivia', label: "Bolivia"},
+            { key: 'Equador', label: "Equador"},
+            { key: 'Paraguai', label: "Paraguai"},
+            { key: 'Peru', label: "Peru"},
+            { key: 'Uruguai', label: "Uruguai"},
+            { key: 'Venezuela', label: "Venezuela"},
+            { key: 'Angola', label: "Angola"},
+            { key: 'CaboVerde', label: "Cabo Verde"},
+        ];
+
         return (
             <View style={styles.container}>
                 <View style={{ paddingTop: 10 }}></View>
@@ -175,18 +194,16 @@ class Registrar extends Component {
                         />
                     </View>
 
-                    <View style={styles.viewChildPais}>
-                        <View style={{ marginRight: '10%' }} ><Text style={styles.commomTextView}>{translate("register.country")}</Text></View>
-                        <View>
-                            <CountryPicker
-                                onChange={value => {
-                                    this.setState({ cca2: value.cca2, householdCountry: value.name })
-                                }}
-                                cca2={this.state.cca2}
-                                translation="eng"
-                            />
-                            <Text style={styles.textCountry}>{this.state.householdCountry}</Text>
-                        </View>
+                    <View style={styles.viewChildSexoRaca}>
+                            <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                            
+                                <ModalSelector
+                                    style={{width: '80%', height: '70%'}}
+                                    data={country}
+                                    initValue={this.state.householdCountry}
+                                    onChange={(option) => this.setState({ householdCountry: option.key })}
+                                />
+                            
                     </View>
                 </View>
 
