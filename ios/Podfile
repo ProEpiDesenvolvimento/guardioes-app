@@ -35,9 +35,10 @@ target 'guardioesapp' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   #NEW PODS
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  
   
   target 'guardioesappTests' do
     inherit! :search_paths

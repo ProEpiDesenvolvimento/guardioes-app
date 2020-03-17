@@ -18,12 +18,13 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^1.2.7",
     "react-native-emoji": "^1.8.0",
+    "react-native-geolocation-service": "^4.0.0",
     "react-native-gesture-handler": "^1.6.0",
     "react-native-i18n": "^2.0.15",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-maps": "0.27.0",
     "react-native-modal-selector": "^2.0.0",
-    "react-native-vector-icons": "^5.0.0",
+    "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^2.9.3"
   },
   "devDependencies": {

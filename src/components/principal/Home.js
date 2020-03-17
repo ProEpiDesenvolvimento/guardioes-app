@@ -9,6 +9,7 @@ import { API_URL } from '../../constUtils';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 
 let data = new Date();
 let d = data.getDate();
@@ -88,7 +89,7 @@ class Home extends Component {
     }
 
     getLocation() {
-        navigator.geolocation.getCurrentPosition(
+        Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
                     userLatitude: position.coords.latitude,

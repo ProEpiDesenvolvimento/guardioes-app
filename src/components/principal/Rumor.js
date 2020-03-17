@@ -8,6 +8,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
 import { scale } from '../scallingUtils';
+import Geolocation from 'react-native-geolocation-service';
 
 const { height, width } = Dimensions.get('window');
 
@@ -58,7 +59,7 @@ export class Rumor extends Component {
   }
 
   getLocation() {
-    navigator.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(
       (position) => {
         this.setState({
           userLatitude: position.coords.latitude,

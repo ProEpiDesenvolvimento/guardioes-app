@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+FontAwesome.loadFont();
+
 import { scale } from '../scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 

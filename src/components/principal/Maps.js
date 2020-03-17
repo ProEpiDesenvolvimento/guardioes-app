@@ -3,6 +3,7 @@ import { View, StyleSheet, AsyncStorage } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
+import Geolocation from 'react-native-geolocation-service';
 
 class Maps extends Component {
     static navigationOptions = {
@@ -46,7 +47,7 @@ class Maps extends Component {
     }
 
     getLocation() {
-        navigator.geolocation.getCurrentPosition(
+        Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
                     region: {

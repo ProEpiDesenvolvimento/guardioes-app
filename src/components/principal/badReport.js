@@ -12,6 +12,7 @@ import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import { userLocation } from '../../constUtils';
 import { PermissionsAndroid } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 
 let data = new Date();
 let d = data.getDate();
@@ -70,7 +71,7 @@ class BadReport extends Component {
 
     getLocation() {
         this.requestFineLocationPermission();
-        navigator.geolocation.getCurrentPosition(
+        Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
                     userLatitude: position.coords.latitude,

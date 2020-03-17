@@ -6,6 +6,7 @@ import { PermissionsAndroid } from 'react-native';
 import { scale } from '../scallingUtils';
 import Emoji from 'react-native-emoji';
 import translate from '../../../locales/i18n';
+import Geolocation from 'react-native-geolocation-service';
 
 const { height } = Dimensions.get('window')
 let data = new Date();
@@ -54,7 +55,7 @@ class Report extends Component {
     }
 
     componentDidMount() {
-        navigator.geolocation.getCurrentPosition(
+        Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
                     userLatitude: position.coords.latitude,

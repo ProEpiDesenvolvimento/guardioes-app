@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SafeAreaView } from 'react-native';
 import * as Navegar from './src/components/navigation/navigator';
 
+
 class Guardioes extends Component {
   render() {
     return (

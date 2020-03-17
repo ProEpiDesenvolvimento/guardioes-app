@@ -7,7 +7,7 @@ export const app_token = 'd41d8cd98f00b204e9800998ecf8427e';
 //export const API_URL = 'https://apiguardioes.herokuapp.com'; //Heroku
 //export const API_URL = 'http://10.0.2.2:3001';
 export const API_URL = 'http://gds.proepi.org.br'; //live
-
+import Geolocation from 'react-native-geolocation-service';
 
 export const Redirect = (titulo, message, url) => {
     Alert.alert(
@@ -21,7 +21,7 @@ export const Redirect = (titulo, message, url) => {
 }
 
 export const userLocation = () => {
-    navigator.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(
         (position) => {
             this.setState({
                 userLatitude: position.coords.latitude,
