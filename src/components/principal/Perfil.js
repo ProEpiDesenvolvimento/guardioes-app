@@ -466,7 +466,7 @@ class Perfil extends Component {
         <View style={styles.viewTop}>
           <View style={styles.userAvatar}>
             <Avatar
-              large
+              size="large"
               rounded
               source={Imagem[this.state.userAvatar]}
               activeOpacity={0.7}
@@ -514,7 +514,7 @@ class Perfil extends Component {
               return (
                 <View style={styles.viewHousehold}>
                   <Avatar
-                    large
+                    size="large"
                     rounded
                     source={Imagem[household.picture]}
                     activeOpacity={0.7}

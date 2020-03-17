@@ -225,7 +225,7 @@ class BadReport extends Component {
                 <View style={styles.Top}>
                     <View style={styles.userAvatar}>
                         <Avatar
-                            large
+                            size="large"
                             rounded
                             source={Imagem[this.state.avatarSelect]}
                             activeOpacity={0.7}

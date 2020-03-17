@@ -82,7 +82,7 @@ export const BottomMenu = createBottomTabNavigator({
             },
         }),
         tabBarOptions: {
-            style: { height: '9%', backgroundColor: '#348EAC' },
+            style: { height: '11%', backgroundColor: '#348EAC' },
             activeTintColor: '#013444',
             inactiveTintColor: 'white',
         },

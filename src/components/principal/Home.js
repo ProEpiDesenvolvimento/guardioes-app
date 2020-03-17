@@ -322,7 +322,7 @@ class Home extends Component {
                                 <View style={styles.modalViewTop}>
                                     <View style={styles.viewAvatar}>
                                         <Avatar
-                                            large
+                                            size="large"
                                             rounded
                                             source={Imagem[this.state.userAvatar]}
                                             activeOpacity={0.7}
@@ -342,7 +342,7 @@ class Home extends Component {
                                                 return (
                                                     <View style={styles.viewAvatar}>
                                                         <Avatar
-                                                            large
+                                                            size="large"
                                                             rounded
                                                             source={Imagem[household.picture]}
                                                             activeOpacity={0.7}
@@ -375,7 +375,7 @@ class Home extends Component {
                         </Modal>
                         <Text style={{ marginBottom: 7 }}>{translate("home.selectProfile")}</Text>
                         <Avatar
-                            large
+                            size="large"
                             rounded
                             source={Imagem[this.state.avatarSelect]}
                             activeOpacity={0.7}

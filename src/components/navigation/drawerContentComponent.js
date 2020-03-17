@@ -54,7 +54,7 @@ export default class drawerContentComponents extends Component {
                     <View style={styles.headerContainer}>
                         <View style={styles.viewAvatar}>
                             <Avatar
-                                xlarge
+                                size="xlarge"
                                 rounded
                                 source={Imagem[this.state.userAvatar]}
                                 activeOpacity={0.7}
