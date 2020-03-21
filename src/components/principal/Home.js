@@ -24,6 +24,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
+        this.requestFineLocationPermission();
         this.state = {
             modalVisible: false,
             userSelect: null,
@@ -142,27 +143,29 @@ class Home extends Component {
     }
 
     async requestFineLocationPermission() {
-        console.warn("PERMITIR LOCALIZAÇÂO")
         try {
-            const granted = await PermissionsAndroid.request(
-                android.permission.ACCESS_FINE_LOCATION,
-                {
-                    'title': translate("maps.locationRequest.requestLocationMessageTitle"),
-                    'message': translate("maps.locationRequest.requestLocationMessageMessage")
-                }
-            )
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                this.getLocation();
-                console.warn("PERMISSÂO")
-            } else {
-                console.warn(translate("maps.locationRequest.requestDenied"))
-                onsole.warn("SEM PERMISSÂO")
-                this.props.navigation.navigate('Home')
-            }
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+              title: 'Guardiões da Saúde needs Locarion Permission',
+              message:
+                'Guardiões da Saúde needs access to your location ' +
+                'so you can take locarion reports.',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('You can use the location');
+          } else {
+            console.log('Location permission denied');
+            this.props.navigation.navigate('Home')
+          }
         } catch (err) {
-            console.warn(err)
+          console.warn(err);
         }
-    }
+      }
 
     requestLocalization = () => {
         Alert.alert(

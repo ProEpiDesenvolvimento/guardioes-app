@@ -229,7 +229,6 @@ class BadReport extends Component {
                             rounded
                             source={Imagem[this.state.avatarSelect]}
                             activeOpacity={0.7}
-                            style={{ borderWidth: 1, borderColor: '#BF092E', margin: '10%' }}
                         />
                     </View>
                     <View style={styles.UserInfos}>
