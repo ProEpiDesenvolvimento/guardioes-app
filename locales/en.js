@@ -85,7 +85,7 @@ export default {
         "useTermsBtn": "Use terms and policies",
         "tutorialBtn": "Tutorial"
     },
-    "ajudaBtn2": {
+    "tutorial": {
         "title": "Tutorial",
         "tutorial": "How to use the app",
         "howToUse": "\nTo use the main functionality of the app, click the Good or Bad button on the home screen:",

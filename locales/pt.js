@@ -85,7 +85,7 @@ export default {
         "useTermsBtn": "Termos e Políticas",
         "tutorialBtn": "Tutorial"
     },
-    "ajudaBtn2": {
+    "tutorial": {
         "title": "Tutorial",
         "tutorial": "Tutorial de como usar o app",
         "howToUse": "\nPara usar o aplicativo basta clicar no ícone de reportar na tela inicial:",

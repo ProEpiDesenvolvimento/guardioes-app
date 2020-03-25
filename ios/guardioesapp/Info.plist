@@ -37,9 +37,11 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Need Location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need Location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need Location</string>
 	<key>UIAppFonts</key>
 	<array>

@@ -14,20 +14,13 @@ import Home from '../principal/Home';
 import Diario from '../principal/Diario';
 import Conselho from '../principal/Conselho';
 import Noticias from '../principal/Noticias';
-import Reportar from '../principal/Reportar';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
 import drawerContentComponents from './drawerContentComponent';
 import Maps from '../principal/Maps';
 import Perfil from '../principal/Perfil';
 import Ajuda from '../principal/Ajuda';
-import Sobre from '../principal/Sobre';
-import { Botao2 } from '../principal/AjudaBtn2';
-import Prevention from '../conselhos/prevention';
-import TravelHealth from '../conselhos/travelhealth';
-import Dengue from '../conselhos/dengue';
-import Diseases from '../conselhos/diseases';
-import Phones from '../conselhos/phones';
+import { Tutorial } from '../principal/Tutorial';
 import ChooseReporter from '../principal/ChooseReporter';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
@@ -91,22 +84,15 @@ export const BottomMenu = createBottomTabNavigator({
 
 export const Stack = createStackNavigator({
     BottomMenu: { screen: BottomMenu, navigationOptions: { header: null } },
-    Reportar,
     BadReport,
     Household,
     Perfil,
     Ajuda,
-    Sobre,
-    Botao2,
-    Prevention,
-    TravelHealth,
-    Dengue,
-    Diseases,
-    Phones,
     Household,
     ChooseReporter,
     TermosPoliticas,
     Rumor,
+    Tutorial,
 },
     {
         initialRouteName: 'BottomMenu',

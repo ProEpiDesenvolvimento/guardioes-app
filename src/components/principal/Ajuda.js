@@ -23,7 +23,7 @@ class Ajuda extends Component {
 
         <TouchableOpacity
           style={styles.btnOne}
-          onPress={() => navigate('Botao2')}
+          onPress={() => navigate('Tutorial')}
         >
           <Image source={ imgTutorial } style={styles.btnOneImg}/>
           <Text style={styles.btnOneTxt}>{translate("ajuda.tutorialBtn")}</Text>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(30),
   },
   btnOneTxt: {
-    fontFamily: 'poiretOne',
+    fontFamily: 'roboto',
     fontSize: 18,
   }
 })
