@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-FontAwesome.loadFont();
-
 import { scale } from '../scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
-
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';
 import Registrar from '../telainicial/Registrar';
@@ -21,9 +17,10 @@ import Maps from '../principal/Maps';
 import Perfil from '../principal/Perfil';
 import Ajuda from '../principal/Ajuda';
 import { Tutorial } from '../principal/Tutorial';
-import ChooseReporter from '../principal/ChooseReporter';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
+
+FontAwesome.loadFont();
 
 export const Cadastro = createStackNavigator({
     TelaInicial: { screen: TelaInicial },
@@ -89,7 +86,6 @@ export const Stack = createStackNavigator({
     Perfil,
     Ajuda,
     Household,
-    ChooseReporter,
     TermosPoliticas,
     Rumor,
     Tutorial,

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  ActivityIndicator, AsyncStorage, Image, StatusBar, StyleSheet
-} from 'react-native';
+import { ActivityIndicator, AsyncStorage, Image, StatusBar, StyleSheet } from 'react-native';
 import { imagemLogo, imagemLogoBR } from '../../imgs/imageConst';
 import LinearGradient from 'react-native-linear-gradient';
 import translate from '../../../locales/i18n';

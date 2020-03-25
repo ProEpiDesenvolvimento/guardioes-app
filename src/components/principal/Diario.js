@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, ScrollView, StyleSheet, Image, processColor } from 'react-native';
+import { View, Text, AsyncStorage, ScrollView, StyleSheet, Image } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
@@ -7,9 +7,6 @@ import * as Imagem from '../../imgs/imageConst';
 import { Dimensions } from 'react-native';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
-import { scale } from '../scallingUtils';
-const GreenBlue = "rgb(26, 182, 151)";
-const petrel = "rgb(59, 145, 153)";
 
 let data = new Date();
 let d = data.getDate();
@@ -17,12 +14,8 @@ let m = data.getMonth() + 1;
 let y = data.getFullYear();
 let h = data.getHours();
 
-let today = y + "-" + m + "-" + d + "T" + h;
-
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
-
-const chartDescriptionTranslated = { text: translate("diary.charts.chartDescription") }
 
 class Diario extends Component {
     constructor(props) {
@@ -152,10 +145,6 @@ class Diario extends Component {
     }
 
     render() {
-        const AUXdata = this.state.BadData
-        const BadplotAux = this.state.BadPlot
-        const NoPlotAux = this.state.NoPlot
-        const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <ScrollView >

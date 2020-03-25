@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ImageBackground, Linking, ScrollView, TouchableOpacity, AsyncStorage } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Emoji from 'react-native-emoji';
+import { Text, View, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-Entypo.loadFont();
-Feather.loadFont();
-MaterialIcons.loadFont();
 import { moderateScale, verticalScale, scale } from '../scallingUtils';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';
+
+Entypo.loadFont();
+Feather.loadFont();
+MaterialIcons.loadFont();
 
 export default class drawerContentComponents extends Component {
     constructor(props) {

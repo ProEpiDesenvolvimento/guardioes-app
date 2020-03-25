@@ -10,7 +10,6 @@ import {
     NetInfo,
     Alert
 } from 'react-native';
-import CountryPicker from 'react-native-country-picker-modal';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../scallingUtils';

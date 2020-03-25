@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, AsyncStorage, Modal } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { Redirect } from '../../constUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';

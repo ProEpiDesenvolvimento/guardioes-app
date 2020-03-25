@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, AsyncStorage, ScrollView, TouchableOpacity, NetInfo, Alert, Modal, Button, Picker, TextInput } from 'react-native';
+import { View, StyleSheet, Text, AsyncStorage, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
 import * as Imagem from '../../imgs/imageConst';
 import { Avatar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from '../scallingUtils';
-import CountryPicker from 'react-native-country-picker-modal';
 import DatePicker from 'react-native-datepicker';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
@@ -249,110 +248,27 @@ class Perfil extends Component {
       { key: 'Outros', label: "Outros" }
     ];
 
+    const country = [
+      { key: 'Brazil', label: "Brasil" },
+      { key: 'Colombia', label: "Colombia" },
+      { key: 'Guatemala', label: "Guatemala" },
+      { key: 'Argentina', label: "Argentina" },
+      { key: 'Portugual', label: "Portugual" },
+      { key: 'SaoTome', label: "São Tomé" },
+      { key: 'Principe', label: "Principe" },
+      { key: 'Chile', label: "Chile" },
+      { key: 'Bolivia', label: "Bolivia" },
+      { key: 'Equador', label: "Equador" },
+      { key: 'Paraguai', label: "Paraguai" },
+      { key: 'Peru', label: "Peru" },
+      { key: 'Uruguai', label: "Uruguai" },
+      { key: 'Venezuela', label: "Venezuela" },
+      { key: 'Angola', label: "Angola" },
+      { key: 'CaboVerde', label: "Cabo Verde" },
+    ];
+
     return (
       <View style={styles.container}>
-        <Modal //Modal View for User
-          animationType="fade"
-          transparent={true}
-          visible={this.state.modalVisibleUser}
-          onRequestClose={() => {
-            this.setModalVisible(!this.state.modalVisibleUser); //Exit to modal view
-            this.setState({ userModal: false });
-          }}>
-          <View style={styles.modalView}>
-            <View style={{ paddingTop: 10 }}></View>
-            <View style={styles.viewCommom}>
-              <Text style={styles.commomText}>{translate("register.name")}</Text>
-              <TextInput style={styles.formInput}
-                placeholder={this.state.userName}
-                onChangeText={text => this.setState({ userName: text })}
-              />
-            </View>
-
-            <View style={styles.viewRow}>
-              <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
-                <ModalSelector
-                  style={{ width: '80%', height: '70%' }}
-                  data={gender}
-                  initValue={translate("genderChoices.male")}
-                  onChange={(option) => this.setState({ householdGender: option.key })}
-                />
-              </View>
-
-              <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>{translate("register.race")}</Text>
-                <ModalSelector
-                  style={{ width: '80%', height: '70%' }}
-                  data={race}
-                  initValue={translate("raceChoices.white")}
-                  onChange={(option) => this.setState({ householdRace: option.key })}
-                />
-              </View>
-
-            </View>
-
-            <View style={styles.viewRow}>
-              <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>Nascimento</Text>
-                <DatePicker
-                  style={{ width: '80%', height: scale(25), backgroundColor: 'rgba(135, 150, 151, 0.55)', borderRadius: 20, marginTop: 5 }}
-                  showIcon={false}
-                  date={this.state.userDob}
-                  androidMode='spinner'
-                  mode="date"
-                  placeholder={translate("birthDetails.format")}
-                  format="YYYY-MM-DD"
-                  minDate="1918-01-01"
-                  maxDate={today}
-                  confirmBtnText={translate("birthDetails.confirmButton")}
-                  cancelBtnText={translate("birthDetails.cancelButton")}
-                  customStyles={{
-                    dateInput: {
-                      borderWidth: 0
-                    },
-                    dateText: {
-                      marginBottom: 10,
-                      fontFamily: 'roboto',
-                      fontSize: 17
-                    },
-                    placeholderText: {
-                      marginBottom: 15,
-                      fontFamily: 'roboto',
-                      fontSize: 15,
-                      color: 'black'
-                    }
-                  }}
-                  onDateChange={date => this.setState({ userDob: date })}
-                />
-              </View>
-
-              <View style={styles.viewChildPais}>
-                <View style={{ marginRight: '10%' }} ><Text style={styles.commomTextView}>{translate("register.country")}</Text></View>
-                <View>
-                  <CountryPicker
-                    onChange={value => {
-                      this.setState({ cca2: value.cca2, userCountry: value.name })
-                    }}
-                    cca2={this.state.cca2}
-                    translation="eng"
-                  />
-                  <Text style={styles.textCountry}>{this.state.userCountry}</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.buttonView}>
-              <Button
-                title="editar"
-                color="#348EAC"
-                onPress={() => {
-                  this.editUser();
-                  this.setState({ userModal: false });
-                  this.setModalVisible(!this.state.modalVisibleUser);
-                }} />
-            </View>
-          </View>
-        </Modal>
         <Modal //Modal View for household
           animationType="fade"
           transparent={true}
@@ -431,12 +347,11 @@ class Perfil extends Component {
               <View style={styles.viewChildPais}>
                 <View style={{ marginRight: '10%' }} ><Text style={styles.commomTextView}>{translate("register.country")}</Text></View>
                 <View>
-                  <CountryPicker
-                    onChange={value => {
-                      this.setState({ cca2: value.cca2, householdCountry: value.name })
-                    }}
-                    cca2={this.state.cca2}
-                    translation="eng"
+                  <ModalSelector
+                    style={{ width: '80%', height: '70%' }}
+                    data={country}
+                    initValue={this.state.householdCountry}
+                    onChange={(option) => this.setState({ householdCountry: option.key })}
                   />
                   <Text style={styles.textCountry}>{this.state.householdCountry}</Text>
                 </View>
@@ -463,6 +378,7 @@ class Perfil extends Component {
             </View>
           </View>
         </Modal>
+
         <View style={styles.viewTop}>
           <View style={styles.userAvatar}>
             <Avatar
@@ -476,33 +392,8 @@ class Perfil extends Component {
             <Text style={styles.userName}>
               {this.state.userName}
             </Text>
-            {/*<View style={{ flexDirection: 'row' }}>
-              <Text style={styles.userDobText}>
-                Idade:
-                            </Text>
-              <Text style={styles.userDob}>
-                35 anos
-                            </Text>
-              </View>*/}
           </View>
           <View style={{ alignSelf: 'center', marginRight: 10 }}>
-            {/*<TouchableOpacity onPress={async () => {
-              await this.setState({ userModal: true })
-              this.getAllUserInfos();
-              //await this.setState({
-              //householdID: household.id,
-              //householdName: household.description,
-              //householdDob: household.birthdate,
-              //householdCountry: household.country,
-              //householdGender: household.gender,
-              //householdRace: household.race,
-              //kinship: household.kinship
-              //})
-
-              this.setModalVisible(true)
-            }}>
-              <FontAwesome name="edit" size={scale(25)} color='white' />
-          </TouchableOpacity>*/}
           </View>
         </View>
         <View style={{ alignItems: 'center' }}>

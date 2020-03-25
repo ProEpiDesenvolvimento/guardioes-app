@@ -10,7 +10,6 @@ import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
-import { userLocation } from '../../constUtils';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 

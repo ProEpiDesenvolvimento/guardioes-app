@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage, StatusBar, Alert, ImageBackground } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage, StatusBar, Alert } from 'react-native';
 import { imagemLogo, imagemLogoBR } from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';

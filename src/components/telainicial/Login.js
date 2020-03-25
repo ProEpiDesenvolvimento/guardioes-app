@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Image, ScrollView, Alert, AsyncStorage, Keyboard, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, AsyncStorage, Keyboard, NetInfo } from 'react-native';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
