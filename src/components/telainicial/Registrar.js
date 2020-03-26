@@ -18,6 +18,7 @@ import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 let data = new Date();
 let d = data.getDate();
@@ -118,7 +119,7 @@ class Registrar extends Component {
         ];
 
         return (
-            <ScrollView style={styles.container}>
+            <KeyboardAwareScrollView style={styles.container}>
                 <View style={styles.scroll}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
@@ -284,7 +285,7 @@ class Registrar extends Component {
                     showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
                 />
-            </ScrollView>
+            </KeyboardAwareScrollView>
         );
 
     }
@@ -387,9 +388,13 @@ class Registrar extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        //borderColor: 'red',
+        //borderWidth: 3,
     },
     scroll: {
         flex: 1,
+        //borderColor: 'green',
+        //borderWidth: 3,
         width: '100%',
         justifyContent: 'space-between'
     },

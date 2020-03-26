@@ -6,6 +6,7 @@ import Emoji from 'react-native-emoji';
 import { scale } from '../scallingUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 class Login extends Component {
     static navigationOptions = {
@@ -70,7 +71,7 @@ class Login extends Component {
           }
 
         return (
-            <ScrollView style={styles.container}>
+            <KeyboardAwareScrollView style={styles.container}>
                 <View style={styles.scroll}>
                 <View style={styles.viewImage}>
                     {imageType}
@@ -118,7 +119,7 @@ class Login extends Component {
                     confirmButtonColor="#DD6B55"
                 />
             </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         );
     }
 
