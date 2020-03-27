@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage, StatusBa
 import { imagemLogo, imagemLogoBR } from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';
+import { scale } from '../scallingUtils';
 
 const Redirect = (titulo, message, navigation) => {
     Alert.alert(
@@ -82,14 +83,14 @@ const styles = StyleSheet.create({
     },
     viewImage: {
         flex: 1,
-        width: '100%',
-        height: '100%',
+        width: scale(350),
+        //height: scale(10),
         alignItems: 'center',
     },
     imageLogo: {
         flex: 1,
         width: '85%',
-        resizeMode: 'center',
+        resizeMode: "contain",
         marginTop: -60
     },
     viewButton: {

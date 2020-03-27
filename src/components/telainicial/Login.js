@@ -204,8 +204,8 @@ const styles = StyleSheet.create({
     },
     viewImage: {
         flex: 2.5,
-        width: '100%',
-        height: '100%',
+        width: scale(350),
+        //height: '100%',
         alignItems: 'center',
     },
     viewForm: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 9,
         width: '80%',
-        resizeMode: 'center',
+        resizeMode: 'contain',
     }
 });
 
