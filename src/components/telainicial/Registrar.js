@@ -177,7 +177,7 @@ class Registrar extends Component {
                         </View>
                     </View>
 
-                    {this.state.userCountry == "Brazil" ?
+                    {this.state.userCountry == "Brasil" ?
 
                     <View style={styles.viewRow}>
                         <View style={styles.viewChildSexoRaca}>
@@ -281,8 +281,8 @@ class Registrar extends Component {
                         />
                         <Button
                             title="Botao de Teste"
-                            //onPress={() => console.warn("Country: " + this.state.userCountry + " State: " + this.state.userState + " City: " + this.state.userCity)}
-                            onPress={() => {this.state.userEmail && this.state.userPwd && this.state.userName && this.state.userDob != null ? console.warn("preencheu") : null}}
+                            onPress={() => console.warn("Country: " + this.state.userCountry + " State: " + this.state.userState + " City: " + this.state.userCity)}
+                            //onPress={() => {this.state.userEmail && this.state.userPwd && this.state.userName && this.state.userDob != null ? console.warn("preencheu") : null}}
                         />
                     </View>
 

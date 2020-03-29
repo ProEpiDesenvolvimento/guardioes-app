@@ -97,9 +97,10 @@ class Registrar extends Component {
                     <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                         <ModalSelector
+                            initValueTextStyle = {{color: 'black'}}
                             style={{ width: '80%', height: '70%' }}
                             data={gender}
-                            initValue={translate("genderChoices.male")}
+                            initValue={"Selecionar"}
                             onChange={(option) => this.setState({ householdGender: option.key })}
                         />
                     </View>
@@ -107,9 +108,10 @@ class Registrar extends Component {
                     <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                         <ModalSelector
+                            initValueTextStyle = {{color: 'black'}}
                             style={{ width: '80%', height: '70%' }}
                             data={race}
-                            initValue={translate("raceChoices.white")}
+                            initValue={"Selecionar"}
                             onChange={(option) => this.setState({ householdRace: option.key })}
                         />
                     </View>
@@ -120,7 +122,7 @@ class Registrar extends Component {
                     <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>{translate("register.birth")}</Text>
                         <DatePicker
-                            style={{ width: '80%', height: scale(25), backgroundColor: 'rgba(135, 150, 151, 0.55)', borderRadius: 20, marginTop: 5 }}
+                            style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)'}}
                             showIcon={false}
                             date={this.state.householdDob}
                             androidMode='spinner'
@@ -136,12 +138,12 @@ class Registrar extends Component {
                                     borderWidth: 0
                                 },
                                 dateText: {
-                                    marginBottom: 10,
+                                    justifyContent: "center",
                                     fontFamily: 'roboto',
                                     fontSize: 17
                                 },
                                 placeholderText: {
-                                    marginBottom: 15,
+                                    justifyContent: "center",
                                     fontFamily: 'roboto',
                                     fontSize: 15,
                                     color: 'black'
@@ -155,9 +157,10 @@ class Registrar extends Component {
                             <Text style={styles.commomTextView}>{translate("register.country")}</Text>
                             
                                 <ModalSelector
+                                    initValueTextStyle = {{color: 'black'}}
                                     style={{width: '80%', height: '70%'}}
                                     data={country}
-                                    initValue={this.state.householdCountry}
+                                    initValue={"Seleceionar"}
                                     onChange={(option) => this.setState({ householdCountry: option.key })}
                                 />
                             
@@ -167,7 +170,8 @@ class Registrar extends Component {
                 <View style={styles.viewCommom}>
                     <Text style={styles.commomText}>Parentesco:</Text>
                     <ModalSelector
-                        style={{ width: '95%', height: '70%' }}
+                        initValueTextStyle = {{color: 'black'}}
+                        style={{ width: '90%', height: '70%' }}
                         data={household}
                         initValue={this.state.kinship}
                         onChange={(option) => this.setState({ kinship: option.key })}

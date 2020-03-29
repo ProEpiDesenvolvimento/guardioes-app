@@ -247,6 +247,7 @@ class Perfil extends Component {
               <View style={styles.viewChildSexoRaca}>
                 <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                 <ModalSelector
+                  initValueTextStyle={{ color: 'black' }}
                   style={{ width: '80%', height: '70%' }}
                   data={gender}
                   initValue={translate("genderChoices.male")}
@@ -257,6 +258,7 @@ class Perfil extends Component {
               <View style={styles.viewChildSexoRaca}>
                 <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                 <ModalSelector
+                  initValueTextStyle={{ color: 'black' }}
                   style={{ width: '80%', height: '70%' }}
                   data={race}
                   initValue={translate("raceChoices.white")}
@@ -270,7 +272,7 @@ class Perfil extends Component {
               <View style={styles.viewChildSexoRaca}>
                 <Text style={styles.commomTextView}>Nascimento</Text>
                 <DatePicker
-                  style={{ width: '80%', height: scale(25), backgroundColor: 'rgba(135, 150, 151, 0.55)', borderRadius: 20, marginTop: 5 }}
+                  style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
                   showIcon={false}
                   date={this.state.householdDob}
                   androidMode='spinner'
@@ -286,12 +288,12 @@ class Perfil extends Component {
                       borderWidth: 0
                     },
                     dateText: {
-                      marginBottom: 10,
+                      justifyContent: "center",
                       fontFamily: 'roboto',
                       fontSize: 17
                     },
                     placeholderText: {
-                      marginBottom: 15,
+                      justifyContent: "center",
                       fontFamily: 'roboto',
                       fontSize: 15,
                       color: 'black'
@@ -301,24 +303,23 @@ class Perfil extends Component {
                 />
               </View>
 
-              <View style={styles.viewChildPais}>
-                <View style={{ marginRight: '10%' }} ><Text style={styles.commomTextView}>{translate("register.country")}</Text></View>
-                <View>
-                  <ModalSelector
-                    style={{ width: '80%', height: '70%' }}
-                    data={country}
-                    initValue={this.state.householdCountry}
-                    onChange={(option) => this.setState({ householdCountry: option.key })}
-                  />
-                  <Text style={styles.textCountry}>{this.state.householdCountry}</Text>
-                </View>
+              <View style={styles.viewChildSexoRaca}>
+                <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                <ModalSelector
+                  initValueTextStyle={{ color: 'black' }}
+                  style={{ width: '80%', height: '70%' }}
+                  data={country}
+                  initValue={this.state.householdCountry}
+                  onChange={(option) => this.setState({ householdCountry: option.key })}
+                />
               </View>
             </View>
 
             <View style={styles.viewCommom}>
               <Text style={styles.commomText}>Parentesco:</Text>
               <ModalSelector
-                style={{ width: '95%', height: '70%' }}
+                initValueTextStyle={{ color: 'black' }}
+                style={{ width: '90%', height: '70%' }}
                 data={household}
                 initValue={this.state.kinship}
                 onChange={(option) => this.setState({ kinship: option.key })}
@@ -326,10 +327,16 @@ class Perfil extends Component {
             </View>
             <View style={styles.buttonView}>
               <Button
-                title="editar"
+                title="Editar"
                 color="#348EAC"
                 onPress={() => {
                   this.avatarHouseholdSelector();
+                  this.setModalVisible(!this.state.modalVisibleHousehold);
+                }} />
+                <Button
+                title="Cancelar"
+                color="#348EAC"
+                onPress={() => {
                   this.setModalVisible(!this.state.modalVisibleHousehold);
                 }} />
             </View>
