@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage, NetInfo, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-import CountryPicker from 'react-native-country-picker-modal';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../scallingUtils';
@@ -12,6 +11,8 @@ import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import ModalSelector from 'react-native-modal-selector';
+import { country } from '../../utils/selectorUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -117,9 +118,9 @@ class BadReport extends Component {
     }
 
     verifyLocalization = async () => {
-        if(this.state.userLatitude == 0 || this.state.userLongitude == 0 || this.state.userLatitude == null || this.state.userLongitude == null){
+        if (this.state.userLatitude == 0 || this.state.userLongitude == 0 || this.state.userLatitude == null || this.state.userLongitude == null) {
             this.requestLocalization();
-        } else{
+        } else {
             this.sendSurvey();
         }
     }
@@ -146,19 +147,19 @@ class BadReport extends Component {
 
     requestLocalization = () => {
         Alert.alert(
-          "Erro Na Localização",
-          "Permita a localização para prosseguir",
-          [
-            {
-              text: 'Cancelar',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'Premitir', onPress: () => this.requestFineLocationPermission() },
-          ],
-          { cancelable: false },
+            "Erro Na Localização",
+            "Permita a localização para prosseguir",
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'Premitir', onPress: () => this.requestFineLocationPermission() },
+            ],
+            { cancelable: false },
         );
-      }
+    }
 
     sendSurvey = async () => {
         this.showAlert();
@@ -176,6 +177,7 @@ class BadReport extends Component {
                     latitude: this.state.userLatitude,
                     longitude: this.state.userLongitude,
                     bad_since: this.state.today_date,
+                    traveled_to: this.state.country,
                     went_to_hospital: this.state.lookedForHospital,
                     contact_with_symptom: this.state.contactWithSymptom,
                     symptom: this.state.symptoms
@@ -200,17 +202,17 @@ class BadReport extends Component {
         const symptomsData = this.state.dataSource;
 
         const traveled = (
-            <View>
+            <View style={styles.viewRowCenter}>
                 <View><Text style={styles.commomTextView}>{translate("badReport.checkboxes.fourth")}</Text></View>
-                <CountryPicker
-                    onChange={value => {
-                        this.setState({ cca2: value.cca2, country: value.name })
-                    }}
-                    cca2={this.state.cca2}
-                    translation="por"
-                />
-                <Text style={styles.textCountry}>{this.state.country}</Text>
-                <View><Text style={{ alignSelf: 'center', paddingTop: 2, fontSize: 13 }}>{translate("badReport.checkboxes.fifth")}</Text></View>
+                <View >
+                    <ModalSelector
+                        initValueTextStyle={{ color: 'black' }}
+                        style={{ width: '80%', height: '70%', alignSelf: 'center' }}
+                        data={country}
+                        initValue={"Selecionar"}
+                        onChange={(option) => this.setState({ country: option.key })}
+                    />
+                </View>
             </View>
         )
 
@@ -307,6 +309,14 @@ class BadReport extends Component {
                         <Text style={styles.sintomasText}>{translate("badReport.answerQuestions")}</Text>
                     </View>
                     <CheckBox
+                        title={translate("badReport.checkboxes.third")}
+                        textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
+                        checkedColor={'#348EAC'}
+                        checked={this.state.hadTraveled}
+                        onPress={async () => await this.setState({ hadTraveled: !this.state.hadTraveled })}
+                    />
+                    {traveledTrue}
+                    <CheckBox
                         title={translate("badReport.checkboxes.first")}
                         textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
                         checkedColor={'#348EAC'}
@@ -320,17 +330,10 @@ class BadReport extends Component {
                         checked={this.state.lookedForHospital}
                         onPress={async () => await this.setState({ lookedForHospital: !this.state.lookedForHospital })}
                     />
-                    <CheckBox
-                        title={translate("badReport.checkboxes.third")}
-                        textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
-                        checkedColor={'#348EAC'}
-                        checked={this.state.hadTraveled}
-                        onPress={async () => await this.setState({ hadTraveled: !this.state.hadTraveled })}
-                    />
-                    {traveledTrue}
+                    
                     <View style={styles.buttonView}>
                         <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() => {
-                            if (this.state.date !== null) {
+                            if (this.state.date && this.state.symptoms !== null) {
                                 //this._isconnected();
                                 this.verifyLocalization();
                             }
@@ -413,7 +416,9 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     scroll: {
-        paddingRight: '5%'
+        paddingRight: '5%',
+        //borderColor: 'green',
+        //borderWidth: 3,
     },
     sintomasText: {
         textAlign: 'left',
@@ -440,9 +445,11 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         alignSelf: 'center',
-        marginTop: 15,
-        marginBottom: 20,
-        width: "60%"
+        //marginTop: 15,
+        //marginBottom: 20,
+        width: "60%",
+        //borderWidth: 1,
+        //borderColor: 'red'
     },
     commomTextView: {
         fontSize: 15,
@@ -454,7 +461,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 15,
         fontFamily: 'roboto',
-    }
+    },
+    viewRowCenter: {
+        width: '100%',
+        height: scale(65),
+        justifyContent: "center"
+    },
 });
 
 //make this component available to the app

@@ -16,6 +16,7 @@ import { scale } from '../scallingUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
 import ModalSelector from 'react-native-modal-selector';
+import { gender, country, race, household } from '../../utils/selectorUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -82,49 +83,6 @@ class Registrar extends Component {
     render() {
         const { showAlert } = this.state;
 
-        const gender = [
-            { key: 'Masculino', label: translate("genderChoices.male") },
-            { key: 'Femenino', label: translate("genderChoices.female") },
-        ];
-
-        const race = [
-            { key: 'Blanco', label: translate("raceChoices.white") },
-            { key: 'Indígena', label: translate("raceChoices.indian") },
-            { key: 'Mestizo', label: translate("raceChoices.mix") },
-            { key: 'Negro, mulato o afrodescendiente', label: translate("raceChoices.black") },
-            { key: 'Palenquero', label: translate("raceChoices.palenquero") },
-            { key: 'Raizal', label: translate("raceChoices.raizal") },
-            { key: 'Rom-Gitano', label: translate("raceChoices.romGitano") }
-        ];
-
-        const household = [
-            { key: 'Pai', label: "Pai" },
-            { key: 'Mãe', label: "Mãe" },
-            { key: 'Filhos', label: "Filhos" },
-            { key: 'Irmaãos', label: "Irmãos" },
-            { key: 'Avós', label: "Avós" },
-            { key: 'Outros', label: "Outros" }
-        ];
-
-        const country = [
-            { key: 'Brazil', label: "Brasil"},
-            { key: 'Colombia', label: "Colombia"},
-            { key: 'Guatemala', label: "Guatemala"},
-            { key: 'Argentina', label: "Argentina"},
-            { key: 'Portugual', label: "Portugual"},
-            { key: 'SaoTome', label: "São Tomé"},
-            { key: 'Principe', label: "Principe"},
-            { key: 'Chile', label: "Chile"},
-            { key: 'Bolivia', label: "Bolivia"},
-            { key: 'Equador', label: "Equador"},
-            { key: 'Paraguai', label: "Paraguai"},
-            { key: 'Peru', label: "Peru"},
-            { key: 'Uruguai', label: "Uruguai"},
-            { key: 'Venezuela', label: "Venezuela"},
-            { key: 'Angola', label: "Angola"},
-            { key: 'CaboVerde', label: "Cabo Verde"},
-        ];
-
         return (
             <View style={styles.container}>
                 <View style={{ paddingTop: 10 }}></View>
@@ -139,9 +97,10 @@ class Registrar extends Component {
                     <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                         <ModalSelector
+                            initValueTextStyle = {{color: 'black'}}
                             style={{ width: '80%', height: '70%' }}
                             data={gender}
-                            initValue={translate("genderChoices.male")}
+                            initValue={"Selecionar"}
                             onChange={(option) => this.setState({ householdGender: option.key })}
                         />
                     </View>
@@ -149,9 +108,10 @@ class Registrar extends Component {
                     <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                         <ModalSelector
+                            initValueTextStyle = {{color: 'black'}}
                             style={{ width: '80%', height: '70%' }}
                             data={race}
-                            initValue={translate("raceChoices.white")}
+                            initValue={"Selecionar"}
                             onChange={(option) => this.setState({ householdRace: option.key })}
                         />
                     </View>
@@ -162,7 +122,7 @@ class Registrar extends Component {
                     <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>{translate("register.birth")}</Text>
                         <DatePicker
-                            style={{ width: '80%', height: scale(25), backgroundColor: 'rgba(135, 150, 151, 0.55)', borderRadius: 20, marginTop: 5 }}
+                            style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)'}}
                             showIcon={false}
                             date={this.state.householdDob}
                             androidMode='spinner'
@@ -178,12 +138,12 @@ class Registrar extends Component {
                                     borderWidth: 0
                                 },
                                 dateText: {
-                                    marginBottom: 10,
+                                    justifyContent: "center",
                                     fontFamily: 'roboto',
                                     fontSize: 17
                                 },
                                 placeholderText: {
-                                    marginBottom: 15,
+                                    justifyContent: "center",
                                     fontFamily: 'roboto',
                                     fontSize: 15,
                                     color: 'black'
@@ -197,9 +157,10 @@ class Registrar extends Component {
                             <Text style={styles.commomTextView}>{translate("register.country")}</Text>
                             
                                 <ModalSelector
+                                    initValueTextStyle = {{color: 'black'}}
                                     style={{width: '80%', height: '70%'}}
                                     data={country}
-                                    initValue={this.state.householdCountry}
+                                    initValue={"Seleceionar"}
                                     onChange={(option) => this.setState({ householdCountry: option.key })}
                                 />
                             
@@ -209,7 +170,8 @@ class Registrar extends Component {
                 <View style={styles.viewCommom}>
                     <Text style={styles.commomText}>Parentesco:</Text>
                     <ModalSelector
-                        style={{ width: '95%', height: '70%' }}
+                        initValueTextStyle = {{color: 'black'}}
+                        style={{ width: '90%', height: '70%' }}
                         data={household}
                         initValue={this.state.kinship}
                         onChange={(option) => this.setState({ kinship: option.key })}
