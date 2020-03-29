@@ -9,7 +9,6 @@ import {
     Keyboard,
     NetInfo,
     Alert,
-    ScrollView
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -19,6 +18,10 @@ import { API_URL } from '../../constUtils';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { gender, country, race } from '../../utils/selectorUtils';
+//import { state, ACRE, ALAGOAS, AMAPÁ, AMAZONAS, BAHIA, CEARÁ, DISTRITO_FEDERAL, ESPÍRITO_SANTO, GOIÁS, MARANHÃO, MATO_GROSSO, MATO_GROSSO_DO_SUL, MINAS_GERAIS, PARÁ, PARAÍBA, PARANÁ, PERNAMBUCO, PIAUÍ, RIO_DE_JANEIRO, RIO_GRANDE_DO_NORTE, RIO_GRANDE_DO_SUL, RONDÔNIA, RORAIMA, SANTA_CATARINA, SÃO_PAULO, SERGIPE, TOCANTINS} from '../../utils/brasil';
+import { state, getCity } from '../../utils/brasil';
+
 
 let data = new Date();
 let d = data.getDate();
@@ -44,13 +47,16 @@ class Registrar extends Component {
             userName: null,
             userEmail: null,
             userPwd: null,
-            userGender: 'Masculino',
-            userCountry: 'Brazil',
-            userRace: 'Blanco',
+            userGender: null,
+            userCountry: null,
+            userState: null,
+            userCity: null,
+            userRace: null,
             userDob: null,
             userToken: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
+            initValue: "Selecionar",
         }
     }
 
@@ -83,41 +89,8 @@ class Registrar extends Component {
 
     render() {
         const { showAlert } = this.state;
-
-        const gender = [
-            { key: 'Masculino', label: translate("genderChoices.male")},
-            { key: 'Femenino', label: translate("genderChoices.female")},
-        ];
-
-        const race = [
-            { key: 'Blanco', label: translate("raceChoices.white")},
-            { key: 'Indígena', label: translate("raceChoices.indian")},
-            { key: 'Mestizo', label: translate("raceChoices.mix")},
-            { key: 'Negro, mulato o afrodescendiente', label: translate("raceChoices.black")},
-            { key: 'Palenquero', label: translate("raceChoices.palenquero")},
-            { key: 'Raizal', label: translate("raceChoices.raizal")},
-            { key: 'Rom-Gitano', label: translate("raceChoices.romGitano")}
-        ];
-
-        const country = [
-            { key: 'Brazil', label: "Brasil"},
-            { key: 'Colombia', label: "Colombia"},
-            { key: 'Guatemala', label: "Guatemala"},
-            { key: 'Argentina', label: "Argentina"},
-            { key: 'Portugual', label: "Portugual"},
-            { key: 'SaoTome', label: "São Tomé"},
-            { key: 'Principe', label: "Principe"},
-            { key: 'Chile', label: "Chile"},
-            { key: 'Bolivia', label: "Bolivia"},
-            { key: 'Equador', label: "Equador"},
-            { key: 'Paraguai', label: "Paraguai"},
-            { key: 'Peru', label: "Peru"},
-            { key: 'Uruguai', label: "Uruguai"},
-            { key: 'Venezuela', label: "Venezuela"},
-            { key: 'Angola', label: "Angola"},
-            { key: 'CaboVerde', label: "Cabo Verde"},
-        ];
-
+        getCity(this.state.userState)
+        //console.warn(CITIES)
         return (
             <KeyboardAwareScrollView style={styles.container}>
                 <View style={styles.scroll}>
@@ -134,9 +107,10 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                             <ModalSelector
+                                initValueTextStyle = {{color: 'black'}}
                                 style={{width: '80%', height: '70%'}}
                                 data={gender}
-                                initValue={translate("genderChoices.male")}
+                                initValue={"Selecionar"}
                                 onChange={(option) => this.setState({ userGender: option.key })}
                             />
                         </View>
@@ -144,9 +118,10 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                             <ModalSelector
+                                initValueTextStyle = {{color: 'black'}}
                                 style={{width: '80%', height: '70%'}}
                                 data={race}
-                                initValue={translate("raceChoices.white")}
+                                initValue={"Selecionar"}
                                 onChange={(option) => this.setState({ userRace: option.key })}
                             />
                         </View>
@@ -157,7 +132,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.birth")}</Text>
                             <DatePicker
-                                style={{ width: '80%', height: scale(25), backgroundColor: 'rgba(135, 150, 151, 0.55)', borderRadius: 20, marginTop: 5 }}
+                                style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)'}}
                                 showIcon={false}
                                 date={this.state.userDob}
                                 androidMode='spinner'
@@ -173,12 +148,12 @@ class Registrar extends Component {
                                         borderWidth: 0
                                     },
                                     dateText: {
-                                        marginBottom: 10,
+                                        justifyContent: "center",
                                         fontFamily: 'roboto',
                                         fontSize: 17
                                     },
                                     placeholderText: {
-                                        marginBottom: 15,
+                                        justifyContent: "center",
                                         fontFamily: 'roboto',
                                         fontSize: 15,
                                         color: 'black'
@@ -192,16 +167,46 @@ class Registrar extends Component {
                             <Text style={styles.commomTextView}>{translate("register.country")}</Text>
                             
                                 <ModalSelector
+                                    initValueTextStyle = {{color: 'black'}}
                                     style={{width: '80%', height: '70%'}}
                                     data={country}
-                                    initValue={this.state.userCountry}
+                                    initValue={"Selecionar"}
                                     onChange={(option) => this.setState({ userCountry: option.key })}
                                 />
                             
                         </View>
                     </View>
 
+                    {this.state.userCountry == "Brazil" ?
+
+                    <View style={styles.viewRow}>
+                        <View style={styles.viewChildSexoRaca}>
+                            <Text style={styles.commomTextView}>Estado:</Text>
+                            <ModalSelector
+                                    initValueTextStyle = {{color: 'black'}}
+                                    style={{width: '80%', height: '70%'}}
+                                    data={state}
+                                    initValue={"Selecionar"}
+                                    onChange={(option) => this.setState({ userState: option.key })}
+                                />
+                        </View>
+
+                        
+                        <View style={styles.viewChildSexoRaca}>
+                            <Text style={styles.commomTextView}>Cidede:</Text>
+                                <ModalSelector
+                                    initValueTextStyle = {{color: 'black'}}
+                                    style={{width: '80%', height: '70%'}}
+                                    data={CITIES}
+                                    initValue={this.state.initValue}
+                                    onModalClose={(option) => this.setState({ userCity: option.key, initValue: option.key })}
+                                />
+                        </View>
+                        
+                    </View>
+                    :null}
                     <View>
+                        {this.state.userCountry != null?
                         <CheckBox
                             title={this.state.userCountry + translate("register.originCountry")}
                             checked={this.state.residenceCountryCheckbox}
@@ -209,14 +214,15 @@ class Registrar extends Component {
                                 this.setState({ residence: '' })
                                 this.setState({ residenceCountryCheckbox: !this.state.residenceCountryCheckbox })
                             }}
-                        />
+                        />: null}
                         <View>
                             {!this.state.residenceCountryCheckbox ?
-                                <View>
+                                <View style={styles.viewRowCenter}>
                                     <ModalSelector
+                                    initValueTextStyle = {{color: 'black'}}
                                     style={{width: '80%', height: '70%', alignSelf: 'center'}}
                                     data={country}
-                                    initValue={this.state.residenceText}
+                                    initValue={"Selecionar"}
                                     onChange={(option) => this.setState({ residenceText: option.key })}
                                 />
                                 
@@ -272,6 +278,11 @@ class Registrar extends Component {
                             color="#348EAC"
                             //onPress={this._isconnected}
                             onPress={() => this.avatarSelector()}
+                        />
+                        <Button
+                            title="Botao de Teste"
+                            //onPress={() => console.warn("Country: " + this.state.userCountry + " State: " + this.state.userState + " City: " + this.state.userCity)}
+                            onPress={() => {this.state.userEmail && this.state.userPwd && this.state.userName && this.state.userDob != null ? console.warn("preencheu") : null}}
                         />
                     </View>
 
@@ -407,6 +418,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 65,
         flexDirection: 'row',
+    },
+    viewRowCenter: {
+        width: '100%',
+        height: 65,
+        flexDirection: 'row',
+        justifyContent: "center"
     },
     viewChildSexoRaca: {
         width: "50%",

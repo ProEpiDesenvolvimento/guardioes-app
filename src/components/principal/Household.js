@@ -16,6 +16,7 @@ import { scale } from '../scallingUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
 import ModalSelector from 'react-native-modal-selector';
+import { gender, country, race, household } from '../../utils/selectorUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -81,49 +82,6 @@ class Registrar extends Component {
 
     render() {
         const { showAlert } = this.state;
-
-        const gender = [
-            { key: 'Masculino', label: translate("genderChoices.male") },
-            { key: 'Femenino', label: translate("genderChoices.female") },
-        ];
-
-        const race = [
-            { key: 'Blanco', label: translate("raceChoices.white") },
-            { key: 'Indígena', label: translate("raceChoices.indian") },
-            { key: 'Mestizo', label: translate("raceChoices.mix") },
-            { key: 'Negro, mulato o afrodescendiente', label: translate("raceChoices.black") },
-            { key: 'Palenquero', label: translate("raceChoices.palenquero") },
-            { key: 'Raizal', label: translate("raceChoices.raizal") },
-            { key: 'Rom-Gitano', label: translate("raceChoices.romGitano") }
-        ];
-
-        const household = [
-            { key: 'Pai', label: "Pai" },
-            { key: 'Mãe', label: "Mãe" },
-            { key: 'Filhos', label: "Filhos" },
-            { key: 'Irmaãos', label: "Irmãos" },
-            { key: 'Avós', label: "Avós" },
-            { key: 'Outros', label: "Outros" }
-        ];
-
-        const country = [
-            { key: 'Brazil', label: "Brasil"},
-            { key: 'Colombia', label: "Colombia"},
-            { key: 'Guatemala', label: "Guatemala"},
-            { key: 'Argentina', label: "Argentina"},
-            { key: 'Portugual', label: "Portugual"},
-            { key: 'SaoTome', label: "São Tomé"},
-            { key: 'Principe', label: "Principe"},
-            { key: 'Chile', label: "Chile"},
-            { key: 'Bolivia', label: "Bolivia"},
-            { key: 'Equador', label: "Equador"},
-            { key: 'Paraguai', label: "Paraguai"},
-            { key: 'Peru', label: "Peru"},
-            { key: 'Uruguai', label: "Uruguai"},
-            { key: 'Venezuela', label: "Venezuela"},
-            { key: 'Angola', label: "Angola"},
-            { key: 'CaboVerde', label: "Cabo Verde"},
-        ];
 
         return (
             <View style={styles.container}>
