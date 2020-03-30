@@ -1,5 +1,11 @@
 import translate from '../../locales/i18n';
 
+export const groups = [
+    { key: 'UnB', label: 'unb groups' },
+    { key: 'FGA', label: 'FGA Group' },
+];
+
+
 export const gender = [
     { key: 'Masculino', label: translate("genderChoices.male") },
     { key: 'Femenino', label: translate("genderChoices.female") },
