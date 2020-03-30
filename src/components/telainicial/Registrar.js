@@ -18,8 +18,7 @@ import { API_URL } from '../../constUtils';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { gender, country, race, groups } from '../../utils/selectorUtils';
-//import { state, ACRE, ALAGOAS, AMAPÁ, AMAZONAS, BAHIA, CEARÁ, DISTRITO_FEDERAL, ESPÍRITO_SANTO, GOIÁS, MARANHÃO, MATO_GROSSO, MATO_GROSSO_DO_SUL, MINAS_GERAIS, PARÁ, PARAÍBA, PARANÁ, PERNAMBUCO, PIAUÍ, RIO_DE_JANEIRO, RIO_GRANDE_DO_NORTE, RIO_GRANDE_DO_SUL, RONDÔNIA, RORAIMA, SANTA_CATARINA, SÃO_PAULO, SERGIPE, TOCANTINS} from '../../utils/brasil';
+import { gender, country, race, getGroups } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 
 
@@ -58,7 +57,8 @@ class Registrar extends Component {
             userIdCode: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
-            initValue: "Selecionar",
+            initValueCity: "Selecionar",
+            initValueGroup: "Selecionar",
         }
     }
 
@@ -91,8 +91,9 @@ class Registrar extends Component {
 
     render() {
         const { showAlert } = this.state;
-        getCity(this.state.userState)
-        //console.warn(CITIES)
+        
+        
+
         return (
             <KeyboardAwareScrollView style={styles.container}>
                 <View style={styles.scroll}>
@@ -197,9 +198,9 @@ class Registrar extends Component {
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
-                                    data={CITIES}
-                                    initValue={this.state.initValue}
-                                    onModalClose={(option) => this.setState({ userCity: option.key, initValue: option.key })}
+                                    data={getCity(this.state.userState)}
+                                    initValue={this.state.initValueCity}
+                                    onModalClose={(option) => this.setState({ userCity: option.key, initValueCity: option.key })}
                                 />
                             </View>
                         </View>
@@ -254,9 +255,9 @@ class Registrar extends Component {
                             <ModalSelector
                                 initValueTextStyle={{ color: 'black' }}
                                 style={{ width: '80%', height: '70%' }}
-                                data={groups}
-                                initValue={"Selecionar"}
-                                onChange={(option) => this.setState({ userGroup: option.key })}
+                                data={getGroups()}
+                                initValue={this.state.initValueGroup}
+                                onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.key })}
                             />
                         </View>
                         <View style={styles.viewChildSexoRaca}>
@@ -308,12 +309,6 @@ class Registrar extends Component {
                             color="#348EAC"
                             //onPress={this._isconnected}
                             onPress={() => this.avatarSelector()}
-                        />
-                        <Button
-                            title="Botao de Teste"
-                            //onPress={() => console.warn("Country: " + this.state.userCountry + " State: " + this.state.userState + " City: " + this.state.userCity)}
-                            //onPress={() => {this.state.userEmail && this.state.userPwd && this.state.userName && this.state.userDob != null ? console.warn("preencheu") : null}}
-                            onPress={() => console.warn("Grupo: " + this.state.userGroup + " Matricula: " + this.state.userIdCode)}
                         />
                     </View>
 
@@ -531,7 +526,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.11)',
         backgroundColor: 'transparent',
-        height: scale(32),
+        //height: scale(32),
         alignSelf: "center"
     }
 });
