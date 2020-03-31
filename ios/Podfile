@@ -40,6 +40,8 @@ target 'guardioesapp' do
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   
   
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'guardioesappTests' do
     inherit! :search_paths
     # Pods for testing
@@ -47,6 +49,11 @@ target 'guardioesapp' do
 
   use_native_modules!
 end
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+end
+
 
 target 'guardioesapp-tvOS' do
   # Pods for guardioesapp-tvOS
