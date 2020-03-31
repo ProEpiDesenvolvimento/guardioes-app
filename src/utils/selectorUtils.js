@@ -1,4 +1,5 @@
 import translate from '../../locales/i18n';
+import { API_URL } from '../constUtils';
 
 export const gender = [
     { key: 'Masculino', label: translate("genderChoices.male") },
@@ -69,12 +70,53 @@ export const household = [
     { key: 'Outros', label: "Outros" }
 ];
 
-//Pega os estados do brasil, 2 Nivel
-//{brasilData != null ?
-//    brasilData.map(brasil => {
-//        if (brasil.loc_niv_id == "3" && brasil.loc_loc_id == "45") {
-//            //console.warn(brasil.loc_nome)
-//            console.('{ key: "' + brasil.loc_nome + '", label: "' + brasil.loc_nome + '" },')   
-//        }
-//    })
-//    : null}
+/*
+export function getGroups(){
+    const groups = []
+    fetch(`${API_URL}/--ACRESCENTAR A RODA--`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            responseJson.map(group => {
+                groups.push({ key: group.description, label: group.description })
+            })
+        })
+    return groups
+}
+*/
+
+
+//////USO EM TESTES
+const Data = [
+    {  
+      "id": 1,
+      "description": "Turma UnB",
+      "kind": "Universidade",
+      "details": "Esse é o grupo da turma 1 UnB"
+    },
+    {
+        "id": 2,
+        "description": "Secretaria de Saude",
+        "kind": "Secretaria",
+        "details": "Esse é o grupo da turma 2 da Secretaria de Saude"
+    },
+    {
+        "id": 3,
+        "description": "Turma Samambaia",
+        "kind": "Municipio",
+        "details": "Esse é o grupo da turma 3 de Samambaia"
+    }
+]
+
+
+export function getGroups() {
+    const groups = []
+    Data.map(group => {
+        groups.push({ key: group.description, label: group.description })
+    })
+    return groups
+}//////////
