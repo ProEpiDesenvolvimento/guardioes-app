@@ -32,16 +32,13 @@
 		<dict>
 			<key>http://gds.proepi.org.br</key>
 			<dict>
-        		<!--Include to allow subdomains-->
-        		<key>NSIncludesSubdomains</key>
-        		<true/>
-        		<!--Include to allow HTTP requests-->
-        		<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-        		<true/>
-        		<!--Include to specify minimum TLS version-->
-        		<key>NSTemporaryExceptionMinimumTLSVersion</key>
-        		<string>TLSv1.1</string>
-    		</dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.1</string>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -50,11 +47,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Need Location</string>
+	<string>Location required for geoloalition when reporting.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need Location</string>
+	<string>Location required for geoloalition when reporting.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need Location</string>
+	<string>Location required for geoloalition when reporting.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>roboto.ttf</string>

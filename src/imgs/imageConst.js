@@ -11,6 +11,7 @@ export const imagemGood = require('./diversos/GoodReport.png');
 export const imagemBad = require('./diversos/BadReport.png');
 
 //Avatar
+export const NullAvatar = require('./avatar/avatar.png');
 export const Father = require('./avatar/father.png');
 export const Mother = require('./avatar/mother.png');
 export const Grandfather = require('./avatar/grandfather.png');

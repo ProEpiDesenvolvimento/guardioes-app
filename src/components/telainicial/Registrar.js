@@ -7,7 +7,6 @@ import {
     Button,
     AsyncStorage,
     Keyboard,
-    NetInfo,
     Alert,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
@@ -314,8 +313,10 @@ class Registrar extends Component {
     avatarSelector = async () => {
         if (this.state.userGender == "Masculino") {
             await this.setState({ picture: "Father" });
-        } else {
+        } else if (this.state.userGender == "Feminino"){
             await this.setState({ picture: "Mother" });
+        } else if (this.state.userGender == null){
+            await this.setState({ picture: "NullAvatar" });
         }
         this.create();
     }

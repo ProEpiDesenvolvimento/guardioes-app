@@ -3,7 +3,7 @@ import { API_URL } from '../constUtils';
 
 export const gender = [
     { key: 'Masculino', label: translate("genderChoices.male") },
-    { key: 'Femenino', label: translate("genderChoices.female") },
+    { key: 'Feminino', label: translate("genderChoices.female") },
 ];
 
 export const race = [
