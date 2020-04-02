@@ -70,10 +70,10 @@ export const household = [
     { key: 'Outros', label: "Outros" }
 ];
 
-/*
+
 export function getGroups(){
     const groups = []
-    fetch(`${API_URL}/--ACRESCENTAR A RODA--`, {
+    fetch(`${API_URL}/groups/`, {
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
@@ -81,15 +81,15 @@ export function getGroups(){
     })
         .then((response) => response.json())
         .then((responseJson) => {
-            responseJson.map(group => {
-                groups.push({ key: group.description, label: group.description })
+            responseJson.groups.map(group => {
+                groups.push({ key: group.id, label: group.description })
             })
         })
     return groups
 }
-*/
 
 
+/*
 //////USO EM TESTES
 const Data = [
     {  
@@ -119,4 +119,4 @@ export function getGroups() {
         groups.push({ key: group.description, label: group.description })
     })
     return groups
-}//////////
+}//////////*/

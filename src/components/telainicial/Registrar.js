@@ -39,8 +39,7 @@ class Registrar extends Component {
         super(props);
         this.state = {
             isProfessional: false,
-            residence: '',
-            residenceText: 'Brazil', //So that the residence picker isn't filled when it shoulnd't
+            residence: null,
             residenceCountryCheckbox: true,
             statusCode: null,
             userName: null,
@@ -75,24 +74,10 @@ class Registrar extends Component {
         })
     }
 
-    _isconnected = () => {
-        let validation = false
-        this.state.userEmail && this.state.userPwd && this.state.userName && this.state.userDob ? validation = true : validation = false
-        NetInfo.isConnected.fetch().then(isConnected => {
-            isConnected ? validation ? this.avatarSelector() : Alert.alert(translate("register.errorMessages.error"), translate("register.errorMessages.allFieldsAreFilled")) : Alert.alert(
-                translate("register.noInternet.noInternet"),
-                translate("register.noInternet.ohNo"),
-                [
-                    { text: translate("register.alertAllRightMessage"), onPress: () => null }
-                ]
-            )
-        });
-    }
-
     render() {
         const { showAlert } = this.state;
-        
-        
+
+
 
         return (
             <KeyboardAwareScrollView style={styles.container}>
@@ -194,7 +179,7 @@ class Registrar extends Component {
                             </View>
 
                             <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Cidede:</Text>
+                                <Text style={styles.commomTextView}>Município:</Text>
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
@@ -224,7 +209,7 @@ class Registrar extends Component {
                                     style={{ width: '80%', height: '70%', alignSelf: 'center' }}
                                     data={country}
                                     initValue={"Selecionar"}
-                                    onChange={(option) => this.setState({ residenceText: option.key })}
+                                    onChange={(option) => this.setState({ residence: option.key })}
                                 />
 
                             </View>
@@ -242,34 +227,34 @@ class Registrar extends Component {
                         />
                     </View>
                     <CheckBox
-                            title={"É integrante de algum grupo de pesquisa?"}
-                            containerStyle={styles.CheckBoxStyle}
-                            size={scale(16)}
-                            checked={this.state.groupCheckbox}
-                            onPress={() => {this.setState({ groupCheckbox: !this.state.groupCheckbox })}}
-                        />
-                        {this.state.groupCheckbox ?
-                    <View style={styles.viewRow}>
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>Grupo:</Text>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black' }}
-                                style={{ width: '80%', height: '70%' }}
-                                data={getGroups()}
-                                initValue={this.state.initValueGroup}
-                                onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.key })}
-                            />
+                        title={"É integrante de algum grupo ou instituição?"}
+                        containerStyle={styles.CheckBoxStyle}
+                        size={scale(16)}
+                        checked={this.state.groupCheckbox}
+                        onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
+                    />
+                    {this.state.groupCheckbox ?
+                        <View style={styles.viewRow}>
+                            <View style={styles.viewChildSexoRaca}>
+                                <Text style={styles.commomTextView}>Grupo:</Text>
+                                <ModalSelector
+                                    initValueTextStyle={{ color: 'black' }}
+                                    style={{ width: '80%', height: '70%' }}
+                                    data={getGroups()}
+                                    initValue={this.state.initValueGroup}
+                                    onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
+                                />
+                            </View>
+                            <View style={styles.viewChildSexoRaca}>
+                                <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                                <TextInput style={styles.formInput50}
+                                    returnKeyType='done'
+                                    keyboardType='number-pad'
+                                    onChangeText={text => this.setState({ userIdCode: text })}
+                                />
+                            </View>
                         </View>
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                            <TextInput style={styles.formInput50}
-                                returnKeyType='done'
-                                keyboardType='number-pad'
-                                onChangeText={text => this.setState({ userIdCode: text })}
-                            />
-                        </View>
-                    </View>
-                    :null}
+                        : null}
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>{translate("register.email")}</Text>
@@ -290,7 +275,7 @@ class Registrar extends Component {
                             secureTextEntry={true}
                             onChangeText={text => this.setState({ userPwd: text })}
                             ref={(input) => this.passwordInput = input}
-                            onSubmitEditing={() => this.avatarSelector()}
+                            onSubmitEditing={() => this.verifyInfos()}
                         />
                         <Text style={{
                             fontSize: 13,
@@ -307,8 +292,7 @@ class Registrar extends Component {
                         <Button
                             title={translate("register.signupButton")}
                             color="#348EAC"
-                            //onPress={this._isconnected}
-                            onPress={() => this.avatarSelector()}
+                            onPress={() => this.verifyInfos()}
                         />
                     </View>
 
@@ -336,6 +320,22 @@ class Registrar extends Component {
         this.create();
     }
 
+    verifyInfos = async () => {
+        if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null || this.state.userCountry == null || this.state.userDob == null) {
+            Alert.alert("Nome, Data de Nascimento, Nacionalidade, Email e Senha devem estar preenchidos")
+        } else {
+            if (this.state.userCountry == "Brasil" && (this.state.userState == null || this.state.userCity == null)) {
+                Alert.alert("Estado e Cidade devem estar preenchidos")
+            } else {
+                if (this.state.userPwd.length < 8) {
+                    Alert.alert("A senha precisa ter no mínimo 8 caracteres")
+                } else {
+                    this.avatarSelector();
+                }
+            }
+        }
+    }
+
     create = () => {
         Keyboard.dismiss()
         this.showAlert()
@@ -354,25 +354,26 @@ class Registrar extends Component {
                     password: this.state.userPwd,
                     gender: this.state.userGender,
                     country: this.state.userCountry,
+                    state: this.state.userState,
+                    city: this.state.userCity,
                     race: this.state.userRace,
                     birthdate: this.state.userDob,
                     picture: this.state.picture,
+                    identification_code: this.state.userIdCode,
+                    group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional
                 }
             })
         })
             .then((response) => {
-                console.log("Resposta", response);
-                console.log("Status da resposta", response.status);
-                // this.setState({ statusCode: response.status })
                 if (response.status === 200) {
                     this.loginAfterCreate();
                 } else {
                     this.hideAlert();
-
-                    //alert(response._bodyInit.errors);
-                    alert("Algo deu errado");
+                    return response.json()
                 }
+            }) .then((responseJson) => {
+                Alert.alert("O email " + responseJson.errors[0].detail.email,)
             })
     }
 

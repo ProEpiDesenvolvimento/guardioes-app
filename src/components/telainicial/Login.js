@@ -103,7 +103,10 @@ class Login extends Component {
                             title={translate("login.loginbutton")}
                             color="#348EAC"
                             //onPress={this._isconnected}
-                            onPress={() => this.login()}
+                            onPress={() => 
+                                this.login()
+                                //console.warn(this.state.userEmail + " + " + this.state.userPwd)
+                            }
                             />
                     </View>
                 </View>
@@ -125,6 +128,9 @@ class Login extends Component {
 
     //Login Function 
     login = () => {
+        if (this.state.userEmail == null || this.state.userPwd == null) {
+            Alert.alert('Os campos não podem ficar em branco')
+        } else {
         Keyboard.dismiss()
         this.showAlert()
         return fetch(`${API_URL}/user/login`, {
@@ -142,11 +148,11 @@ class Login extends Component {
             })
         })
             .then((response) => {
-                this.setState({ userToken: response.headers.map.authorization, statusCode: response.status, errorMessage: response._bodyText })
+                this.setState({ userToken: response.headers.map.authorization, statusCode: response.status})
                 if (this.state.statusCode == 200) {
                     return response.json()
                 } else {
-                    alert(this.state.errorMessage);
+                    Alert.alert("Email ou senha inválida.");
                     this.hideAlert();
                 }
             })
@@ -165,6 +171,7 @@ class Login extends Component {
                 this.hideAlert();
             })
     }
+}
 }
 
 const emojis = [
