@@ -164,7 +164,7 @@ class Registrar extends Component {
                         </View>
                     </View>
 
-                    {this.state.userCountry == "Brasil" ?
+                    {this.state.userCountry == "Brazil" ?
                         <View style={styles.viewRow}>
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Estado:</Text>
@@ -325,13 +325,17 @@ class Registrar extends Component {
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null || this.state.userCountry == null || this.state.userDob == null) {
             Alert.alert("Nome, Data de Nascimento, Nacionalidade, Email e Senha devem estar preenchidos")
         } else {
-            if (this.state.userCountry == "Brasil" && (this.state.userState == null || this.state.userCity == null)) {
+            if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
                 Alert.alert("Estado e Cidade devem estar preenchidos")
             } else {
                 if (this.state.userPwd.length < 8) {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
-                    this.avatarSelector();
+                    if(this.state.userGroup != null && this.state.userIdCode == null){
+                        Alert.alert("Adicione um Número de Identificação")
+                    } else {
+                        this.avatarSelector();
+                    }
                 }
             }
         }

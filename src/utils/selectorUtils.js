@@ -25,7 +25,7 @@ export const country = [
     { key: "Barbados", label: "Barbados" },
     { key: "Belize", label: "Belize" },
     { key: "Bolívia", label: "Bolívia" },
-    { key: "Brasil", label: "Brasil" },
+    { key: "Brazil", label: "Brasil" },
     { key: "Cabo Verde", label: "Cabo Verde" },
     { key: "Chile", label: "Chile" },
     { key: "Colômbia", label: "Colômbia" },
