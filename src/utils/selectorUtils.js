@@ -1,6 +1,12 @@
 import translate from '../../locales/i18n';
 import { API_URL } from '../constUtils';
 
+export const localSymptom = [
+    { key: 'Instituição de Ensino', label: 'Instituição de Ensino' },
+    { key: 'Supermercado ou Shopping', label: 'Supermercado ou Shopping' },
+    { key: 'Local de Trabalho ou Repartição Pública', label: 'Local de Trabalho ou Repartição Pública' },
+];
+
 export const gender = [
     { key: 'Masculino', label: translate("genderChoices.male") },
     { key: 'Feminino', label: translate("genderChoices.female") },

@@ -12,7 +12,7 @@ import * as Imagem from '../../imgs/imageConst';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import ModalSelector from 'react-native-modal-selector';
-import { country } from '../../utils/selectorUtils';
+import { country, localSymptom } from '../../utils/selectorUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -33,7 +33,8 @@ class BadReport extends Component {
         this.state = {
             cca2: 'BR',
             country: 'Brazil',
-            contactWithSymptom: false,
+            contactWithSymptomCheckbox: false,
+            contactWithSymptom: null,
             lookedForHospital: false,
             hadTraveled: false,
             symptoms: [],
@@ -320,9 +321,21 @@ class BadReport extends Component {
                         title={translate("badReport.checkboxes.first")}
                         textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
                         checkedColor={'#348EAC'}
-                        checked={this.state.contactWithSymptom}
-                        onPress={async () => await this.setState({ contactWithSymptom: !this.state.contactWithSymptom })}
+                        checked={this.state.contactWithSymptomCheckbox}
+                        onPress={async () => await this.setState({ contactWithSymptomCheckbox: !this.state.contactWithSymptomCheckbox })}
                     />
+                    {this.state.contactWithSymptomCheckbox ?
+                        <View style={styles.viewRowCenter}>
+                            <View><Text style={styles.commomTextView}>Selecione o local onde ocorreu o contato</Text></View>
+                            <ModalSelector
+                                initValueTextStyle={{ color: 'black' }}
+                                style={{ width: '80%', height: '70%', alignSelf: 'center' }}
+                                data={localSymptom}
+                                initValue={"Selecionar"}
+                                onChange={(option) => this.setState({ contactWithSymptom: option.key })}
+                            />
+                        </View>
+                        : null}
                     <CheckBox
                         title={translate("badReport.checkboxes.second")}
                         textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
@@ -330,7 +343,7 @@ class BadReport extends Component {
                         checked={this.state.lookedForHospital}
                         onPress={async () => await this.setState({ lookedForHospital: !this.state.lookedForHospital })}
                     />
-                    
+
                     <View style={styles.buttonView}>
                         <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() => {
                             if (this.state.date && this.state.symptoms !== null) {

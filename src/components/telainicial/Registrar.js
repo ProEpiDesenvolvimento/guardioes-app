@@ -53,6 +53,7 @@ class Registrar extends Component {
             userToken: null,
             userGroup: null,
             userIdCode: null,
+            riskGroup: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
             initValueCity: "Selecionar",
@@ -224,9 +225,18 @@ class Registrar extends Component {
                                 this.setState({ isProfessional: !this.state.isProfessional })
                             }}
                         />
+                        <CheckBox
+                            title={"Faz parte do Grupo de Risco?"}
+                            checked={this.state.riskGroup}
+                            containerStyle={styles.CheckBoxStyle}
+                            size={scale(16)}
+                            onPress={() => {
+                                this.setState({ riskGroup: !this.state.riskGroup })
+                            }}
+                        />
                     </View>
                     <CheckBox
-                        title={"É integrante de algum grupo ou instituição?"}
+                        title={"É integrante de alguma instituição?"}
                         containerStyle={styles.CheckBoxStyle}
                         size={scale(16)}
                         checked={this.state.groupCheckbox}
@@ -366,7 +376,8 @@ class Registrar extends Component {
                     picture: this.state.picture,
                     identification_code: this.state.userIdCode,
                     group_id: this.state.userGroup,
-                    is_professional: this.state.isProfessional
+                    is_professional: this.state.isProfessional,
+                    risk_group: this.state.riskGroup
                 }
             })
         })
