@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage, NetInfo, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage, NetInfo, Alert, Linking, Platform } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -346,13 +346,34 @@ class BadReport extends Component {
 
                     <View style={styles.buttonView}>
                         <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() => {
-                            if (this.state.date && this.state.symptoms !== null) {
-                                //this._isconnected();
-                                this.verifyLocalization();
+                            if (this.state.contactWithSymptom == null) {
+                                Alert.alert(
+                                    'Deseja Compartilhar o App?',
+                                    'Compartilhe o aplicativo com as pessoas que teve contato e nos ajude a ESCREVER ALGO',
+                                    [
+                                        {
+                                            text: 'Compartilhar e Reportar', onPress: () => {
+                                                if (Platform.OS === 'ios') {
+                                                    Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1`);
+                                                    this.verifyLocalization()
+                                                } else {
+                                                    Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt`);
+                                                    this.verifyLocalization()
+                                                }
+                                            }
+                                        },
+                                        { text: 'Somente Reportar', onPress: () => this.verifyLocalization() },
+                                    ],
+                                    { cancelable: false }
+                                )
                             }
-                            else {
-                                alert(translate("badReport.checkboxDateConfirmation"));
-                            }
+                            //if (this.state.date && this.state.symptoms !== null) {
+                            //this._isconnected();
+                            //    this.verifyLocalization();
+                            //}
+                            //else {
+                            //    alert(translate("badReport.checkboxDateConfirmation"));
+                            //}
                         }
                         } />
                     </View>
