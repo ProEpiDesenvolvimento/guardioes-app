@@ -198,6 +198,32 @@ class BadReport extends Component {
             })
     }
 
+    sheradReport = () => {
+        if (this.state.contactWithSymptom != null) {
+            Alert.alert(
+                'Deseja Compartilhar o App?',
+                'Compartilhe o aplicativo com as pessoas que teve contato e nos ajude a ESCREVER ALGO',
+                [
+                    {
+                        text: 'Compartilhar e Reportar', onPress: () => {
+                            if (Platform.OS === 'ios') {
+                                Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1`);
+                                this.verifyLocalization()
+                            } else {
+                                Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt`);
+                                this.verifyLocalization()
+                            }
+                        }
+                    },
+                    { text: 'Somente Reportar', onPress: () => this.verifyLocalization() },
+                ],
+                { cancelable: false }
+            )
+        } else {
+            this.verifyLocalization()
+        }
+    }
+
     render() {
         const { showAlert } = this.state;
         const symptomsData = this.state.dataSource;
@@ -346,34 +372,25 @@ class BadReport extends Component {
 
                     <View style={styles.buttonView}>
                         <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() => {
-                            if (this.state.contactWithSymptom == null) {
+                            let cont = 0
+                            this.state.symptoms.map(symptom => {
+                                if (symptom == "DificuldadeParaRespirar" || symptom == "Febre" || symptom == "Tosse") {
+                                    cont = cont + 1
+                                }
+                            })
+                            if (cont == 3) {
                                 Alert.alert(
-                                    'Deseja Compartilhar o App?',
-                                    'Compartilhe o aplicativo com as pessoas que teve contato e nos ajude a ESCREVER ALGO',
+                                    'Voce esta com sistomas da COVID-19',
+                                    'Procure orientacao bla bla bla',
                                     [
                                         {
-                                            text: 'Compartilhar e Reportar', onPress: () => {
-                                                if (Platform.OS === 'ios') {
-                                                    Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1`);
-                                                    this.verifyLocalization()
-                                                } else {
-                                                    Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt`);
-                                                    this.verifyLocalization()
-                                                }
-                                            }
+                                            text: 'OK', onPress: () => this.sheradReport()
                                         },
-                                        { text: 'Somente Reportar', onPress: () => this.verifyLocalization() },
-                                    ],
-                                    { cancelable: false }
+                                    ]
                                 )
+                            } else {
+                                this.sheradReport()
                             }
-                            //if (this.state.date && this.state.symptoms !== null) {
-                            //this._isconnected();
-                            //    this.verifyLocalization();
-                            //}
-                            //else {
-                            //    alert(translate("badReport.checkboxDateConfirmation"));
-                            //}
                         }
                         } />
                     </View>
