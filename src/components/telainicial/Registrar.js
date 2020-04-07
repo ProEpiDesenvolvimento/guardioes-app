@@ -27,7 +27,7 @@ let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
 // let today = y + "-" + m + "-" + d;
-let minDate = (y - 13) + "-" + m + "-" + d;
+let minDate = d + "-" + m + "-" + (y - 13) ;
 // let tomorrow = y + "-" + m + "-" + (d + 1)
 
 class Registrar extends Component {
@@ -124,10 +124,11 @@ class Registrar extends Component {
                                 showIcon={false}
                                 date={this.state.userDob}
                                 androidMode='spinner'
+                                locale={'pt-BR'}
                                 mode="date"
                                 placeholder={translate("birthDetails.format")}
-                                format="YYYY-MM-DD"
-                                minDate="1918-01-01"
+                                format="DD-MM-YYYY"
+                                minDate="01-01-1918"
                                 maxDate={minDate}
                                 confirmBtnText={translate("birthDetails.confirmButton")}
                                 cancelBtnText={translate("birthDetails.cancelButton")}
@@ -333,7 +334,7 @@ class Registrar extends Component {
 
     verifyInfos = async () => {
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null || this.state.userCountry == null || this.state.userDob == null) {
-            Alert.alert("Nome, Data de Nascimento, Nacionalidade, Email e Senha devem estar preenchidos")
+            Alert.alert("Preencha os Campos" , "Nome\nData de Nascimento\nNacionalidade\nEmail\nSenha")
         } else {
             if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
                 Alert.alert("Estado e Cidade devem estar preenchidos")

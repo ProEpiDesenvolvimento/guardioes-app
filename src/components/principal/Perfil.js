@@ -15,7 +15,7 @@ let d = data.getDate();
 let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
-let today = y + "-" + m + "-" + d;
+let today = d + "-" + m + "-" + y;
 
 class Perfil extends Component {
   static navigationOptions = {
@@ -276,10 +276,11 @@ class Perfil extends Component {
                   showIcon={false}
                   date={this.state.householdDob}
                   androidMode='spinner'
+                  locale={'pt-BR'}
                   mode="date"
                   placeholder={translate("birthDetails.format")}
-                  format="YYYY-MM-DD"
-                  minDate="1918-01-01"
+                  format="DD-MM-YYYY"
+                  minDate="01-01-1918"
                   maxDate={today}
                   confirmBtnText={translate("birthDetails.confirmButton")}
                   cancelBtnText={translate("birthDetails.cancelButton")}
@@ -333,6 +334,7 @@ class Perfil extends Component {
                   this.avatarHouseholdSelector();
                   this.setModalVisible(!this.state.modalVisibleHousehold);
                 }} />
+                <View style={{margin: 5}}></View>
                 <Button
                 title="Cancelar"
                 color="#348EAC"
@@ -487,7 +489,8 @@ const styles = StyleSheet.create({
       height: 3
     },
     shadowRadius: 5,
-    shadowOpacity: 1.0
+    shadowOpacity: 1.0,
+    elevation: 15
   },
   viewCommom: {
     width: '100%',
