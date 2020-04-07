@@ -4,7 +4,7 @@ import MapView, { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
-import poligonoBR from '../../utils/polygonBR.json'
+import poligonoBR from '../../utils/DF.json'
 
 class Maps extends Component {
     static navigationOptions = {
@@ -54,8 +54,8 @@ class Maps extends Component {
                     region: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        latitudeDelta: 0.001,
-                        longitudeDelta: 0.001
+                        latitudeDelta: 0.020,
+                        longitudeDelta: 0.020
                     },
                     error: null,
                 });
@@ -63,57 +63,51 @@ class Maps extends Component {
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 50000 },
         );
-    }
-
-    generatePolygon() {
-        poligonoBR.features.map(municipio => {
-            const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
-                let coords = {
-                    latitude: coordsArr[1],
-                    longitude: coordsArr[0],
-                }
-                return coords
-            });
-            console.warn(MuniPoly)
-            return (
-                <Polygon
-                    coordinates={MuniPoly}
-                />
-            )
-        })
-    }
+    }ß
 
     insideSym(point, vs) {
         // ray-casting algorithm based on
         // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    
+
         let x = point[0]
         let y = point[1];
-    
+
         let inside = false;
         for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
             let xi = vs[i][0], yi = vs[i][1];
             let xj = vs[j][0], yj = vs[j][1];
-    
+
             let intersect = ((yi > y) != (yj > y))
                 && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
             if (intersect) inside = !inside;
         }
-    
+
         return inside;
     };
 
-    PolygonColor(Ncase) {
-        if(Ncase > 0){
-            fillColor = "rgba(255, 0, 0, 0.5);"
-        } else {
-            fillColor = "rgba(255, 0, 0, 0.0);"
+    PolygonColor(numCase, maxCase) {
+        let colorR = 0
+        let colorG = 0
+
+        if (numCase == 0) {
+            fillColor = `rgba(0, 0, 0, 0.0)`
+        }
+        else {
+            if (numCase <= (maxCase / 2)) {
+                colorR = ((255 * numCase) / (maxCase / 2));
+                fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.7)`
+            } else {
+                colorG = 255 - ((255 * numCase) / maxCase);
+                fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.7)`
+            }
         }
         return fillColor
     }
 
     render() {
         let markers = this.state.dataSource;
+        let maxCase = 0;
+        let total = 0;
         return (
             <View style={styles.container}>
                 <MapView
@@ -134,20 +128,27 @@ class Maps extends Component {
                         });
                         let contador = 0
                         markers.map(marker => {
-                            if (this.insideSym([ marker.latitude, marker.longitude ], CoordsOnly) == true){
+                            if (this.insideSym([marker.latitude, marker.longitude], CoordsOnly) == true) {
                                 contador = contador + 1
                             }
                         })
+                        if (maxCase < contador) {
+                            maxCase = contador;
+                        }
+
+                        total = total + contador;
+
                         return (
                             <Polygon
                                 coordinates={MuniPoly}
-                                strokeColor = "rgba(0, 81, 0, 0.0);"
-                                fillColor = {this.PolygonColor(contador)}
-                                onPress = {() => console.warn("Cidade: " + municipio.properties.name + " N Casos: " + contador)}
+                                strokeColor="rgba(0, 81, 0, 0.0);"
+                                fillColor={this.PolygonColor(contador, maxCase)}
+                                onPress={() => { console.warn(this.PolygonColor(contador, maxCase)), console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + contador + " Maximo: " + maxCase) }}
+                            //onPress={() => }
                             />
                         )
                     })}
-                    {markers.map((marker, index) => {
+                    {/*markers.map((marker, index) => {
                         let coordinates = { latitude: marker.latitude, longitude: marker.longitude }
                         if (marker.symptom && marker.symptom.length) {
                             return (
@@ -169,7 +170,7 @@ class Maps extends Component {
                             />
                         )
                     }
-                    )}
+                )*/}
                 </MapView>
             </View>
         );
