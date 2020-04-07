@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, AsyncStorage } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { View, StyleSheet, AsyncStorage, Button } from 'react-native';
+import MapView, { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
+import poligonoBR from '../../utils/polygonBR.json'
 
 class Maps extends Component {
     static navigationOptions = {
@@ -64,6 +65,53 @@ class Maps extends Component {
         );
     }
 
+    generatePolygon() {
+        poligonoBR.features.map(municipio => {
+            const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
+                let coords = {
+                    latitude: coordsArr[1],
+                    longitude: coordsArr[0],
+                }
+                return coords
+            });
+            console.warn(MuniPoly)
+            return (
+                <Polygon
+                    coordinates={MuniPoly}
+                />
+            )
+        })
+    }
+
+    insideSym(point, vs) {
+        // ray-casting algorithm based on
+        // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+    
+        let x = point[0]
+        let y = point[1];
+    
+        let inside = false;
+        for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+            let xi = vs[i][0], yi = vs[i][1];
+            let xj = vs[j][0], yj = vs[j][1];
+    
+            let intersect = ((yi > y) != (yj > y))
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+            if (intersect) inside = !inside;
+        }
+    
+        return inside;
+    };
+
+    PolygonColor(Ncase) {
+        if(Ncase > 0){
+            fillColor = "rgba(255, 0, 0, 0.5);"
+        } else {
+            fillColor = "rgba(255, 0, 0, 0.0);"
+        }
+        return fillColor
+    }
+
     render() {
         let markers = this.state.dataSource;
         return (
@@ -72,6 +120,33 @@ class Maps extends Component {
                     initialRegion={this.state.region}
                     style={styles.map}
                 >
+                    {poligonoBR.features.map(municipio => {
+                        const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
+                            let coords = {
+                                latitude: coordsArr[1],
+                                longitude: coordsArr[0],
+                            }
+                            return coords
+                        });
+                        const CoordsOnly = municipio.geometry.coordinates[0].map(coordsArr => {
+                            let coords = [coordsArr[1], coordsArr[0]]
+                            return coords
+                        });
+                        let contador = 0
+                        markers.map(marker => {
+                            if (this.insideSym([ marker.latitude, marker.longitude ], CoordsOnly) == true){
+                                contador = contador + 1
+                            }
+                        })
+                        return (
+                            <Polygon
+                                coordinates={MuniPoly}
+                                strokeColor = "rgba(0, 81, 0, 0.0);"
+                                fillColor = {this.PolygonColor(contador)}
+                                onPress = {() => console.warn("Cidade: " + municipio.properties.name + " N Casos: " + contador)}
+                            />
+                        )
+                    })}
                     {markers.map((marker, index) => {
                         let coordinates = { latitude: marker.latitude, longitude: marker.longitude }
                         if (marker.symptom && marker.symptom.length) {
