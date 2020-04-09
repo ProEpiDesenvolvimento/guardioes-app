@@ -64,7 +64,6 @@ class Maps extends Component {
                     if(data.symptom.includes("Febre") && (data.symptom.includes("DordeGarganta") || data.symptom.includes("DificuldadeParaRespirar") || data.symptom.includes("Tosse") || data.symptom.includes("Cansaco") || data.symptom.includes("Mal-estar"))){
                         dataFilterd.push(data)
                         covidCasesInState = covidCasesInState + 1
-                        console.warn(dataFilterd)
                     }
                 }
             }
@@ -126,10 +125,10 @@ class Maps extends Component {
         else {
             if (numCase <= (maxCase / 2)) {
                 colorR = ((255 * numCase) / (maxCase / 2));
-                fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.7)`
+                fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.5)`
             } else {
                 colorG = 255 - ((255 * numCase) / maxCase);
-                fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.7)`
+                fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.5)`
             }
         }
         return fillColor
@@ -138,10 +137,6 @@ class Maps extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View><Button
-                    title="TESTE"
-                    onPress={() => this.getSurveyPerState()}
-                /></View>
                 <MapView
                     initialRegion={this.state.region}
                     style={styles.map}
@@ -165,7 +160,7 @@ class Maps extends Component {
                         //Verifica os casos de COVID dentro do poligono
                         let covidCasesInPolygon = 0
                         this.state.dataFilterd.map(survey => {
-                            if (this.CoordInsidePolygon([survey.latitude, survey.longitude], CoordsOnly) == true) {
+                            if (this.CoordInsidePolygon([survey.latitude, survey.longitude], CoordsOnly)) {
                                 covidCasesInPolygon = covidCasesInPolygon + 1
                             }
                         })
@@ -173,9 +168,10 @@ class Maps extends Component {
                         //Cria o Poligono
                         return (
                             <Polygon
+                                tappable={true}
                                 coordinates={MuniPoly}
                                 strokeColor="rgba(0, 81, 0, 0.0);"
-                                fillColor={this.PolygonColor(covidCasesInPolygon, this.state.badReportsInState)}
+                                fillColor={this.PolygonColor(covidCasesInPolygon, this.state.covidCasesInState)}
                                 onPress={() => { console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState) }}
                             />
                         )
