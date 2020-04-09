@@ -23,6 +23,8 @@ class Maps extends Component {
             userLongitude: 0,
             isLoading: true,
             dataSource: [],
+            dataFilterd: [],
+            polygonState: "Federal District"
         }
     }
 
@@ -44,7 +46,36 @@ class Maps extends Component {
                 this.setState({
                     dataSource: responseJson.surveys
                 })
+                this.getSurveyPerState()
             })
+    }
+
+    getSurveyPerState = async () => {
+        let dataFilterd = []
+        let reportsInState = 0
+        let badReportsInState = 0
+        let covidCasesInState = 0
+
+        this.state.dataSource.map(data => {
+            if (data.state == this.state.polygonState) {
+                reportsInState = reportsInState + 1
+                if (data.symptom && data.symptom.length) {
+                    badReportsInState = badReportsInState + 1
+                    if(data.symptom.includes("Febre") && (data.symptom.includes("DordeGarganta") || data.symptom.includes("DificuldadeParaRespirar") || data.symptom.includes("Tosse") || data.symptom.includes("Cansaco") || data.symptom.includes("Mal-estar"))){
+                        dataFilterd.push(data)
+                        covidCasesInState = covidCasesInState + 1
+                        console.warn(dataFilterd)
+                    }
+                }
+            }
+        })
+
+        this.setState({
+            dataFilterd: dataFilterd,
+            reportsInState: reportsInState,
+            badReportsInState: badReportsInState,
+            covidCasesInState: covidCasesInState,
+        })
     }
 
     getLocation() {
@@ -63,9 +94,9 @@ class Maps extends Component {
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 50000 },
         );
-    }ß
+    }
 
-    insideSym(point, vs) {
+    CoordInsidePolygon(point, vs) {
         // ray-casting algorithm based on
         // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 
@@ -105,16 +136,18 @@ class Maps extends Component {
     }
 
     render() {
-        let markers = this.state.dataSource;
-        let maxCase = 0;
-        let total = 0;
         return (
             <View style={styles.container}>
+                <View><Button
+                    title="TESTE"
+                    onPress={() => this.getSurveyPerState()}
+                /></View>
                 <MapView
                     initialRegion={this.state.region}
                     style={styles.map}
                 >
                     {poligonoBR.features.map(municipio => {
+                        //Lista os limites do poligono para formação do poligono
                         const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
                             let coords = {
                                 latitude: coordsArr[1],
@@ -122,29 +155,28 @@ class Maps extends Component {
                             }
                             return coords
                         });
+
+                        //Lista os limites do poligono para verificar se um ponto esta inserido nele
                         const CoordsOnly = municipio.geometry.coordinates[0].map(coordsArr => {
                             let coords = [coordsArr[1], coordsArr[0]]
                             return coords
                         });
-                        let contador = 0
-                        markers.map(marker => {
-                            if (this.insideSym([marker.latitude, marker.longitude], CoordsOnly) == true) {
-                                contador = contador + 1
+
+                        //Verifica os casos de COVID dentro do poligono
+                        let covidCasesInPolygon = 0
+                        this.state.dataFilterd.map(survey => {
+                            if (this.CoordInsidePolygon([survey.latitude, survey.longitude], CoordsOnly) == true) {
+                                covidCasesInPolygon = covidCasesInPolygon + 1
                             }
                         })
-                        if (maxCase < contador) {
-                            maxCase = contador;
-                        }
 
-                        total = total + contador;
-
+                        //Cria o Poligono
                         return (
                             <Polygon
                                 coordinates={MuniPoly}
                                 strokeColor="rgba(0, 81, 0, 0.0);"
-                                fillColor={this.PolygonColor(contador, maxCase)}
-                                onPress={() => { console.warn(this.PolygonColor(contador, maxCase)), console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + contador + " Maximo: " + maxCase) }}
-                            //onPress={() => }
+                                fillColor={this.PolygonColor(covidCasesInPolygon, this.state.badReportsInState)}
+                                onPress={() => { console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState) }}
                             />
                         )
                     })}

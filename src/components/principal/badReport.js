@@ -19,7 +19,7 @@ let d = data.getDate();
 let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
-let today = y + "-" + m + "-" + d;
+let today = d + "-" + m + "-" + y;
 
 class BadReport extends Component {
     static navigationOptions = {
@@ -198,6 +198,57 @@ class BadReport extends Component {
             })
     }
 
+    verifyCOVID = () => {
+        let cont_1 = 0
+        let cont_2 = 0
+        this.state.symptoms.map(symptom => {
+            if (symptom == "Febre") {
+                this.state.symptoms.map(symptom => {
+                    if (symptom == "DordeGarganta" || symptom == "DificuldadeParaRespirar" || symptom == "Tosse") {
+                        cont_1 = cont_1 + 1 
+                    }
+                    if (symptom == "DordeGarganta" || symptom == "DificuldadeParaRespirar" || symptom == "Tosse" || symptom == "Cansaco" || symptom == "Mal-estar"){
+                        cont_2 = cont_2 + 1
+                    }
+                })
+            }
+        })
+
+        //Condição para o Cenario 1. Caso seja falsa retorna cenario 2
+        if (cont_1 >= 1 && cont_2 < 2){
+            Alert.alert(
+                'Mantenha a atenção!',
+                'Baseado nos seus sintomas, você provavelmente não tem COVID-19 (novo coronavírus). A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.',
+                [
+                    { text: 'Ok', onPress: () => this.verifyLocalization() },
+                ],
+                { cancelable: false }
+            )
+            //console.warn("1 - VOCE ESTA NO PRIMEIRO NIVEL  1 DE COVID")
+        } else if (cont_2 >= 2){
+            Alert.alert(
+                'Atenção: Procure avaliação médica!',
+                'Você provavelmente se enquadra na definição de caso suspeito de COVID-19 (novo coronavírus). É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.',
+                [
+                    { text: 'Ok', onPress: () => this.verifyLocalization() },
+                ],
+                { cancelable: false }
+            )
+            //console.warn("2 - VOCE ESTA NO PRIMEIRO NIVEL 2 DE COVID")
+        } else if (cont_1 <= 1 && cont_2 <= 2){
+            Alert.alert(
+                'Sem COVID-19, mas com cuidado',
+                'Obrigado por reportar! Você provavelmente não tem COVID-19 (novo coronavírus), mas é importante continuar usando o app para monitorar seu estado de saúde.',
+                [
+                    { text: 'Ok', onPress: () => this.verifyLocalization() },
+                ],
+                { cancelable: false }
+            )
+            //console.warn("Obrigado Por Reportar")
+        }
+    }
+
+
     sheradReport = () => {
         if (this.state.contactWithSymptom != null) {
             Alert.alert(
@@ -272,10 +323,12 @@ class BadReport extends Component {
                     <DatePicker
                         style={{ width: '94%', marginLeft: '3%', backgroundColor: '#a9cedb', borderRadius: 5 }}
                         date={this.state.today_date}
+                        androidMode='spinner'
+                        locale={'pt-BR'}
                         mode="date"
                         placeholder={translate("badReport.datePlaceHolder")}
-                        format="YYYY-MM-DD"
-                        minDate="2018-01-01"
+                        format="DD-MM-YYYY"
+                        minDate="01-01-2018"
                         maxDate={today}
                         confirmBtnText={translate("birthDetails.confirmButton")}
                         cancelBtnText={translate("birthDetails.cancelButton")}
@@ -371,27 +424,8 @@ class BadReport extends Component {
                     />
 
                     <View style={styles.buttonView}>
-                        <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() => {
-                            let cont = 0
-                            this.state.symptoms.map(symptom => {
-                                if (symptom == "DificuldadeParaRespirar" || symptom == "Febre" || symptom == "Tosse") {
-                                    cont = cont + 1
-                                }
-                            })
-                            if (cont == 3) {
-                                Alert.alert(
-                                    'Voce esta com sistomas da COVID-19',
-                                    'Procure orientacao bla bla bla',
-                                    [
-                                        {
-                                            text: 'OK', onPress: () => this.sheradReport()
-                                        },
-                                    ]
-                                )
-                            } else {
-                                this.sheradReport()
-                            }
-                        }
+                        <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() =>
+                            this.verifyCOVID()
                         } />
                     </View>
                 </ScrollView>
