@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, AsyncStorage, Button } from 'react-native';
+import { View, StyleSheet, AsyncStorage, Button, Text, Alert } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
@@ -19,8 +19,6 @@ class Maps extends Component {
             this.getLocation();
         });
         this.state = {
-            userLatitude: 0,
-            userLongitude: 0,
             isLoading: true,
             dataSource: [],
             dataFilterd: [],
@@ -61,7 +59,7 @@ class Maps extends Component {
                 reportsInState = reportsInState + 1
                 if (data.symptom && data.symptom.length) {
                     badReportsInState = badReportsInState + 1
-                    if(data.symptom.includes("Febre") && (data.symptom.includes("DordeGarganta") || data.symptom.includes("DificuldadeParaRespirar") || data.symptom.includes("Tosse") || data.symptom.includes("Cansaco") || data.symptom.includes("Mal-estar"))){
+                    if (data.symptom.includes("Febre") && (data.symptom.includes("DordeGarganta") || data.symptom.includes("DificuldadeParaRespirar") || data.symptom.includes("Tosse") || data.symptom.includes("Cansaco") || data.symptom.includes("Mal-estar"))) {
                         dataFilterd.push(data)
                         covidCasesInState = covidCasesInState + 1
                     }
@@ -137,10 +135,7 @@ class Maps extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <MapView
-                    initialRegion={this.state.region}
-                    style={styles.map}
-                >
+                <MapView initialRegion={this.state.region} style={styles.map}>
                     {poligonoBR.features.map(municipio => {
                         //Lista os limites do poligono para formação do poligono
                         const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
@@ -150,7 +145,7 @@ class Maps extends Component {
                             }
                             return coords
                         });
-
+                        //console.warn("teste")
                         //Lista os limites do poligono para verificar se um ponto esta inserido nele
                         const CoordsOnly = municipio.geometry.coordinates[0].map(coordsArr => {
                             let coords = [coordsArr[1], coordsArr[0]]
@@ -164,7 +159,7 @@ class Maps extends Component {
                                 covidCasesInPolygon = covidCasesInPolygon + 1
                             }
                         })
-
+                        
                         //Cria o Poligono
                         return (
                             <Polygon
@@ -172,7 +167,10 @@ class Maps extends Component {
                                 coordinates={MuniPoly}
                                 strokeColor="rgba(0, 81, 0, 0.0);"
                                 fillColor={this.PolygonColor(covidCasesInPolygon, this.state.covidCasesInState)}
-                                onPress={() => { console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState) }}
+                                //console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState)
+                                onPress={() => {
+                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `Numero de Reports no Estado: ${this.state.covidCasesInState}\nNumero de Report COVID: ${covidCasesInPolygon}`)
+                                }}
                             />
                         )
                     })}
