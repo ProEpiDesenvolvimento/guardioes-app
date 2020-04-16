@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage, StatusBar, Alert } from 'react-native';
-import { imagemLogo, imagemLogoBR } from '../../imgs/imageConst';
+import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale } from '../scallingUtils';
@@ -58,6 +58,10 @@ class TelaInicial extends Component {
                 {statusColor}
                 <View style={styles.viewImage}>
                     {imageType}
+                    <View style={styles.viewLogos}>
+                        <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoProEpi} /></View>
+                        <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoUnB} /></View>
+                    </View>
                 </View>
                 <View style={styles.viewButton}>
                     <View style={styles.viewChildRegistar}>
@@ -83,15 +87,16 @@ const styles = StyleSheet.create({
     },
     viewImage: {
         flex: 1,
-        width: scale(350),
-        //height: scale(10),
         alignItems: 'center',
+        marginTop: scale(100),
+        marginBottom: scale(120),
+        //borderWidth: 1,
+        //borderColor: "yellow",
     },
     imageLogo: {
         flex: 1,
         width: '85%',
-        resizeMode: "contain",
-        marginTop: -60
+        resizeMode: "contain"
     },
     viewButton: {
         alignSelf: 'center',
@@ -126,7 +131,26 @@ const styles = StyleSheet.create({
         fontSize: 17,
         alignSelf: 'center',
         fontWeight: 'bold'
-    }
+    },
+    viewLogos: {
+        flexDirection: "row",
+        height: scale(100),
+        width: "80%",
+        //borderColor: "red",
+        //borderWidth: 1,
+    },
+    viewHalfLogos: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: "50%",
+        height: "100%",
+        //borderColor: "green",
+        //borderWidth: 1,
+    },
+    imageHalfLogo: {
+        width: scale(90),
+        resizeMode: 'contain',
+    },
 });
 
 

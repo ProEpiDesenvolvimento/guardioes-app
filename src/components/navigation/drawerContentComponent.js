@@ -21,11 +21,17 @@ export default class drawerContentComponents extends Component {
         }
     }
 
+    
+
     //Funcao responsavel por pegar as variaveis do Facebook e salva-las em variaveis de estado 
     getInfo = async () => {
         let userName = await AsyncStorage.getItem('userName');
         let userAvatar = await AsyncStorage.getItem('userAvatar');
         this.setState({ userName, userAvatar })
+    }
+
+    componentDidMount (){
+        this.getInfo()
     }
 
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
@@ -45,7 +51,7 @@ export default class drawerContentComponents extends Component {
     render() {
         const { navigate } = this.props.navigation;
 
-        this.getInfo();
+        //this.getInfo();
 
         return (
             <View style={styles.container}>

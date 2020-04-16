@@ -3,6 +3,8 @@ export const imagemLogo = require('./logos/logo_branco_ES.png');
 export const imagemLogoC = require('./logos/logo_azul_ES.png');
 export const imagemLogoBR = require('./logos/logo_branco_BR.png');
 export const imagemLogoCBR = require('./logos/logo_azul_BR.png');
+export const logoProEpi = require('./logos/logo_proepi.png');
+export const logoUnB = require('./logos/logo_unb.png');
 
 //Diversos
 export const imgTermos = require('./diversos/termos.png');

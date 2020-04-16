@@ -190,7 +190,7 @@ class BadReport extends Component {
                 if (responseJson !== null) {
                     this.setState({ showProgressBar: false });
                     console.warn("ENVIOU")
-                    this.props.navigation.navigate('Home')
+                    this.props.navigation.navigate('Maps')
                 } else {
                     console.warn("NÂO ENVIOU")
                     this.setState({ showProgressBar: false });
