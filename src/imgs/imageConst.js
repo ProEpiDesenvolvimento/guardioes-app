@@ -5,6 +5,8 @@ export const imagemLogoBR = require('./logos/logo_branco_BR.png');
 export const imagemLogoCBR = require('./logos/logo_azul_BR.png');
 export const logoProEpi = require('./logos/logo_proepi.png');
 export const logoUnB = require('./logos/logo_unb.png');
+export const logoAzProEpi = require('./logos/logo_proepi_azul.png');
+export const logoAzUnB = require('./logos/logo_unb_azul.png');
 
 //Diversos
 export const imgTermos = require('./diversos/termos.png');

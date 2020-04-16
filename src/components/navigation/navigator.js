@@ -19,6 +19,7 @@ import Ajuda from '../principal/Ajuda';
 import { Tutorial } from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
+import Sobre from '../principal/Sobre';
 
 FontAwesome.loadFont();
 
@@ -89,6 +90,7 @@ export const Stack = createStackNavigator({
     TermosPoliticas,
     Rumor,
     Tutorial,
+    Sobre,
 },
     {
         initialRouteName: 'BottomMenu',

@@ -21,7 +21,7 @@ export default class drawerContentComponents extends Component {
         }
     }
 
-    
+
 
     //Funcao responsavel por pegar as variaveis do Facebook e salva-las em variaveis de estado 
     getInfo = async () => {
@@ -30,7 +30,7 @@ export default class drawerContentComponents extends Component {
         this.setState({ userName, userAvatar })
     }
 
-    componentDidMount (){
+    componentDidMount() {
         this.getInfo()
     }
 
@@ -114,6 +114,13 @@ export default class drawerContentComponents extends Component {
                     >
                         <Feather name='help-circle' size={verticalScale(25)} style={styles.iconStyle} />
                         <Text style={styles.drawerItemsTxt}>{translate("drawer.toHelp")}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.itemsContainer}
+                        onPress={() => navigate('Sobre')}
+                    >
+                        <Entypo name='info-with-circle' size={verticalScale(25)} color='gray' style={[styles.iconStyle, { paddingRight: '16%' }]} />
+                        <Text style={styles.drawerItemsTxt}>{translate("drawer.toAbout")}</Text>
                     </TouchableOpacity>
 
                     <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 85 }]}>

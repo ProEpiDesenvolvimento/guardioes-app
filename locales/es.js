@@ -251,12 +251,12 @@ export default {
         "mensagemBtnUnb": '¿Desea ser redirigido al sitio web de UnB?',
         "linkBtnUnb": 'https://www.unb.br',
 
-        "tituloBtnCenteias": 'Universidade de Brasilia - CENTEIAS',
-        "mensagemBtnCenteias": '¿Desea ser redirigido a la página web del Centeno?',
-        "linkBtnCenteias": 'https://fs.unb.br/centeias/',
+        "tituloBtnProEpi": 'ProEpi - Associação Brasileira de Profissionais de Epidemiologia de Campo',
+        "mensagemBtnProEpi": '¿Desea ser redirigido a la página web del ProEpi?',
+        "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nSobre la Aplicación Guardianes de la Salud\n',
-        "textoSobre": 'La aplicación "Guardianes de la Salud" fue desarrollada para celulares y tablets con sistema operativo Android, en un trabajo colaborativo del Ministerio de Salud de Brasil y apoyo de la Fundación Skoll para los Juegos Olímpicos. Una nueva versión está siendo desarrollada por la Universidad de Brasilia y por la ProEpi. El Instituto Nacional de Salud está integrado a esa cooperación para que la herramienta también pueda ser usada en Colombia como estrategia para fortalecer el monitoreo de eventos de interés en salud pública y la detección de brotes relacionados con eventos masivos.'
+        "textoSobre": 'La historia de la aplicación Guardianes de la Salud comenzó en 2014, cuando el Ministerio de Salud tomó la iniciativa de promover la vigilancia participativa de los eventos de salud durante la Copa Mundial de la FIFA 2014.\n\nDesde entonces, en diferentes versiones y con el apoyo de diferentes socios, la aplicación ya se ha utilizado durante otros eventos, como los Juegos Olímpicos de Río 2016.\n\nLa aplicación Guardians of Health tiene el gran objetivo de fortalecer la capacidad de detectar brotes y emergencias de salud pública y, en esta etapa, El objetivo específico de apoyar la respuesta a COVID-19.\n\nEsta versión de la aplicación es una asociación de ProEpi (Asociación Brasileña de Profesionales de Epidemiología de Campo) con la Universidad de Brasilia.'
     },
     "useTerms": {
         "title": "Condiciones y Políticas",
