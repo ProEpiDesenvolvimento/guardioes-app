@@ -131,8 +131,8 @@ android {
         applicationId "com.guardioesapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 17
-        versionName "2.0.4"
+        versionCode 18
+        versionName "2.0.5"
     }
     splits {
         abi {

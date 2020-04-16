@@ -80,7 +80,7 @@ class Conselho extends Component {
                                 <Text style={styles.modalTextTitle}>X</Text>
                             </TouchableOpacity>
                         </View>
-                        <ScrollView>
+                        <ScrollView> 
                             <Text style={styles.modalBodyText}>{this.state.contentBody}</Text>
                         </ScrollView>
                     </View>
@@ -143,10 +143,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         margin: 7,
-        elevation: 5,
         backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 5
+        borderRadius: 5,
+        shadowColor: 'gray',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowRadius: 2,
+        shadowOpacity: 1.0,
+        elevation: 5
     },
     textSelector: {
         fontFamily: 'roboto',
@@ -157,11 +164,10 @@ const styles = StyleSheet.create({
         color: '#348EAC'
     },
     modalView: {
+        flex: 1,
         alignSelf: 'center',
         width: '93%',
-        //height: '88%',
-        marginTop: '6%',
-        marginBottom: '10%',
+        marginVertical: "10%",
         paddingTop: '5%',
         paddingHorizontal: '5%',
         borderRadius: 15,
@@ -187,14 +193,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 3,
         marginLeft: 5,
-        color: '#348EAC'
+        color: '#348EAC',
     },
     modalBodyText: {
+        height: "100%",
         textAlign: 'justify',
         fontSize: 16,
-        marginTop: 7,
-        marginLeft: 5,
-        color: '#348EAC',
+        //marginTop: 7,
+        //marginLeft: 5,
+        color: '#348EAC'
     }
 });
 

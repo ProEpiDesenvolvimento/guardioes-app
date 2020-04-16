@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: scale(25),
+        marginBottom: scale(20)
     },
     text: {
         fontFamily: 'roboto',
