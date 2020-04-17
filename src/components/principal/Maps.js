@@ -14,7 +14,7 @@ class Maps extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            this.getInfos();
+            //this.getInfos();
             this.getLocation();
         });
         this.state = {
@@ -23,6 +23,10 @@ class Maps extends Component {
             isLoading: true,
             dataSource: [],
         }
+    }
+
+    componentDidMount (){
+        this.getInfos()
     }
 
     getInfos = async () => {

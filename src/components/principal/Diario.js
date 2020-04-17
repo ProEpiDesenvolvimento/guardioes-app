@@ -22,7 +22,7 @@ class Diario extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            this.getInfos();
+            //this.getInfos();
         });
         this.state = {
             data: [],
@@ -32,6 +32,10 @@ class Diario extends Component {
             BadPlot: [{ y: 0, x: 0, marked: "" }],
             NoPlot: [{ y: 0, x: 0, marked: "" }]
         };
+    }
+    
+    componentDidMount () {
+        this.getInfos();
     }
 
 

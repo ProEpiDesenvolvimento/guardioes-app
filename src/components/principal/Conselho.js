@@ -13,14 +13,18 @@ class Conselho extends Component {
     constructor(props) {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            this.getInfos();
+            //console.log(payload)
+            //this.getInfos();
         });
         this.state = {
             modalVisible: false,
             isLoading: true,
             contentData: null
         }
+    }
+
+    componentDidMount (){
+        this.getInfos()
     }
 
     setModalVisible(visible) {
