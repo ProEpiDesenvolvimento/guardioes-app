@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Modal, Dimensions, TextInput,
 import MapView, { Marker } from 'react-native-maps';
 import Feather from 'react-native-vector-icons/Feather';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';

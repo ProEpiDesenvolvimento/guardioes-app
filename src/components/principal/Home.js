@@ -5,7 +5,7 @@ import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';

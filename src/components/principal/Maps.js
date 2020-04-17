@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, AsyncStorage } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 

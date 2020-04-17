@@ -14,7 +14,7 @@ import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household } from '../../utils/selectorUtils';
 

@@ -6,7 +6,7 @@ import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import { Dimensions } from 'react-native';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 
 let data = new Date();
 let d = data.getDate();

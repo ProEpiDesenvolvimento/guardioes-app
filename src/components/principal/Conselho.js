@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, AsyncStorage, Modal } from 'react-native';
-import { Redirect } from '../../constUtils';
+import { Redirect } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import { scale } from '../../utils/scallingUtils';
 
 
