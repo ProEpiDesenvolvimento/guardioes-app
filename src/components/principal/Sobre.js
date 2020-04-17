@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { logoAzUnB, logoAzProEpi } from '../../imgs/imageConst';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import { Redirect, textos } from '../../constUtils';
 import translate from "../../../locales/i18n";
 

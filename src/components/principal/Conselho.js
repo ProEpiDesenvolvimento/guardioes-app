@@ -3,7 +3,7 @@ import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View
 import { Redirect } from '../../constUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 
 
 class Conselho extends Component {

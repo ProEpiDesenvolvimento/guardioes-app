@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, As
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../constUtils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';

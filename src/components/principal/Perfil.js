@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, AsyncStorage, ScrollView, TouchableOpacity, Ale
 import * as Imagem from '../../imgs/imageConst';
 import { Avatar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';

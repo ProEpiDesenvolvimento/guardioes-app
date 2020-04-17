@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { moderateScale, verticalScale, scale } from '../scallingUtils';
+import { moderateScale, verticalScale, scale } from '../../utils/scallingUtils';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';

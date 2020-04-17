@@ -4,7 +4,7 @@ import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';

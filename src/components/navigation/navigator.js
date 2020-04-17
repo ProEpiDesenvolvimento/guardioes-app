@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';

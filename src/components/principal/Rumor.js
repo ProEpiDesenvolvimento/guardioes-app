@@ -7,7 +7,7 @@ import { API_URL } from '../../constUtils';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import Geolocation from 'react-native-geolocation-service';
 
 EvilIcons.loadFont();

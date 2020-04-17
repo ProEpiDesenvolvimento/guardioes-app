@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage, StatusBa
 import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 
 const Redirect = (titulo, message, navigation) => {
     Alert.alert(
