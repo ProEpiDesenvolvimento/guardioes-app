@@ -6,10 +6,10 @@ import {
     TextInput,
     Button,
     Picker,
-    AsyncStorage,
     NetInfo,
     Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';

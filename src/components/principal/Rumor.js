@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Modal, Dimensions, TextInput, AsyncStorage, Keyboard, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, Dimensions, TextInput, Keyboard, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import MapView, { Marker } from 'react-native-maps';
 import Feather from 'react-native-vector-icons/Feather';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';

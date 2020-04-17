@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, AsyncStorage, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { Avatar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

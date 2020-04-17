@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, ScrollView, StyleSheet, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';

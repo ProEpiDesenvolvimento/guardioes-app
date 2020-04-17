@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

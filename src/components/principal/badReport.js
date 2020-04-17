@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage, NetInfo, Alert, Linking, Platform } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert, Linking, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';

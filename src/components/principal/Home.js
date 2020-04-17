@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, AsyncStorage, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
