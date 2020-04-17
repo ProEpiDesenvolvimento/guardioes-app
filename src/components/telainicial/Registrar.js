@@ -432,6 +432,9 @@ class Registrar extends Component {
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 
+                AsyncStorage.setItem('userEmail', this.state.userEmail);
+                AsyncStorage.setItem('userPwd', this.state.userPwd);
+
                 this.props.navigation.navigate('Home');
                 this.hideAlert();
             })

@@ -190,7 +190,7 @@ class BadReport extends Component {
                 if (responseJson !== null) {
                     this.setState({ showProgressBar: false });
                     console.warn("ENVIOU")
-                    this.props.navigation.navigate('Maps')
+                    this.props.navigation.navigate('Mapa')
                 } else {
                     console.warn("NÂO ENVIOU")
                     this.setState({ showProgressBar: false });
@@ -445,9 +445,9 @@ class BadReport extends Component {
                         this.hideAlert();
                     }}
                     onConfirmPressed={() => {
-                        this.props.navigation.navigate('Home')
+                        this.props.navigation.navigate('Mapa')
                     }}
-                    onDismiss={() => this.props.navigation.navigate('Home')}
+                    onDismiss={() => this.props.navigation.navigate('Mapa')}
                 />
             </View>
         );

@@ -9,14 +9,15 @@ import { API_URL } from '../../constUtils';
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.getInfos();
     this._bootstrapAsync();
+    this.getInfos();
   }
 
   getInfos = async () => { //Ger user infos
     let userEmail = await AsyncStorage.getItem('userEmail');
     let userPwd = await AsyncStorage.getItem('userPwd');
     this.setState({ userEmail, userPwd });
+    console.log(this.state.userEmail)
   }
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
