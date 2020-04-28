@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, AsyncStorage } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import MapView, { Marker } from 'react-native-maps';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
@@ -36,7 +37,7 @@ class Maps extends Component {
     }
 
     getSurvey = () => {//Get Survey
-        return fetch(`${API_URL}/surveys/all_surveys`, {
+        return fetch(`${API_URL}/surveys/week`, {
             headers: {
                 Accept: 'application/vnd.api+json',
                 Authorization: `${this.state.userToken}`
