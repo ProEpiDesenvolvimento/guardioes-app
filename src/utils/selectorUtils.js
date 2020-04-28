@@ -1,5 +1,5 @@
 import translate from '../../locales/i18n';
-import { API_URL } from '../constUtils';
+import { API_URL } from './constUtils';
 
 export const localSymptom = [
     { key: 'Instituição de Ensino', label: 'Instituição de Ensino' },

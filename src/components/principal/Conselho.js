@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, AsyncStorage, Modal } from 'react-native';
-import { Redirect } from '../../constUtils';
+import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Redirect } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
-import { scale } from '../scallingUtils';
+import { API_URL } from '../../utils/constUtils';
+import { scale } from '../../utils/scallingUtils';
 
 
 class Conselho extends Component {
@@ -13,14 +14,18 @@ class Conselho extends Component {
     constructor(props) {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            this.getInfos();
+            //console.log(payload)
+            //this.getInfos();
         });
         this.state = {
             modalVisible: false,
             isLoading: true,
             contentData: null
         }
+    }
+
+    componentDidMount (){
+        this.getInfos()
     }
 
     setModalVisible(visible) {

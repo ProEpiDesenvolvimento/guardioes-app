@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, AsyncStorage, Button, Text, Alert, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Button, Text, Alert, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
@@ -15,7 +16,7 @@ class Maps extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            this.getInfos();
+            //this.getInfos();
             this.getLocation();
         });
         this.state = {
@@ -25,6 +26,10 @@ class Maps extends Component {
             polygonState: "Federal District",
             mapViewPolygon: false
         }
+    }
+
+    componentDidMount (){
+        this.getInfos()
     }
 
     getInfos = async () => {

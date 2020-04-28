@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, AsyncStorage, StatusBar, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar, Alert } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 
 const Redirect = (titulo, message, navigation) => {
     Alert.alert(

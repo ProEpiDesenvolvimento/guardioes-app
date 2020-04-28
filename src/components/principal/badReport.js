@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage, NetInfo, Alert, Linking, Platform } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert, Linking, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
-import { API_URL } from '../../constUtils';
+import { scale } from '../../utils/scallingUtils';
+import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
