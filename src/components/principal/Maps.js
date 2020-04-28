@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, AsyncStorage, Button, Text, Alert } from 'react-native';
+import { View, StyleSheet, AsyncStorage, Button, Text, Alert, TouchableOpacity } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../constUtils';
 import translate from '../../../locales/i18n';
@@ -22,7 +22,8 @@ class Maps extends Component {
             isLoading: true,
             dataSource: [],
             dataFilterd: [],
-            polygonState: "Federal District"
+            polygonState: "Federal District",
+            mapViewPolygon: false
         }
     }
 
@@ -33,7 +34,7 @@ class Maps extends Component {
     }
 
     getSurvey = () => {//Get Survey
-        return fetch(`${API_URL}/surveys/all_surveys`, {
+        return fetch(`${API_URL}/surveys/week`, {
             headers: {
                 Accept: 'application/vnd.api+json',
                 Authorization: `${this.state.userToken}`
@@ -133,10 +134,12 @@ class Maps extends Component {
     }
 
     render() {
+        let markers = this.state.dataSource;
         return (
             <View style={styles.container}>
                 <MapView initialRegion={this.state.region} style={styles.map}>
-                    {poligonoBR.features.map(municipio => {
+                {this.state.mapViewPolygon == true ?
+                    poligonoBR.features.map(municipio => {
                         //Lista os limites do poligono para formação do poligono
                         const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
                             let coords = {
@@ -159,7 +162,7 @@ class Maps extends Component {
                                 covidCasesInPolygon = covidCasesInPolygon + 1
                             }
                         })
-                        
+
                         //Cria o Poligono
                         return (
                             <Polygon
@@ -169,12 +172,12 @@ class Maps extends Component {
                                 fillColor={this.PolygonColor(covidCasesInPolygon, this.state.covidCasesInState)}
                                 //console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState)
                                 onPress={() => {
-                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `Numero de Reports no Estado: ${this.state.covidCasesInState}\nNumero de Report COVID: ${covidCasesInPolygon}`)
+                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `\n${covidCasesInPolygon}\n\nReports com Sintomas da COVID-19 `)
                                 }}
                             />
                         )
-                    })}
-                    {/*markers.map((marker, index) => {
+                    }):
+                    markers.map((marker, index) => {
                         let coordinates = { latitude: marker.latitude, longitude: marker.longitude }
                         if (marker.symptom && marker.symptom.length) {
                             return (
@@ -196,8 +199,12 @@ class Maps extends Component {
                             />
                         )
                     }
-                )*/}
+                )}
                 </MapView>
+                <TouchableOpacity style={styles.mapChange}
+                onPress={() => {this.state.mapViewPolygon == false ? this.setState({mapViewPolygon: true}):this.setState({mapViewPolygon: false})}}>
+                    <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos": "Mapa"}</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -207,6 +214,25 @@ class Maps extends Component {
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'flex-end' },
     map: { flex: 1 },
+    mapChange: {
+        position: 'absolute',
+        bottom: '2%',
+        left: '25%',
+        width: '50%',
+        height: '5%',
+        borderRadius: 90,
+        backgroundColor: 'rgba(22, 107, 135, 0.25)',
+        borderColor: 'rgba(22, 107, 135, 1)',
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    textButton: {
+        fontWeight: 'bold',
+        fontFamily: 'roboto',
+        fontSize: 15,
+        color: 'rgba(22, 107, 135, 1)'
+    }
 });
 
 //make this component available to the app
