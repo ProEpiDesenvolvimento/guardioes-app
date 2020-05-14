@@ -256,7 +256,7 @@ export default {
         "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nSobre la Aplicación Guardianes de la Salud\n',
-        "textoSobre": 'La historia de la aplicación Guardianes de la Salud comenzó en 2014, cuando el Ministerio de Salud tomó la iniciativa de promover la vigilancia participativa de los eventos de salud durante la Copa Mundial de la FIFA 2014.\n\nDesde entonces, en diferentes versiones y con el apoyo de diferentes socios, la aplicación ya se ha utilizado durante otros eventos, como los Juegos Olímpicos de Río 2016.\n\nLa aplicación Guardians of Health tiene el gran objetivo de fortalecer la capacidad de detectar brotes y emergencias de salud pública y, en esta etapa, El objetivo específico de apoyar la respuesta a COVID-19.\n\nEsta versión de la aplicación es una asociación de ProEpi (Asociación Brasileña de Profesionales de Epidemiología de Campo) con la Universidad de Brasilia.'
+        "textoSobre": 'La historia de la aplicación Guardianes de la Salud comenzó en 2014, cuando el Ministerio de Salud tomó la iniciativa de promover la vigilancia participativa de los eventos de salud durante la Copa Mundial de la FIFA 2014.\n\nDesde entonces, en diferentes versiones y con el apoyo de diferentes socios, la aplicación ya se ha utilizado durante otros eventos, como los Juegos Olímpicos de Río 2016.\n\nLa aplicación Guardians of Health tiene el gran objetivo de fortalecer la capacidad de detectar brotes y emergencias de salud pública.\n\nEsta versión de la aplicación es una asociación de ProEpi (Asociación Brasileña de Profesionales de Epidemiología de Campo) con la Universidad de Brasilia.'
     },
     "useTerms": {
         "title": "Condiciones y Políticas",

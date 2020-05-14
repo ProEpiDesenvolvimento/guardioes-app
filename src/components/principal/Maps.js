@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Button, Text, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import MapView, { Marker, Polygon } from 'react-native-maps';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'
@@ -177,7 +177,7 @@ class Maps extends Component {
                                 fillColor={this.PolygonColor(covidCasesInPolygon, this.state.covidCasesInState)}
                                 //console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState)
                                 onPress={() => {
-                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `\n${covidCasesInPolygon}\n\nReports com Sintomas da COVID-19 `)
+                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `\n${covidCasesInPolygon}\n\nRelato(s) qualificado(s) como casos suspeito`)
                                 }}
                             />
                         )

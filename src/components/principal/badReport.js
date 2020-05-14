@@ -219,7 +219,7 @@ class BadReport extends Component {
         if (cont_1 >= 1 && cont_2 < 2){
             Alert.alert(
                 'Mantenha a atenção!',
-                'Baseado nos seus sintomas, você provavelmente não tem COVID-19 (novo coronavírus). A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.',
+                'Baseado nos seus sintomas, você não se enquadra totalmente na definição de caso suspeito. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
                 ],
@@ -229,7 +229,7 @@ class BadReport extends Component {
         } else if (cont_2 >= 2){
             Alert.alert(
                 'Atenção: Procure avaliação médica!',
-                'Você provavelmente se enquadra na definição de caso suspeito de COVID-19 (novo coronavírus). É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.',
+                'Você provavelmente se enquadra na definição de caso suspeito. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
                 ],
@@ -238,8 +238,8 @@ class BadReport extends Component {
             //console.warn("2 - VOCE ESTA NO PRIMEIRO NIVEL 2 DE COVID")
         } else if (cont_1 <= 1 && cont_2 <= 2){
             Alert.alert(
-                'Sem COVID-19, mas com cuidado',
-                'Obrigado por reportar! Você provavelmente não tem COVID-19 (novo coronavírus), mas é importante continuar usando o app para monitorar seu estado de saúde.',
+                'Obrigado por reportar!',
+                'Você não é um caso suspeito, mas é importante continuar usando o app para monitorar seu estado de saúde.',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
                 ],
