@@ -5,6 +5,8 @@ import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, 
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';
 import Registrar from '../telainicial/Registrar';
+import ChangePwd from '../telainicial/ChangePwd';
+import ForgetPwd from '../telainicial/ForgetPwd';
 import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
@@ -27,6 +29,8 @@ export const Cadastro = createStackNavigator({
     TelaInicial: { screen: TelaInicial },
     Registrar: { screen: Registrar },
     Login: { screen: Login },
+    ChangePwd: { screen: ChangePwd },
+    ForgetPwd: { screen: ForgetPwd },
 },
     {
         navigationOptions: {

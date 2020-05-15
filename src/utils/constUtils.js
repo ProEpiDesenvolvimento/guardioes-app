@@ -3,8 +3,8 @@ import { Alert, Linking } from 'react-native';
 //export const API_URL = 'http://192.168.0.10:3001';
 //export const API_URL = 'http://192.168.43.41:3001';  //UnB 
 //export const API_URL = 'https://apiguardioes.herokuapp.com'; //Heroku
-//export const API_URL = 'http://0.0.0.0:3001';
-export const API_URL = 'http://gds.proepi.org.br'; //live
+export const API_URL = 'http://0.0.0.0:3001';
+//export const API_URL = 'http://gds.proepi.org.br'; //live
 
 import Geolocation from 'react-native-geolocation-service';
 
