@@ -47,11 +47,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location required for geoloalition when reporting.</string>
+	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location required for geoloalition when reporting.</string>
+	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location required for geoloalition when reporting.</string>
+	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>roboto.ttf</string>
