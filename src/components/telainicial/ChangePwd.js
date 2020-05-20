@@ -15,47 +15,114 @@ class ChangePwd extends Component {
     }
     constructor(props) {
         super(props);
+        this.props.navigation.addListener('didFocus', payload => {
+            this.getInfos();
+        });
         this.state = {
+            showAlert: false, //Custom Alerts
+            showProgressBar: false //Custom Progress Bar
         }
+    }
+
+    showAlert = () => {
+        this.setState({
+            showAlert: true,
+            showProgressBar: true
+        });
+    };
+
+    hideAlert = () => {
+        this.setState({
+            showAlert: false
+        })
+    }
+
+    getInfos = async () => { //Ger user infos
+        let verificationToken = await AsyncStorage.getItem('verificationToken');
+        this.setState({ verificationToken });
+    }
+
+    resetPassword() {
+        this.showAlert()
+        return fetch(`${API_URL}/reset_password`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                reset_password_token: this.state.verificationToken,
+                password: this.state.userPwd,
+                password_confirmation: this.state.userPwdConfirm
+            })
+        })
+            .then((response) => {
+                this.setState({ statusCode: response.status })
+                if (this.state.statusCode == 200) {
+                    this.hideAlert();
+                    Alert.alert("Senha Redefinida")
+                    AsyncStorage.removeItem('verificationToken');
+                    this.props.navigation.navigate('Login')
+                    return response.json()
+                } else {
+                    this.hideAlert();
+                    Alert.alert("Senhas não conferem!", "Tente Novamente");
+                }
+            })
     }
 
     render() {
         return (
             <View style={styles.container}>
-                    <View style={styles.viewForm}>
-                        <Text style={styles.commomText}>Nova Senha</Text>
-                        <TextInput
-                            style={styles.formInput}
-                            autoCapitalize='none'
-                            returnKeyType='next'
-                            keyboardType='email-address'
-                            multiline={false} maxLength={33}
-                            onSubmitEditing={() => this.passwordInput.focus()}
-                            onChangeText={(text) => this.setState({ userEmail: text })}
-                        />
-                        <Text style={styles.commomText}>Repita a senha</Text>
-                        <TextInput
-                            style={styles.formInput}
-                            autoCapitalize='none'
-                            secureTextEntry={true}
-                            multiline={false}
-                            maxLength={15}
-                            ref={(input) => this.passwordInput = input}
-                            onChangeText={(text) => this.setState({ userPwd: text })}
-                            onSubmitEditing={() => this.login()}
-                        />
-                        <View style={styles.buttonView}>
-                            <Button
-                                title="Redefiniar senha"
-                                color="#348EAC"
-                                //onPress={this._isconnected}
-                                onPress={() =>
-                                    this.login()
-                                    //console.warn(this.state.userEmail + " + " + this.state.userPwd)
+                <View style={styles.viewForm}>
+                    <Text style={styles.commomText}>Nova Senha</Text>
+                    <TextInput
+                        style={styles.formInput}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        returnKeyType='next'
+                        multiline={false} maxLength={15}
+                        onSubmitEditing={() => this.passwordInput.focus()}
+                        onChangeText={async (text) => await this.setState({ userPwd: text })}
+                    />
+                    <Text style={styles.commomText}>Repita a senha</Text>
+                    <TextInput
+                        style={styles.formInput}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        multiline={false}
+                        maxLength={15}
+                        ref={(input) => this.passwordInput = input}
+                        onChangeText={async (text) => await this.setState({ userPwdConfirm: text })}
+                        onSubmitEditing={() => this.resetPassword()}
+                    />
+                    <View style={styles.buttonView}>
+                        <Button
+                            title="Redefiniar senha"
+                            color="#348EAC"
+                            onPress={() => {
+                                if (this.state.userPwd.length < 8 || this.state.userPwdConfirm.length < 8) {
+                                    Alert.alert("A senha precisa ter no mínimo 8 caracteres")
+                                } else {
+                                    this.resetPassword()
                                 }
-                            />
-                        </View>
+                            }
+                            }
+                        />
                     </View>
+                </View>
+                <AwesomeAlert
+                    show={this.state.showAlert}
+                    showProgress={this.state.showProgressBar ? true : false}
+                    title={this.state.showProgressBar ? "Carregando" : null}
+                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={false}
+                    showConfirmButton={this.state.showProgressBar ? false : true}
+                    confirmButtonColor="#DD6B55"
+                />
             </View>
         );
     }

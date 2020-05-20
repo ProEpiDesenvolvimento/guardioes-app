@@ -9,14 +9,13 @@ import translate from '../../../locales/i18n';
 import { API_URL } from '../../utils/constUtils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
-class ForgetPwd extends Component {
+class GetToken extends Component {
     static navigationOptions = {
-        title: "Esqueci Minha Senha",
+        title: "Codigo de Verificação",
     }
     constructor(props) {
         super(props);
         this.state = {
-            userEmail: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false //Custom Progress Bar
         }
@@ -35,28 +34,27 @@ class ForgetPwd extends Component {
         })
     }
 
-    SendToken = () => {
+    confirmVerificationCode = () => {
         this.showAlert()
-        return fetch(`${API_URL}/email_reset_password`, {
+        return fetch(`${API_URL}/show_reset_token`, {
             method: 'POST',
             headers: {
                 Accept: 'application/vnd.api+json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: this.state.userEmail
+                code: this.state.verificationToken
             })
         })
-            .then((response) => {
-                this.setState({ statusCode: response.status })
-                if (this.state.statusCode == 200) {
-                    this.props.navigation.navigate('GetToken')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.error == true) {
                     this.hideAlert();
-                    return response.json()
+                    Alert.alert("Código Inválido")
                 } else {
                     this.hideAlert();
-                    Alert.alert("Email Invalido", "Tente Novamente");
-                    //console.warn(response)
+                    AsyncStorage.setItem('verificationToken', responseJson.reset_password_token);
+                    this.props.navigation.navigate('ChangePwd')
                 }
             })
     }
@@ -64,24 +62,25 @@ class ForgetPwd extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.viewTitle}>
+                    <Text style={styles.commomTitle}>Foi enviado um codigo de verificação para o email incado.</Text>
+                    <Text style={styles.commomTitle}>Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.</Text>
+                </View>
                 <View style={styles.viewForm}>
-                    <Text style={styles.commomText}>Informe seu email para verificação:</Text>
+                    <Text style={styles.commomText}>Insira o Código de Verificação</Text>
                     <TextInput
                         style={styles.formInput}
                         autoCapitalize='none'
                         autoCorrect={false}
-                        returnKeyType='next'
-                        keyboardType='email-address'
                         multiline={false} maxLength={33}
-                        onChangeText={async (text) => await this.setState({ userEmail: text })}
+                        onChangeText={async (text) => await this.setState({ verificationToken: text })}
                     />
                     <View style={styles.buttonView}>
                         <Button
-                            title="Enviar"
+                            title="Confirmar"
                             color="#348EAC"
                             onPress={() =>
-                                //console.warn(this.state.userEmail)
-                                this.SendToken()
+                                this.confirmVerificationCode()
                             }
                         />
                     </View>
@@ -130,11 +129,18 @@ const styles = StyleSheet.create({
     },
     viewForm: {
         flex: 4,
+        marginTop: '5%',
         width: "100%",
         alignItems: 'center',
     },
+    viewTitle: {
+        marginLeft: "5%",
+        width: "90%",
+        alignItems: 'center',
+    },
     formInput: {
-        width: '90%',
+        width: '30%',
+        textAlign: 'center',
         height: 35,
         fontSize: 16,
         borderBottomWidth: 1,
@@ -145,6 +151,14 @@ const styles = StyleSheet.create({
     commomText: {
         fontFamily: 'roboto',
         fontWeight: '400',
+        fontSize: 20,
+        color: '#465F6C',
+        marginTop: '3%'
+    },
+    commomTitle: {
+        fontFamily: 'roboto',
+        fontWeight: '400',
+        textAlign: 'center',
         fontSize: 20,
         color: '#465F6C',
         marginTop: '3%'
@@ -162,4 +176,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default ForgetPwd;
+export default GetToken;

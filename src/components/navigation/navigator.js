@@ -7,6 +7,7 @@ import TelaInicial from '../telainicial/TelaInicial';
 import Registrar from '../telainicial/Registrar';
 import ChangePwd from '../telainicial/ChangePwd';
 import ForgetPwd from '../telainicial/ForgetPwd';
+import GetToken from '../telainicial/getToken';
 import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
@@ -31,6 +32,7 @@ export const Cadastro = createStackNavigator({
     Login: { screen: Login },
     ChangePwd: { screen: ChangePwd },
     ForgetPwd: { screen: ForgetPwd },
+    GetToken: { screen: GetToken },
 },
     {
         navigationOptions: {

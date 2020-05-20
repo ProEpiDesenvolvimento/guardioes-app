@@ -110,7 +110,7 @@ class Login extends Component {
                                 //console.warn(this.state.userEmail + " + " + this.state.userPwd)
                             }
                             />
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text>Esqueci Minha Senha</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>
                     </View>
                 </View>
                 <AwesomeAlert
@@ -247,6 +247,11 @@ const styles = StyleSheet.create({
         marginTop: 9,
         width: '80%',
         resizeMode: 'contain',
+    },
+    txtForgetPwd: {
+        marginTop: "5%",
+        textAlign: "center",
+        color: '#465F6C',
     }
 });
 
