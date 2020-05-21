@@ -8,6 +8,7 @@ import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../utils/constUtils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Login extends Component {
     static navigationOptions = {
@@ -109,6 +110,7 @@ class Login extends Component {
                                 //console.warn(this.state.userEmail + " + " + this.state.userPwd)
                             }
                             />
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>
                     </View>
                 </View>
                 <AwesomeAlert
@@ -119,7 +121,6 @@ class Login extends Component {
                     closeOnHardwareBackPress={false}
                     showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
-
                     confirmButtonColor="#DD6B55"
                 />
             </View>
@@ -246,6 +247,11 @@ const styles = StyleSheet.create({
         marginTop: 9,
         width: '80%',
         resizeMode: 'contain',
+    },
+    txtForgetPwd: {
+        marginTop: "5%",
+        textAlign: "center",
+        color: '#465F6C',
     }
 });
 
