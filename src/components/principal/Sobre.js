@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { logoAzUnB, logoAzProEpi } from '../../imgs/imageConst';
-import { scale } from '../scallingUtils';
-import { Redirect, textos } from '../../constUtils';
+import { scale } from '../../utils/scallingUtils';
+import { Redirect } from '../../utils/constUtils';
 import translate from "../../../locales/i18n";
 
 class Sobre extends Component {
@@ -22,6 +22,12 @@ class Sobre extends Component {
                 <View style={styles.textView}>
                     <Text style={styles.textTitulo}> {translate("about.textoSobreTitulo")} </Text>
                     <Text style={styles.text}> {translate("about.textoSobre")} </Text>
+                    {/*<Text></Text>
+                    <Text style={styles.text}>Informações completas a respeito do Novo Coronavirus podem ser encontradas em:</Text>
+                    
+                    <TouchableOpacity onPress={() => Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")}>
+                        <Text style={styles.text}>coronavirus.saude.gov.br/</Text>
+                    </TouchableOpacity>*/}
                 </View>
 
                 <View style={styles.imagesView}>

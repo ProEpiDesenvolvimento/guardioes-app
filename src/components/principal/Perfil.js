@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, AsyncStorage, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { Avatar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household } from '../../utils/selectorUtils';

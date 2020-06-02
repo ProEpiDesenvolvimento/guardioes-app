@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, AsyncStorage, NetInfo, Alert, Linking, Platform } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert, Linking, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
-import { API_URL } from '../../constUtils';
+import { scale } from '../../utils/scallingUtils';
+import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
@@ -13,6 +14,7 @@ import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import ModalSelector from 'react-native-modal-selector';
 import { country, localSymptom } from '../../utils/selectorUtils';
+import { Redirect } from '../../utils/constUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -218,9 +220,10 @@ class BadReport extends Component {
         if (cont_1 >= 1 && cont_2 < 2){
             Alert.alert(
                 'Mantenha a atenção!',
-                'Baseado nos seus sintomas, você provavelmente não tem COVID-19 (novo coronavírus). A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.',
+                'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\n Fonte: Ministério da Saúde',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
+                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
                 ],
                 { cancelable: false }
             )
@@ -228,17 +231,18 @@ class BadReport extends Component {
         } else if (cont_2 >= 2){
             Alert.alert(
                 'Atenção: Procure avaliação médica!',
-                'Você provavelmente se enquadra na definição de caso suspeito de COVID-19 (novo coronavírus). É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.',
+                'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
+                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
                 ],
                 { cancelable: false }
             )
             //console.warn("2 - VOCE ESTA NO PRIMEIRO NIVEL 2 DE COVID")
         } else if (cont_1 <= 1 && cont_2 <= 2){
             Alert.alert(
-                'Sem COVID-19, mas com cuidado',
-                'Obrigado por reportar! Você provavelmente não tem COVID-19 (novo coronavírus), mas é importante continuar usando o app para monitorar seu estado de saúde.',
+                'Obrigado por reportar!',
+                'É importante continuar usando o app para monitorar seu estado de saúde.',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
                 ],

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, AsyncStorage, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';

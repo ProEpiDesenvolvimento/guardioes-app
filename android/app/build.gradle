@@ -131,8 +131,8 @@ android {
         applicationId "com.guardioesapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
-        versionName "2.0.5"
+        versionCode 20
+        versionName "2.0.9"
     }
     splits {
         abi {
@@ -188,6 +188,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-onesignal')
     implementation project(':react-native-i18n')
     implementation fileTree(dir: "libs", include: ["*.jar"])

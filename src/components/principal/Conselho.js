@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, AsyncStorage, Modal } from 'react-native';
-import { Redirect } from '../../constUtils';
+import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Redirect } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
-import { scale } from '../scallingUtils';
+import { API_URL } from '../../utils/constUtils';
+import { scale } from '../../utils/scallingUtils';
 
 
 class Conselho extends Component {
@@ -13,14 +14,18 @@ class Conselho extends Component {
     constructor(props) {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            this.getInfos();
+            //console.log(payload)
+            //this.getInfos();
         });
         this.state = {
             modalVisible: false,
             isLoading: true,
             contentData: null
         }
+    }
+
+    componentDidMount() {
+        this.getInfos()
     }
 
     setModalVisible(visible) {
@@ -80,9 +85,12 @@ class Conselho extends Component {
                                 <Text style={styles.modalTextTitle}>X</Text>
                             </TouchableOpacity>
                         </View>
-                        <ScrollView> 
+                        <ScrollView>
                             <Text style={styles.modalBodyText}>{this.state.contentBody}</Text>
                         </ScrollView>
+                        <TouchableOpacity style={{alignSelf: "center"}} onPress={() => Redirect("Mais Informações", "Deseja ser redirecionado para a fonte do conteúdo?", this.state.contentSource)}>
+                            <Text style={styles.textSource}>Clique aqui Para Saber Mais!</Text>
+                        </TouchableOpacity>
                     </View>
                 </Modal>
 
@@ -93,7 +101,7 @@ class Conselho extends Component {
                                 <ScrollView>
                                     <TouchableOpacity onPress={() => {
                                         this.setModalVisible(true)
-                                        this.setState({ contentTitle: content.title, contentBody: content.body })
+                                        this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
                                     }}>
                                         <View style={styles.selector}>
                                             <Text style={styles.textSelector}>{content.title}</Text>
@@ -104,24 +112,24 @@ class Conselho extends Component {
                         }
                     })
                     : null}
-                    <TouchableOpacity
-                        style={styles.selector}
-                        onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
-                    >
-                        <Text style={styles.textSelector}>
-                            {translate("advices.buttons.healthInst")}
-                        </Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.selector}
+                    onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
+                >
+                    <Text style={styles.textSelector}>
+                        {translate("advices.buttons.healthInst")}
+                    </Text>
+                </TouchableOpacity>
 
-                    {/* Farmacias */}
-                    <TouchableOpacity
-                        style={styles.selector}
-                        onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
-                    >
-                        <Text style={styles.textSelector}>
+                {/* Farmacias */}
+                <TouchableOpacity
+                    style={styles.selector}
+                    onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
+                >
+                    <Text style={styles.textSelector}>
                         {translate("advices.buttons.pharmacy")}
-                        </Text>
-                    </TouchableOpacity>
+                    </Text>
+                </TouchableOpacity>
             </View>
 
         );
@@ -190,6 +198,14 @@ const styles = StyleSheet.create({
     modalTextTitle: {
         fontFamily: 'roboto',
         fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 3,
+        marginLeft: 5,
+        color: '#348EAC',
+    },
+    textSource: {
+        fontFamily: 'roboto',
+        fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 3,
         marginLeft: 5,

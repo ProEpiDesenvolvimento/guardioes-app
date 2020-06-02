@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, ScrollView, StyleSheet, Image } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import { Dimensions } from 'react-native';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -22,7 +23,7 @@ class Diario extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            this.getInfos();
+            //this.getInfos();
         });
         this.state = {
             data: [],
@@ -32,6 +33,10 @@ class Diario extends Component {
             BadPlot: [{ y: 0, x: 0, marked: "" }],
             NoPlot: [{ y: 0, x: 0, marked: "" }]
         };
+    }
+    
+    componentDidMount () {
+        this.getInfos();
     }
 
 

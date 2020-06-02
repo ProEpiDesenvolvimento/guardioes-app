@@ -5,15 +5,15 @@ import {
     View,
     TextInput,
     Button,
-    AsyncStorage,
     Keyboard,
     Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
@@ -333,8 +333,8 @@ class Registrar extends Component {
     }
 
     verifyInfos = async () => {
-        if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null || this.state.userCountry == null || this.state.userDob == null) {
-            Alert.alert("Preencha os Campos" , "Nome\nData de Nascimento\nNacionalidade\nEmail\nSenha")
+        if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
+                Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
         } else {
             if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
                 Alert.alert("Estado e Cidade devem estar preenchidos")
@@ -345,7 +345,11 @@ class Registrar extends Component {
                     if(this.state.userGroup != null && this.state.userIdCode == null){
                         Alert.alert("Adicione um Número de Identificação")
                     } else {
-                        this.avatarSelector();
+                        if (this.state.userCountry == null){
+                            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+                        } else {
+                            this.avatarSelector();
+                        }
                     }
                 }
             }

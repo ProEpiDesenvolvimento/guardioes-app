@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, AsyncStorage, Keyboard, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, Keyboard, NetInfo } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import { API_URL } from '../../utils/constUtils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Login extends Component {
     static navigationOptions = {
@@ -108,7 +110,8 @@ class Login extends Component {
                                 //console.warn(this.state.userEmail + " + " + this.state.userPwd)
                             }
                             />
-                    </View>
+                            {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>*/}
+                        </View>
                 </View>
                 <AwesomeAlert
                     show={showAlert}
@@ -118,7 +121,6 @@ class Login extends Component {
                     closeOnHardwareBackPress={false}
                     showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
-
                     confirmButtonColor="#DD6B55"
                 />
             </View>
@@ -245,6 +247,11 @@ const styles = StyleSheet.create({
         marginTop: 9,
         width: '80%',
         resizeMode: 'contain',
+    },
+    txtForgetPwd: {
+        marginTop: "5%",
+        textAlign: "center",
+        color: '#465F6C',
     }
 });
 
