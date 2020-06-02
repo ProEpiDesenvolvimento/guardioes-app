@@ -22,12 +22,12 @@ class Sobre extends Component {
                 <View style={styles.textView}>
                     <Text style={styles.textTitulo}> {translate("about.textoSobreTitulo")} </Text>
                     <Text style={styles.text}> {translate("about.textoSobre")} </Text>
-                    <Text></Text>
+                    {/*<Text></Text>
                     <Text style={styles.text}>Informações completas a respeito do Novo Coronavirus podem ser encontradas em:</Text>
                     
                     <TouchableOpacity onPress={() => Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")}>
                         <Text style={styles.text}>coronavirus.saude.gov.br/</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>*/}
                 </View>
 
                 <View style={styles.imagesView}>

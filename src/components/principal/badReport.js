@@ -14,6 +14,7 @@ import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import ModalSelector from 'react-native-modal-selector';
 import { country, localSymptom } from '../../utils/selectorUtils';
+import { Redirect } from '../../utils/constUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -222,6 +223,7 @@ class BadReport extends Component {
                 'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\n Fonte: Ministério da Saúde',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
+                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
                 ],
                 { cancelable: false }
             )
@@ -232,6 +234,7 @@ class BadReport extends Component {
                 'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde',
                 [
                     { text: 'Ok', onPress: () => this.verifyLocalization() },
+                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
                 ],
                 { cancelable: false }
             )

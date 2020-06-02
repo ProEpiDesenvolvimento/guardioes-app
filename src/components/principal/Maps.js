@@ -177,7 +177,7 @@ class Maps extends Component {
                                 fillColor={this.PolygonColor(covidCasesInPolygon, this.state.covidCasesInState)}
                                 //console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState)
                                 onPress={() => {
-                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `\n${covidCasesInPolygon}\n\nRelato(s) qualificado(s) como casos suspeito`)
+                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `\n${covidCasesInPolygon}\n\nRelato(s) qualificado(s) como casos suspeito de síndrome gripal`)
                                 }}
                             />
                         )
