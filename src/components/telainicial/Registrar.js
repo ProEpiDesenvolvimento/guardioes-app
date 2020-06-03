@@ -7,6 +7,7 @@ import {
     Button,
     Keyboard,
     Alert,
+    TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
@@ -19,6 +20,8 @@ import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { gender, country, race, getGroups } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
+import Autocomplete from 'react-native-autocomplete-input';
+
 
 
 let data = new Date();
@@ -27,7 +30,7 @@ let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
 // let today = y + "-" + m + "-" + d;
-let minDate = d + "-" + m + "-" + (y - 13) ;
+let minDate = d + "-" + m + "-" + (y - 13);
 // let tomorrow = y + "-" + m + "-" + (d + 1)
 
 class Registrar extends Component {
@@ -37,6 +40,8 @@ class Registrar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            school_units: [],
+            query: '',
             isProfessional: false,
             residence: null,
             residenceCountryCheckbox: true,
@@ -72,12 +77,36 @@ class Registrar extends Component {
         this.setState({
             showAlert: false
         })
+    };
+
+    componentDidMount() {
+        fetch(`${API_URL}/school_units/`, {
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({ school_units: responseJson.school_units })
+            })
+    }
+
+    findFilm(query) {
+        if (query === '') {
+            return [];
+        }
+
+        const { school_units } = this.state;
+        const regex = new RegExp(`${query.trim()}`, 'i');
+        return school_units.filter(school => school.description.search(regex) >= 0);
     }
 
     render() {
         const { showAlert } = this.state;
-
-
+        const { query } = this.state;
+        const school_units = this.findFilm(query);
+        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
             <KeyboardAwareScrollView style={styles.container}>
@@ -247,6 +276,22 @@ class Registrar extends Component {
                         <View style={styles.viewRow}>
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Grupo:</Text>
+                                <Autocomplete
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    containerStyle={{ width: 150, marginLeft: 10, marginRight: 10 }}
+                                    listStyle={{borderColor: "red"}}
+                                    data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
+                                    defaultValue={query}
+                                    onChangeText={text => this.setState({ query: text })}
+                                    renderItem={({ description, i }) => (
+                                        <TouchableOpacity onPress={() => {console.log(description), this.setState({ query: description })}}>
+                                          <Text style={styles.itemText}>
+                                            {description}
+                                          </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                />
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
@@ -324,9 +369,9 @@ class Registrar extends Component {
     avatarSelector = async () => {
         if (this.state.userGender == "Masculino") {
             await this.setState({ picture: "Father" });
-        } else if (this.state.userGender == "Feminino"){
+        } else if (this.state.userGender == "Feminino") {
             await this.setState({ picture: "Mother" });
-        } else if (this.state.userGender == null){
+        } else if (this.state.userGender == null) {
             await this.setState({ picture: "NullAvatar" });
         }
         this.create();
@@ -334,7 +379,7 @@ class Registrar extends Component {
 
     verifyInfos = async () => {
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
-                Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
+            Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
         } else {
             if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
                 Alert.alert("Estado e Cidade devem estar preenchidos")
@@ -342,10 +387,10 @@ class Registrar extends Component {
                 if (this.state.userPwd.length < 8) {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
-                    if(this.state.userGroup != null && this.state.userIdCode == null){
+                    if (this.state.userGroup != null && this.state.userIdCode == null) {
                         Alert.alert("Adicione um Número de Identificação")
                     } else {
-                        if (this.state.userCountry == null){
+                        if (this.state.userCountry == null) {
                             Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
                         } else {
                             this.avatarSelector();
@@ -393,8 +438,8 @@ class Registrar extends Component {
                     this.hideAlert();
                     return response.json()
                 }
-            }) .then((responseJson) => {
-                Alert.alert("O email " + responseJson.errors[0].detail.email,)
+            }).then((responseJson) => {
+                Alert.alert("O email " + responseJson.errors[0].detail.email)
             })
     }
 
@@ -553,7 +598,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         //height: scale(32),
         alignSelf: "center"
-    }
+    },
+    itemText: {
+        fontSize: 15,
+        margin: 2,
+        fontFamily: 'roboto',
+        color: "black"
+      },
 });
 
 //make this component available to the app

@@ -77,7 +77,7 @@ export const household = [
 ];
 
 
-export function getGroups(){
+/*export function getGroups(){
     const groups = []
     fetch(`${API_URL}/groups/`, {
         headers: {
@@ -92,7 +92,26 @@ export function getGroups(){
             })
         })
     return groups
+}*/
+
+export function getGroups(){
+    const groups = []
+    fetch(`${API_URL}/school_units/`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            responseJson.school_units.map(group => {
+                groups.push({ key: group.id, label: group.description })
+            })
+        })
+    return groups
 }
+
+
 
 
 /*
