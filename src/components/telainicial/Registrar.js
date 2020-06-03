@@ -279,15 +279,16 @@ class Registrar extends Component {
                                 <Autocomplete
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                    containerStyle={{ width: 150, marginLeft: 10, marginRight: 10 }}
+                                    containerStyle={{  width: '80%', height: '70%', marginLeft: 10, marginRight: 10 }}
                                     listStyle={{borderColor: "red"}}
                                     data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
                                     defaultValue={query}
                                     onChangeText={text => this.setState({ query: text })}
-                                    renderItem={({ description, i }) => (
-                                        <TouchableOpacity onPress={() => {console.log(description), this.setState({ query: description })}}>
+                                    placeholder="Selecione a escola"
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => {console.log(item.description), this.setState({ query: item.description })}}>
                                           <Text style={styles.itemText}>
-                                            {description}
+                                            {item.description}
                                           </Text>
                                         </TouchableOpacity>
                                     )}
