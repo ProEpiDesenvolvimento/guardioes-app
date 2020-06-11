@@ -7,7 +7,9 @@ import {
     Button,
     Keyboard,
     Alert,
-    TouchableOpacity
+    TouchableOpacity,
+    SafeAreaView,
+    ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
@@ -21,6 +23,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { gender, country, race, getGroups } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 import Autocomplete from 'react-native-autocomplete-input';
+import ShcoolsSheet from '../../utils/shoolsSheet.json';
 
 
 
@@ -80,16 +83,7 @@ class Registrar extends Component {
     };
 
     componentDidMount() {
-        fetch(`${API_URL}/school_units/`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({ school_units: responseJson.school_units })
-            })
+        this.setState({ school_units: ShcoolsSheet.school_units })
     }
 
     findFilm(query) {
@@ -109,7 +103,7 @@ class Registrar extends Component {
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
-            <KeyboardAwareScrollView style={styles.container}>
+            <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
                 <View style={styles.scroll}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
@@ -266,7 +260,7 @@ class Registrar extends Component {
                         />
                     </View>
                     <CheckBox
-                        title={"É integrante de alguma instituição?"}
+                        title={"É integrante de alguma instituição de Ensino?"}
                         containerStyle={styles.CheckBoxStyle}
                         size={scale(16)}
                         checked={this.state.groupCheckbox}
@@ -275,31 +269,33 @@ class Registrar extends Component {
                     {this.state.groupCheckbox ?
                         <View style={styles.viewRow}>
                             <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Grupo:</Text>
-                                {/*<Autocomplete
+                                <Text style={styles.commomTextView}>Instituição:</Text>
+                                <Autocomplete
+                                    style={styles.AutocompleteStyle}
+                                    containerStyle={styles.AutocompleteContainer}
+                                    inputContainerStyle={styles.AutocompleteList}
+                                    listStyle={styles.AutoCompleteListStyles}
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                    containerStyle={{  width: '80%', height: '70%', marginLeft: 10, marginRight: 10 }}
-                                    listStyle={{borderColor: "red"}}
                                     data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
                                     defaultValue={query}
                                     onChangeText={text => this.setState({ query: text })}
-                                    placeholder="Selecione a escola"
+                                    //placeholder="Nome da instituição"
                                     renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => {console.log(item.description), this.setState({ query: item.description })}}>
-                                          <Text style={styles.itemText}>
-                                            {item.description}
-                                          </Text>
+                                        <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description })}>
+                                            <Text style={styles.itemText}>
+                                                {item.description}
+                                            </Text>
                                         </TouchableOpacity>
                                     )}
-                                    />*/}
-                                <ModalSelector
+                                />
+                                {/*<ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
                                     data={getGroups()}
                                     initValue={this.state.initValueGroup}
                                     onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                />
+                                />*/}
                             </View>
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Nº de Identificação:</Text>
@@ -512,6 +508,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewRow: {
+        zIndex: 1,
         width: '100%',
         height: 65,
         flexDirection: 'row',
@@ -600,12 +597,39 @@ const styles = StyleSheet.create({
         //height: scale(32),
         alignSelf: "center"
     },
+    AutocompleteStyle: {
+        width: '80%',
+        height: 35,
+        fontSize: 14 
+    },
+    AutocompleteContainer: {
+        width: "80%",
+        height: 35
+    },
+    AutocompleteList: {
+        borderTopWidth: 0,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: '#348EAC'
+    },
+    AutoCompleteListStyles:{
+        borderRadius: 5,
+        backgroundColor: "rgba(218,218,218,0.90)",
+        maxHeight: 150
+    },
+    AutocompleteTouchableOpacity: {
+        width: '90%',
+        alignSelf: "center",
+        borderColor: 'rgba(198,198,198,1)',
+        borderBottomWidth: 1,
+    },
     itemText: {
         fontSize: 15,
-        margin: 2,
+        marginVertical: 5,
         fontFamily: 'roboto',
-        color: "black"
-      },
+        color: 'rgba(33,113,245,1)'
+    },
 });
 
 //make this component available to the app

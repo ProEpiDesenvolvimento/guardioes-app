@@ -1,5 +1,6 @@
 import translate from '../../locales/i18n';
 import { API_URL } from './constUtils';
+import ShcoolsSheet from '../utils/shoolsSheet.json';
 
 export const localSymptom = [
     { key: 'Instituição de Ensino', label: 'Instituição de Ensino' },
@@ -94,7 +95,7 @@ export const household = [
     return groups
 }*/
 
-export function getGroups(){
+/*export function getGroups(){
     const groups = []
     fetch(`${API_URL}/school_units/`, {
         headers: {
@@ -109,15 +110,20 @@ export function getGroups(){
             })
         })
     return groups
+}*/
+
+export function getGroups() {
+    const groups = []
+    ShcoolsSheet.school_units.map(group => {
+        groups.push({ key: group.id, label: group.description })
+    })
+    return groups
 }
-
-
-
 
 /*
 //////USO EM TESTES
 const Data = [
-    {  
+    {
       "id": 1,
       "description": "Turma UnB",
       "kind": "Universidade",
