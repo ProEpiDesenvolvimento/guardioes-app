@@ -271,7 +271,7 @@ class Registrar extends Component {
                         <View style={styles.viewRow}>
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Instituição:</Text>
-                                <Autocomplete
+                                {/*<Autocomplete
                                     style={styles.AutocompleteStyle}
                                     containerStyle={styles.AutocompleteContainer}
                                     inputContainerStyle={styles.AutocompleteList}
@@ -289,14 +289,14 @@ class Registrar extends Component {
                                             </Text>
                                         </TouchableOpacity>
                                     )}
-                                />
-                                {/*<ModalSelector
+                                />*/}
+                                <ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
                                     data={getGroups()}
                                     initValue={this.state.initValueGroup}
                                     onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                />*/}
+                                />
                             </View>
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Nº de Identificação:</Text>

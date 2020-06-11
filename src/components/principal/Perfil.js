@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst';
-import { Avatar } from 'react-native-elements';
+import { Avatar, CheckBox } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
-import { gender, country, race, household } from '../../utils/selectorUtils';
+import { gender, country, race, household, getGroups } from '../../utils/selectorUtils';
 
 let data = new Date();
 let d = data.getDate();
@@ -187,7 +187,9 @@ class Perfil extends Component {
           birthdate: this.state.userDob,
           country: this.state.userCountry,
           gender: this.state.userGender,
-          race: this.state.userRace
+          race: this.state.userRace,
+          school_unit_id: this.state.userGroup,
+          identification_code: this.state.userIdCode
         }
       )
     })
@@ -219,6 +221,19 @@ class Perfil extends Component {
     }).then((responseJson) => {
       console.warn(responseJson)
     })
+  }
+
+  showUserModal = () => {
+    this.setState({ modalVisibleUser: true })
+  }
+
+  handleCancel = () => {
+    this.setState({ modalVisibleUser: false })
+  }
+
+  handleEdit = () => {
+    this.setState({ modalVisibleUser: false })
+    this.editUser()
   }
 
   render() {
@@ -335,12 +350,167 @@ class Perfil extends Component {
                   this.avatarHouseholdSelector();
                   this.setModalVisible(!this.state.modalVisibleHousehold);
                 }} />
-                <View style={{margin: 5}}></View>
-                <Button
+              <View style={{ margin: 5 }}></View>
+              <Button
                 title="Cancelar"
                 color="#348EAC"
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisibleHousehold);
+                }} />
+            </View>
+          </View>
+        </Modal>
+
+        <Modal //Modal view for User
+          animationType="fade"
+          transparent={true}
+          visible={this.state.modalVisibleUser}
+          onRequestClose={this.handleCancel}>
+          <View style={styles.modalView}>
+            <View style={{ paddingTop: 10 }}></View>
+            <View style={styles.viewCommom}>
+              <Text style={styles.commomText}>{translate("register.name")}</Text>
+              <TextInput style={styles.formInput}
+                placeholder={this.state.userName}
+                onChangeText={text => this.setState({ userName: text })}
+              />
+            </View>
+
+            <View style={styles.viewRow}>
+              <View style={styles.viewChildSexoRaca}>
+                <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
+                <ModalSelector
+                  initValueTextStyle={{ color: 'black' }}
+                  style={{ width: '80%', height: '70%' }}
+                  data={gender}
+                  initValue={translate("genderChoices.male")}
+                  onChange={(option) => this.setState({ userGender: option.key })}
+                />
+              </View>
+
+              <View style={styles.viewChildSexoRaca}>
+                <Text style={styles.commomTextView}>{translate("register.race")}</Text>
+                <ModalSelector
+                  initValueTextStyle={{ color: 'black' }}
+                  style={{ width: '80%', height: '70%' }}
+                  data={race}
+                  initValue={translate("raceChoices.white")}
+                  onChange={(option) => this.setState({ userRace: option.key })}
+                />
+              </View>
+
+            </View>
+
+            <View style={styles.viewRow}>
+              <View style={styles.viewChildSexoRaca}>
+                <Text style={styles.commomTextView}>Nascimento</Text>
+                <DatePicker
+                  style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
+                  showIcon={false}
+                  date={this.state.householdDob}
+                  androidMode='spinner'
+                  locale={'pt-BR'}
+                  mode="date"
+                  placeholder={translate("birthDetails.format")}
+                  format="DD-MM-YYYY"
+                  minDate="01-01-1918"
+                  maxDate={today}
+                  confirmBtnText={translate("birthDetails.confirmButton")}
+                  cancelBtnText={translate("birthDetails.cancelButton")}
+                  customStyles={{
+                    dateInput: {
+                      borderWidth: 0
+                    },
+                    dateText: {
+                      justifyContent: "center",
+                      fontFamily: 'roboto',
+                      fontSize: 17
+                    },
+                    placeholderText: {
+                      justifyContent: "center",
+                      fontFamily: 'roboto',
+                      fontSize: 15,
+                      color: 'black'
+                    }
+                  }}
+                  onDateChange={date => this.setState({ userDob: date })}
+                />
+              </View>
+
+              <View style={styles.viewChildSexoRaca}>
+                <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                <ModalSelector
+                  initValueTextStyle={{ color: 'black' }}
+                  style={{ width: '80%', height: '70%' }}
+                  data={country}
+                  initValue={this.state.userCountry}
+                  onChange={(option) => this.setState({ userCountry: option.key })}
+                />
+              </View>
+            </View>
+
+            <CheckBox
+              title={"É integrante de alguma instituição de Ensino?"}
+              containerStyle={styles.CheckBoxStyle}
+              size={scale(16)}
+              checked={this.state.groupCheckbox}
+              onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
+            />
+            {this.state.groupCheckbox ?
+              <View style={styles.viewRow}>
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>Instituição:</Text>
+                    {/*<Autocomplete
+                      style={styles.AutocompleteStyle}
+                      containerStyle={styles.AutocompleteContainer}
+                      inputContainerStyle={styles.AutocompleteList}
+                      listStyle={styles.AutoCompleteListStyles}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
+                      defaultValue={query}
+                      onChangeText={text => this.setState({ query: text })}
+                      //placeholder="Nome da instituição"
+                      renderItem={({ item }) => (
+                          <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description, userGroup: item.description })}>
+                              <Text style={styles.itemText}>
+                                  {item.description}
+                              </Text>
+                          </TouchableOpacity>
+                      )}
+                    />*/}
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={getGroups()}
+                    initValue={this.state.initValueGroup}
+                    onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
+                  />
+                </View>
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                  <TextInput style={styles.formInput50}
+                    returnKeyType='done'
+                    keyboardType='number-pad'
+                    onChangeText={text => this.setState({ userIdCode: text })}
+                  />
+                </View>
+              </View>
+              : null}
+
+            <View style={styles.buttonView}>
+              <Button
+                title="Editar"
+                color="#348EAC"
+                onPress={async () => {
+                  await this.handleEdit()
+                }} />
+              <View style={{ margin: 5 }}></View>
+              <Button
+                title="Cancelar"
+                color="#348EAC"
+                onPress={() => {
+                  this.handleCancel();
                 }} />
             </View>
           </View>
@@ -359,6 +529,13 @@ class Perfil extends Component {
             <Text style={styles.userName}>
               {this.state.userName}
             </Text>
+            <View style={{ alignSelf: 'center' }}>
+              <View style={styles.viewButtons}>
+                <TouchableOpacity onPress={this.showUserModal}>
+                  <FontAwesome name="edit" size={scale(25)} color='rgba(255, 255, 255, 1)' />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
           <View style={{ alignSelf: 'center', marginRight: 10 }}>
           </View>
