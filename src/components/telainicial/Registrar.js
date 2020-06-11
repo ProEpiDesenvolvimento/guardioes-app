@@ -276,7 +276,7 @@ class Registrar extends Component {
                         <View style={styles.viewRow}>
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Grupo:</Text>
-                                <Autocomplete
+                                {/*<Autocomplete
                                     autoCapitalize="none"
                                     autoCorrect={false}
                                     containerStyle={{  width: '80%', height: '70%', marginLeft: 10, marginRight: 10 }}
@@ -292,7 +292,7 @@ class Registrar extends Component {
                                           </Text>
                                         </TouchableOpacity>
                                     )}
-                                />
+                                    />*/}
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
@@ -426,7 +426,7 @@ class Registrar extends Component {
                     birthdate: this.state.userDob,
                     picture: this.state.picture,
                     identification_code: this.state.userIdCode,
-                    group_id: this.state.userGroup,
+                    school_unit_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
                     risk_group: this.state.riskGroup
                 }
