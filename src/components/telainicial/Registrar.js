@@ -48,6 +48,7 @@ class Registrar extends Component {
             isProfessional: false,
             residence: null,
             residenceCountryCheckbox: true,
+            groupCheckbox: false,
             statusCode: null,
             userName: null,
             userEmail: null,
@@ -282,7 +283,7 @@ class Registrar extends Component {
                                     onChangeText={text => this.setState({ query: text })}
                                     //placeholder="Nome da instituição"
                                     renderItem={({ item }) => (
-                                        <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description })}>
+                                        <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description, userGroup: item.description })}>
                                             <Text style={styles.itemText}>
                                                 {item.description}
                                             </Text>
@@ -384,8 +385,8 @@ class Registrar extends Component {
                 if (this.state.userPwd.length < 8) {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
-                    if (this.state.userGroup != null && this.state.userIdCode == null) {
-                        Alert.alert("Adicione um Número de Identificação")
+                    if (this.state.groupCheckbox == true && (this.state.userGroup == null || this.state.userIdCode == null)) {
+                        Alert.alert("Instituição e Número de Identificação devem estar preenchidos")
                     } else {
                         if (this.state.userCountry == null) {
                             Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
@@ -619,6 +620,8 @@ const styles = StyleSheet.create({
         maxHeight: 150
     },
     AutocompleteTouchableOpacity: {
+        position: "relative",
+        zIndex: 2,
         width: '90%',
         alignSelf: "center",
         borderColor: 'rgba(198,198,198,1)',
