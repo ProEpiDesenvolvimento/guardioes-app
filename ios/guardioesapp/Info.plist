@@ -55,6 +55,9 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>roboto.ttf</string>
+		<string>ArgentumSans-Medium.otf</string>
+		<string>ArgentumSans-Regular.otf</string>
+		<string>ArgentumSans-SemiBold.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
