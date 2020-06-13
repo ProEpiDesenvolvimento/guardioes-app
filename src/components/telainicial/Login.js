@@ -85,7 +85,8 @@ class Login extends Component {
                         autoCapitalize='none'
                         returnKeyType='next'
                         keyboardType='email-address'
-                        multiline={false} maxLength={33}
+                        multiline={false}
+                        maxLength={100}
                         onSubmitEditing={() => this.passwordInput.focus()}
                         onChangeText={(text) => this.setState({ userEmail: text })}
                     />
@@ -95,7 +96,7 @@ class Login extends Component {
                         autoCapitalize='none'
                         secureTextEntry={true}
                         multiline={false}
-                        maxLength={15}
+                        maxLength={100}
                         ref={(input) => this.passwordInput = input}
                         onChangeText={(text) => this.setState({ userPwd: text })}
                         onSubmitEditing={() => this.login()}
@@ -110,7 +111,7 @@ class Login extends Component {
                                 //console.warn(this.state.userEmail + " + " + this.state.userPwd)
                             }
                             />
-                            {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>*/}
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>
                         </View>
                 </View>
                 <AwesomeAlert

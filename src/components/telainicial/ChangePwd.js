@@ -82,7 +82,8 @@ class ChangePwd extends Component {
                         autoCorrect={false}
                         secureTextEntry={true}
                         returnKeyType='next'
-                        multiline={false} maxLength={15}
+                        multiline={false}
+                        maxLength={100}
                         onSubmitEditing={() => this.passwordInput.focus()}
                         onChangeText={async (text) => await this.setState({ userPwd: text })}
                     />
@@ -93,7 +94,7 @@ class ChangePwd extends Component {
                         autoCorrect={false}
                         secureTextEntry={true}
                         multiline={false}
-                        maxLength={15}
+                        maxLength={100}
                         ref={(input) => this.passwordInput = input}
                         onChangeText={async (text) => await this.setState({ userPwdConfirm: text })}
                         onSubmitEditing={() => this.resetPassword()}
