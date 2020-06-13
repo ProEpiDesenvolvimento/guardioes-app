@@ -101,7 +101,7 @@ class ChangePwd extends Component {
                     />
                     <View style={styles.buttonView}>
                         <Button
-                            title="Redefiniar senha"
+                            title="Redefinir Senha"
                             color="#348EAC"
                             onPress={() => {
                                 if (this.state.userPwd.length < 8 || this.state.userPwdConfirm.length < 8) {
