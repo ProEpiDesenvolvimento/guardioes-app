@@ -118,6 +118,20 @@ class Home extends Component {
         this.getHouseholds();
     }
 
+    getNameParts = (fullName, firstandLast = false) => {
+        if (fullName) {
+            let nameParts = fullName.split(" ");
+            let length = nameParts.length;
+
+            if (firstandLast && length > 1) {
+                return `${nameParts[0]} ${nameParts[length-1]}`;
+            }
+            else {
+                return nameParts[0];
+            }
+        }
+    }
+
     getHouseholds = () => {//Get households
         //console.warn("UserID " + this.state.userID + " Token " + this.state.userToken)
         return fetch(`${API_URL}/users/${this.state.userID}/households`, {
@@ -217,8 +231,9 @@ class Home extends Component {
     render() {
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
-        const welcomeMessage = translate("home.hello") + this.state.userName;
-        const householdHowYouFellingText = translate("home.householdHowYouFelling_part_1") + this.state.householdName + translate("home.householdHowYouFelling_part_2");
+
+        const welcomeMessage = translate("home.hello") + this.getNameParts(this.state.userName);
+        const householdHowYouFellingText = translate("home.householdHowYouFelling_part_1") + this.getNameParts(this.state.householdName) + translate("home.householdHowYouFelling_part_2");
         const householdsData = this.state.data;
 
         const logoBR = (
@@ -297,11 +312,12 @@ class Home extends Component {
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor='#348EAC' />
-                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={scale(30)} color='rgba(22, 107, 135, 0.2)' style={{alignSelf: 'flex-start', marginLeft: '3%', marginTop: '2%'}}/>
 
                 <View style={styles.viewImage}>
                     {imageType}
                 </View>
+
+                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={scale(30)} color='rgba(22, 107, 135, 0.2)' style={{position: 'absolute', left: '3%', top: '2%'}}/>
 
                 <View style={styles.viewWelcome}>
                     <Text style={styles.textHelloUser}>
@@ -338,7 +354,7 @@ class Home extends Component {
                                                 AsyncStorage.removeItem('householdID');
                                             }}
                                         />
-                                        <Text>{this.state.userName}</Text>
+                                        <Text>{this.getNameParts(this.state.userName, true)}</Text>
                                     </View>
                                     <ScrollView horizontal={true}>
                                         {householdsData != null ?
@@ -388,7 +404,7 @@ class Home extends Component {
                                 this.setModalVisible(true);
                             }}
                         />
-                        <Text>{this.state.userSelect}</Text>
+                        <Text>{this.getNameParts(this.state.userSelect, true)}</Text>
                     </View>
                     <View style={styles.viewHouseholdAdd}>
                         <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => navigate('Household')}>
@@ -456,13 +472,11 @@ const emojis = [
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 550,
         backgroundColor: 'white',
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     viewImage: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         //margin: '10%',
@@ -472,7 +486,7 @@ const styles = StyleSheet.create({
         //borderWidth: 1,
     },
     imageLogo: {
-        height: scale(128),
+        height: scale(120),
         resizeMode: 'contain',
     },
     viewWelcome: {
@@ -481,11 +495,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     textHelloUser: {
-        fontSize: 40,
+        fontSize: 35,
         fontFamily: 'roboto',
         color: '#166B87',
         alignSelf: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: '5%'
     },
     textNewGuardion: {
         fontSize: 20,
