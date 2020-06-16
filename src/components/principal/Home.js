@@ -374,7 +374,7 @@ class Home extends Component {
                                                                 AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                             }}
                                                         />
-                                                        <Text>{household.description}</Text>
+                                                        <Text>{this.getNameParts(household.description, true)}</Text>
                                                     </View>
                                                 )
                                             })
