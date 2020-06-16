@@ -1,16 +1,18 @@
 export default {
     "genderChoices": {
-        "male": "Masculino",
-        "female": "Feminino"
+        "cisWoman": "Mulher Cis",
+        "cisMan": "Homem Cis",
+        "transWoman": "Mulher Trans",
+        "transMan": "Homem Trans",
+        "nonBinary": "Não-binárie",
+        "intersex": "Intersexo"
     },
     "raceChoices": {
         "white": "Branco",
         "indian": "Indígena",
-        "mix": "Mestiço",
-        "black": "Negro",
-        "palenquero": "Palenquero",
-        "raizal": "Raizal",
-        "romGitano": "Rom-Gitano"
+        "mix": "Pardo",
+        "black": "Preto",
+        "asian": "Amarelo"
     },
     "birthDetails": {
         "format": "DD/MM/AAAA",
