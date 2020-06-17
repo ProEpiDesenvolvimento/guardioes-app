@@ -29,6 +29,7 @@ export default class ClusteredMapView extends PureComponent {
     this.state = {
       data: [], // helds renderable clusters and markers
       region: props.region || props.initialRegion, // helds current map region
+      unhealthy: [] 
     }
 
     this.isAndroid = Platform.OS === 'android'
@@ -65,22 +66,33 @@ export default class ClusteredMapView extends PureComponent {
     return this.index
   }
 
+  splitHealthyUnhealthy(data) {
+    return {
+      unhealthy: data.filter((el) => el.properties.item.symptoms !== null && el.properties.item.symptoms.length > 0),
+      healthy: data.filter((el) => (el.properties.item.symptoms === null || el.properties.item.symptoms.length === 0))
+    }
+  }
+
   clusterize(dataset) {
     this.index = new SuperCluster({ // eslint-disable-line new-cap
       extent: this.props.extent,
       minZoom: this.props.minZoom,
       maxZoom: this.props.maxZoom,
-      radius: this.props.radius || (this.dimensions[0] * .045), // 4.5% of screen width
+      radius: this.props.radius || (this.dimensions[0] * .07), // 7% of screen width
     })
 
     // get formatted GeoPoints for cluster
     const rawData = dataset.map(item => itemToGeoJSONFeature(item, this.props.accessor))
 
-    // load geopoints into SuperCluster
-    this.index.load(rawData)
+    const groups = this.splitHealthyUnhealthy(rawData) // GRUPO DE DOENTE E NAO DOENTE
+    
+    this.index.load(groups.healthy)
+    
+    const clusters = this.getClusters(this.state.region)
 
-    const data = this.getClusters(this.state.region)
-    this.setState({ data })
+    this.state.unhealthy = groups.unhealthy
+
+    this.setState({ data: [...clusters, ...groups.unhealthy] })
   }
 
   clustersChanged(nextState) {
@@ -88,7 +100,7 @@ export default class ClusteredMapView extends PureComponent {
   }
 
   onRegionChangeComplete(region) {
-    let data = this.getClusters(region)
+    let data = [...this.getClusters(region), ...this.state.unhealthy]
     this.setState({ region, data }, () => {
         this.props.onRegionChangeComplete && this.props.onRegionChangeComplete(region, data)
     })
@@ -135,15 +147,21 @@ export default class ClusteredMapView extends PureComponent {
         onRegionChangeComplete={this.onRegionChangeComplete}>
         {
           this.props.clusteringEnabled && this.state.data.map((d) => {
-            if (d.properties.point_count === 0)
-              return this.props.renderMarker(d.properties.item)
-
+            if (d.properties.point_count === 0) // SE NÂO FIZER PARTE DE UM CLUSTER
+            {
+              if (d.properties.item.symptoms === null || d.properties.item.symptoms.length === 0) // SE FOR SAUDAVEL
+                return this.props.renderMarker.good(d.properties.item) // DESENHA PINO VERDE
+              else
+                return this.props.renderMarker.bad(d.properties.item) // DESENHA PINO VERMELHO
+            }
+            // SE FAZ PARTE DE UM CLUSTER
             return (
               <ClusterMarker
                 {...d}
                 onPress={this.onClusterPress}
                 renderCluster={this.props.renderCluster}
                 key={`cluster-${d.properties.cluster_id}`} />
+
             )
           })
         }

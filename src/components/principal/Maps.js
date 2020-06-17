@@ -56,7 +56,7 @@ class Maps extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
-                    dataSource: responseJson.surveys
+                    dataSource: responseJson.surveys.slice(0,100)
                 })
                 this.getSurveyPerState()
             })
@@ -149,7 +149,7 @@ class Maps extends Component {
     coordsFilter() {
         const markers = []
         this.state.dataSource.map(mark => {
-            markers.push({location: { latitude: mark.latitude, longitude: mark.longitude }})
+            markers.push({location: { latitude: mark.latitude, longitude: mark.longitude }, symptoms: mark.symptom })
         })
         return markers
     }
@@ -179,7 +179,8 @@ class Maps extends Component {
         )
     }
 
-    renderMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} />
+    renderBadMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} pinColor={'#ff4444'}/>
+    renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} pinColor={'#44ff44'}/>
 
     render() {
         return (
@@ -189,7 +190,7 @@ class Maps extends Component {
                     data={this.coordsFilter()}
                     initialRegion={INIT_REGION}
                     ref={(r) => { this.map = r }}
-                    renderMarker={this.renderMarker}
+                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker}}
                     renderCluster={this.renderCluster} />
                 
                 <TouchableOpacity style={styles.mapChange}
