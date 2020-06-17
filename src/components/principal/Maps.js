@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, Text, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import MapView, { Marker, Polygon } from 'react-native-maps';
+import ClusteredMapView from 'react-native-maps-super-cluster'
+import { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'
+
+const INIT_REGION = {
+    latitude: -15.7194724,
+    longitude: -47.774146,
+    latitudeDelta: 5,
+    longitudeDelta: 5
+}
 
 class Maps extends Component {
     static navigationOptions = {
@@ -28,7 +36,7 @@ class Maps extends Component {
         }
     }
 
-    componentDidMount (){
+    componentDidMount() {
         this.getInfos()
     }
 
@@ -138,77 +146,55 @@ class Maps extends Component {
         return fillColor
     }
 
+    coordsFilter() {
+        const markers = []
+        this.state.dataSource.map(mark => {
+            markers.push({location: { latitude: mark.latitude, longitude: mark.longitude }})
+        })
+        return markers
+    }
+
+    renderCluster = (cluster, onPress) => {
+        const pointCount = cluster.pointCount,
+            coordinate = cluster.coordinate,
+            clusterId = cluster.clusterId
+
+        // use pointCount to calculate cluster size scaling
+        // and apply it to "style" prop below
+
+        // eventually get clustered points by using
+        // underlying SuperCluster instance
+        // Methods ref: https://github.com/mapbox/supercluster
+        const clusteringEngine = this.map.getClusteringEngine(),
+            clusteredPoints = clusteringEngine.getLeaves(clusterId, 100)
+
+        return (
+            <Marker coordinate={coordinate} onPress={onPress}>
+                <View style={styles.myClusterStyle}>
+                    <Text style={styles.myClusterTextStyle}>
+                        {pointCount}
+                    </Text>
+                </View>
+            </Marker>
+        )
+    }
+
+    renderMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} />
+
     render() {
-        let markers = this.state.dataSource;
         return (
             <View style={styles.container}>
-                <MapView initialRegion={this.state.region} style={styles.map}>
-                {this.state.mapViewPolygon == true ?
-                    poligonoBR.features.map(municipio => {
-                        //Lista os limites do poligono para formação do poligono
-                        const MuniPoly = municipio.geometry.coordinates[0].map(coordsArr => {
-                            let coords = {
-                                latitude: coordsArr[1],
-                                longitude: coordsArr[0],
-                            }
-                            return coords
-                        });
-                        //console.warn("teste")
-                        //Lista os limites do poligono para verificar se um ponto esta inserido nele
-                        const CoordsOnly = municipio.geometry.coordinates[0].map(coordsArr => {
-                            let coords = [coordsArr[1], coordsArr[0]]
-                            return coords
-                        });
-
-                        //Verifica os casos de COVID dentro do poligono
-                        let covidCasesInPolygon = 0
-                        this.state.dataFilterd.map(survey => {
-                            if (this.CoordInsidePolygon([survey.latitude, survey.longitude], CoordsOnly)) {
-                                covidCasesInPolygon = covidCasesInPolygon + 1
-                            }
-                        })
-
-                        //Cria o Poligono
-                        return (
-                            <Polygon
-                                tappable={true}
-                                coordinates={MuniPoly}
-                                strokeColor="rgba(0, 81, 0, 0.0);"
-                                fillColor={this.PolygonColor(covidCasesInPolygon, this.state.covidCasesInState)}
-                                //console.warn("Cidade: " + municipio.properties.NM_SUBDIST + " Nº Casos: " + covidCasesInPolygon + " Maximo: " + this.state.covidCasesInState)
-                                onPress={() => {
-                                    Alert.alert(`Região Administrativa:\n${municipio.properties.NM_SUBDIST}`, `\n${covidCasesInPolygon}\n\nRelato(s) qualificado(s) como casos suspeito de síndrome gripal`)
-                                }}
-                            />
-                        )
-                    }):
-                    markers.map((marker, index) => {
-                        let coordinates = { latitude: marker.latitude, longitude: marker.longitude }
-                        if (marker.symptom && marker.symptom.length) {
-                            return (
-                                <Marker
-                                    key={index}
-                                    coordinate={coordinates}
-                                    description={marker.symptom.toString()}
-                                    title={translate("maps.reportBad")}
-                                />
-                            )
-                        }
-                        return (
-                            <Marker
-                                key={index}
-                                coordinate={coordinates}
-                                title={translate("maps.reportGood")}
-                                pinColor='rgba(136,196,37, 1)'
-
-                            />
-                        )
-                    }
-                )}
-                </MapView>
+                <ClusteredMapView
+                    style={{ flex: 1 }}
+                    data={this.coordsFilter()}
+                    initialRegion={INIT_REGION}
+                    ref={(r) => { this.map = r }}
+                    renderMarker={this.renderMarker}
+                    renderCluster={this.renderCluster} />
+                
                 <TouchableOpacity style={styles.mapChange}
-                onPress={() => {this.state.mapViewPolygon == false ? this.setState({mapViewPolygon: true}):this.setState({mapViewPolygon: false})}}>
-                    <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos": "Mapa"}</Text>
+                    onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
+                    <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -237,6 +223,17 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: 15,
         color: 'rgba(22, 107, 135, 1)'
+    },
+    myClusterStyle: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'green',
+        borderRadius: 90,
+        width: 40,
+        height: 40
+    },
+    myClusterTextStyle: {
+        color: 'white'
     }
 });
 
