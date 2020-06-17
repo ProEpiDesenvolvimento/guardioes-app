@@ -62,6 +62,7 @@ class Perfil extends Component {
     let userAvatar = await AsyncStorage.getItem('userAvatar')
     this.setState({ userName, userID, userToken, userAvatar });
     this.setState({ userSelect: this.state.userName });
+    this.getAllUserInfos();
     this.getHouseholds();
   }
 
@@ -205,10 +206,9 @@ class Perfil extends Component {
   }
 
   getAllUserInfos = () => {
-    return fetch(`${API_URL}/user/login`, {
-      method: 'POST',
+    return fetch(`${API_URL}/users/${this.state.userID}`, {
+      method: 'GET',
       headers: {
-        Accept: 'application/vnd.api+json',
         Authorization: `${this.state.userToken}`
       }
     }).then((response) => {
@@ -216,10 +216,18 @@ class Perfil extends Component {
         console.warn(response.status)
         return response.json()
       } else {
-        alert("Algo deu errado");
+        console.warn(response.status)
       }
     }).then((responseJson) => {
-      console.warn(responseJson)
+      this.setState({
+        userName: responseJson.user.user_name,
+        userDob: responseJson.user.birthdate,
+        userCountry: responseJson.user.country,
+        userGender: responseJson.user.gender,
+        userRace: responseJson.user.race,
+        userGroup: responseJson.user.school_unit_id,
+        userIdCode: responseJson.user.identification_code,
+      })
     })
   }
 
@@ -239,6 +247,7 @@ class Perfil extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const householdsData = this.state.dataSource;
+    const user = this.state.user
 
     return (
       <View style={styles.container}>
@@ -383,7 +392,7 @@ class Perfil extends Component {
                   initValueTextStyle={{ color: 'black' }}
                   style={{ width: '80%', height: '70%' }}
                   data={gender}
-                  initValue={translate("genderChoices.male")}
+                  initValue={this.state.userGender}
                   onChange={(option) => this.setState({ userGender: option.key })}
                 />
               </View>
@@ -394,7 +403,7 @@ class Perfil extends Component {
                   initValueTextStyle={{ color: 'black' }}
                   style={{ width: '80%', height: '70%' }}
                   data={race}
-                  initValue={translate("raceChoices.white")}
+                  initValue={this.state.userRace}
                   onChange={(option) => this.setState({ userRace: option.key })}
                 />
               </View>
@@ -438,7 +447,7 @@ class Perfil extends Component {
               </View>
 
               <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                <Text style={styles.commomTextView}>{this.state.userCountry}</Text>
                 <ModalSelector
                   initValueTextStyle={{ color: 'black' }}
                   style={{ width: '80%', height: '70%' }}
@@ -492,6 +501,7 @@ class Perfil extends Component {
                   <TextInput style={styles.formInput50}
                     returnKeyType='done'
                     keyboardType='number-pad'
+                    initValue={this.state.userIdCode}
                     onChangeText={text => this.setState({ userIdCode: text })}
                   />
                 </View>
@@ -705,6 +715,15 @@ const styles = StyleSheet.create({
   },
   formInput: {
     width: "90%",
+    height: 35,
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#348EAC',
+    paddingBottom: 0,
+    paddingTop: 2,
+  },
+  formInput50: {
+    width: "80%",
     height: 35,
     fontSize: 16,
     borderBottomWidth: 1,
