@@ -137,6 +137,7 @@ export default {
             "sending": "Enviando...",
             "thanks": "Obrigado!",
             "reportSent": "Seu relato foi enviado.",
+            "reportNotSent": "Notamos que você já relatou seu estado de saúde, hoje. Obrigado pela contribuição",
             "seeADoctor": "Não se esqueça de ir ao médico caso os sintomas perdurem!",
             "confirmText": "Voltar"
         }
