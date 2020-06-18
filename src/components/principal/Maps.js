@@ -56,7 +56,7 @@ class Maps extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
-                    dataSource: responseJson.surveys.slice(0,100)
+                    dataSource: responseJson.surveys
                 })
                 this.getSurveyPerState()
             })
@@ -166,7 +166,7 @@ class Maps extends Component {
         // underlying SuperCluster instance
         // Methods ref: https://github.com/mapbox/supercluster
         const clusteringEngine = this.map.getClusteringEngine(),
-            clusteredPoints = clusteringEngine.getLeaves(clusterId, 100)
+            clusteredPoints = clusteringEngine.getLeaves(clusterId, 1)
 
         return (
             <Marker coordinate={coordinate} onPress={onPress}>
