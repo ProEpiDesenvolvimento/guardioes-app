@@ -10,6 +10,7 @@ import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups } from '../../utils/selectorUtils';
+import { state, getCity } from '../../utils/brasil';
 
 let data = new Date();
 let d = data.getDate();
@@ -190,7 +191,11 @@ class Perfil extends Component {
           gender: this.state.userGender,
           race: this.state.userRace,
           school_unit_id: this.state.userGroup,
-          identification_code: this.state.userIdCode
+          identification_code: this.state.userIdCode,
+          is_professional: this.state.isProfessional,
+          risk_group: this.state.riskGroup,
+          state: this.state.userState,
+          city: this.state.userCity
         }
       )
     })
@@ -227,6 +232,11 @@ class Perfil extends Component {
         userRace: responseJson.user.race,
         userGroup: responseJson.user.school_unit_id,
         userIdCode: responseJson.user.identification_code,
+        userEmail: responseJson.user.email,
+        isProfessional: responseJson.user.is_professional,
+        riskGroup: responseJson.user.risk_group,
+        userState: responseJson.user.state,
+        userCity: responseJson.user.city
       })
     })
   }
@@ -247,7 +257,6 @@ class Perfil extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const householdsData = this.state.dataSource;
-    const user = this.state.user
 
     return (
       <View style={styles.container}>
@@ -295,7 +304,7 @@ class Perfil extends Component {
 
             <View style={styles.viewRow}>
               <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>Nascimento</Text>
+                <Text style={styles.commomTextView}>Nascimento:</Text>
                 <DatePicker
                   style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
                   showIcon={false}
@@ -377,6 +386,12 @@ class Perfil extends Component {
           onRequestClose={this.handleCancel}>
           <View style={styles.modalView}>
             <View style={{ paddingTop: 10 }}></View>
+
+            <View style={styles.viewCommom, { paddingBottom: 0, marginBottom: 0 }}>
+              <Text style={styles.commomText}>Email:</Text>
+              <Text style={{ color: 'gray', fontSize: 17, textAlign: "center" }}>{this.state.userEmail}</Text>
+            </View>
+
             <View style={styles.viewCommom}>
               <Text style={styles.commomText}>{translate("register.name")}</Text>
               <TextInput style={styles.formInput}
@@ -412,7 +427,7 @@ class Perfil extends Component {
 
             <View style={styles.viewRow}>
               <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>Nascimento</Text>
+                <Text style={styles.commomTextView}>Nascimento:</Text>
                 <DatePicker
                   style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
                   showIcon={false}
@@ -447,49 +462,71 @@ class Perfil extends Component {
               </View>
 
               <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>{this.state.userCountry}</Text>
-                <ModalSelector
-                  initValueTextStyle={{ color: 'black' }}
-                  style={{ width: '80%', height: '70%' }}
-                  data={country}
-                  initValue={this.state.userCountry}
-                  onChange={(option) => this.setState({ userCountry: option.key })}
-                />
+                <Text style={styles.commomTextView}>País de Origem:</Text>
+                <Text style={styles.textBornCountry}>{this.state.userCountry}</Text>
               </View>
             </View>
 
-            <CheckBox
-              title={"É integrante de alguma instituição de Ensino?"}
-              containerStyle={styles.CheckBoxStyle}
-              size={scale(16)}
-              checked={this.state.groupCheckbox}
-              onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-            />
+            {this.state.userCountry == "Brazil" ?
+              <View style={styles.viewRow}>
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>Estado:</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black', fontSize: 14 }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={state}
+                    initValue={this.state.userState}
+                    onChange={(option) => this.setState({ userState: option.key })}
+                  />
+                </View>
+
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>Cidade:</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black', fontSize: 14 }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={getCity(this.state.userState)}
+                    initValue={this.state.userCity}
+                    onModalClose={(option) => this.setState({ userCity: option.key, initValueCity: option.key })}
+                  />
+                </View>
+              </View>
+              : null}
+
+            <View style={{ paddingTop: 15 }}>
+              <CheckBox
+                title={"Voce é um profissional da Saude"}
+                checked={this.state.isProfessional}
+                containerStyle={styles.CheckBoxStyle}
+                size={scale(16)}
+                onPress={() => {
+                  this.setState({ isProfessional: !this.state.isProfessional })
+                }}
+              />
+              <CheckBox
+                title={"Faz parte do Grupo de Risco?"}
+                checked={this.state.riskGroup}
+                containerStyle={styles.CheckBoxStyle}
+                size={scale(16)}
+                onPress={() => {
+                  this.setState({ riskGroup: !this.state.riskGroup })
+                }}
+              />
+
+              <CheckBox
+                title={"É integrante de alguma instituição de Ensino?"}
+                containerStyle={styles.CheckBoxStyle}
+                size={scale(16)}
+                checked={this.state.groupCheckbox}
+                onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
+              />
+            </View>
             {this.state.groupCheckbox ?
               <View style={styles.viewRow}>
                 <View style={styles.viewChildSexoRaca}>
                   <Text style={styles.commomTextView}>Instituição:</Text>
-                    {/*<Autocomplete
-                      style={styles.AutocompleteStyle}
-                      containerStyle={styles.AutocompleteContainer}
-                      inputContainerStyle={styles.AutocompleteList}
-                      listStyle={styles.AutoCompleteListStyles}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
-                      defaultValue={query}
-                      onChangeText={text => this.setState({ query: text })}
-                      //placeholder="Nome da instituição"
-                      renderItem={({ item }) => (
-                          <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description, userGroup: item.description })}>
-                              <Text style={styles.itemText}>
-                                  {item.description}
-                              </Text>
-                          </TouchableOpacity>
-                      )}
-                    />*/}
                   <ModalSelector
-                    initValueTextStyle={{ color: 'black' }}
+                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
                     style={{ width: '80%', height: '70%' }}
                     data={getGroups()}
                     initValue={this.state.initValueGroup}
@@ -501,7 +538,7 @@ class Perfil extends Component {
                   <TextInput style={styles.formInput50}
                     returnKeyType='done'
                     keyboardType='number-pad'
-                    initValue={this.state.userIdCode}
+                    placeholder={this.state.userIdCode}
                     onChangeText={text => this.setState({ userIdCode: text })}
                   />
                 </View>
@@ -539,7 +576,7 @@ class Perfil extends Component {
             <Text style={styles.userName}>
               {this.state.userName}
             </Text>
-            <View style={{ alignSelf: 'center' }}>
+            <View style={{ paddingLeft: 20, justifyContent: 'center' }}>
               <View style={styles.viewButtons}>
                 <TouchableOpacity onPress={this.showUserModal}>
                   <FontAwesome name="edit" size={scale(25)} color='rgba(255, 255, 255, 1)' />
@@ -622,6 +659,7 @@ const styles = StyleSheet.create({
     marginRight: scale(80),
     borderColor: 'green',
     //borderWidth: 1,
+    flexDirection: 'row'
   },
   userName: {
     fontFamily: 'roboto',
@@ -629,6 +667,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginTop: 15,
+    width: '70%'
   },
   userDobText: {
     fontFamily: 'roboto',
@@ -664,11 +703,13 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   modalView: {
+    justifyContent: "center",
+    paddingTop: 30,
     alignSelf: 'center',
     width: '93%',
     //height: '60%',
     //padding: 15,
-    marginTop: '35%',
+    marginTop: '15%',
     borderRadius: 20,
     backgroundColor: 'white',
     shadowColor: 'gray',
@@ -756,6 +797,14 @@ const styles = StyleSheet.create({
   textCountry: {
     fontSize: 15,
     fontFamily: 'roboto',
+  },
+  textBornCountry: {
+    width: '80%',
+    height: '60%',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    fontSize: 17,
+    color: 'gray'
   }
 });
 
