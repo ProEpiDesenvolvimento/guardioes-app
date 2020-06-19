@@ -3,10 +3,11 @@ import mapScript from './mapScript'
 import { API_URL } from '../../utils/constUtils'
 
 class MapParser {
-  constructor(coords, initialRegion) {
+  constructor(coords, initialRegion, googlemapsapikey) {
     this.state = {
       coords: coords,
-      initialRegion: initialRegion
+      initialRegion: initialRegion,
+      googlemapsapikey: googlemapsapikey
     }
   }
   
@@ -28,7 +29,6 @@ class MapParser {
   }
 
   getMapHTML() {
-    console.log("COORDS:", this.state.coords.length)
     const ret = mapHTML.replace("mapScript.js", 
       mapScript
     ).replace('$COORDINATES',
@@ -36,7 +36,11 @@ class MapParser {
     ).replace('$INIT_COORD',
       this.getInitCoordinate()
     ).replace(/\$API_URL/g, // THIS IS WHERE THE ICONS COME FROM, THE API
-      API_URL
+      '192.168.0.143:3000'//API_URL
+    ).replace("$ZOOM",
+      this.state.initialRegion.zoom
+    ).replace("$GOOGLE_MAPS_API_KEY",
+      this.state.googlemapsapikey
     )
     return ret
   }

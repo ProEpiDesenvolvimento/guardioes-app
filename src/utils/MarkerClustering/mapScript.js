@@ -8,8 +8,12 @@ export default
 function initMap() {
 
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 5,
-    center: $INIT_COORD
+    zoom: $ZOOM,
+    center: $INIT_COORD,
+    streetViewControl: false,
+    mapTypeControlOptions: {
+      mapTypeIds: ['roadmap']
+    },
   });
 
   // Add some markers to the map.
@@ -21,7 +25,10 @@ function initMap() {
     .map(location => {
     return new google.maps.Marker({
       position: location,
-      label: ['G']
+      label: ['G'],
+      icon: {
+        url: "http://$API_URL/markerclusterimg/green-marker.png"
+      }
     });
   });
 
@@ -30,12 +37,12 @@ function initMap() {
     .map(location => {
     return new google.maps.Marker({
       position: location,
-      label: ['B']
+      label: ['B'],
+      icon: {
+        url: "http://$API_URL/markerclusterimg/red-marker.png"
+      }
     });
   });
-
-  console.log("GOOD MARKERS:", goodMarkers.length) 
-  console.log("BAD MARKERS:", badMarkers.length) 
 
   // Add a marker clusterer to manage the markers.
   var goodMarkerCluster = new MarkerClusterer(map, goodMarkers,

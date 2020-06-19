@@ -7,6 +7,7 @@ import MarkerCluster from '../../utils/MarkerClustering/MarkerCluster'
 const INIT_REGION = {           // BRASILIA - BRAZIL
     latitude: -15.7194724,
     longitude: -47.774146,
+    zoom: 10
 }
 
 class Maps extends Component {
@@ -33,6 +34,7 @@ class Maps extends Component {
         let userToken = await AsyncStorage.getItem('userToken');
         this.setState({ userToken });
         this.getWeeklySurveys();
+        this.getGoogleMapsApiKey();
     }
 
     getWeeklySurveys = async () => {
@@ -54,7 +56,21 @@ class Maps extends Component {
                         surveys: responseJson.surveys
                     })
                 }
-                console.log("REQUEST COMPLETE GOT", this.state.surveys.length, "HITS")
+            })
+    }
+
+    getGoogleMapsApiKey = async () => {
+        return fetch(`${API_URL}/googlemapsapikey`, {
+            headers: {
+                Accept: 'application/vnd.api+json',
+                Authorization: `${this.state.userToken}`
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    googlemapsapikey: responseJson.googlemapsapikey
+                })
             })
     }
 
@@ -62,7 +78,8 @@ class Maps extends Component {
         return (
             <MarkerCluster
                 initialRegion={INIT_REGION}
-                coords={this.state.surveys} />
+                coords={this.state.surveys}
+                googlemapsapikey={this.state.googlemapsapikey} />
         )
     }
 }

@@ -21,7 +21,7 @@ class MarkerCluster extends Component {
     return (
       <WebView
         originWhitelist={['*']}
-        source={{ html: new MapParser(this.state.coords, this.props.initialRegion).getMapHTML() }}
+        source={{ html: new MapParser(this.state.coords, this.props.initialRegion, this.props.googlemapsapikey).getMapHTML() }}
       />
     )
   }

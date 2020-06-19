@@ -24,7 +24,7 @@ export default `<!DOCTYPE html>
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgA7vme-oh1GWhnkNwQUIRECwPAU4wkp4&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=$GOOGLE_MAPS_API_KEY&callback=initMap">
     </script>
   </body>
 </html>`
