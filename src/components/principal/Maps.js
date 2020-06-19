@@ -5,9 +5,9 @@ import translate from '../../../locales/i18n';
 import MarkerCluster from '../../utils/MarkerClustering/MarkerCluster'
 
 const INIT_REGION = {           // BRASILIA - BRAZIL
-    latitude: -15.7194724,
-    longitude: -47.774146,
-    zoom: 10
+    latitude: -15.8194724,
+    longitude: -47.874146,
+    zoom: 11
 }
 
 class Maps extends Component {

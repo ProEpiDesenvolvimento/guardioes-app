@@ -27,7 +27,7 @@ function initMap() {
       position: location,
       label: ['G'],
       icon: {
-        url: "http://$API_URL/markerclusterimg/green-marker.png"
+        url: "$API_URL/markerclusterimg/green-marker.png"
       }
     });
   });
@@ -39,18 +39,18 @@ function initMap() {
       position: location,
       label: ['B'],
       icon: {
-        url: "http://$API_URL/markerclusterimg/red-marker.png"
+        url: "$API_URL/markerclusterimg/red-marker.png"
       }
     });
   });
 
   // Add a marker clusterer to manage the markers.
   var goodMarkerCluster = new MarkerClusterer(map, goodMarkers,
-    { imagePath: 'http://$API_URL/markerclusterimg/good/', imageSizes: [53, 53, 53, 53, 53] });
+    { imagePath: '$API_URL/markerclusterimg/good/', imageSizes: [53, 53, 53, 53, 53] });
 
   // Add a marker clusterer to manage the markers.
   var badMarkerCluster = new MarkerClusterer(map, badMarkers,
-    { imagePath: 'http://$API_URL/markerclusterimg/bad/', imageSizes: [66, 66, 66, 66, 66] });
+    { imagePath: '$API_URL/markerclusterimg/bad/', imageSizes: [66, 66, 66, 66, 66] });
 }
 
 var locations = $COORDINATES

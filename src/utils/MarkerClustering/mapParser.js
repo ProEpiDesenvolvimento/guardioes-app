@@ -36,7 +36,7 @@ class MapParser {
     ).replace('$INIT_COORD',
       this.getInitCoordinate()
     ).replace(/\$API_URL/g, // THIS IS WHERE THE ICONS COME FROM, THE API
-      '192.168.0.143:3000'//API_URL
+      API_URL
     ).replace("$ZOOM",
       this.state.initialRegion.zoom
     ).replace("$GOOGLE_MAPS_API_KEY",
