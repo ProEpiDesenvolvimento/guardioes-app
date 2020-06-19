@@ -506,7 +506,7 @@ class Perfil extends Component {
                 : null}
 
               <View style={{ paddingTop: 15 }}>
-                <CheckBox
+                {/*<CheckBox
                   title={"Voce é um profissional da Saude"}
                   checked={this.state.isProfessional}
                   containerStyle={styles.CheckBoxStyle}
@@ -523,7 +523,7 @@ class Perfil extends Component {
                   onPress={() => {
                     this.setState({ riskGroup: !this.state.riskGroup })
                   }}
-                />
+                />*/}
 
                 <CheckBox
                   title={"É integrante de alguma instituição de Ensino?"}

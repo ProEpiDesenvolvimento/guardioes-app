@@ -95,7 +95,7 @@ export const household = [
     return groups
 }*/
 
-/*export function getGroups(){
+export function getGroups(){
     const groups = []
     fetch(`${API_URL}/school_units/`, {
         headers: {
@@ -110,23 +110,33 @@ export const household = [
             })
         })
     return groups
-}*/
+}
 
-export function getGroups() {
+/*export function getGroups() {
     const groups = []
     ShcoolsSheet.school_units.map(group => {
         groups.push({ key: group.id, label: group.description })
     })
     return groups
-}
+}*/
 
 export function getGroupName(ID) {
     let groupName = ''
-    ShcoolsSheet.school_units.map(group => {
-        if (group.id === ID) {
-            groupName = group.description;
-        }
+    fetch(`${API_URL}/school_units/`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
     })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.warn(responseJson)
+            responseJson.school_units.map(group => {
+                if (group.id === ID) {
+                    groupName = group.description;
+                }
+            })
+        })
     return groupName;
 }
 
