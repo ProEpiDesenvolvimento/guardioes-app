@@ -551,7 +551,7 @@ class Perfil extends Component {
                       returnKeyType='done'
                       keyboardType='number-pad'
                       placeholder={this.state.userIdCode}
-                      onChangeText={text => this.setState({ userIdCode: text })}
+                      onChangeText={text => this.setState({ userIdSelect: text })}
                     />
                   </View>
                 </View>
