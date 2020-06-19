@@ -50,7 +50,6 @@ class Registrar extends Component {
             userCity: null,
             userRace: null,
             userDob: null,
-            userToken: null,
             userGroup: null,
             userIdCode: null,
             riskGroup: null,
@@ -419,10 +418,9 @@ class Registrar extends Component {
             })
         })
             .then(async response => {
-                // this.setState({ userToken: response.headers.map.authorization, statusCode: response.status })
                 if (response.status == 200) {
                     try {
-                        AsyncStorage.setItem('userToken', response.headers.map.authorization);
+                        Keychain.setInternetCredentials(response.headers.map.authorization, this.state.userEmail, this.state.userPwd);
                     } catch (error) {
                         console.log(error);
                     }
@@ -436,12 +434,9 @@ class Registrar extends Component {
             .then((responseJson) => {
                 AsyncStorage.setItem('userID', responseJson.user.id.toString());
                 AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
-
-                AsyncStorage.setItem('userEmail', this.state.userEmail);
-                AsyncStorage.setItem('userPwd', this.state.userPwd);
+                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
 
                 this.props.navigation.navigate('Home');
                 this.hideAlert();

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, Keyboard, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image, Alert, Keyboard, NetInfo } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as Keychain from 'react-native-keychain';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
@@ -19,8 +20,6 @@ class Login extends Component {
         this.state = {
             userEmail: null,
             userPwd: null,
-            userToken: null,
-            statusCode: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false //Custom Progress Bar
         }
@@ -130,29 +129,29 @@ class Login extends Component {
     }
 
     //Login Function 
-    login = () => {
+    login = async () => {
         if (this.state.userEmail == null || this.state.userPwd == null) {
             Alert.alert('Os campos não podem ficar em branco')
         } else {
-        Keyboard.dismiss()
-        this.showAlert()
-        return fetch(`${API_URL}/user/login`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user:
-                {
-                    email: this.state.userEmail,
-                    password: this.state.userPwd
-                }
+            Keyboard.dismiss()
+            this.showAlert()
+            return fetch(`${API_URL}/user/login`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user:
+                    {
+                        email: this.state.userEmail,
+                        password: this.state.userPwd
+                    }
+                })
             })
-        })
-            .then((response) => {
-                this.setState({ userToken: response.headers.map.authorization, statusCode: response.status})
-                if (this.state.statusCode == 200) {
+            .then(async response => {
+                await Keychain.setInternetCredentials(response.headers.map.authorization, this.state.userEmail, this.state.userPwd);
+                if (response.status == 200) {
                     return response.json()
                 } else {
                     Alert.alert("Email ou senha inválida.");
@@ -162,19 +161,15 @@ class Login extends Component {
             .then((responseJson) => {
                 AsyncStorage.setItem('userID', responseJson.user.id.toString());
                 AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('userToken', this.state.userToken);
-                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
-
-                AsyncStorage.setItem('userEmail', this.state.userEmail);
-                AsyncStorage.setItem('userPwd', this.state.userPwd);
+                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
 
                 this.props.navigation.navigate('Home');
                 this.hideAlert();
             })
+        }
     }
-}
 }
 
 const emojis = [

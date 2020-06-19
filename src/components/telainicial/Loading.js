@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Image, StatusBar, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import * as Keychain from 'react-native-keychain';
 import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
 import LinearGradient from 'react-native-linear-gradient';
 import translate from '../../../locales/i18n';
@@ -11,15 +12,8 @@ class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
-    this.getInfos();
   }
 
-  getInfos = async () => { //Ger user infos
-    let userEmail = await AsyncStorage.getItem('userEmail');
-    let userPwd = await AsyncStorage.getItem('userPwd');
-    this.setState({ userEmail, userPwd });
-    console.log(this.state.userEmail)
-  }
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
     let UserID = await AsyncStorage.getItem('userID');
@@ -29,22 +23,24 @@ class AuthLoadingScreen extends React.Component {
         this.verifyUserToken();
       }, 1500);
     } else {
-      AsyncStorage.removeItem('userName');
       AsyncStorage.removeItem('userID');
-      AsyncStorage.removeItem('householdID');
-      AsyncStorage.removeItem('userToken');
-      AsyncStorage.removeItem('appID');
+      AsyncStorage.removeItem('userName');
       AsyncStorage.removeItem('userSelected');
       AsyncStorage.removeItem('avatarSelected');
-      AsyncStorage.removeItem('userEmail');
+      AsyncStorage.removeItem('householdID');
+      AsyncStorage.removeItem('appID');
       AsyncStorage.removeItem('appPwd');
+      await Keychain.resetInternetCredentials();
 
       this.props.navigation.navigate('Cadastro');
     }
   };
 
-
   verifyUserToken = async () => {
+    const credentials = await Keychain.getInternetCredentials();
+    //console.log(credentials);
+    //console.log(credentials.username);
+
     return fetch(`${API_URL}/user/login`, {
       method: 'POST',
       headers: {
@@ -54,14 +50,14 @@ class AuthLoadingScreen extends React.Component {
       body: JSON.stringify({
         user:
         {
-          email: this.state.userEmail,
-          password: this.state.userPwd
+          email: credentials.username,
+          password: credentials.password
         }
       })
     })
-      .then((response) => {
+      .then(async response => {
         if (response.status == 200) {
-          AsyncStorage.setItem('userToken', response.headers.map.authorization);
+          await Keychain.setInternetCredentials(response.headers.map.authorization, credentials.username, credentials.password);
           this.props.navigation.navigate('BottomMenu');
 
         } else {
