@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, Text, Alert, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import MapView, { Marker, Polygon } from 'react-native-maps';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'

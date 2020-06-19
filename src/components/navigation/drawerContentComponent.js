@@ -43,7 +43,6 @@ export default class drawerContentComponents extends Component {
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
-        AsyncStorage.removeItem('appID');
 
         RNSecureStorage.remove('userToken');
         RNSecureStorage.remove('userEmail');

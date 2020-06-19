@@ -7,7 +7,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -150,29 +150,28 @@ class Login extends Component {
                     }
                 })
             })
-            .then((response) => {
-                if (response.status == 200) {
-                    this.setState({ userToken: response.headers.map.authorization });
-                    return response.json()
-                } else {
-                    Alert.alert("Email ou senha inválida.");
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.setState({ userToken: response.headers.map.authorization });
+                        return response.json()
+                    } else {
+                        Alert.alert("Email ou senha inválida.");
+                        this.hideAlert();
+                    }
+                })
+                .then((responseJson) => {
+                    AsyncStorage.setItem('userID', responseJson.user.id.toString());
+                    AsyncStorage.setItem('userName', responseJson.user.user_name);
+                    AsyncStorage.setItem('userAvatar', responseJson.user.picture);
+                    AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
+
+                    RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+
+                    this.props.navigation.navigate('Home');
                     this.hideAlert();
-                }
-            })
-            .then((responseJson) => {
-                AsyncStorage.setItem('userID', responseJson.user.id.toString());
-                AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('userAvatar', responseJson.user.picture);
-                AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
-                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
-
-                RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-
-                this.props.navigation.navigate('Home');
-                this.hideAlert();
-            })
+                })
         }
     }
 }

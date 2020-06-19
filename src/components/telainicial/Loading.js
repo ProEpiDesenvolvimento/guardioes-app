@@ -6,7 +6,7 @@ import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageC
 import LinearGradient from 'react-native-linear-gradient';
 import translate from '../../../locales/i18n';
 import { scale } from '../../utils/scallingUtils';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
@@ -35,7 +35,6 @@ class AuthLoadingScreen extends React.Component {
       AsyncStorage.removeItem('userSelected');
       AsyncStorage.removeItem('avatarSelected');
       AsyncStorage.removeItem('householdID');
-      AsyncStorage.removeItem('appID');
 
       RNSecureStorage.exists('userToken').then((res) => {
         (res) ? RNSecureStorage.remove('userToken') : false;
@@ -68,15 +67,15 @@ class AuthLoadingScreen extends React.Component {
         }
       })
     })
-    .then((response) => {
-      if (response.status == 200) {
-        RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-        this.props.navigation.navigate('BottomMenu');
+      .then((response) => {
+        if (response.status == 200) {
+          RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+          this.props.navigation.navigate('BottomMenu');
 
-      } else {
-        this.props.navigation.navigate('Cadastro');
-      }
-    })
+        } else {
+          this.props.navigation.navigate('Cadastro');
+        }
+      })
   };
 
   // Render any loading content that you like here

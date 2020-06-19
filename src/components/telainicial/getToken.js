@@ -6,7 +6,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 class GetToken extends Component {
