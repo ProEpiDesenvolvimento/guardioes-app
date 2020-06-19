@@ -138,7 +138,7 @@ export default {
             "thanks": "Obrigado!",
             "reportSent": "Seu relato foi enviado.",
             "reportNotSent": "Notamos que você já relatou seu estado de saúde, hoje. Obrigado pela contribuição",
-            "seeADoctor": "Não se esqueça de ir ao médico caso os sintomas perdurem!",
+            "seeADoctor": "Recomendamos que, caso os sintomas continuem, procure atendimento médico!",
             "confirmText": "Voltar"
         }
     },
