@@ -182,6 +182,20 @@ class BadReport extends Component {
 
     sendSurvey = async () => {
         this.showLoadingAlert();
+        try {
+            let currentPin = {
+                household_id: this.state.householdID,
+                latitude: this.state.userLatitude,
+                longitude: this.state.userLongitude,
+                symptom: this.state.symptoms
+            }
+            await AsyncStorage.setItem(
+                "localpin",
+                JSON.stringify(currentPin)
+            )
+        } catch (error) {
+            console.warn("Não conseguiu guardar pino local")
+        }
         return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
             method: 'POST',
             headers: {
