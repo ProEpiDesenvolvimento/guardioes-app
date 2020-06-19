@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, Keyboard, NetInfo } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
@@ -16,7 +16,7 @@ class ChangePwd extends Component {
     constructor(props) {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
-            this.getInfos();
+            this.getInfo();
         });
         this.state = {
             showAlert: false, //Custom Alerts
@@ -37,8 +37,8 @@ class ChangePwd extends Component {
         })
     }
 
-    getInfos = async () => { //Ger user infos
-        let verificationToken = await AsyncStorage.getItem('verificationToken');
+    getInfo = async () => { //Get user info
+        const verificationToken = await RNSecureStorage.get('verificationToken');
         this.setState({ verificationToken });
     }
 
@@ -61,7 +61,7 @@ class ChangePwd extends Component {
                 if (this.state.statusCode == 200) {
                     this.hideAlert();
                     Alert.alert("Senha Redefinida")
-                    AsyncStorage.removeItem('verificationToken');
+                    RNSecureStorage.remove('verificationToken');
                     this.props.navigation.navigate('Login')
                     return response.json()
                 } else {

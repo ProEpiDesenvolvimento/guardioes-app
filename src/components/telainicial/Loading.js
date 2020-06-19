@@ -12,7 +12,6 @@ class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
-    this.getInfo();
   }
 
   getInfo = async () => { // Get user info
@@ -26,6 +25,7 @@ class AuthLoadingScreen extends React.Component {
     const UserID = await AsyncStorage.getItem('userID');
 
     if (UserID !== null) {
+      this.getInfo();
       setTimeout(() => {
         this.verifyUserToken();
       }, 1500);
@@ -36,12 +36,17 @@ class AuthLoadingScreen extends React.Component {
       AsyncStorage.removeItem('avatarSelected');
       AsyncStorage.removeItem('householdID');
       AsyncStorage.removeItem('appID');
-      AsyncStorage.removeItem('appPwd');
 
-      RNSecureStorage.remove('userToken');
-      RNSecureStorage.remove('userEmail');
-      RNSecureStorage.remove('userPwd');
-
+      RNSecureStorage.exists('userToken').then((res) => {
+        (res) ? RNSecureStorage.remove('userToken') : false;
+      });
+      RNSecureStorage.exists('userEmail').then((res) => {
+        (res) ? RNSecureStorage.remove('userEmail') : false;
+      });
+      RNSecureStorage.exists('userPwd').then((res) => {
+        (res) ? RNSecureStorage.remove('userPwd') : false;
+      });
+      
       this.props.navigation.navigate('Cadastro');
     }
   };

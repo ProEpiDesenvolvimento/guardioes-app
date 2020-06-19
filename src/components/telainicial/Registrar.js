@@ -9,6 +9,7 @@ import {
     Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';
@@ -417,14 +418,9 @@ class Registrar extends Component {
                 }
             })
         })
-            .then(async response => {
+            .then((response) => {
                 if (response.status == 200) {
-                    try {
-                        Keychain.setInternetCredentials(response.headers.map.authorization, this.state.userEmail, this.state.userPwd);
-                    } catch (error) {
-                        console.log(error);
-                    }
-
+                    this.setState({ userToken: response.headers.map.authorization });
                     return response.json()
                 } else {
                     alert("Algo deu errado");
@@ -437,6 +433,10 @@ class Registrar extends Component {
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
                 AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
+
+                RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
                 this.props.navigation.navigate('Home');
                 this.hideAlert();

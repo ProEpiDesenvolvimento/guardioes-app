@@ -151,8 +151,8 @@ class Login extends Component {
                 })
             })
             .then((response) => {
-                this.setState({ userToken: response.headers.map.authorization})
                 if (response.status == 200) {
+                    this.setState({ userToken: response.headers.map.authorization });
                     return response.json()
                 } else {
                     Alert.alert("Email ou senha inválida.");

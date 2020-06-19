@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert, Linking, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import { CheckBox } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -31,7 +32,7 @@ class BadReport extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
-        this.getInfos();
+        this.getInfo();
         this.state = {
             cca2: 'BR',
             country: 'Brazil',
@@ -102,19 +103,19 @@ class BadReport extends Component {
             })
     }
 
-    getInfos = async () => { //Ger user infos
-        let userName = await AsyncStorage.getItem('userName');
-        let userSelected = await AsyncStorage.getItem('userSelected');
-        let avatarSelect = await AsyncStorage.getItem('avatarSelected');
-        let userID = await AsyncStorage.getItem('userID');
-        let userToken = await AsyncStorage.getItem('userToken');
+    getInfo = async () => { //Get user info
+        const userID = await AsyncStorage.getItem('userID');
+        const userName = await AsyncStorage.getItem('userName');
+        const userSelected = await AsyncStorage.getItem('userSelected');
+        const avatarSelect = await AsyncStorage.getItem('avatarSelected');
+        const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userName, userSelected, avatarSelect, userID, userToken });
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected === this.state.userName) {
             this.setState({ householdID: null })
         } else {
-            let householdID = await AsyncStorage.getItem('householdID');
+            const householdID = await AsyncStorage.getItem('householdID');
             this.setState({ householdID })
         }
         this.getSymptoms();

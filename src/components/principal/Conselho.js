@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import { Redirect } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import { API_URL } from '../../utils/constUtils';
@@ -15,7 +16,7 @@ class Conselho extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.log(payload)
-            //this.getInfos();
+            //this.getInfo();
         });
         this.state = {
             modalVisible: false,
@@ -25,16 +26,16 @@ class Conselho extends Component {
     }
 
     componentDidMount() {
-        this.getInfos()
+        this.getInfo()
     }
 
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
 
-    getInfos = async () => { //Ger user infos
-        let userToken = await AsyncStorage.getItem('userToken');
-        let appID = await AsyncStorage.getItem('appID');
+    getInfo = async () => { //Get user info
+        const userToken = await RNSecureStorage.get('userToken');
+        const appID = await AsyncStorage.getItem('appID');
         this.setState({ userToken, appID });
         this.getContents();
     }

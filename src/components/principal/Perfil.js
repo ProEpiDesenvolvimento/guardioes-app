@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { Avatar } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -24,7 +25,7 @@ class Perfil extends Component {
   }
   constructor(props) {
     super(props);
-    this._getInfos();
+    this.getInfo();
     this.state = {
       modalVisibleHousehold: false,
       modalVisibleUser: false,
@@ -55,13 +56,15 @@ class Perfil extends Component {
     );
   }
 
-  _getInfos = async () => { //Ger user infos
-    let userName = await AsyncStorage.getItem('userName');
-    let userID = await AsyncStorage.getItem('userID');
-    let userToken = await AsyncStorage.getItem('userToken');
-    let userAvatar = await AsyncStorage.getItem('userAvatar')
+  getInfo = async () => { //Get user info
+    const userID = await AsyncStorage.getItem('userID');
+    const userName = await AsyncStorage.getItem('userName');
+    const userAvatar = await AsyncStorage.getItem('userAvatar');
+    const userToken = await RNSecureStorage.get('userToken');
+
     this.setState({ userName, userID, userToken, userAvatar });
     this.setState({ userSelect: this.state.userName });
+
     this.getHouseholds();
   }
 

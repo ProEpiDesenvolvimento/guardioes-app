@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, Keyboard, NetInfo } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
@@ -53,7 +53,7 @@ class GetToken extends Component {
                     Alert.alert("Código Inválido")
                 } else {
                     this.hideAlert();
-                    AsyncStorage.setItem('verificationToken', responseJson.reset_password_token);
+                    RNSecureStorage.set('verificationToken', responseJson.reset_password_token, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     this.props.navigation.navigate('ChangePwd')
                 }
             })

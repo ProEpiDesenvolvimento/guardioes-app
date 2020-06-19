@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -37,16 +38,18 @@ export default class drawerContentComponents extends Component {
 
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
     _logoutApp = async () => {
-        AsyncStorage.removeItem('userName');
         AsyncStorage.removeItem('userID');
-        AsyncStorage.removeItem('householdID');
-        AsyncStorage.removeItem('userToken');
-        AsyncStorage.removeItem('appID');
+        AsyncStorage.removeItem('userName');
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('avatarSelected');
-        AsyncStorage.removeItem('userEmail');
-        AsyncStorage.removeItem('appPwd');
-        this.props.navigation.navigate('TelaInicial')
+        AsyncStorage.removeItem('householdID');
+        AsyncStorage.removeItem('appID');
+
+        RNSecureStorage.remove('userToken');
+        RNSecureStorage.remove('userEmail');
+        RNSecureStorage.remove('userPwd');
+        
+        this.props.navigation.navigate('TelaInicial');
     }
 
     render() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
@@ -23,7 +24,7 @@ class Diario extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            //this.getInfos();
+            //this.getInfo();
         });
         this.state = {
             data: [],
@@ -36,7 +37,7 @@ class Diario extends Component {
     }
     
     componentDidMount () {
-        this.getInfos();
+        this.getInfo();
     }
 
 
@@ -55,19 +56,19 @@ class Diario extends Component {
         title: translate("diary.title")
     }
 
-    getInfos = async () => { //Ger user infos
-        let userName = await AsyncStorage.getItem('userName');
-        let userSelected = await AsyncStorage.getItem('userSelected');
-        let avatarSelect = await AsyncStorage.getItem('avatarSelected');
-        let userID = await AsyncStorage.getItem('userID');
-        let userToken = await AsyncStorage.getItem('userToken');
+    getInfo = async () => { //Get user infos
+        const userID = await AsyncStorage.getItem('userID');
+        const userName = await AsyncStorage.getItem('userName');
+        const userSelected = await AsyncStorage.getItem('userSelected');
+        const avatarSelect = await AsyncStorage.getItem('avatarSelected');
+        const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userName, userSelected, userID, userToken, avatarSelect });
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected == this.state.userName) {
             this.setState({ householdID: null })
         } else {
-            let householdID = await AsyncStorage.getItem('householdID');
+            const householdID = await AsyncStorage.getItem('householdID');
             this.setState({ householdID })
         }
 

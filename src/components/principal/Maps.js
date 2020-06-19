@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, Text, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
@@ -16,7 +17,7 @@ class Maps extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            //this.getInfos();
+            //this.getInfo();
             this.getLocation();
         });
         this.state = {
@@ -29,11 +30,11 @@ class Maps extends Component {
     }
 
     componentDidMount (){
-        this.getInfos()
+        this.getInfo()
     }
 
-    getInfos = async () => {
-        let userToken = await AsyncStorage.getItem('userToken');
+    getInfo = async () => {
+        const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userToken });
         this.getSurvey();
     }
