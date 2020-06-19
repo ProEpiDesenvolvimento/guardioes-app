@@ -140,7 +140,8 @@ export default {
             "sending": "Envío...",
             "thanks": "Gracias!",
             "reportSent": "Su relato fue enviado.",
-            "seeADoctor": "No se olvide de ir al médico si los síntomas perduran!",
+            "reportNotSent": "Notamos que ya informó su estado de salud hoy. Gracias por el aporte!",
+            "seeADoctor": "¡Recomendamos que si los síntomas continúan, busque atención médica!",
             "confirmText": "Regreso"
         },
         "datePlaceHolder": "Haga clic aquí para introducir la fecha!"

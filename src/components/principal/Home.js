@@ -38,13 +38,28 @@ class Home extends Component {
             userLongitude: 'unknown',
             error: null,
             showAlert: false, //Custom Alerts
-            showProgressBar: false //Custom Progress Bar
+            showProgressBar: false, //Custom Progress Bar
+            alertMessage: null
         }
     }
 
-
-    showAlert = () => {
+    showAlert = (responseJson) => {
+        let alertMessage = ""
+        if (responseJson !== null && !responseJson.errors) {
+            alertMessage = translate("badReport.alertMessages.reportSent")
+        } else {
+            alertMessage = translate("badReport.alertMessages.reportNotSent")
+        }
         this.setState({
+            alertMessage: <Text>{alertMessage}{emojis[0]}</Text>,
+            showProgressBar: false
+        });
+        console.warn(alertMessage)
+    }
+
+    showLoadingAlert = () => {
+        this.setState({
+            alertMessage: null,
             showAlert: true,
             showProgressBar: true
         });
@@ -199,7 +214,7 @@ class Home extends Component {
       }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
-        this.showAlert();
+        this.showLoadingAlert();
         try {
             let currentPin = {
                 household_id: this.state.householdID,
@@ -231,14 +246,9 @@ class Home extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson !== null) {
-                    this.setState({ showProgressBar: false });
-                    console.warn("ENVIOU")
-                } else {
-                    console.warn("NÂO ENVIOU")
-                    this.setState({ showProgressBar: false });
-                }
+                this.showAlert(responseJson)
             })
+
     }
 
     render() {
@@ -447,7 +457,7 @@ class Home extends Component {
                     show={showAlert}
                     showProgress={this.state.showProgressBar ? true : false}
                     title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-                    message={this.state.showProgressBar ? null : <Text style={{ alignSelf: 'center' }}>{translate("badReport.alertMessages.reportSent")} {emojis[0]}{emojis[0]}{emojis[0]}</Text>}
+                    message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
                     closeOnTouchOutside={this.state.showProgressBar ? false : true}
                     closeOnHardwareBackPress={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
