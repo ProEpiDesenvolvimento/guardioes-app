@@ -120,6 +120,16 @@ export function getGroups() {
     return groups
 }
 
+export function getGroupName(ID) {
+    let groupName = ''
+    ShcoolsSheet.school_units.map(group => {
+        if (group.id === ID) {
+            groupName = group.description;
+        }
+    })
+    return groupName;
+}
+
 /*
 //////USO EM TESTES
 const Data = [
