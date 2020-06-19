@@ -252,6 +252,9 @@ class Perfil extends Component {
 
   showUserModal = async () => {
     await this.setState({ modalVisibleUser: true })
+    if (this.userGroup !== null) {
+      await this.setState({ groupCheckbox: true })
+    }
   }
 
   handleCancel = async () => {
@@ -407,7 +410,7 @@ class Perfil extends Component {
               <View style={styles.viewCommom}>
                 <Text style={styles.commomText}>{translate("register.name")}</Text>
                 <TextInput style={styles.formInput}
-                  placeholder={this.state.userName}
+                  value={this.state.userSelect}
                   onChangeText={text => this.setState({ userSelect: text })}
                 />
               </View>
@@ -524,7 +527,6 @@ class Perfil extends Component {
                     this.setState({ riskGroup: !this.state.riskGroup })
                   }}
                 />*/}
-
                 <CheckBox
                   title={"É integrante de alguma instituição de Ensino?"}
                   containerStyle={styles.CheckBoxStyle}
@@ -550,7 +552,7 @@ class Perfil extends Component {
                     <TextInput style={styles.formInput50}
                       returnKeyType='done'
                       keyboardType='number-pad'
-                      placeholder={this.state.userIdCode}
+                      value={this.state.userIdSelect}
                       onChangeText={text => this.setState({ userIdSelect: text })}
                     />
                   </View>

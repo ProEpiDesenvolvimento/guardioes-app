@@ -121,7 +121,7 @@ export function getGroups(){
 }*/
 
 export function getGroupName(ID) {
-    let groupName = ''
+    let groupName = []
     fetch(`${API_URL}/school_units/`, {
         headers: {
             Accept: 'application/vnd.api+json',
@@ -130,10 +130,10 @@ export function getGroupName(ID) {
     })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.warn(responseJson)
+            //console.warn(responseJson)
             responseJson.school_units.map(group => {
                 if (group.id === ID) {
-                    groupName = group.description;
+                    groupName.push(group.description)
                 }
             })
         })
