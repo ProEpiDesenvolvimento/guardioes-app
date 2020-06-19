@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Image, Alert, Keyboard, NetInfo } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as Keychain from 'react-native-keychain';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
@@ -18,6 +18,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userToken: null,
             userEmail: null,
             userPwd: null,
             showAlert: false, //Custom Alerts
@@ -149,8 +150,8 @@ class Login extends Component {
                     }
                 })
             })
-            .then(async response => {
-                await Keychain.setInternetCredentials(response.headers.map.authorization, this.state.userEmail, this.state.userPwd);
+            .then((response) => {
+                this.setState({ userToken: response.headers.map.authorization})
                 if (response.status == 200) {
                     return response.json()
                 } else {
@@ -164,6 +165,10 @@ class Login extends Component {
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
                 AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
+
+                RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
                 this.props.navigation.navigate('Home');
                 this.hideAlert();

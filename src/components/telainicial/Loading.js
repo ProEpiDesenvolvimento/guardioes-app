@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Image, StatusBar, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import * as Keychain from 'react-native-keychain';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
 import LinearGradient from 'react-native-linear-gradient';
 import translate from '../../../locales/i18n';
@@ -12,11 +12,18 @@ class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
+    this.getInfo();
+  }
+
+  getInfo = async () => { // Get user info
+    const userEmail = await RNSecureStorage.get('userEmail');
+    const userPwd = await RNSecureStorage.get('userPwd');
+    this.setState({ userEmail, userPwd });
   }
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-    let UserID = await AsyncStorage.getItem('userID');
+    const UserID = await AsyncStorage.getItem('userID');
 
     if (UserID !== null) {
       setTimeout(() => {
@@ -30,16 +37,17 @@ class AuthLoadingScreen extends React.Component {
       AsyncStorage.removeItem('householdID');
       AsyncStorage.removeItem('appID');
       AsyncStorage.removeItem('appPwd');
-      await Keychain.resetInternetCredentials();
+
+      RNSecureStorage.remove('userToken');
+      RNSecureStorage.remove('userEmail');
+      RNSecureStorage.remove('userPwd');
 
       this.props.navigation.navigate('Cadastro');
     }
   };
 
   verifyUserToken = async () => {
-    const credentials = await Keychain.getInternetCredentials();
-    //console.log(credentials);
-    //console.log(credentials.username);
+    console.log(this.state.userEmail);
 
     return fetch(`${API_URL}/user/login`, {
       method: 'POST',
@@ -50,20 +58,20 @@ class AuthLoadingScreen extends React.Component {
       body: JSON.stringify({
         user:
         {
-          email: credentials.username,
-          password: credentials.password
+          email: this.state.userEmail,
+          password: this.state.userPwd
         }
       })
     })
-      .then(async response => {
-        if (response.status == 200) {
-          await Keychain.setInternetCredentials(response.headers.map.authorization, credentials.username, credentials.password);
-          this.props.navigation.navigate('BottomMenu');
+    .then((response) => {
+      if (response.status == 200) {
+        RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+        this.props.navigation.navigate('BottomMenu');
 
-        } else {
-          this.props.navigation.navigate('Cadastro');
-        }
-      })
+      } else {
+        this.props.navigation.navigate('Cadastro');
+      }
+    })
   };
 
   // Render any loading content that you like here

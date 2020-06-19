@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
@@ -78,7 +79,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.getInfos()
+        this.getInfo()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -104,21 +105,22 @@ class Home extends Component {
         );
     }
 
-    getInfos = async () => { //Ger user infos
-        let userName = await AsyncStorage.getItem('userName');
-        let userID = await AsyncStorage.getItem('userID');
-        let userToken = await AsyncStorage.getItem('userToken');
-        let userAvatar = await AsyncStorage.getItem('userAvatar');
-        let isProfessional = await AsyncStorage.getItem('isProfessional')
-        this.setState({ userName, userID, userToken, userAvatar, isProfessional });
+    getInfo = async () => { //Get user infos
+        const userID = await AsyncStorage.getItem('userID');
+        const userName = await AsyncStorage.getItem('userName');
+        const userAvatar = await AsyncStorage.getItem('userAvatar');
+        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userToken = await RNSecureStorage.get('userToken');
+        
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken });
+        this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
 
-        await this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
         AsyncStorage.setItem('userSelected', this.state.userSelect);
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();
     }
 
-    getHouseholds = () => {//Get households
+    getHouseholds = async () => { //Get households
         //console.warn("UserID " + this.state.userID + " Token " + this.state.userToken)
         return fetch(`${API_URL}/users/${this.state.userID}/households`, {
             headers: {
@@ -126,13 +128,13 @@ class Home extends Component {
                 Authorization: `${this.state.userToken}`
             },
         })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({
-                    data: responseJson.households,
-                })
-                //console.warn(this.state.data)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            this.setState({
+                data: responseJson.households,
             })
+            //console.warn(this.state.data)
+        })
     }
 
     verifyLocalization = async () => {
