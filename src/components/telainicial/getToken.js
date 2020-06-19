@@ -72,7 +72,7 @@ class GetToken extends Component {
                         style={styles.formInput}
                         autoCapitalize='none'
                         autoCorrect={false}
-                        multiline={false} maxLength={33}
+                        multiline={false}
                         onChangeText={async (text) => await this.setState({ verificationToken: text })}
                     />
                     <View style={styles.buttonView}>

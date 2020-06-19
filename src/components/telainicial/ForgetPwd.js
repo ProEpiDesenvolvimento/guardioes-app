@@ -72,7 +72,8 @@ class ForgetPwd extends Component {
                         autoCorrect={false}
                         returnKeyType='next'
                         keyboardType='email-address'
-                        multiline={false} maxLength={33}
+                        multiline={false}
+                        maxLength={100}
                         onChangeText={async (text) => await this.setState({ userEmail: text })}
                     />
                     <View style={styles.buttonView}>
