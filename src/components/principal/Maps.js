@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, Text, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
 import { Marker, Point } from 'react-native-maps';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import Geolocation from 'react-native-geolocation-service';
-import poligonoBR from '../../utils/DF.json'
+import MarkerCluster from '../../utils/MarkerClustering/MarkerCluster'
 
 const greenMarker = require('../../imgs/mapIcons/green-marker.png')
 const redMarker = require('../../imgs/mapIcons/red-marker.png')
@@ -33,7 +31,7 @@ class Maps extends Component {
         });
         this.state = {
             isLoading: true,
-            dataSource: [],
+            surveys: [],
             dataFilterd: [],
             polygonState: "Federal District",
             mapViewPolygon: false
@@ -41,16 +39,18 @@ class Maps extends Component {
     }
 
     componentDidMount() {
-        this.getInfos()
+        this.fetchData()
     }
 
-    getInfos = async () => {
+    fetchData = async () => {
         let userToken = await AsyncStorage.getItem('userToken');
         this.setState({ userToken });
-        this.getSurvey();
+        this.getWeeklySurveys();
+        this.getGoogleMapsApiKey();
     }
 
-    getSurvey = () => {//Get Survey
+    getWeeklySurveys = async () => {
+        let localpin = JSON.parse(await AsyncStorage.getItem('localpin'))
         return fetch(`${API_URL}/surveys/week`, {
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -82,29 +82,14 @@ class Maps extends Component {
                         covidCasesInState = covidCasesInState + 1
                     }
                 }
-            }
-        })
-
-        this.setState({
-            dataFilterd: dataFilterd,
-            reportsInState: reportsInState,
-            badReportsInState: badReportsInState,
-            covidCasesInState: covidCasesInState,
-        })
+            })
     }
 
-    getLocation() {
-        Geolocation.getCurrentPosition(
-            (position) => {
-                this.setState({
-                    region: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: 0.020,
-                        longitudeDelta: 0.020
-                    },
-                    error: null,
-                });
+    getGoogleMapsApiKey = async () => {
+        return fetch(`${API_URL}/googlemapsapikey`, {
+            headers: {
+                Accept: 'application/vnd.api+json',
+                Authorization: `${this.state.userToken}`
             },
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 50000 },
@@ -194,21 +179,11 @@ class Maps extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <ClusteredMapView
-                    style={{ flex: 1 }}
-                    data={this.coordsFilter()}
-                    initialRegion={INIT_REGION}
-                    ref={(r) => { this.map = r }}
-                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker}}
-                    renderCluster={this.renderCluster} />
-                
-                <TouchableOpacity style={styles.mapChange}
-                    onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
-                    <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
-                </TouchableOpacity>
-            </View>
-        );
+            <MarkerCluster
+                initialRegion={INIT_REGION}
+                coords={this.state.surveys}
+                googlemapsapikey={this.state.googlemapsapikey} />
+        )
     }
 }
 

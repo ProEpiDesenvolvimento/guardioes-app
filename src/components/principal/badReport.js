@@ -42,12 +42,28 @@ class BadReport extends Component {
             symptoms: [],
             today_date: today,
             showAlert: false, //Custom Alerts
-            showProgressBar: false //Custom Progress Bar
+            progressBarAlert: false, //Custom Progress Bar
+            alertMessage: null
         }
     }
 
-    showAlert = () => {
+    showAlert = (responseJson) => {
+        let alertMessage = ""
+        if (responseJson !== null && !responseJson.errors) {
+            alertMessage = translate("badReport.alertMessages.reportSent")
+        } else {
+            alertMessage = translate("badReport.alertMessages.reportNotSent")
+        }
         this.setState({
+            alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
+            progressBarAlert: false
+        });
+        console.warn(alertMessage)
+    }
+
+    showLoadingAlert = () => {
+        this.setState({
+            alertMessage: null,
             showAlert: true,
             progressBarAlert: true
         });
@@ -165,7 +181,21 @@ class BadReport extends Component {
     }
 
     sendSurvey = async () => {
-        this.showAlert();
+        this.showLoadingAlert();
+        try {
+            let currentPin = {
+                household_id: this.state.householdID,
+                latitude: this.state.userLatitude,
+                longitude: this.state.userLongitude,
+                symptom: this.state.symptoms
+            }
+            await AsyncStorage.setItem(
+                "localpin",
+                JSON.stringify(currentPin)
+            )
+        } catch (error) {
+            console.warn("Não conseguiu guardar pino local")
+        }
         return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
             method: 'POST',
             headers: {
@@ -189,14 +219,7 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson !== null) {
-                    this.setState({ showProgressBar: false });
-                    console.warn("ENVIOU")
-                    this.props.navigation.navigate('Mapa')
-                } else {
-                    console.warn("NÂO ENVIOU")
-                    this.setState({ showProgressBar: false });
-                }
+                this.showAlert(responseJson)
             })
     }
 
@@ -437,7 +460,7 @@ class BadReport extends Component {
                     show={showAlert}
                     showProgress={this.state.progressBarAlert ? true : false}
                     title={this.state.progressBarAlert ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}</Text>}
-                    message={this.state.progressBarAlert ? null : <Text>{translate("badReport.alertMessages.reportSent")}{"\n"}{translate("badReport.alertMessages.seeADoctor")} {emojis[0]}{emojis[0]}{emojis[0]}</Text>}
+                    message={<Text>{this.state.alertMessage}</Text>}
                     closeOnTouchOutside={this.state.progressBarAlert ? false : true}
                     closeOnHardwareBackPress={false}
                     showCancelButton={false}
