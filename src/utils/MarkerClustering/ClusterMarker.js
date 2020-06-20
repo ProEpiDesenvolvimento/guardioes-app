@@ -12,7 +12,7 @@ export default class ClusterMarker extends Component {
   render() {
     const pointCount = this.props.properties.point_count // eslint-disable-line camelcase
     const latitude = this.props.geometry.coordinates[1],
-          longitude = this.props.geometry.coordinates[0]
+      longitude = this.props.geometry.coordinates[0]
 
     if (this.props.renderCluster) {
       const cluster = {

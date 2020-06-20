@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
-import { Marker, Point } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import MarkerCluster from '../../utils/MarkerClustering/MarkerCluster'
+import Geolocation from 'react-native-geolocation-service';
+import poligonoBR from '../../utils/DF.json'
 
 const greenMarker = require('../../imgs/mapIcons/green-marker.png')
 const redMarker = require('../../imgs/mapIcons/red-marker.png')
@@ -31,7 +33,7 @@ class Maps extends Component {
         });
         this.state = {
             isLoading: true,
-            surveys: [],
+            dataSource: [],
             dataFilterd: [],
             polygonState: "Federal District",
             mapViewPolygon: false
@@ -39,18 +41,16 @@ class Maps extends Component {
     }
 
     componentDidMount() {
-        this.fetchData()
+        this.getInfos()
     }
 
-    fetchData = async () => {
+    getInfos = async () => {
         let userToken = await AsyncStorage.getItem('userToken');
         this.setState({ userToken });
-        this.getWeeklySurveys();
-        this.getGoogleMapsApiKey();
+        this.getSurvey();
     }
 
-    getWeeklySurveys = async () => {
-        let localpin = JSON.parse(await AsyncStorage.getItem('localpin'))
+    getSurvey = () => {//Get Survey
         return fetch(`${API_URL}/surveys/week`, {
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -82,14 +82,29 @@ class Maps extends Component {
                         covidCasesInState = covidCasesInState + 1
                     }
                 }
-            })
+            }
+        })
+
+        this.setState({
+            dataFilterd: dataFilterd,
+            reportsInState: reportsInState,
+            badReportsInState: badReportsInState,
+            covidCasesInState: covidCasesInState,
+        })
     }
 
-    getGoogleMapsApiKey = async () => {
-        return fetch(`${API_URL}/googlemapsapikey`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-                Authorization: `${this.state.userToken}`
+    getLocation() {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    region: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.020,
+                        longitudeDelta: 0.020
+                    },
+                    error: null,
+                });
             },
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 50000 },
@@ -138,11 +153,12 @@ class Maps extends Component {
     coordsFilter() {
         const markers = []
         this.state.dataSource.map(mark => {
-            markers.push({location: {
-                latitude: mark.latitude,
-                longitude: mark.longitude,
-            },
-            symptoms: (mark.symptom && mark.symptom.length > 0)
+            markers.push({
+                location: {
+                    latitude: mark.latitude,
+                    longitude: mark.longitude,
+                },
+                symptoms: (mark.symptom && mark.symptom.length > 0)
             })
         })
         return markers
@@ -159,31 +175,41 @@ class Maps extends Component {
 
         const healthyPercentage = clusteredPoints.filter(x => !x.properties.item.symptoms).length / pointCount
         let reqNum = Math.floor(healthyPercentage * 100.0)
-        while(!imgLevels.includes(reqNum)) {
+        while (!imgLevels.includes(reqNum)) {
             reqNum--
         }
         return (
-            <Marker 
+            <Marker
                 coordinate={coordinate}
                 image={reqFiles[imgLevels.indexOf(reqNum)]}
                 anchor={{ x: 0.5, y: 1 }}
                 centerOffset={{ x: 0.5, y: 1 }}
                 title={'Pessoas: ' + pointCount}
-                description={'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage)*100.0) + '%'}> 
+                description={'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'}>
             </Marker>
         )
     }
 
-    renderBadMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={redMarker} style={{ width: 13, height: 14 }}/>
-    renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={greenMarker} style={{ width: 13, height: 14 }}/>
+    renderBadMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={redMarker} style={{ width: 13, height: 14 }} />
+    renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={greenMarker} style={{ width: 13, height: 14 }} />
 
     render() {
         return (
-            <MarkerCluster
-                initialRegion={INIT_REGION}
-                coords={this.state.surveys}
-                googlemapsapikey={this.state.googlemapsapikey} />
-        )
+            <View style={styles.container}>
+                <ClusteredMapView
+                    style={{ flex: 1 }}
+                    data={this.coordsFilter()}
+                    initialRegion={INIT_REGION}
+                    ref={(r) => { this.map = r }}
+                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
+                    renderCluster={this.renderCluster} />
+
+                <TouchableOpacity style={styles.mapChange}
+                    onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
+                    <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 }
 
