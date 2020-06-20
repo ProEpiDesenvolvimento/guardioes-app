@@ -50,7 +50,8 @@ class Maps extends Component {
         this.getSurvey();
     }
 
-    getSurvey = () => {//Get Survey
+    getSurvey = async () => {//Get Survey
+        let localpin = JSON.parse(await AsyncStorage.getItem('localpin'))
         return fetch(`${API_URL}/surveys/week`, {
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -59,9 +60,15 @@ class Maps extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    dataSource: responseJson.surveys
-                })
+                if (localpin !== null) {
+                    this.setState({
+                        dataSource: [...responseJson.surveys, localpin]
+                    })
+                } else {
+                    this.setState({
+                        dataSource: responseJson.surveys
+                    })
+                }
                 this.getSurveyPerState()
             })
     }
