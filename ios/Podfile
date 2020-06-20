@@ -46,6 +46,8 @@ target 'guardioesapp' do
 
   pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'guardioesappTests' do
     inherit! :search_paths
     # Pods for testing
