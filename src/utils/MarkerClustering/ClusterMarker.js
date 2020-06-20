@@ -7,12 +7,6 @@ import React, { Component } from 'react'
 export default class ClusterMarker extends Component {
   constructor(props) {
     super(props)
-
-    this.onPress = this.onPress.bind(this)
-  }
-
-  onPress() {
-    this.props.onPress(this.props)
   }
 
   render() {
@@ -25,8 +19,9 @@ export default class ClusterMarker extends Component {
         pointCount,
         coordinate: { latitude, longitude },
         clusterId: this.props.properties.cluster_id,
+        healthyPercentage: this.props.healthyPercentage
       }
-      return this.props.renderCluster(cluster, this.onPress)
+      return this.props.renderCluster(cluster)
     }
 
     throw "Implement renderCluster method prop to render correctly cluster marker!"

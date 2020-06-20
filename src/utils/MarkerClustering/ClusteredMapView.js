@@ -68,8 +68,8 @@ export default class ClusteredMapView extends PureComponent {
 
   splitHealthyUnhealthy(data) {
     return {
-      unhealthy: data.filter((el) => el.properties.item.symptoms !== null && el.properties.item.symptoms.length > 0),
-      healthy: data.filter((el) => (el.properties.item.symptoms === null || el.properties.item.symptoms.length === 0))
+      unhealthy: data.filter(el => el.symptoms),
+      healthy: data.filter(el => !el.symptoms)
     }
   }
 
@@ -78,21 +78,17 @@ export default class ClusteredMapView extends PureComponent {
       extent: this.props.extent,
       minZoom: this.props.minZoom,
       maxZoom: this.props.maxZoom,
-      radius: this.props.radius || (this.dimensions[0] * .07), // 7% of screen width
+      radius: this.props.radius || (this.dimensions[0] * .06), // 6% of screen width
     })
 
     // get formatted GeoPoints for cluster
     const rawData = dataset.map(item => itemToGeoJSONFeature(item, this.props.accessor))
 
-    const groups = this.splitHealthyUnhealthy(rawData) // GRUPO DE DOENTE E NAO DOENTE
-    
-    this.index.load(groups.healthy)
+    this.index.load(rawData)
     
     const clusters = this.getClusters(this.state.region)
 
-    this.state.unhealthy = groups.unhealthy
-
-    this.setState({ data: [...clusters, ...groups.unhealthy] })
+    this.setState({ data: [...clusters] })
   }
 
   clustersChanged(nextState) {
@@ -100,7 +96,7 @@ export default class ClusteredMapView extends PureComponent {
   }
 
   onRegionChangeComplete(region) {
-    let data = [...this.getClusters(region), ...this.state.unhealthy]
+    let data = [...this.getClusters(region)]
     this.setState({ region, data }, () => {
         this.props.onRegionChangeComplete && this.props.onRegionChangeComplete(region, data)
     })
@@ -149,16 +145,15 @@ export default class ClusteredMapView extends PureComponent {
           this.props.clusteringEnabled && this.state.data.map((d) => {
             if (d.properties.point_count === 0) // SE NÂO FIZER PARTE DE UM CLUSTER
             {
-              if (d.properties.item.symptoms === null || d.properties.item.symptoms.length === 0) // SE FOR SAUDAVEL
-                return this.props.renderMarker.good(d.properties.item) // DESENHA PINO VERDE
-              else
+              if (d.properties.item.symptoms) // SE FOR SAUDAVEL
                 return this.props.renderMarker.bad(d.properties.item) // DESENHA PINO VERMELHO
+              else
+                return this.props.renderMarker.good(d.properties.item) // DESENHA PINO VERDE
             }
             // SE FAZ PARTE DE UM CLUSTER
             return (
               <ClusterMarker
                 {...d}
-                onPress={this.onClusterPress}
                 renderCluster={this.props.renderCluster}
                 key={`cluster-${d.properties.cluster_id}`} />
 
@@ -218,3 +213,6 @@ ClusteredMapView.propTypes = {
   // mutiple
   accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 }
+
+
+[0,120]
