@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
 import { Marker } from 'react-native-maps';
-import { API_URL } from 'react-native-dotenv';
+import {API_URL} from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'

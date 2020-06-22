@@ -4,7 +4,7 @@ import RNSecureStorage from 'rn-secure-storage';
 import MapView, { Marker } from 'react-native-maps';
 import Feather from 'react-native-vector-icons/Feather';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { API_URL } from 'react-native-dotenv';
+import {API_URL} from 'react-native-dotenv';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';

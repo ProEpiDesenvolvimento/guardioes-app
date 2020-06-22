@@ -1,5 +1,5 @@
 import translate from '../../locales/i18n';
-import { API_URL } from 'react-native-dotenv';
+import {API_URL} from 'react-native-dotenv';
 import ShcoolsSheet from '../utils/shoolsSheet.json';
 
 export const localSymptom = [

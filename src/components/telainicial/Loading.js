@@ -6,7 +6,7 @@ import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageC
 import LinearGradient from 'react-native-linear-gradient';
 import translate from '../../../locales/i18n';
 import { scale } from '../../utils/scallingUtils';
-import { API_URL } from 'react-native-dotenv';
+import {API_URL} from 'react-native-dotenv';
 
 class AuthLoadingScreen extends React.Component {
   constructor(props) {

@@ -7,7 +7,7 @@ import { Avatar, CheckBox } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
-import { API_URL } from 'react-native-dotenv';
+import {API_URL} from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName } from '../../utils/selectorUtils';

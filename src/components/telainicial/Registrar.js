@@ -17,7 +17,7 @@ import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from 'react-native-dotenv';
+import {API_URL} from 'react-native-dotenv';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
@@ -102,6 +102,7 @@ class Registrar extends Component {
         const { query } = this.state;
         const school_units = this.findFilm(query);
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
+        console.warn(API_URL)
 
         return (
             <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
