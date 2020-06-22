@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
 import { Marker } from 'react-native-maps';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'
@@ -28,7 +29,7 @@ class Maps extends Component {
         loadFiles()
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            //this.getInfos();
+            //this.fetchData();
             this.getLocation();
         });
         this.state = {
@@ -41,11 +42,11 @@ class Maps extends Component {
     }
 
     componentDidMount() {
-        this.getInfos()
+        this.fetchData()
     }
 
-    getInfos = async () => {
-        let userToken = await AsyncStorage.getItem('userToken');
+    fetchData = async () => {
+        const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userToken });
         this.getSurvey();
     }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, Keyboard, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image, Alert, Keyboard, NetInfo } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -17,10 +18,9 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userToken: null,
             userEmail: null,
             userPwd: null,
-            userToken: null,
-            statusCode: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false //Custom Progress Bar
         }
@@ -130,51 +130,50 @@ class Login extends Component {
     }
 
     //Login Function 
-    login = () => {
+    login = async () => {
         if (this.state.userEmail == null || this.state.userPwd == null) {
             Alert.alert('Os campos não podem ficar em branco')
         } else {
-        Keyboard.dismiss()
-        this.showAlert()
-        return fetch(`${API_URL}/user/login`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user:
-                {
-                    email: this.state.userEmail,
-                    password: this.state.userPwd
-                }
+            Keyboard.dismiss()
+            this.showAlert()
+            return fetch(`${API_URL}/user/login`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user:
+                    {
+                        email: this.state.userEmail,
+                        password: this.state.userPwd
+                    }
+                })
             })
-        })
-            .then((response) => {
-                this.setState({ userToken: response.headers.map.authorization, statusCode: response.status})
-                if (this.state.statusCode == 200) {
-                    return response.json()
-                } else {
-                    Alert.alert("Email ou senha inválida.");
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.setState({ userToken: response.headers.map.authorization });
+                        return response.json()
+                    } else {
+                        Alert.alert("Email ou senha inválida.");
+                        this.hideAlert();
+                    }
+                })
+                .then((responseJson) => {
+                    AsyncStorage.setItem('userID', responseJson.user.id.toString());
+                    AsyncStorage.setItem('userName', responseJson.user.user_name);
+                    AsyncStorage.setItem('userAvatar', responseJson.user.picture);
+                    AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
+
+                    RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+
+                    this.props.navigation.navigate('Home');
                     this.hideAlert();
-                }
-            })
-            .then((responseJson) => {
-                AsyncStorage.setItem('userID', responseJson.user.id.toString());
-                AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('userToken', this.state.userToken);
-                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
-                AsyncStorage.setItem('userAvatar', responseJson.user.picture);
-                AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
-
-                AsyncStorage.setItem('userEmail', this.state.userEmail);
-                AsyncStorage.setItem('userPwd', this.state.userPwd);
-
-                this.props.navigation.navigate('Home');
-                this.hideAlert();
-            })
+                })
+        }
     }
-}
 }
 
 const emojis = [

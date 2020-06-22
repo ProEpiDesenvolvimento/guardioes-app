@@ -38,6 +38,7 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
+*.env
 *.keystore
 !debug.keystore
 android/app/gds-upload-keystore.jks

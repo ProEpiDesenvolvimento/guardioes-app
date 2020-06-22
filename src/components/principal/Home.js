@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';
@@ -93,7 +94,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.getInfos()
+        this.getInfo()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -119,15 +120,16 @@ class Home extends Component {
         );
     }
 
-    getInfos = async () => { //Ger user infos
-        let userName = await AsyncStorage.getItem('userName');
-        let userID = await AsyncStorage.getItem('userID');
-        let userToken = await AsyncStorage.getItem('userToken');
-        let userAvatar = await AsyncStorage.getItem('userAvatar');
-        let isProfessional = await AsyncStorage.getItem('isProfessional')
-        this.setState({ userName, userID, userToken, userAvatar, isProfessional });
+    getInfo = async () => { //Get user infos
+        const userID = await AsyncStorage.getItem('userID');
+        const userName = await AsyncStorage.getItem('userName');
+        const userAvatar = await AsyncStorage.getItem('userAvatar');
+        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userToken = await RNSecureStorage.get('userToken');
+        
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken });
+        this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
 
-        await this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
         AsyncStorage.setItem('userSelected', this.state.userSelect);
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();

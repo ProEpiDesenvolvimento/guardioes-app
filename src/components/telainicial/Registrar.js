@@ -12,11 +12,12 @@ import {
     ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
@@ -59,7 +60,6 @@ class Registrar extends Component {
             userCity: null,
             userRace: null,
             userDob: null,
-            userToken: null,
             userGroup: null,
             userIdCode: null,
             riskGroup: null,
@@ -461,15 +461,9 @@ class Registrar extends Component {
                 }
             })
         })
-            .then(async response => {
-                // this.setState({ userToken: response.headers.map.authorization, statusCode: response.status })
+            .then((response) => {
                 if (response.status == 200) {
-                    try {
-                        AsyncStorage.setItem('userToken', response.headers.map.authorization);
-                    } catch (error) {
-                        console.log(error);
-                    }
-
+                    this.setState({ userToken: response.headers.map.authorization });
                     return response.json()
                 } else {
                     alert("Algo deu errado");
@@ -479,12 +473,12 @@ class Registrar extends Component {
             .then((responseJson) => {
                 AsyncStorage.setItem('userID', responseJson.user.id.toString());
                 AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 
-                AsyncStorage.setItem('userEmail', this.state.userEmail);
-                AsyncStorage.setItem('userPwd', this.state.userPwd);
+                RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
                 this.props.navigation.navigate('Home');
                 this.hideAlert();

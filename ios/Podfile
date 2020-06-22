@@ -44,6 +44,8 @@ target 'guardioesapp' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage'
+
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   target 'guardioesappTests' do

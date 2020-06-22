@@ -1,50 +1,58 @@
 import React from 'react';
 import { ActivityIndicator, Image, StatusBar, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
 import LinearGradient from 'react-native-linear-gradient';
 import translate from '../../../locales/i18n';
 import { scale } from '../../utils/scallingUtils';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 
 class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
-    this.getInfos();
   }
 
-  getInfos = async () => { //Ger user infos
-    let userEmail = await AsyncStorage.getItem('userEmail');
-    let userPwd = await AsyncStorage.getItem('userPwd');
+  getInfo = async () => { // Get user info
+    const userEmail = await RNSecureStorage.get('userEmail');
+    const userPwd = await RNSecureStorage.get('userPwd');
     this.setState({ userEmail, userPwd });
-    console.log(this.state.userEmail)
   }
+
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-    let UserID = await AsyncStorage.getItem('userID');
+    const UserID = await AsyncStorage.getItem('userID');
 
     if (UserID !== null) {
+      this.getInfo();
       setTimeout(() => {
         this.verifyUserToken();
       }, 1500);
     } else {
-      AsyncStorage.removeItem('userName');
       AsyncStorage.removeItem('userID');
-      AsyncStorage.removeItem('householdID');
-      AsyncStorage.removeItem('userToken');
-      AsyncStorage.removeItem('appID');
+      AsyncStorage.removeItem('userName');
       AsyncStorage.removeItem('userSelected');
       AsyncStorage.removeItem('avatarSelected');
-      AsyncStorage.removeItem('userEmail');
-      AsyncStorage.removeItem('appPwd');
+      AsyncStorage.removeItem('householdID');
 
+      RNSecureStorage.exists('userToken').then((res) => {
+        (res) ? RNSecureStorage.remove('userToken') : false;
+      });
+      RNSecureStorage.exists('userEmail').then((res) => {
+        (res) ? RNSecureStorage.remove('userEmail') : false;
+      });
+      RNSecureStorage.exists('userPwd').then((res) => {
+        (res) ? RNSecureStorage.remove('userPwd') : false;
+      });
+      
       this.props.navigation.navigate('Cadastro');
     }
   };
 
-
   verifyUserToken = async () => {
+    console.log(this.state.userEmail);
+
     return fetch(`${API_URL}/user/login`, {
       method: 'POST',
       headers: {
@@ -61,7 +69,7 @@ class AuthLoadingScreen extends React.Component {
     })
       .then((response) => {
         if (response.status == 200) {
-          AsyncStorage.setItem('userToken', response.headers.map.authorization);
+          RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
           this.props.navigation.navigate('BottomMenu');
 
         } else {

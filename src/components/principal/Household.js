@@ -10,11 +10,12 @@ import {
     Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household } from '../../utils/selectorUtils';
 
@@ -31,7 +32,7 @@ class Registrar extends Component {
     }
     constructor(props) {
         super(props);
-        this.getInfos();
+        this.getInfo();
         this.state = {
             statusCode: null,
             kinship: 'Pai',
@@ -74,9 +75,9 @@ class Registrar extends Component {
         });
     }
 
-    getInfos = async () => {
-        let userID = await AsyncStorage.getItem('userID');
-        let userToken = await AsyncStorage.getItem('userToken');
+    getInfo = async () => {
+        const userID = await AsyncStorage.getItem('userID');
+        const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userID, userToken });
     }
 

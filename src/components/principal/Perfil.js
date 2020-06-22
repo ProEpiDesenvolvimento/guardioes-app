@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
 import { Avatar, CheckBox } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
-import { API_URL } from '../../utils/constUtils';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName } from '../../utils/selectorUtils';
@@ -25,7 +26,7 @@ class Perfil extends Component {
   }
   constructor(props) {
     super(props);
-    this._getInfos();
+    this.getInfo();
     this.state = {
       modalVisibleHousehold: false,
       modalVisibleUser: false,
@@ -56,15 +57,16 @@ class Perfil extends Component {
     );
   }
 
-  _getInfos = async () => { //Ger user infos
-    let userName = await AsyncStorage.getItem('userName');
-    let userID = await AsyncStorage.getItem('userID');
-    let userToken = await AsyncStorage.getItem('userToken');
-    let userAvatar = await AsyncStorage.getItem('userAvatar')
+  getInfo = async () => { //Get user info
+    const userID = await AsyncStorage.getItem('userID');
+    const userName = await AsyncStorage.getItem('userName');
+    const userAvatar = await AsyncStorage.getItem('userAvatar');
+    const userToken = await RNSecureStorage.get('userToken');
+
     this.setState({ userName, userID, userToken, userAvatar });
     await this.getAllUserInfos();
-    this.setState({ userSelect: this.state.userName })
-    this.setState({ userIdSelect: this.state.userIdCode })
+    this.setState({ userSelect: this.state.userName });
+    this.setState({ userIdSelect: this.state.userIdCode });
     this.getHouseholds();
   }
 
