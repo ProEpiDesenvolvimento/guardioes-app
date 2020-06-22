@@ -1,5 +1,6 @@
 import translate from '../../locales/i18n';
 import { API_URL } from './constUtils';
+import ShcoolsSheet from '../utils/shoolsSheet.json';
 
 export const localSymptom = [
     { key: 'Instituição de Ensino', label: 'Instituição de Ensino' },
@@ -79,7 +80,7 @@ export const household = [
 ];
 
 
-export function getGroups(){
+/*export function getGroups(){
     const groups = []
     fetch(`${API_URL}/groups/`, {
         headers: {
@@ -94,13 +95,57 @@ export function getGroups(){
             })
         })
     return groups
+}*/
+
+export function getGroups(){
+    const groups = []
+    fetch(`${API_URL}/school_units/`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            responseJson.school_units.map(group => {
+                groups.push({ key: group.id, label: group.description })
+            })
+        })
+    return groups
 }
 
+/*export function getGroups() {
+    const groups = []
+    ShcoolsSheet.school_units.map(group => {
+        groups.push({ key: group.id, label: group.description })
+    })
+    return groups
+}*/
+
+export function getGroupName(ID) {
+    let groupName = []
+    fetch(`${API_URL}/school_units/`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            //console.warn(responseJson)
+            responseJson.school_units.map(group => {
+                if (group.id === ID) {
+                    groupName.push(group.description)
+                }
+            })
+        })
+    return groupName;
+}
 
 /*
 //////USO EM TESTES
 const Data = [
-    {  
+    {
       "id": 1,
       "description": "Turma UnB",
       "kind": "Universidade",

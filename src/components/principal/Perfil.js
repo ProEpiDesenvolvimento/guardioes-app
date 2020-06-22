@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Imagem from '../../imgs/imageConst';
-import { Avatar } from 'react-native-elements';
+import { Avatar, CheckBox } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
 import { API_URL } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
-import { gender, country, race, household } from '../../utils/selectorUtils';
+import { gender, country, race, household, getGroups, getGroupName } from '../../utils/selectorUtils';
+import { state, getCity } from '../../utils/brasil';
 
 let data = new Date();
 let d = data.getDate();
@@ -61,7 +62,9 @@ class Perfil extends Component {
     let userToken = await AsyncStorage.getItem('userToken');
     let userAvatar = await AsyncStorage.getItem('userAvatar')
     this.setState({ userName, userID, userToken, userAvatar });
-    this.setState({ userSelect: this.state.userName });
+    await this.getAllUserInfos();
+    this.setState({ userSelect: this.state.userName })
+    this.setState({ userIdSelect: this.state.userIdCode })
     this.getHouseholds();
   }
 
@@ -185,9 +188,14 @@ class Perfil extends Component {
         {
           user_name: this.state.userName,
           birthdate: this.state.userDob,
-          country: this.state.userCountry,
           gender: this.state.userGender,
-          race: this.state.userRace
+          race: this.state.userRace,
+          school_unit_id: this.state.userGroup,
+          identification_code: this.state.userIdCode,
+          is_professional: this.state.isProfessional,
+          risk_group: this.state.riskGroup,
+          state: this.state.userState,
+          city: this.state.userCity
         }
       )
     })
@@ -203,10 +211,9 @@ class Perfil extends Component {
   }
 
   getAllUserInfos = () => {
-    return fetch(`${API_URL}/user/login`, {
-      method: 'POST',
+    return fetch(`${API_URL}/users/${this.state.userID}`, {
+      method: 'GET',
       headers: {
-        Accept: 'application/vnd.api+json',
         Authorization: `${this.state.userToken}`
       }
     }).then((response) => {
@@ -214,11 +221,52 @@ class Perfil extends Component {
         console.warn(response.status)
         return response.json()
       } else {
-        alert("Algo deu errado");
+        console.warn(response.status)
       }
     }).then((responseJson) => {
-      console.warn(responseJson)
+      responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).join('');
+      responseJson.user.birthdate = responseJson.user.birthdate.split('');
+      let str = '';
+      str = responseJson.user.birthdate[8] + responseJson.user.birthdate[9] + '-' + responseJson.user.birthdate[5] + responseJson.user.birthdate[6] + '-';
+      str += responseJson.user.birthdate[0] + responseJson.user.birthdate[1] + responseJson.user.birthdate[2] + responseJson.user.birthdate[3];
+
+      let groupName = getGroupName(responseJson.user.school_unit_id);
+
+      this.setState({
+        userName: responseJson.user.user_name,
+        userDob: str,
+        userCountry: responseJson.user.country,
+        userGender: responseJson.user.gender,
+        userRace: responseJson.user.race,
+        userGroup: responseJson.user.school_unit_id,
+        userIdCode: responseJson.user.identification_code,
+        userEmail: responseJson.user.email,
+        isProfessional: responseJson.user.is_professional,
+        riskGroup: responseJson.user.risk_group,
+        userState: responseJson.user.state,
+        userCity: responseJson.user.city,
+        userGroupName: groupName
+      })
     })
+  }
+
+  showUserModal = async () => {
+    await this.setState({ modalVisibleUser: true })
+    if (this.userGroup !== null) {
+      await this.setState({ groupCheckbox: true })
+    }
+  }
+
+  handleCancel = async () => {
+    await this.setState({ modalVisibleUser: false })
+    await this.getAllUserInfos()
+    await this.setState({ userSelect: this.state.userName, userIdSelect: this.state.userIdCode })
+  }
+
+  handleEdit = async () => {
+    await this.setState({ modalVisibleUser: false })
+    await this.setState({ userName: this.state.userSelect, userIdCode: this.state.userIdSelect })
+    this.editUser()
   }
 
   render() {
@@ -271,7 +319,7 @@ class Perfil extends Component {
 
             <View style={styles.viewRow}>
               <View style={styles.viewChildSexoRaca}>
-                <Text style={styles.commomTextView}>Nascimento</Text>
+                <Text style={styles.commomTextView}>Nascimento:</Text>
                 <DatePicker
                   style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
                   showIcon={false}
@@ -335,8 +383,8 @@ class Perfil extends Component {
                   this.avatarHouseholdSelector();
                   this.setModalVisible(!this.state.modalVisibleHousehold);
                 }} />
-                <View style={{margin: 5}}></View>
-                <Button
+              <View style={{ margin: 5 }}></View>
+              <Button
                 title="Cancelar"
                 color="#348EAC"
                 onPress={() => {
@@ -344,6 +392,190 @@ class Perfil extends Component {
                 }} />
             </View>
           </View>
+        </Modal>
+
+        <Modal //Modal view for User
+          animationType="fade"
+          transparent={true}
+          visible={this.state.modalVisibleUser}
+          onRequestClose={this.handleCancel}
+          propagateSwipe={true}>
+          <ScrollView>
+            <View style={styles.modalView}>
+              <View style={styles.viewCommom, { paddingBottom: 0, marginBottom: 0 }}>
+                <Text style={styles.commomText}>Email:</Text>
+                <Text style={{ color: 'gray', fontSize: 17, textAlign: "center" }}>{this.state.userEmail}</Text>
+              </View>
+
+              <View style={styles.viewCommom}>
+                <Text style={styles.commomText}>{translate("register.name")}</Text>
+                <TextInput style={styles.formInput}
+                  value={this.state.userSelect}
+                  onChangeText={text => this.setState({ userSelect: text })}
+                />
+              </View>
+
+              <View style={styles.viewRow}>
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={gender}
+                    initValue={this.state.userGender}
+                    onChange={(option) => this.setState({ userGender: option.key })}
+                  />
+                </View>
+
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>{translate("register.race")}</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={race}
+                    initValue={this.state.userRace}
+                    onChange={(option) => this.setState({ userRace: option.key })}
+                  />
+                </View>
+
+              </View>
+
+              <View style={styles.viewRow}>
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>Nascimento:</Text>
+                  <DatePicker
+                    style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'lightgray' }}
+                    showIcon={false}
+                    date={this.state.userDob}
+                    androidMode='spinner'
+                    locale={'pt-BR'}
+                    mode="date"
+                    placeholder={this.state.userDob}
+                    format="DD-MM-YYYY"
+                    minDate="01-01-1918"
+                    maxDate={today}
+                    confirmBtnText={translate("birthDetails.confirmButton")}
+                    cancelBtnText={translate("birthDetails.cancelButton")}
+                    customStyles={{
+                      dateInput: {
+                        borderWidth: 0
+                      },
+                      dateText: {
+                        justifyContent: "center",
+                        fontFamily: 'roboto',
+                        fontSize: 17
+                      },
+                      placeholderText: {
+                        justifyContent: "center",
+                        fontFamily: 'roboto',
+                        fontSize: 15,
+                        color: 'black'
+                      }
+                    }}
+                    onDateChange={date => this.setState({ userDob: date })}
+                  />
+                </View>
+
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>País de Origem:</Text>
+                  <Text style={styles.textBornCountry}>{this.state.userCountry}</Text>
+                </View>
+              </View>
+
+              {this.state.userCountry == "Brazil" ?
+                <View style={styles.viewRow}>
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Estado:</Text>
+                    <ModalSelector
+                      initValueTextStyle={{ color: 'black', fontSize: 14 }}
+                      style={{ width: '80%', height: '70%' }}
+                      data={state}
+                      initValue={this.state.userState}
+                      onChange={(option) => this.setState({ userState: option.key })}
+                    />
+                  </View>
+
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Cidade:</Text>
+                    <ModalSelector
+                      initValueTextStyle={{ color: 'black', fontSize: 14 }}
+                      style={{ width: '80%', height: '70%' }}
+                      data={getCity(this.state.userState)}
+                      initValue={this.state.userCity}
+                      onModalClose={(option) => this.setState({ userCity: option.key, initValueCity: option.key })}
+                    />
+                  </View>
+                </View>
+                : null}
+
+              <View style={{ paddingTop: 15 }}>
+                {/*<CheckBox
+                  title={"Voce é um profissional da Saude"}
+                  checked={this.state.isProfessional}
+                  containerStyle={styles.CheckBoxStyle}
+                  size={scale(16)}
+                  onPress={() => {
+                    this.setState({ isProfessional: !this.state.isProfessional })
+                  }}
+                />
+                <CheckBox
+                  title={"Faz parte do Grupo de Risco?"}
+                  checked={this.state.riskGroup}
+                  containerStyle={styles.CheckBoxStyle}
+                  size={scale(16)}
+                  onPress={() => {
+                    this.setState({ riskGroup: !this.state.riskGroup })
+                  }}
+                />*/}
+                <CheckBox
+                  title={"É integrante de alguma instituição de Ensino?"}
+                  containerStyle={styles.CheckBoxStyle}
+                  size={scale(16)}
+                  checked={this.state.groupCheckbox}
+                  onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
+                />
+              </View>
+              {this.state.groupCheckbox ?
+                <View style={styles.viewRow}>
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Instituição:</Text>
+                    <ModalSelector
+                      initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                      style={{ width: '80%', height: '70%' }}
+                      data={getGroups()}
+                      initValue={this.state.userGroupName}
+                      onChange={(option) => this.setState({ userGroup: option.key, userGroupName: option.label })}
+                    />
+                  </View>
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                    <TextInput style={styles.formInput50}
+                      returnKeyType='done'
+                      keyboardType='number-pad'
+                      value={this.state.userIdSelect}
+                      onChangeText={text => this.setState({ userIdSelect: text })}
+                    />
+                  </View>
+                </View>
+                : null}
+
+              <View style={styles.buttonView}>
+                <Button
+                  title="Editar"
+                  color="#348EAC"
+                  onPress={async () => {
+                    await this.handleEdit()
+                  }} />
+                <View style={{ margin: 5 }}></View>
+                <Button
+                  title="Cancelar"
+                  color="#348EAC"
+                  onPress={() => {
+                    this.handleCancel();
+                  }} />
+              </View>
+            </View>
+          </ScrollView>
         </Modal>
 
         <View style={styles.viewTop}>
@@ -359,6 +591,13 @@ class Perfil extends Component {
             <Text style={styles.userName}>
               {this.state.userName}
             </Text>
+            <View style={{ paddingLeft: 20, justifyContent: 'center' }}>
+              <View style={styles.viewButtons}>
+                <TouchableOpacity onPress={this.showUserModal}>
+                  <FontAwesome name="edit" size={scale(25)} color='rgba(255, 255, 255, 1)' />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
           <View style={{ alignSelf: 'center', marginRight: 10 }}>
           </View>
@@ -435,6 +674,7 @@ const styles = StyleSheet.create({
     marginRight: scale(80),
     borderColor: 'green',
     //borderWidth: 1,
+    flexDirection: 'row'
   },
   userName: {
     fontFamily: 'roboto',
@@ -442,6 +682,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginTop: 15,
+    width: '70%'
   },
   userDobText: {
     fontFamily: 'roboto',
@@ -477,11 +718,14 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   modalView: {
+    paddingTop: 30,
+    paddingBottom: 30,
     alignSelf: 'center',
     width: '93%',
     //height: '60%',
     //padding: 15,
-    marginTop: '35%',
+    marginTop: '15%',
+    marginBottom: '15%',
     borderRadius: 20,
     backgroundColor: 'white',
     shadowColor: 'gray',
@@ -491,7 +735,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 1.0,
-    elevation: 15
+    elevation: 15,
   },
   viewCommom: {
     width: '100%',
@@ -535,6 +779,15 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     paddingTop: 2,
   },
+  formInput50: {
+    width: "80%",
+    height: 35,
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#348EAC',
+    paddingBottom: 0,
+    paddingTop: 2,
+  },
   commomText: {
     fontSize: 17,
     fontFamily: 'roboto',
@@ -560,6 +813,14 @@ const styles = StyleSheet.create({
   textCountry: {
     fontSize: 15,
     fontFamily: 'roboto',
+  },
+  textBornCountry: {
+    width: '80%',
+    height: '60%',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    fontSize: 17,
+    color: 'gray'
   }
 });
 
