@@ -24,9 +24,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { gender, country, race, getGroups } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 import Autocomplete from 'react-native-autocomplete-input';
-import ShcoolsSheet from '../../utils/shoolsSheet.json';
-
-
 
 let data = new Date();
 let d = data.getDate();
@@ -84,7 +81,7 @@ class Registrar extends Component {
     };
 
     componentDidMount() {
-        this.setState({ school_units: ShcoolsSheet.school_units })
+        //this.setState({ school_units: ShcoolsSheet.school_units }) //Usado para o autocomplete
     }
 
     findFilm(query) {
@@ -102,7 +99,6 @@ class Registrar extends Component {
         const { query } = this.state;
         const school_units = this.findFilm(query);
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
-        console.warn(API_URL)
 
         return (
             <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>

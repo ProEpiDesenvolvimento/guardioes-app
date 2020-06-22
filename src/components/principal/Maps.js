@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
 import { Marker } from 'react-native-maps';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'
@@ -70,7 +70,7 @@ class Maps extends Component {
                         dataSource: responseJson.surveys
                     })
                 }
-                this.getSurveyPerState()
+                //this.getSurveyPerState() //Lógica que filtra casos de covid
             })
     }
 
@@ -212,10 +212,10 @@ class Maps extends Component {
                     renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
                     renderCluster={this.renderCluster} />
 
-                <TouchableOpacity style={styles.mapChange}
+                {/*<TouchableOpacity style={styles.mapChange}
                     onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
                     <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
-                </TouchableOpacity>
+        </TouchableOpacity>*/}
             </View>
         );
     }

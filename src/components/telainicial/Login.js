@@ -111,7 +111,15 @@ class Login extends Component {
                                 //console.warn(this.state.userEmail + " + " + this.state.userPwd)
                             }
                             />
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>
+                            <View style={{ marginTop: '5%'}}></View>
+                            <Button
+                            title={"Esqueci Minha Senha"}
+                            color="#348EAC"
+                            onPress={() => 
+                                this.props.navigation.navigate('ForgetPwd')
+                            }
+                            />
+                            {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>*/}
                         </View>
                 </View>
                 <AwesomeAlert
