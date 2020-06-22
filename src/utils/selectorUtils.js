@@ -8,18 +8,20 @@ export const localSymptom = [
 ];
 
 export const gender = [
-    { key: 'Masculino', label: translate("genderChoices.male") },
-    { key: 'Feminino', label: translate("genderChoices.female") },
+    { key: 'Mulher Cis', label: translate('genderChoices.cisWoman') },
+    { key: 'Homem Cis', label: translate("genderChoices.cisMan") },
+    { key: 'Mulher Trans', label: translate("genderChoices.transWoman") },
+    { key: 'Homem Trans', label: translate("genderChoices.transMan") },
+    { key: 'Não-binárie', label: translate("genderChoices.nonBinary") },
+    { key: 'Intersexo', label: translate("genderChoices.intersex") }
 ];
 
 export const race = [
     { key: 'Branco', label: translate("raceChoices.white") },
     { key: 'Indígena', label: translate("raceChoices.indian") },
-    { key: 'Mestiço', label: translate("raceChoices.mix") },
-    { key: 'Negro, mulato o afrodescendiente', label: translate("raceChoices.black") },
-    { key: 'Palenquero', label: translate("raceChoices.palenquero") },
-    { key: 'Raizal', label: translate("raceChoices.raizal") },
-    { key: 'Rom-Gitano', label: translate("raceChoices.romGitano") }
+    { key: 'Pardo', label: translate("raceChoices.mix") },
+    { key: 'Preto', label: translate("raceChoices.black") },
+    { key: 'Amarelo', label: translate("raceChoices.asian") }
 ];
 
 export const country = [
