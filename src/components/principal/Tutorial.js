@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
 
 

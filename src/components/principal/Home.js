@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, AsyncStorage, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { API_URL } from '../../constUtils';
+import {API_URL} from 'react-native-dotenv';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';
@@ -37,13 +39,28 @@ class Home extends Component {
             userLongitude: 'unknown',
             error: null,
             showAlert: false, //Custom Alerts
-            showProgressBar: false //Custom Progress Bar
+            showProgressBar: false, //Custom Progress Bar
+            alertMessage: null
         }
     }
 
-
-    showAlert = () => {
+    showAlert = (responseJson) => {
+        let alertMessage = ""
+        if (responseJson !== null && !responseJson.errors) {
+            alertMessage = translate("badReport.alertMessages.reportSent")
+        } else {
+            alertMessage = translate("badReport.alertMessages.reportNotSent")
+        }
         this.setState({
+            alertMessage: <Text>{alertMessage}{emojis[0]}</Text>,
+            showProgressBar: false
+        });
+        console.warn(alertMessage)
+    }
+
+    showLoadingAlert = () => {
+        this.setState({
+            alertMessage: null,
             showAlert: true,
             showProgressBar: true
         });
@@ -77,7 +94,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.getInfos()
+        this.getInfo()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -103,18 +120,33 @@ class Home extends Component {
         );
     }
 
-    getInfos = async () => { //Ger user infos
-        let userName = await AsyncStorage.getItem('userName');
-        let userID = await AsyncStorage.getItem('userID');
-        let userToken = await AsyncStorage.getItem('userToken');
-        let userAvatar = await AsyncStorage.getItem('userAvatar');
-        let isProfessional = await AsyncStorage.getItem('isProfessional')
-        this.setState({ userName, userID, userToken, userAvatar, isProfessional });
+    getInfo = async () => { //Get user infos
+        const userID = await AsyncStorage.getItem('userID');
+        const userName = await AsyncStorage.getItem('userName');
+        const userAvatar = await AsyncStorage.getItem('userAvatar');
+        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userToken = await RNSecureStorage.get('userToken');
+        
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken });
+        this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
 
-        await this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
         AsyncStorage.setItem('userSelected', this.state.userSelect);
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();
+    }
+
+    getNameParts = (fullName, firstandLast = false) => {
+        if (fullName) {
+            let nameParts = fullName.split(" ");
+            let length = nameParts.length;
+
+            if (firstandLast && length > 1) {
+                return `${nameParts[0]} ${nameParts[length-1]}`;
+            }
+            else {
+                return nameParts[0];
+            }
+        }
     }
 
     getHouseholds = () => {//Get households
@@ -184,7 +216,20 @@ class Home extends Component {
       }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
-        this.showAlert();
+        this.showLoadingAlert();
+        try {
+            let currentPin = {
+                household_id: this.state.householdID,
+                latitude: this.state.userLatitude,
+                longitude: this.state.userLongitude
+            }
+            await AsyncStorage.setItem(
+                "localpin",
+                JSON.stringify(currentPin)
+            )
+        } catch (error) {
+            console.warn("Não conseguiu guardar pino local")
+        }
         return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
             method: 'POST',
             headers: {
@@ -203,21 +248,17 @@ class Home extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson !== null) {
-                    this.setState({ showProgressBar: false });
-                    console.warn("ENVIOU")
-                } else {
-                    console.warn("NÂO ENVIOU")
-                    this.setState({ showProgressBar: false });
-                }
+                this.showAlert(responseJson)
             })
+
     }
 
     render() {
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
-        const welcomeMessage = translate("home.hello") + this.state.userName;
-        const householdHowYouFellingText = translate("home.householdHowYouFelling_part_1") + this.state.householdName + translate("home.householdHowYouFelling_part_2");
+
+        const welcomeMessage = translate("home.hello") + this.getNameParts(this.state.userName);
+        const householdHowYouFellingText = translate("home.householdHowYouFelling_part_1") + this.getNameParts(this.state.householdName) + translate("home.householdHowYouFelling_part_2");
         const householdsData = this.state.data;
 
         const logoBR = (
@@ -296,11 +337,12 @@ class Home extends Component {
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor='#348EAC' />
-                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={scale(30)} color='rgba(22, 107, 135, 0.2)' style={{alignSelf: 'flex-start', marginLeft: '3%', marginTop: '2%'}}/>
 
                 <View style={styles.viewImage}>
                     {imageType}
                 </View>
+
+                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={scale(30)} color='rgba(22, 107, 135, 0.2)' style={{position: 'absolute', left: '3%', top: '2%'}}/>
 
                 <View style={styles.viewWelcome}>
                     <Text style={styles.textHelloUser}>
@@ -337,7 +379,7 @@ class Home extends Component {
                                                 AsyncStorage.removeItem('householdID');
                                             }}
                                         />
-                                        <Text>{this.state.userName}</Text>
+                                        <Text>{this.getNameParts(this.state.userName, true)}</Text>
                                     </View>
                                     <ScrollView horizontal={true}>
                                         {householdsData != null ?
@@ -357,7 +399,7 @@ class Home extends Component {
                                                                 AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                             }}
                                                         />
-                                                        <Text>{household.description}</Text>
+                                                        <Text>{this.getNameParts(household.description, true)}</Text>
                                                     </View>
                                                 )
                                             })
@@ -387,7 +429,7 @@ class Home extends Component {
                                 this.setModalVisible(true);
                             }}
                         />
-                        <Text>{this.state.userSelect}</Text>
+                        <Text>{this.getNameParts(this.state.userSelect, true)}</Text>
                     </View>
                     <View style={styles.viewHouseholdAdd}>
                         <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => navigate('Household')}>
@@ -417,7 +459,7 @@ class Home extends Component {
                     show={showAlert}
                     showProgress={this.state.showProgressBar ? true : false}
                     title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-                    message={this.state.showProgressBar ? null : <Text style={{ alignSelf: 'center' }}>{translate("badReport.alertMessages.reportSent")} {emojis[0]}{emojis[0]}{emojis[0]}</Text>}
+                    message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
                     closeOnTouchOutside={this.state.showProgressBar ? false : true}
                     closeOnHardwareBackPress={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
@@ -455,13 +497,11 @@ const emojis = [
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 550,
         backgroundColor: 'white',
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     viewImage: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         //margin: '10%',
@@ -471,7 +511,7 @@ const styles = StyleSheet.create({
         //borderWidth: 1,
     },
     imageLogo: {
-        height: scale(128),
+        height: scale(120),
         resizeMode: 'contain',
     },
     viewWelcome: {
@@ -480,11 +520,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     textHelloUser: {
-        fontSize: 40,
+        fontSize: 35,
         fontFamily: 'roboto',
         color: '#166B87',
         alignSelf: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: '5%'
     },
     textNewGuardion: {
         fontSize: 20,
@@ -559,7 +600,8 @@ const styles = StyleSheet.create({
             height: 3
         },
         shadowRadius: 5,
-        shadowOpacity: 1.0
+        shadowOpacity: 1.0,
+        elevation: 15
     },
     modalViewTop: {
         flexDirection: 'row'

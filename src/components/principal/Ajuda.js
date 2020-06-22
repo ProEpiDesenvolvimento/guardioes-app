@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { imgTermos, imgTutorial } from '../../imgs/imageConst';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 
 class Ajuda extends Component {

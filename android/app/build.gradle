@@ -1,3 +1,4 @@
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -131,8 +132,8 @@ android {
         applicationId "com.guardioesapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "2.0.1"
+        versionCode 21
+        versionName "2.1.0"
     }
     splits {
         abi {
@@ -188,6 +189,10 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-secure-storage')
+    implementation project(':react-native-webview')
+    implementation project(':@react-native-community_async-storage')
+    implementation project(':react-native-onesignal')
     implementation project(':react-native-i18n')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -211,3 +216,12 @@ task copyDownloadableDepsToLibs(type: Copy) {
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal 
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+    }
+}

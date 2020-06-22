@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, AsyncStorage, Modal } from 'react-native';
-import { Redirect } from '../../constUtils';
+import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
+import RNSecureStorage from 'rn-secure-storage';
+import { Redirect } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
-import { scale } from '../scallingUtils';
+import { API_URL, APP_ID } from 'react-native-dotenv';
+import { scale } from '../../utils/scallingUtils';
 
 
 class Conselho extends Component {
@@ -13,8 +14,8 @@ class Conselho extends Component {
     constructor(props) {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            this.getInfos();
+            //console.log(payload)
+            //this.getInfo();
         });
         this.state = {
             modalVisible: false,
@@ -23,14 +24,17 @@ class Conselho extends Component {
         }
     }
 
+    componentDidMount() {
+        this.getInfo()
+    }
+
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
 
-    getInfos = async () => { //Ger user infos
-        let userToken = await AsyncStorage.getItem('userToken');
-        let appID = await AsyncStorage.getItem('appID');
-        this.setState({ userToken, appID });
+    getInfo = async () => { //Get user info
+        const userToken = await RNSecureStorage.get('userToken');
+        this.setState({ userToken });
         this.getContents();
     }
 
@@ -83,17 +87,20 @@ class Conselho extends Component {
                         <ScrollView>
                             <Text style={styles.modalBodyText}>{this.state.contentBody}</Text>
                         </ScrollView>
+                        <TouchableOpacity style={{alignSelf: "center"}} onPress={() => Redirect("Mais Informações", "Deseja ser redirecionado para a fonte do conteúdo?", this.state.contentSource)}>
+                            <Text style={styles.textSource}>Clique aqui Para Saber Mais!</Text>
+                        </TouchableOpacity>
                     </View>
                 </Modal>
 
                 {contentsData != null ?
                     contentsData.map(content => {
-                        if (content.app.id == this.state.appID) {
+                        if (content.app.id == APP_ID) {
                             return (
                                 <ScrollView>
                                     <TouchableOpacity onPress={() => {
                                         this.setModalVisible(true)
-                                        this.setState({ contentTitle: content.title, contentBody: content.body })
+                                        this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
                                     }}>
                                         <View style={styles.selector}>
                                             <Text style={styles.textSelector}>{content.title}</Text>
@@ -104,24 +111,24 @@ class Conselho extends Component {
                         }
                     })
                     : null}
-                    <TouchableOpacity
-                        style={styles.selector}
-                        onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
-                    >
-                        <Text style={styles.textSelector}>
-                            {translate("advices.buttons.healthInst")}
-                        </Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.selector}
+                    onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
+                >
+                    <Text style={styles.textSelector}>
+                        {translate("advices.buttons.healthInst")}
+                    </Text>
+                </TouchableOpacity>
 
-                    {/* Farmacias */}
-                    <TouchableOpacity
-                        style={styles.selector}
-                        onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
-                    >
-                        <Text style={styles.textSelector}>
+                {/* Farmacias */}
+                <TouchableOpacity
+                    style={styles.selector}
+                    onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
+                >
+                    <Text style={styles.textSelector}>
                         {translate("advices.buttons.pharmacy")}
-                        </Text>
-                    </TouchableOpacity>
+                    </Text>
+                </TouchableOpacity>
             </View>
 
         );
@@ -143,10 +150,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         margin: 7,
-        elevation: 5,
         backgroundColor: '#fff',
         padding: 10,
-        borderRadius: 5
+        borderRadius: 5,
+        shadowColor: 'gray',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowRadius: 2,
+        shadowOpacity: 1.0,
+        elevation: 5
     },
     textSelector: {
         fontFamily: 'roboto',
@@ -157,11 +171,10 @@ const styles = StyleSheet.create({
         color: '#348EAC'
     },
     modalView: {
+        flex: 1,
         alignSelf: 'center',
         width: '93%',
-        //height: '88%',
-        marginTop: '6%',
-        marginBottom: '10%',
+        marginVertical: "10%",
         paddingTop: '5%',
         paddingHorizontal: '5%',
         borderRadius: 15,
@@ -172,7 +185,8 @@ const styles = StyleSheet.create({
             height: 3
         },
         shadowRadius: 5,
-        shadowOpacity: 1.0
+        shadowOpacity: 1.0,
+        elevation: 15
     },
     modalTitle: {
         flexDirection: 'row',
@@ -186,14 +200,23 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 3,
         marginLeft: 5,
-        color: '#348EAC'
+        color: '#348EAC',
     },
-    modalBodyText: {
-        textAlign: 'justify',
+    textSource: {
+        fontFamily: 'roboto',
         fontSize: 16,
-        marginTop: 7,
+        fontWeight: 'bold',
+        marginBottom: 3,
         marginLeft: 5,
         color: '#348EAC',
+    },
+    modalBodyText: {
+        height: "100%",
+        textAlign: 'justify',
+        fontSize: 16,
+        //marginTop: 7,
+        //marginLeft: 5,
+        color: '#348EAC'
     }
 });
 

@@ -1,16 +1,18 @@
 export default {
     "genderChoices": {
-        "male": "Masculino",
-        "female": "Feminino"
+        "cisWoman": "Mulher Cis",
+        "cisMan": "Homem Cis",
+        "transWoman": "Mulher Trans",
+        "transMan": "Homem Trans",
+        "nonBinary": "Não-binárie",
+        "intersex": "Intersexo"
     },
     "raceChoices": {
         "white": "Branco",
         "indian": "Indígena",
-        "mix": "Mestiço",
-        "black": "Negro",
-        "palenquero": "Palenquero",
-        "raizal": "Raizal",
-        "romGitano": "Rom-Gitano"
+        "mix": "Pardo",
+        "black": "Preto",
+        "asian": "Amarelo"
     },
     "birthDetails": {
         "format": "DD/MM/AAAA",
@@ -140,7 +142,8 @@ export default {
             "sending": "Enviando...",
             "thanks": "Obrigado!",
             "reportSent": "Seu relato foi enviado.",
-            "seeADoctor": "Não se esqueça de ir ao médico caso os sintomas perdurem!",
+            "reportNotSent": "Notamos que você já relatou seu estado de saúde hoje. Obrigado pela contribuição!",
+            "seeADoctor": "Recomendamos que, caso os sintomas continuem, procure atendimento médico!",
             "confirmText": "Voltar"
         },
         "datePlaceHolder": "Haga clic aquí para introducir la fecha!"
@@ -251,12 +254,12 @@ export default {
         "mensagemBtnUnb": 'Deseja ser redirecionado ao website da UnB?',
         "linkBtnUnb": 'https://www.unb.br',
 
-        "tituloBtnCenteias": 'Universidade de Brasilia - CENTEIAS',
-        "mensagemBtnCenteias": 'Deseja ser redirecionado ao website do Centeias?',
-        "linkBtnCenteias": 'https://fs.unb.br/centeias/',
+        "tituloBtnProEpi": 'ProEpi - Associação Brasileira de Profissionais de Epidemiologia de Campo',
+        "mensagemBtnProEpi": 'Deseja ser redirecionado ao website da ProEpi?',
+        "linkBtnProEPi": 'https://proepi.org.br/',
 
-        "textoSobreTitulo": '\nSobre a Aplicação Guardiões da Saúde\n',
-        "textoSobre": 'A aplicação "Guardiões da Saúde" foi desenvolvida para celulares e tablets com sistema operacional Android, em um trabalho colaborativo do Ministério da Saúde do Brasil e apoio da Fundação Skoll para os Jogos Olímpicos. Uma nova versão está sendo desenvolvida pela Universidade de Brasília e pela ProEpi. O Instituto Nacional de Saúde está integrado a essa cooperação para que a ferramenta também possa ser usada na Colômbia como estratégia para fortalecer o monitoramento de eventos de interesse em saúde pública e a detecção de surtos relacionados a eventos massivos.'
+        "textoSobreTitulo": '\nProjeto Guardiões da Saúde\n',
+        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.'
     },
     "useTerms": {
         "title": "Termos e Políticas",

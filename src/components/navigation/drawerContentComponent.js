@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { moderateScale, verticalScale, scale } from '../scallingUtils';
+import { moderateScale, verticalScale, scale } from '../../utils/scallingUtils';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
@@ -21,6 +23,8 @@ export default class drawerContentComponents extends Component {
         }
     }
 
+
+
     //Funcao responsavel por pegar as variaveis do Facebook e salva-las em variaveis de estado 
     getInfo = async () => {
         let userName = await AsyncStorage.getItem('userName');
@@ -28,24 +32,29 @@ export default class drawerContentComponents extends Component {
         this.setState({ userName, userAvatar })
     }
 
+    componentDidMount() {
+        this.getInfo()
+    }
+
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
     _logoutApp = async () => {
-        AsyncStorage.removeItem('userName');
         AsyncStorage.removeItem('userID');
-        AsyncStorage.removeItem('householdID');
-        AsyncStorage.removeItem('userToken');
-        AsyncStorage.removeItem('appID');
+        AsyncStorage.removeItem('userName');
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('avatarSelected');
-        AsyncStorage.removeItem('userEmail');
-        AsyncStorage.removeItem('appPwd');
-        this.props.navigation.navigate('TelaInicial')
+        AsyncStorage.removeItem('householdID');
+
+        RNSecureStorage.remove('userToken');
+        RNSecureStorage.remove('userEmail');
+        RNSecureStorage.remove('userPwd');
+        
+        this.props.navigation.navigate('TelaInicial');
     }
 
     render() {
         const { navigate } = this.props.navigation;
 
-        this.getInfo();
+        //this.getInfo();
 
         return (
             <View style={styles.container}>
@@ -108,6 +117,13 @@ export default class drawerContentComponents extends Component {
                     >
                         <Feather name='help-circle' size={verticalScale(25)} style={styles.iconStyle} />
                         <Text style={styles.drawerItemsTxt}>{translate("drawer.toHelp")}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.itemsContainer}
+                        onPress={() => navigate('Sobre')}
+                    >
+                        <Entypo name='info-with-circle' size={verticalScale(25)} color='gray' style={[styles.iconStyle, { paddingRight: '16%' }]} />
+                        <Text style={styles.drawerItemsTxt}>{translate("drawer.toAbout")}</Text>
                     </TouchableOpacity>
 
                     <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 85 }]}>

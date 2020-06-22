@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Modal, Dimensions, TextInput, AsyncStorage, Keyboard, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Modal, Dimensions, TextInput, Keyboard, ScrollView } from 'react-native';
+import RNSecureStorage from 'rn-secure-storage';
 import MapView, { Marker } from 'react-native-maps';
 import Feather from 'react-native-vector-icons/Feather';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { API_URL } from '../../constUtils';
+import {API_URL} from 'react-native-dotenv';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import Geolocation from 'react-native-geolocation-service';
 
 EvilIcons.loadFont();
@@ -99,7 +100,7 @@ export class Rumor extends Component {
 
   _createRumor = async () => {
     Keyboard.dismiss();
-    const user_token = await AsyncStorage.getItem('userToken');
+    const userToken = await RNSecureStorage.get('userToken');
     const { title, description, confirmed_cases, confirmed_deaths } = this.state;
 
     try {
@@ -108,7 +109,7 @@ export class Rumor extends Component {
         headers: {
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/json',
-          Authorization: user_token
+          Authorization: userToken
         },
         body: JSON.stringify({
           rumor: {

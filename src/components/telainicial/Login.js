@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image, ScrollView, Alert, AsyncStorage, Keyboard, NetInfo } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image, Alert, Keyboard, NetInfo } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst'
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import { API_URL } from '../../constUtils';
+import {API_URL} from 'react-native-dotenv';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Login extends Component {
     static navigationOptions = {
@@ -15,10 +18,9 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userToken: null,
             userEmail: null,
             userPwd: null,
-            userToken: null,
-            statusCode: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false //Custom Progress Bar
         }
@@ -83,7 +85,8 @@ class Login extends Component {
                         autoCapitalize='none'
                         returnKeyType='next'
                         keyboardType='email-address'
-                        multiline={false} maxLength={33}
+                        multiline={false}
+                        maxLength={100}
                         onSubmitEditing={() => this.passwordInput.focus()}
                         onChangeText={(text) => this.setState({ userEmail: text })}
                     />
@@ -93,7 +96,7 @@ class Login extends Component {
                         autoCapitalize='none'
                         secureTextEntry={true}
                         multiline={false}
-                        maxLength={15}
+                        maxLength={100}
                         ref={(input) => this.passwordInput = input}
                         onChangeText={(text) => this.setState({ userPwd: text })}
                         onSubmitEditing={() => this.login()}
@@ -103,9 +106,21 @@ class Login extends Component {
                             title={translate("login.loginbutton")}
                             color="#348EAC"
                             //onPress={this._isconnected}
-                            onPress={() => this.login()}
+                            onPress={() => 
+                                this.login()
+                                //console.warn(this.state.userEmail + " + " + this.state.userPwd)
+                            }
                             />
-                    </View>
+                            <View style={{ marginTop: '5%'}}></View>
+                            <Button
+                            title={"Esqueci Minha Senha"}
+                            color="#348EAC"
+                            onPress={() => 
+                                this.props.navigation.navigate('ForgetPwd')
+                            }
+                            />
+                            {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('ForgetPwd')}><Text style={styles.txtForgetPwd}>Esqueci Minha Senha</Text></TouchableOpacity>*/}
+                        </View>
                 </View>
                 <AwesomeAlert
                     show={showAlert}
@@ -115,7 +130,6 @@ class Login extends Component {
                     closeOnHardwareBackPress={false}
                     showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
-
                     confirmButtonColor="#DD6B55"
                 />
             </View>
@@ -124,46 +138,49 @@ class Login extends Component {
     }
 
     //Login Function 
-    login = () => {
-        Keyboard.dismiss()
-        this.showAlert()
-        return fetch(`${API_URL}/user/login`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user:
-                {
-                    email: this.state.userEmail,
-                    password: this.state.userPwd
-                }
+    login = async () => {
+        if (this.state.userEmail == null || this.state.userPwd == null) {
+            Alert.alert('Os campos não podem ficar em branco')
+        } else {
+            Keyboard.dismiss()
+            this.showAlert()
+            return fetch(`${API_URL}/user/login`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user:
+                    {
+                        email: this.state.userEmail,
+                        password: this.state.userPwd
+                    }
+                })
             })
-        })
-            .then((response) => {
-                this.setState({ userToken: response.headers.map.authorization, statusCode: response.status, errorMessage: response._bodyText })
-                if (this.state.statusCode == 200) {
-                    return response.json()
-                } else {
-                    alert(this.state.errorMessage);
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.setState({ userToken: response.headers.map.authorization });
+                        return response.json()
+                    } else {
+                        Alert.alert("Email ou senha inválida.");
+                        this.hideAlert();
+                    }
+                })
+                .then((responseJson) => {
+                    AsyncStorage.setItem('userID', responseJson.user.id.toString());
+                    AsyncStorage.setItem('userName', responseJson.user.user_name);
+                    AsyncStorage.setItem('userAvatar', responseJson.user.picture);
+                    AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
+
+                    RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+
+                    this.props.navigation.navigate('Home');
                     this.hideAlert();
-                }
-            })
-            .then((responseJson) => {
-                AsyncStorage.setItem('userID', responseJson.user.id.toString());
-                AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('userToken', this.state.userToken);
-                AsyncStorage.setItem('appID', responseJson.user.app.id.toString());
-                AsyncStorage.setItem('userAvatar', responseJson.user.picture);
-                AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
-
-                AsyncStorage.setItem('userEmail', this.state.userEmail);
-                AsyncStorage.setItem('userPwd', this.state.userPwd);
-
-                this.props.navigation.navigate('Home');
-                this.hideAlert();
-            })
+                })
+        }
     }
 }
 
@@ -204,8 +221,8 @@ const styles = StyleSheet.create({
     },
     viewImage: {
         flex: 2.5,
-        width: '100%',
-        height: '100%',
+        width: scale(350),
+        //height: '100%',
         alignItems: 'center',
     },
     viewForm: {
@@ -237,7 +254,12 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 9,
         width: '80%',
-        resizeMode: 'center',
+        resizeMode: 'contain',
+    },
+    txtForgetPwd: {
+        marginTop: "5%",
+        textAlign: "center",
+        color: '#465F6C',
     }
 });
 

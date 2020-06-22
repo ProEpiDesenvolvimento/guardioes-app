@@ -1,16 +1,18 @@
 export default {
     "genderChoices": {
-        "male": "Male",
-        "female": "Female"
+        "cisWoman": "Cis Woman",
+        "cisMan": "Cis Man",
+        "transWoman": "Trans Woman",
+        "transMan": "Trans Man",
+        "nonBinary": "Non Binary",
+        "intersex": "Intersex"
     },
     "raceChoices": {
         "white": "White",
         "indian": "Indigenous",
-        "mix": "Mestizo",
+        "mix": "Multiracial",
         "black": "Afrodescendant",
-        "palenquero": "Palenquero",
-        "raizal": "Raizal",
-        "romGitano": "Rom-Gitano"
+        "asian": "Asian"
     },
     "birthDetails": {
         "format": "DD/MM/YYYY",
@@ -137,7 +139,8 @@ export default {
             "sending": "Enviando...",
             "thanks": "Obrigado!",
             "reportSent": "Seu relato foi enviado.",
-            "seeADoctor": "Não se esqueça de ir ao médico caso os sintomas perdurem!",
+            "reportNotSent": "Notamos que você já relatou seu estado de saúde, hoje. Obrigado pela contribuição",
+            "seeADoctor": "Recomendamos que, caso os sintomas continuem, procure atendimento médico!",
             "confirmText": "Voltar"
         }
     },
@@ -247,9 +250,9 @@ export default {
         "mensagemBtnUnb": 'Deseja ser redirecionado ao website da UnB?',
         "linkBtnUnb": 'https://www.unb.br',
 
-        "tituloBtnCenteias": 'Universidade de Brasilia - CENTEIAS',
-        "mensagemBtnCenteias": 'Deseja ser redirecionado ao website do Centeias?',
-        "linkBtnCenteias": 'https://fs.unb.br/centeias/',
+        "tituloBtnProEpi": 'ProEpi - Associação Brasileira de Profissionais de Epidemiologia de Campo',
+        "mensagemBtnProEpi": 'Deseja ser redirecionado ao website da ProEpi?',
+        "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nSobre a Aplicação Guardiões da Saúde\n',
         "textoSobre": 'A aplicação "Guardiões da Saúde" foi desenvolvida para celulares e tablets com sistema operacional Android, em um trabalho colaborativo do Ministério da Saúde do Brasil e apoio da Fundação Skoll para os Jogos Olímpicos. Uma nova versão está sendo desenvolvida pela Universidade de Brasília e pela ProEpi. O Instituto Nacional de Saúde está integrado a essa cooperação para que a ferramenta também possa ser usada na Colômbia como estratégia para fortalecer o monitoramento de eventos de interesse em saúde pública e a detecção de surtos relacionados a eventos massivos.'
