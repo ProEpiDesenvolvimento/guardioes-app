@@ -7,6 +7,9 @@ import {
     Button,
     Keyboard,
     Alert,
+    TouchableOpacity,
+    SafeAreaView,
+    ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
@@ -20,6 +23,9 @@ import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import { gender, country, race, getGroups } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
+import Autocomplete from 'react-native-autocomplete-input';
+import ShcoolsSheet from '../../utils/shoolsSheet.json';
+
 
 
 let data = new Date();
@@ -28,7 +34,7 @@ let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
 // let today = y + "-" + m + "-" + d;
-let minDate = d + "-" + m + "-" + (y - 13) ;
+let minDate = d + "-" + m + "-" + (y - 13);
 // let tomorrow = y + "-" + m + "-" + (d + 1)
 
 class Registrar extends Component {
@@ -38,9 +44,12 @@ class Registrar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            school_units: [],
+            query: '',
             isProfessional: false,
             residence: null,
             residenceCountryCheckbox: true,
+            groupCheckbox: false,
             statusCode: null,
             userName: null,
             userEmail: null,
@@ -72,15 +81,30 @@ class Registrar extends Component {
         this.setState({
             showAlert: false
         })
+    };
+
+    componentDidMount() {
+        this.setState({ school_units: ShcoolsSheet.school_units })
+    }
+
+    findFilm(query) {
+        if (query === '') {
+            return [];
+        }
+
+        const { school_units } = this.state;
+        const regex = new RegExp(`${query.trim()}`, 'i');
+        return school_units.filter(school => school.description.search(regex) >= 0);
     }
 
     render() {
         const { showAlert } = this.state;
-
-
+        const { query } = this.state;
+        const school_units = this.findFilm(query);
+        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
-            <KeyboardAwareScrollView style={styles.container}>
+            <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
                 <View style={styles.scroll}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
@@ -237,7 +261,7 @@ class Registrar extends Component {
                         />
                     </View>
                     <CheckBox
-                        title={"É integrante de alguma instituição?"}
+                        title={"É integrante de alguma instituição de Ensino?"}
                         containerStyle={styles.CheckBoxStyle}
                         size={scale(16)}
                         checked={this.state.groupCheckbox}
@@ -246,7 +270,26 @@ class Registrar extends Component {
                     {this.state.groupCheckbox ?
                         <View style={styles.viewRow}>
                             <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Grupo:</Text>
+                                <Text style={styles.commomTextView}>Instituição:</Text>
+                                {/*<Autocomplete
+                                    style={styles.AutocompleteStyle}
+                                    containerStyle={styles.AutocompleteContainer}
+                                    inputContainerStyle={styles.AutocompleteList}
+                                    listStyle={styles.AutoCompleteListStyles}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
+                                    defaultValue={query}
+                                    onChangeText={text => this.setState({ query: text })}
+                                    //placeholder="Nome da instituição"
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description, userGroup: item.description })}>
+                                            <Text style={styles.itemText}>
+                                                {item.description}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                />*/}
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black' }}
                                     style={{ width: '80%', height: '70%' }}
@@ -328,9 +371,9 @@ class Registrar extends Component {
     avatarSelector = async () => {
         if (this.state.userGender == "Masculino") {
             await this.setState({ picture: "Father" });
-        } else if (this.state.userGender == "Feminino"){
+        } else if (this.state.userGender == "Feminino") {
             await this.setState({ picture: "Mother" });
-        } else if (this.state.userGender == null){
+        } else if (this.state.userGender == null) {
             await this.setState({ picture: "NullAvatar" });
         }
         this.create();
@@ -338,7 +381,7 @@ class Registrar extends Component {
 
     verifyInfos = async () => {
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
-                Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
+            Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
         } else {
             if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
                 Alert.alert("Estado e Cidade devem estar preenchidos")
@@ -346,10 +389,10 @@ class Registrar extends Component {
                 if (this.state.userPwd.length < 8) {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
-                    if(this.state.userGroup != null && this.state.userIdCode == null){
-                        Alert.alert("Adicione um Número de Identificação")
+                    if (this.state.groupCheckbox == true && (this.state.userGroup == null || this.state.userIdCode == null)) {
+                        Alert.alert("Instituição e Número de Identificação devem estar preenchidos")
                     } else {
-                        if (this.state.userCountry == null){
+                        if (this.state.userCountry == null) {
                             Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
                         } else {
                             this.avatarSelector();
@@ -384,7 +427,7 @@ class Registrar extends Component {
                     birthdate: this.state.userDob,
                     picture: this.state.picture,
                     identification_code: this.state.userIdCode,
-                    group_id: this.state.userGroup,
+                    school_unit_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
                     risk_group: this.state.riskGroup
                 }
@@ -397,8 +440,8 @@ class Registrar extends Component {
                     this.hideAlert();
                     return response.json()
                 }
-            }) .then((responseJson) => {
-                Alert.alert("O email " + responseJson.errors[0].detail.email,)
+            }).then((responseJson) => {
+                Alert.alert("O email " + responseJson.errors[0].detail.email)
             })
     }
 
@@ -464,6 +507,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewRow: {
+        zIndex: 1,
         width: '100%',
         height: 65,
         flexDirection: 'row',
@@ -551,7 +595,42 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         //height: scale(32),
         alignSelf: "center"
-    }
+    },
+    AutocompleteStyle: {
+        width: '80%',
+        height: 35,
+        fontSize: 14 
+    },
+    AutocompleteContainer: {
+        width: "80%",
+        height: 35
+    },
+    AutocompleteList: {
+        borderTopWidth: 0,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: '#348EAC'
+    },
+    AutoCompleteListStyles:{
+        borderRadius: 5,
+        backgroundColor: "rgba(218,218,218,0.90)",
+        maxHeight: 150
+    },
+    AutocompleteTouchableOpacity: {
+        position: "relative",
+        zIndex: 2,
+        width: '90%',
+        alignSelf: "center",
+        borderColor: 'rgba(198,198,198,1)',
+        borderBottomWidth: 1,
+    },
+    itemText: {
+        fontSize: 15,
+        marginVertical: 5,
+        fontFamily: 'roboto',
+        color: 'rgba(33,113,245,1)'
+    },
 });
 
 //make this component available to the app
