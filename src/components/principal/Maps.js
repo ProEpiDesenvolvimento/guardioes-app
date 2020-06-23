@@ -30,7 +30,6 @@ class Maps extends Component {
 
     constructor(props) {
         super(props);
-        this.showAlert(null)
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
             //this.fetchData();
@@ -54,10 +53,6 @@ class Maps extends Component {
         const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userToken });
         this.getSurvey();
-    }
-
-    showAlert = (responseJson) => {
-        
     }
 
     getSurvey = async () => {//Get Survey
@@ -233,7 +228,6 @@ class Maps extends Component {
                 </ClusteredMapView>
                 <AwesomeAlert
                     show={showAlert}
-                    showProgress={false}
                     message={translate(`maps.guide`)}
                     closeOnTouchOutside={true}
                     closeOnHardwareBackPress={false}
