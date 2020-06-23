@@ -144,7 +144,8 @@ export default {
             "reportSent": "Seu relato foi enviado.",
             "reportNotSent": "Notamos que você já relatou seu estado de saúde hoje. Obrigado pela contribuição!",
             "seeADoctor": "Recomendamos que, caso os sintomas continuem, procure atendimento médico!",
-            "confirmText": "Voltar"
+            "confirmText": "Voltar",
+            "covidSuspect": "Olá, te envio essa mensagem para alertá-lo, pois hoje estou com alguns sintomas respiratórios, ainda não estou certo de que é COVID. É importante que você reforce suas medidas de higiene e se possível entre em quarentena por 14 dias. Caso tenha novidades irei alerta-lo."
         },
         "datePlaceHolder": "Haga clic aquí para introducir la fecha!"
     },

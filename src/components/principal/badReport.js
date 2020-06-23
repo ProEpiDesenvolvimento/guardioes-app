@@ -7,7 +7,7 @@ import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../utils/scallingUtils';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
@@ -59,7 +59,6 @@ class BadReport extends Component {
             alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
-        console.warn(alertMessage)
     }
 
     showLoadingAlert = () => {
@@ -181,6 +180,33 @@ class BadReport extends Component {
         );
     }
 
+    showCovidAlert = (responseJson) => {
+        Alert.alert(
+            // Esperando a estrutura exata da resposta da API para confirmar
+            // a estrutura das mensagens abaixo
+            responseJson.syndrome.message[0].title,
+            responseJson.syndrome.message[0].body,
+            [
+                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
+                { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    showWhatsappAlert = (responseJson) => {
+        Alert.alert(
+            // Nome provisório
+            'Alertar Contatos',
+            'Deseja enviar um comunicado no whatsapp para pessoas com que teve contato?',
+            [
+                { text: 'Sim', onPress: () => Linking.openURL(`whatsapp://send?text=${translate("badReport.alertMessages.covidSuspect")}`) },
+                { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
+            ],
+            { cancelable: false }
+        )
+    }
+
     sendSurvey = async () => {
         this.showLoadingAlert();
         try {
@@ -220,7 +246,13 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                this.showAlert(responseJson)
+                // Esperando a estrutura exata da resposta da API
+                // para ajustar o IF abaixo
+                if (responseJson.syndrome.name == "covid19") {
+                    this.showCovidAlert(responseJson)
+                } else {
+                    this.showAlert(responseJson)
+                }
             })
     }
 
@@ -244,10 +276,10 @@ class BadReport extends Component {
         if (cont_1 >= 1 && cont_2 < 2){
             Alert.alert(
                 'Mantenha a atenção!',
-                'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\n Fonte: Ministério da Saúde',
+                'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\nFonte: Ministério da Saúde',
                 [
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
                     { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
+                    { text: 'Ok', onPress: () => this.verifyLocalization() },
                 ],
                 { cancelable: false }
             )
@@ -275,7 +307,6 @@ class BadReport extends Component {
             //console.warn("Obrigado Por Reportar")
         }
     }
-
 
     sheradReport = () => {
         if (this.state.contactWithSymptom != null) {
@@ -453,7 +484,7 @@ class BadReport extends Component {
 
                     <View style={styles.buttonView}>
                         <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() =>
-                            this.verifyCOVID()
+                            this.verifyLocalization()
                         } />
                     </View>
                 </ScrollView>
