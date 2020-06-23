@@ -33,7 +33,7 @@ class Maps extends Component {
             dataFilterd: [],
             polygonState: "Federal District",
             mapViewPolygon: false,
-            showAlert: false,
+            showAlert: true,
             initialRegion: {
                 latitude: -15.8194724,
                 longitude: -47.924146,
