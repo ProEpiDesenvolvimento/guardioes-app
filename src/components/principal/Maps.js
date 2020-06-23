@@ -196,15 +196,21 @@ class Maps extends Component {
         let orderOfMagnitude = Math.floor(Math.log(pointCount) / Math.log(CLUSTER_SIZE_DIVIDER))
         if (orderOfMagnitude < 0) orderOfMagnitude = 0
         if (orderOfMagnitude > 6) orderOfMagnitude = 6
+        const zeroCoordinate = coordinate.latitude === 0 && coordinate.longitude === 0
+        let message = 'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'
+        const image = clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]
+        if (zeroCoordinate) {
+            message = "Essas pessoas não compartilharam seu local"
+        }
         return (
             <Marker
                 anchor={{x:0.5,y:0.5}}
                 centerOffset={{x:0.5,y:0.5}}
                 coordinate={coordinate}
                 style={{width:200, height: 200}}
-                image={clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]}
+                image={image}
                 title={'Pessoas: ' + pointCount}
-                description={'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'}
+                description={message}
                 tracksViewChanges={false}>
             </Marker>
         )
