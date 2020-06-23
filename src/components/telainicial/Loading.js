@@ -12,12 +12,34 @@ class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
+    this.state = {
+      userEmail: null,
+      userPwd: null
+    }
   }
 
   getInfo = async () => { // Get user info
     const userEmail = await RNSecureStorage.get('userEmail');
     const userPwd = await RNSecureStorage.get('userPwd');
     this.setState({ userEmail, userPwd });
+  }
+
+  _logoutApp = async () => {
+    AsyncStorage.removeItem('userID');
+    AsyncStorage.removeItem('userName');
+    AsyncStorage.removeItem('userSelected');
+    AsyncStorage.removeItem('avatarSelected');
+    AsyncStorage.removeItem('householdID');
+
+    RNSecureStorage.exists('userToken').then((res) => {
+      (res) ? RNSecureStorage.remove('userToken') : false;
+    });
+    RNSecureStorage.exists('userEmail').then((res) => {
+      (res) ? RNSecureStorage.remove('userEmail') : false;
+    });
+    RNSecureStorage.exists('userPwd').then((res) => {
+      (res) ? RNSecureStorage.remove('userPwd') : false;
+    });
   }
 
   // Fetch the token from storage then navigate to our appropriate place
@@ -30,22 +52,7 @@ class AuthLoadingScreen extends React.Component {
         this.verifyUserToken();
       }, 1500);
     } else {
-      AsyncStorage.removeItem('userID');
-      AsyncStorage.removeItem('userName');
-      AsyncStorage.removeItem('userSelected');
-      AsyncStorage.removeItem('avatarSelected');
-      AsyncStorage.removeItem('householdID');
-
-      RNSecureStorage.exists('userToken').then((res) => {
-        (res) ? RNSecureStorage.remove('userToken') : false;
-      });
-      RNSecureStorage.exists('userEmail').then((res) => {
-        (res) ? RNSecureStorage.remove('userEmail') : false;
-      });
-      RNSecureStorage.exists('userPwd').then((res) => {
-        (res) ? RNSecureStorage.remove('userPwd') : false;
-      });
-      
+      this._logoutApp();
       this.props.navigation.navigate('Cadastro');
     }
   };
@@ -73,6 +80,7 @@ class AuthLoadingScreen extends React.Component {
           this.props.navigation.navigate('BottomMenu');
 
         } else {
+          this._logoutApp();
           this.props.navigation.navigate('Cadastro');
         }
       })
