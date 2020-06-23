@@ -235,7 +235,8 @@ export default {
     "maps": {
         "title": "Mapa de la Salud",
         "reportGood": "Bien",
-        "reportBad": "Malo"
+        "reportBad": "Malo",
+        "guide": `En este mapa puedes ver cómo se siente la gente que te rodea.\n\nSi muchas personas se reúnen en un espacio pequeño, se agruparán como un punto.\n\n- Cuanto más rojo sea el punto, mayor porcentaje de individuos sintomáticos en una región.\n\n- Cuanto mayor es el punto, más personas hay en una región.\n\n- Al presionar un punto, se muestran datos sobre la región.`
     },
     "news": {
         "title": "Noticias"

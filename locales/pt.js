@@ -235,7 +235,8 @@ export default {
     "maps": {
         "title": "Mapa da Saúde",
         "reportGood": "Bem",
-        "reportBad": "Mal"
+        "reportBad": "Mal",
+        "guide": `Neste mapa você pode ver como as pessoas ao seu redor estão se sentindo.\n\nCaso muitas pessoas estejam reunidas num espaço pequeno, elas serão agrupadas como um ponto.\n\n- Quanto mais vermelho o ponto, maior porcentagem de sintomáticos numa região.\n\n- Quanto maior o ponto, mais pessoas numa região.\n\n- Ao apertar em um ponto, é mostrado os dados sobre a região.`
     },
     "news": {
         "title": "Notícias"

@@ -10,6 +10,7 @@ import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
 import poligonoBR from '../../utils/DF.json'
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const greenMarker = require('../../imgs/mapIcons/green-marker.png')
 const redMarker = require('../../imgs/mapIcons/red-marker.png')
@@ -29,6 +30,7 @@ class Maps extends Component {
 
     constructor(props) {
         super(props);
+        this.showAlert(null)
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
             //this.fetchData();
@@ -39,7 +41,8 @@ class Maps extends Component {
             dataSource: [],
             dataFilterd: [],
             polygonState: "Federal District",
-            mapViewPolygon: false
+            mapViewPolygon: false,
+            showAlert: true
         }
     }
 
@@ -51,6 +54,10 @@ class Maps extends Component {
         const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userToken });
         this.getSurvey();
+    }
+
+    showAlert = (responseJson) => {
+        
     }
 
     getSurvey = async () => {//Get Survey
@@ -209,6 +216,7 @@ class Maps extends Component {
     renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={greenMarker} style={{ width: 13, height: 14 }} />
 
     render() {
+        const {showAlert} = this.state;
         return (
             <View style={styles.container}>
                 <ClusteredMapView
@@ -223,7 +231,21 @@ class Maps extends Component {
                     renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
                     renderCluster={this.renderCluster} >
                 </ClusteredMapView>
-
+                <AwesomeAlert
+                    show={showAlert}
+                    showProgress={false}
+                    message={translate(`maps.guide`)}
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={true}
+                    cancelText="Entendido!"
+                    cancelButtonColor="#55dd55"
+                    onCancelPressed={() => {
+                        this.setState({
+                            showAlert: false
+                          });
+                    }}
+                    />
                 {/*<TouchableOpacity style={styles.mapChange}
                     onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
                     <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
