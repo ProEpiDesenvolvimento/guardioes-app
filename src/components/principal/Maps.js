@@ -3,6 +3,8 @@ import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
+import clusterImages from '../../utils/MarkerClustering/imgImport'
+import mapStyle from '../../utils/MarkerClustering/mapStyle'
 import { Marker } from 'react-native-maps';
 import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
@@ -11,6 +13,7 @@ import poligonoBR from '../../utils/DF.json'
 
 const greenMarker = require('../../imgs/mapIcons/green-marker.png')
 const redMarker = require('../../imgs/mapIcons/red-marker.png')
+const CLUSTER_SIZE_DIVIDER = 4
 
 const INIT_REGION = {
     latitude: -15.7194724,
@@ -26,7 +29,6 @@ class Maps extends Component {
 
     constructor(props) {
         super(props);
-        loadFiles()
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
             //this.fetchData();
@@ -183,17 +185,22 @@ class Maps extends Component {
 
         const healthyPercentage = clusteredPoints.filter(x => !x.properties.item.symptoms).length / pointCount
         let reqNum = Math.floor(healthyPercentage * 100.0)
-        while (!imgLevels.includes(reqNum)) {
+        while (!clusterImages.imgLevels.includes(reqNum)) {
             reqNum--
         }
+        let orderOfMagnitude = Math.floor(Math.log(pointCount) / Math.log(CLUSTER_SIZE_DIVIDER))
+        if (orderOfMagnitude < 0) orderOfMagnitude = 0
+        if (orderOfMagnitude > 6) orderOfMagnitude = 6
         return (
             <Marker
+                anchor={{x:0.5,y:0.5}}
+                centerOffset={{x:0.5,y:0.5}}
                 coordinate={coordinate}
-                image={reqFiles[imgLevels.indexOf(reqNum)]}
-                anchor={{ x: 0.5, y: 1 }}
-                centerOffset={{ x: 0.5, y: 1 }}
+                style={{width:200, height: 200}}
+                image={clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]}
                 title={'Pessoas: ' + pointCount}
-                description={'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'}>
+                description={'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'}
+                tracksViewChanges={false}>
             </Marker>
         )
     }
@@ -205,12 +212,17 @@ class Maps extends Component {
         return (
             <View style={styles.container}>
                 <ClusteredMapView
+                    loadingEnabled={true}
+                    showsPointsOfInterest={true}
+                    showsUserLocation={true}
                     style={{ flex: 1 }}
                     data={this.coordsFilter()}
                     initialRegion={INIT_REGION}
+                    customMapStyle={mapStyle}
                     ref={(r) => { this.map = r }}
                     renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
-                    renderCluster={this.renderCluster} />
+                    renderCluster={this.renderCluster} >
+                </ClusteredMapView>
 
                 {/*<TouchableOpacity style={styles.mapChange}
                     onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
@@ -251,42 +263,3 @@ const styles = StyleSheet.create({
 
 //make this component available to the app
 export default Maps;
-
-/* NOTE: require() only works with static file paths, that's why the code below looks like that */
-
-const imgLevels = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 79, 83, 86, 88, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
-const reqFiles = []
-
-const loadFiles = () => {
-    reqFiles.push(require('../../imgs/mapIcons/0.png'))
-    reqFiles.push(require('../../imgs/mapIcons/5.png'))
-    reqFiles.push(require('../../imgs/mapIcons/10.png'))
-    reqFiles.push(require('../../imgs/mapIcons/15.png'))
-    reqFiles.push(require('../../imgs/mapIcons/20.png'))
-    reqFiles.push(require('../../imgs/mapIcons/25.png'))
-    reqFiles.push(require('../../imgs/mapIcons/30.png'))
-    reqFiles.push(require('../../imgs/mapIcons/35.png'))
-    reqFiles.push(require('../../imgs/mapIcons/40.png'))
-    reqFiles.push(require('../../imgs/mapIcons/45.png'))
-    reqFiles.push(require('../../imgs/mapIcons/50.png'))
-    reqFiles.push(require('../../imgs/mapIcons/55.png'))
-    reqFiles.push(require('../../imgs/mapIcons/60.png'))
-    reqFiles.push(require('../../imgs/mapIcons/65.png'))
-    reqFiles.push(require('../../imgs/mapIcons/70.png'))
-    reqFiles.push(require('../../imgs/mapIcons/75.png'))
-    reqFiles.push(require('../../imgs/mapIcons/79.png'))
-    reqFiles.push(require('../../imgs/mapIcons/83.png'))
-    reqFiles.push(require('../../imgs/mapIcons/86.png'))
-    reqFiles.push(require('../../imgs/mapIcons/88.png'))
-    reqFiles.push(require('../../imgs/mapIcons/90.png'))
-    reqFiles.push(require('../../imgs/mapIcons/91.png'))
-    reqFiles.push(require('../../imgs/mapIcons/92.png'))
-    reqFiles.push(require('../../imgs/mapIcons/93.png'))
-    reqFiles.push(require('../../imgs/mapIcons/94.png'))
-    reqFiles.push(require('../../imgs/mapIcons/95.png'))
-    reqFiles.push(require('../../imgs/mapIcons/96.png'))
-    reqFiles.push(require('../../imgs/mapIcons/97.png'))
-    reqFiles.push(require('../../imgs/mapIcons/98.png'))
-    reqFiles.push(require('../../imgs/mapIcons/99.png'))
-    reqFiles.push(require('../../imgs/mapIcons/100.png'))
-}

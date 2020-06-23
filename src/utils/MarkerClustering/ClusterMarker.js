@@ -19,7 +19,8 @@ export default class ClusterMarker extends Component {
         pointCount,
         coordinate: { latitude, longitude },
         clusterId: this.props.properties.cluster_id,
-        healthyPercentage: this.props.healthyPercentage
+        healthyPercentage: this.props.healthyPercentage,
+        region: this.props.region
       }
       return this.props.renderCluster(cluster)
     }
