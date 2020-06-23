@@ -268,6 +268,9 @@ class Perfil extends Component {
   handleEdit = async () => {
     await this.setState({ modalVisibleUser: false })
     await this.setState({ userName: this.state.userSelect, userIdCode: this.state.userIdSelect })
+    if (this.state.groupCheckbox === false) {
+      await this.setState({ userGroup: null, userIdCode: null })
+    }
     this.editUser()
   }
 
