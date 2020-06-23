@@ -236,7 +236,7 @@ export default {
         "title": "Mapa de la Salud",
         "reportGood": "Bien",
         "reportBad": "Malo",
-        "guide": `En este mapa puedes ver cómo se siente la gente que te rodea.\n\nSi muchas personas se reúnen en un espacio pequeño, se agruparán como un punto.\n\n- Cuanto más rojo sea el punto, mayor porcentaje de individuos sintomáticos en una región.\n\n- Cuanto mayor es el punto, más personas hay en una región.\n\n- Al presionar un punto, se muestran datos sobre la región.`
+        "guide": `Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.`
     },
     "news": {
         "title": "Noticias"
