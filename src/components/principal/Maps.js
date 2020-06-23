@@ -16,13 +16,6 @@ const greenMarker = require('../../imgs/mapIcons/green-marker.png')
 const redMarker = require('../../imgs/mapIcons/red-marker.png')
 const CLUSTER_SIZE_DIVIDER = 4
 
-const INIT_REGION = {
-    latitude: -15.7194724,
-    longitude: -47.774146,
-    latitudeDelta: 5,
-    longitudeDelta: 5
-}
-
 class Maps extends Component {
     static navigationOptions = {
         title: translate("maps.title")
@@ -33,7 +26,6 @@ class Maps extends Component {
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
             //this.fetchData();
-            this.getLocation();
         });
         this.state = {
             isLoading: true,
@@ -41,10 +33,19 @@ class Maps extends Component {
             dataFilterd: [],
             polygonState: "Federal District",
             mapViewPolygon: false,
-            showAlert: true
+            showAlert: false,
+            initialRegion: {
+                latitude: -15.8194724,
+                longitude: -47.924146,
+                latitudeDelta: 0.3,
+                longitudeDelta: 0.3
+            },
+            showUserLocation: false,
+            mapKey: 0
         }
+        this.getLocation();
     }
-
+    
     componentDidMount() {
         this.fetchData()
     }
@@ -109,16 +110,18 @@ class Maps extends Component {
         Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
-                    region: {
+                    initialRegion: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        latitudeDelta: 0.020,
-                        longitudeDelta: 0.020
+                        latitudeDelta: 0.07,
+                        longitudeDelta: 0.07
                     },
+                    showUserLocation: true,
                     error: null,
+                    mapKey: this.state.mapKey + 1 // This forces the map component to remount with the new initial region
                 });
             },
-            (error) => this.setState({ error: error.message }),
+            (error) => {},
             { enableHighAccuracy: true, timeout: 50000 },
         );
     }
@@ -215,12 +218,11 @@ class Maps extends Component {
         return (
             <View style={styles.container}>
                 <ClusteredMapView
-                    loadingEnabled={true}
-                    showsPointsOfInterest={true}
-                    showsUserLocation={true}
+                    key={this.state.mapKey}
+                    showsUserLocation={this.state.showUserLocation}
                     style={{ flex: 1 }}
                     data={this.coordsFilter()}
-                    initialRegion={INIT_REGION}
+                    initialRegion={this.state.initialRegion}
                     customMapStyle={mapStyle}
                     ref={(r) => { this.map = r }}
                     renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
