@@ -180,7 +180,7 @@ class Home extends Component {
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
-              title: 'Guardiões da Saúde needs Locarion Permission',
+              title: 'Guardiões da Saúde needs Location Permission',
               message:
                 'Guardiões da Saúde needs access to your location ' +
                 'so you can take locarion reports.',
@@ -325,11 +325,11 @@ class Home extends Component {
 
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <LinearGradient style={styles.viewTop} colors={['#348EAC', '#166b87']}>
-                        <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={35} color='#ffffff' style={styles.menuBars}/>
                         <Avatar
                             size="xlarge"
                             rounded
                             source={Imagem['NullAvatar']}
+                            activeOpacity={0.7}
                             containerStyle={styles.avatarTop}
                         />
                         <View style={styles.viewWelcome}>
@@ -450,6 +450,8 @@ class Home extends Component {
                     {isProfessionalTrue}
                 </ScrollView>
 
+                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={35} color='#ffffff' style={styles.menuBars}/>
+
                 <AwesomeAlert
                     show={showAlert}
                     showProgress={this.state.showProgressBar ? true : false}
@@ -507,14 +509,16 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     menuBars: {
-        alignSelf: 'flex-start',
+        position: 'absolute',
         left: '3%',
-        top: '3%',
-        marginBottom: '5%',
+        top: '2%',
     },
     avatarTop: {
         borderColor: '#ffffff',
         borderWidth: 3,
+        height: 140,
+        width: 140,
+        marginTop: 40
     },
     viewWelcome: {
         width: '100%',
@@ -546,20 +550,19 @@ const styles = StyleSheet.create({
         width: '50%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '4%',
+        marginVertical: '4%',
     },
     viewHouseholdAdd: {
         width: '50%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '4%',
+        marginVertical: '4%',
     },
     viewReport: {
         backgroundColor: '#348EAC',
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '18%',
         width: '85%',
         marginTop: '8%',
     },
@@ -568,14 +571,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
         color: '#ffffff',
-        marginTop: '4%'
+        marginTop: 15
     },
     containerGoodBad: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '80%',
-        //marginTop: '5%',
-        //marginBottom: '10%'
+        marginTop: 15,
+        marginBottom: 20
     },
     viewChildBad: {
         width: '49.5%',
@@ -583,6 +586,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 30,
         backgroundColor: '#F18F01',
         justifyContent: 'center',
+        paddingVertical: 10
     },
     viewChildGood: {
         width: '49.5%',
@@ -590,6 +594,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 30,
         backgroundColor: '#5DD39E',
         justifyContent: 'center',
+        paddingVertical: 10
     },
     textChoiceButton: {
         fontFamily: 'roboto',
@@ -627,11 +632,12 @@ const styles = StyleSheet.create({
     },
     rumorView: {
         backgroundColor: '#348EAC',
-        borderRadius: 90,
+        borderRadius: 20,
         flexDirection: 'row',
-        marginTop: 10,
-        marginBottom: 10,
-        height: '5%',
+        fontWeight: 'bold',
+        marginTop: 15,
+        marginBottom: 15,
+        height: 38,
         justifyContent: 'center',
         //width: '35%',
         alignItems: 'center',

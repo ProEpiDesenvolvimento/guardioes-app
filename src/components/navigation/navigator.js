@@ -37,7 +37,7 @@ export const Cadastro = createStackNavigator({
         navigationOptions: {
             headerTintColor: '#ffffff',
             headerStyle: {
-                backgroundColor: '#04617E',
+                backgroundColor: '#166b87',
                 elevation: 10,
             },
             headerTitleStyle: {
@@ -85,6 +85,13 @@ export const BottomMenu = createBottomTabNavigator({
                 backgroundColor: '#ffffff',
                 //borderTopColor: '#c4c4c4',
                 borderTopWidth: 0,
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 7,
+                },
+                shadowOpacity: 0.43,
+                shadowRadius: 9.51,
                 elevation: 15,
             },
             activeTintColor: '#348EAC',
@@ -115,7 +122,7 @@ export const Stack = createStackNavigator({
         navigationOptions: {
             headerTintColor: '#ffffff',
             headerStyle: {
-                backgroundColor: '#04617E',
+                backgroundColor: '#166b87',
                 elevation: 10,
 
             },

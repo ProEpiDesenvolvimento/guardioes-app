@@ -77,7 +77,7 @@ class AuthLoadingScreen extends React.Component {
       .then((response) => {
         if (response.status == 200) {
           RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-          //this.props.navigation.navigate('BottomMenu');
+          this.props.navigation.navigate('BottomMenu');
 
         } else {
           this._logoutApp();
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageLogo: {
-    height: scale(220),
+    height: scale(200),
     resizeMode: 'contain',
     marginBottom: 20,
   },
   viewLogos: {
     flexDirection: "row",
-    width: "90%",
+    width: "70%",
     height: scale(110),
     //borderColor: "red",
     //borderWidth: 1,
