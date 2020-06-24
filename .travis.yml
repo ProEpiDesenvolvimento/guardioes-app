@@ -36,7 +36,6 @@ deploy:
   file: app-release.apk
   on:
     repo: proepidesenvolvimento/guardioes-app
-    branches:
-      only:
-        - feature/ci-travis
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(development|master|feature/ci-travis)$
   skip_cleanup: 'true'
