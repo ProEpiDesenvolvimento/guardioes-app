@@ -20,6 +20,7 @@ android:
 script:
 - cd android && ./gradlew assembleRelease
 - cp app/build/outputs/apk/release/app-release.apk ..
+- cd ..
 deploy:
   provider: releases
   api_key:
