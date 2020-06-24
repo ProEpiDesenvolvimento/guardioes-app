@@ -1,6 +1,3 @@
-branches:
-  only:
-    - feature/ci-travis
 language: android
 before_install:
 - nvm install 13
@@ -39,4 +36,7 @@ deploy:
   file: app-release.apk
   on:
     repo: proepidesenvolvimento/guardioes-app
+    branches:
+      only:
+        - feature/ci-travis
   skip_cleanup: 'true'
