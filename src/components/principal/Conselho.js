@@ -3,7 +3,7 @@ import { Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, View
 import RNSecureStorage from 'rn-secure-storage';
 import { Redirect } from '../../utils/constUtils';
 import translate from '../../../locales/i18n';
-import { API_URL, APP_ID } from 'react-native-dotenv';
+import {API_URL,APP_ID} from 'react-native-dotenv';
 import { scale } from '../../utils/scallingUtils';
 
 
