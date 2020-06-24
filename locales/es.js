@@ -207,8 +207,8 @@ export default {
     "home": {
         "title": "Guardianes de la Salud",
         "toastAlertMessage": "Apriete una vez más para salir",
-        "hello": "¡Hola",
-        "nowAGuardian": "¡Ahora usted es un guardián de la salud!",
+        "hello": "¡Hola, ",
+        "nowAGuardian": "Guardián de la Salud",
         "selectProfile": "Seleccione un Perfil:",
         "addProfile": "Añadir Perfil",
         "reportRumor": "Reportar Rumor",

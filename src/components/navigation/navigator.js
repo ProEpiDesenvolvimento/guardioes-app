@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { scale } from '../../utils/scallingUtils';
+import React from 'react';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';
@@ -24,7 +23,7 @@ import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
 
-FontAwesome.loadFont();
+MaterialIcons.loadFont();
 
 export const Cadastro = createStackNavigator({
     TelaInicial: { screen: TelaInicial },
@@ -62,26 +61,39 @@ export const BottomMenu = createBottomTabNavigator({
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'home';
-                    return <FontAwesome name={iconName} size={scale(30)} color={tintColor} />;
+                    return <MaterialIcons name={iconName} size={35} color={tintColor} />;
                 } else if (routeName === 'Diario') {
-                    iconName = 'clipboard';
+                    iconName = 'event';
                 } else if (routeName === 'Mapa') {
                     iconName = 'map';
                 } else if (routeName === 'Conselho') {
-                    iconName = 'heart';
+                    iconName = 'favorite';
                 } else if (routeName === 'Noticias') {
-                    iconName = 'envelope';
+                    iconName = 'mode-comment';
                 }
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <FontAwesome name={iconName} size={scale(25)} color={tintColor} />;
+                return <MaterialIcons name={iconName} size={30} color={tintColor} />;
             },
         }),
         tabBarOptions: {
-            style: { height: '11%', backgroundColor: '#348EAC' },
-            activeTintColor: '#013444',
-            inactiveTintColor: 'white',
+            style: {
+                height: '10%',
+                minHeight: 60,
+                maxHeight: 70,
+                backgroundColor: '#ffffff',
+                //borderTopColor: '#c4c4c4',
+                borderTopWidth: 0,
+                elevation: 15,
+            },
+            activeTintColor: '#348EAC',
+            inactiveTintColor: '#c4c4c4',
+            labelStyle: {
+                fontSize: 11,
+                fontWeight: 'bold',
+                marginBottom: 5,
+            },
         },
     }
 )
