@@ -253,7 +253,6 @@ class Perfil extends Component {
   }
 
   showUserModal = async () => {
-    console.log(this.state.userGroup)
     if (this.state.userGroup) {
       await this.setState({ groupCheckbox: true })
     } else {
