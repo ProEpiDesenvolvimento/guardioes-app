@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         //paddingTop: scale(15),
         height: '16%',
         flexDirection: 'row',
-        backgroundColor: '#2298BF',
+        backgroundColor: '#348EAC',
         //borderColor: 'red',
         //borderWidth: 1,
     },

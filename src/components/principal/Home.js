@@ -317,7 +317,7 @@ class Home extends Component {
                             size="xlarge"
                             rounded
                             source={Imagem['NullAvatar']}
-                            activeOpacity={0.7}
+                            activeOpacity={0.6}
                             containerStyle={styles.avatarTop}
                         />
                         <View style={styles.viewWelcome}>
@@ -331,7 +331,7 @@ class Home extends Component {
                         </View>
                     </LinearGradient>
 
-                    <View style={styles.viewHousehold}>
+                    <View style={[styles.viewHousehold, styles.shadow]}>
                         <View style={styles.viewHouseholdSelect}>
                             <Modal
                                 animationType="fade"
@@ -347,7 +347,7 @@ class Home extends Component {
                                                 size="large"
                                                 rounded
                                                 source={Imagem[this.state.userAvatar]}
-                                                activeOpacity={0.7}
+                                                activeOpacity={0.6}
                                                 onPress={async () => {
                                                     await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
                                                     this.setModalVisible(!this.state.modalVisible);
@@ -400,7 +400,7 @@ class Home extends Component {
                                 size="large"
                                 rounded
                                 source={Imagem[this.state.avatarSelect]}
-                                activeOpacity={0.7}
+                                activeOpacity={0.6}
                                 onPress={() => {
                                     this.getHouseholds();
                                     this.setModalVisible(true);
@@ -420,25 +420,27 @@ class Home extends Component {
                         {howYouFelling}
 
                         <View style={styles.containerGoodBad}>
-                            <View style={styles.viewChildGood}>
-                                <TouchableOpacity //onPress={this._isconnected}
+                            <TouchableOpacity //onPress={this._isconnected}
+                                style={[styles.viewChildGood, styles.shadow]}
+                                activeOpacity={0.6}
                                 onPress={() => this.verifyLocalization()}
-                                >
-                                    <Text style={styles.textChoiceButton}>{translate("report.goodChoice")}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.viewChildBad}>
-                                <TouchableOpacity onPress={() => navigate('BadReport')}>
-                                    <Text style={styles.textChoiceButton}>{translate("report.badChoice")}</Text>
-                                </TouchableOpacity>
-                            </View>
+                            >
+                                <Text style={styles.textChoiceButton}>{translate("report.goodChoice")}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={[styles.viewChildBad, styles.shadow]}
+                                activeOpacity={0.6}
+                                onPress={() => navigate('BadReport')}
+                            >
+                                <Text style={styles.textChoiceButton}>{translate("report.badChoice")}</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
                     {isProfessionalTrue}
                 </ScrollView>
 
-                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={35} color='#ffffff' style={styles.menuBars}/>
+                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={32} color='#ffffff' style={styles.menuBars}/>
 
                 <AwesomeAlert
                     show={showAlert}
@@ -528,11 +530,12 @@ const styles = StyleSheet.create({
         color: '#ffffff',
     },
     viewHousehold: {
+        backgroundColor: '#ffffff',
         flexDirection: 'row',
         width: '85%',
-        borderRadius: 5,
-        borderColor: '#c4c4c4',
-        borderWidth: 1,
+        borderRadius: 10,
+        //borderColor: '#c4c4c4',
+        //borderWidth: 1,
         marginTop: '8%',
     },
     viewHouseholdSelect: {
@@ -549,7 +552,7 @@ const styles = StyleSheet.create({
     },
     viewReport: {
         backgroundColor: '#348EAC',
-        borderRadius: 5,
+        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '85%',
@@ -630,6 +633,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         //width: '35%',
         alignItems: 'center',
+    },
+    shadow: {
+        shadowColor: "gray",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
     },
 });
 
