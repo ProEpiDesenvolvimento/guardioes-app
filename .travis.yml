@@ -1,3 +1,9 @@
+# safelist
+branches:
+  only:
+  - master
+  - dev
+  - feature/ci-travis
 language: android
 before_install:
 - nvm install 13
@@ -21,6 +27,14 @@ script:
 - cd android && ./gradlew assembleRelease
 - cp app/build/outputs/apk/release/app-release.apk ..
 - cd ..
+- ls
+- ls android
+- ls android/app/
+- ls android/app/build/
+- ls android/app/build/outputs/
+- ls android/app/build/outputs/apk/
+- ls android/app/build/outputs/apk/release
+after_success: 
 deploy:
   provider: releases
   api_key:
@@ -29,5 +43,6 @@ deploy:
   on:
     repo: proepidesenvolvimento/guardioes-app
     all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^(development|master|feature/ci-travis)$
+    condition: 
+      if: (type = push AND branch IN (master, dev, feature/ci-travis)) OR (type = pull_request AND branch IN (master, dev, feature/ci-travis))
   skip_cleanup: 'true'
