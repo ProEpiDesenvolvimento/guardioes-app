@@ -235,7 +235,8 @@ export default {
     "maps": {
         "title": "Mapa de la Salud",
         "reportGood": "Bien",
-        "reportBad": "Malo"
+        "reportBad": "Malo",
+        "guide": `Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.`
     },
     "news": {
         "title": "Noticias"
