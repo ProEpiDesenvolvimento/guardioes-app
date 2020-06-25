@@ -1,6 +1,14 @@
 # Guardiões da Saúde App
 Repositório do aplicativo [Guardiões da Saúde](https://linktr.ee/guardioesdasaude).
 
+## Como baixar a última versão do app
+
+Por enquanto o procedimento funciona apenas para celulares android.
+
+Entre em [releases](https://github.com/proepidesenvolvimento/guardioes-app/releases) e procure pelo link com uma tag verde chamada 'lastest release'. Ao encontrar, desinstale o aplicativo que já está no seu celular (caso exista) e baixe o arquivo 'app-release.apk'.
+
+Possivelmente essa versão tem bugs que serão consertados no futuro e é instável, ou seja, pode dar erros.
+
 ## Instalar dependências
 ```
 $ npm install

@@ -29,5 +29,5 @@ deploy:
   on:
     repo: proepidesenvolvimento/guardioes-app
     all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^(development|master|feature/ci-travis)$
+    condition: $TRAVIS_BRANCH =~ ^(development)$
   skip_cleanup: 'true'
