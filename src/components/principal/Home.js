@@ -280,23 +280,11 @@ class Home extends Component {
             </View>
         )
 
-        const userNotProfessional = (
-            <View style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                marginBottom: 10,
-                height: '5%',
-                justifyContent: 'center',
-                width: '35%',
-            }}></View>
-        )
-
         let isProfessionalTrue
         if (this.state.isProfessional == "true") {
             isProfessionalTrue = userIsProfessional
         } else {
-            //isProfessionalTrue = userNotProfessional
-            isProfessionalTrue = userIsProfessional //Para aparecer sempre
+            //isProfessionalTrue = userIsProfessional //Para aparecer sempre
         }
 
         const userHowYouFelling = (
@@ -510,8 +498,9 @@ const styles = StyleSheet.create({
     },
     menuBars: {
         position: 'absolute',
-        left: '3%',
-        top: '2%',
+        left: '1%',
+        top: 0,
+        padding: '2%',
     },
     avatarTop: {
         borderColor: '#ffffff',

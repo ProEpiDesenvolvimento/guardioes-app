@@ -126,7 +126,7 @@ export default class drawerContentComponents extends Component {
                         <Text style={styles.drawerItemsTxt}>{translate("drawer.toAbout")}</Text>
                     </TouchableOpacity>
 
-                    <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 85 }]}>
+                    <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 25 }]}>
                         <Text style={[styles.drawerItemsTxt, { fontSize: 20, fontWeight: 'bold' }]} onPress={this._logoutApp}>
                             {translate("drawer.logOut")}
                         </Text>
@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     headerContainer: {
-        height: moderateScale(250),
+        height: moderateScale(230),
         backgroundColor: 'white',
         marginBottom: 15
     },
     headerText: {
-        fontSize: 24,
+        fontSize: 20,
         fontFamily: 'roboto',
         fontWeight: 'bold',
         alignSelf: 'center',

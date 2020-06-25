@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     CalendarDate: {
-        marginBottom: 15,
+        marginBottom: 35,
     },
     Calendario: {
         fontFamily: 'roboto',

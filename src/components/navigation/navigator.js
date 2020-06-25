@@ -1,5 +1,6 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';
@@ -37,7 +38,7 @@ export const Cadastro = createStackNavigator({
         navigationOptions: {
             headerTintColor: '#ffffff',
             headerStyle: {
-                backgroundColor: '#166b87',
+                backgroundColor: '#348EAC',
                 elevation: 10,
             },
             headerTitleStyle: {
@@ -122,7 +123,7 @@ export const Stack = createStackNavigator({
         navigationOptions: {
             headerTintColor: '#ffffff',
             headerStyle: {
-                backgroundColor: '#166b87',
+                backgroundColor: '#348EAC',
                 elevation: 10,
 
             },
@@ -136,7 +137,8 @@ export const Stack = createStackNavigator({
 export const Drawer = createDrawerNavigator({
     Stacks: { screen: Stack }
 }, {
-        contentComponent: drawerContentComponents
+        contentComponent: drawerContentComponents,
+        drawerWidth: scale(240),
     }
 );
 
