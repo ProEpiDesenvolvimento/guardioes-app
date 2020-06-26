@@ -93,42 +93,42 @@ class Conselho extends Component {
                     </View>
                 </Modal>
 
-                {contentsData != null ?
-                    contentsData.map(content => {
-                        if (content.app.id == APP_ID) {
-                            return (
-                                <ScrollView>
+                <ScrollView>
+                    {contentsData != null ?
+                        contentsData.map((content, key) => {
+                            if (content.app.id == APP_ID) {
+                                return (
                                     <TouchableOpacity onPress={() => {
                                         this.setModalVisible(true)
                                         this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
-                                    }}>
+                                    }} key={key}>
                                         <View style={styles.selector}>
                                             <Text style={styles.textSelector}>{content.title}</Text>
                                         </View>
                                     </TouchableOpacity>
-                                </ScrollView>
-                            )
-                        }
-                    })
+                                )
+                            }
+                        })
                     : null}
-                <TouchableOpacity
-                    style={styles.selector}
-                    onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
-                >
-                    <Text style={styles.textSelector}>
-                        {translate("advices.buttons.healthInst")}
-                    </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.selector}
+                        onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
+                    >
+                        <Text style={styles.textSelector}>
+                            {translate("advices.buttons.healthInst")}
+                        </Text>
+                    </TouchableOpacity>
 
-                {/* Farmacias */}
-                <TouchableOpacity
-                    style={styles.selector}
-                    onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
-                >
-                    <Text style={styles.textSelector}>
-                        {translate("advices.buttons.pharmacy")}
-                    </Text>
-                </TouchableOpacity>
+                    {/* Farmacias */}
+                    <TouchableOpacity
+                        style={styles.selector}
+                        onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
+                    >
+                        <Text style={styles.textSelector}>
+                            {translate("advices.buttons.pharmacy")}
+                        </Text>
+                    </TouchableOpacity>
+                </ScrollView>
             </View>
 
         );

@@ -207,8 +207,8 @@ export default {
     "home": {
         "title": "Guardiões da Saúde",
         "toastAlertMessage": "Aperte mais uma vez para sair",
-        "hello": "Olá ",
-        "nowAGuardian": "Agora você é um guardião da saúde!",
+        "hello": "Olá, ",
+        "nowAGuardian": "Guardião da Saúde",
         "selectProfile": "Selecione um Perfil:",
         "addProfile": "Adicionar Perfil",
         "reportRumor": "Relatar Rumor",
@@ -288,7 +288,7 @@ export default {
         "toHelp": "Ajuda",
         "toAbout": "Sobre",
         "moreComing": "Temos mais vindo aí!",
-        "healthDiary": "Diário da Saúde",
+        "healthDiary": "Diário",
         "healthMap": "Mapa da Saúde"
     },
     "rumor": {

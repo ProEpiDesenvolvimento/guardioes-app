@@ -107,14 +107,14 @@ class AuthLoadingScreen extends React.Component {
     }
 
     return (
-      <LinearGradient style={styles.container} colors={['#348EAC', '#013444']} start={{ x: 1.5, y: 0.6 }} end={{ x: -0.2, y: 1.4 }}>
+      <LinearGradient style={styles.container} colors={['#348EAC', '#013444']}>
         {statusColor}
         {imageType}
         <View style={styles.viewLogos}>
           <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoProEpi} /></View>
           <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoUnB} /></View>
         </View>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color="#ffffff" />
         <StatusBar barStyle="default" />
       </LinearGradient>
     );
@@ -128,14 +128,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageLogo: {
-    height: scale(235),
+    height: scale(200),
     resizeMode: 'contain',
     marginBottom: 20,
   },
   viewLogos: {
     flexDirection: "row",
-    width: "90%",
-    height: scale(130),
+    width: "70%",
+    height: scale(110),
     //borderColor: "red",
     //borderWidth: 1,
   },
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     //borderWidth: 1,
   },
   imageHalfLogo: {
-    width: scale(100),
+    width: scale(80),
     resizeMode: 'contain',
   },
 });

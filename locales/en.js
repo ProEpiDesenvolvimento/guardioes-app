@@ -150,7 +150,7 @@ export default {
         "selectProfile": "Selecione o perfil que quer reportar"
     },
     "advices": {
-        "title": "Dicas de Saúde",
+        "title": "Dicas",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevencao",
@@ -184,7 +184,7 @@ export default {
         }
     },
     "diary": {
-        "title": "Diário da Saúde",
+        "title": "Diário",
         "participate": "Participações",
         "good": "Bem",
         "bad": "Mal",
@@ -203,8 +203,8 @@ export default {
     "home": {
         "title": "Guardiões da Saúde",
         "toastAlertMessage": "Aperte mais uma vez para sair",
-        "hello": "Olá",
-        "nowAGuardian": "Agora você é um guardião da saúde!",
+        "hello": "Hi, ",
+        "nowAGuardian": "Guardião da Saúde",
         "selectProfile": "Selecione um Perfil:",
         "addProfile": "Adicionar Perfil",
         "reportRumor": "Report Rumor",
