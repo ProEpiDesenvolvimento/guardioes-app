@@ -136,13 +136,13 @@ export default {
         "checkboxConfirm": "Confirmar",
         "checkboxDateConfirmation": "A data deve ser preenchida",
         "alertMessages": {
-            "sending": "Enviando...",
-            "thanks": "Obrigado!",
-            "reportSent": "Seu relato foi enviado.",
-            "reportNotSent": "Notamos que você já relatou seu estado de saúde, hoje. Obrigado pela contribuição",
-            "seeADoctor": "Recomendamos que, caso os sintomas continuem, procure atendimento médico!",
-            "confirmText": "Voltar",
-            "covidSuspect": "Olá, te envio essa mensagem para alertá-lo, pois hoje estou com alguns sintomas respiratórios, ainda não estou certo de que é COVID. É importante que você reforce suas medidas de higiene e se possível entre em quarentena por 14 dias. Caso tenha novidades irei alerta-lo."
+            "sending": "Sending...",
+            "thanks": "Thanks!",
+            "reportSent": "Your survey was sent!",
+            "reportNotSent": "You have already sent a survey today. Thanks for your contribution.",
+            "seeADoctor": "We recommend that you seek medical help!",
+            "confirmText": "Back",
+            "covidSuspect": " Hello, I'm sending you this message to alert you, because today I have some respiratory symptoms. I'm still not sure it's COVID. It is important that you strengthen your hygiene measures and if possible quarantine for 14 days. In case I have news, I'll let you know."
         }
     },
     "chooseReporter": {
