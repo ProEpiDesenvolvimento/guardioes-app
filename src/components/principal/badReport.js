@@ -180,12 +180,10 @@ class BadReport extends Component {
         );
     }
 
-    showCovidAlert = (responseJson) => {
+    showCovidAlert = (covidProfile, responseJson) => {
         Alert.alert(
-            // Esperando a estrutura exata da resposta da API para confirmar
-            // a estrutura das mensagens abaixo
-            responseJson.syndrome.message[0].title,
-            responseJson.syndrome.message[0].body,
+            covidProfile.title,
+            covidProfile.message,
             [
                 { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
                 { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) },
@@ -196,11 +194,10 @@ class BadReport extends Component {
 
     showWhatsappAlert = (responseJson) => {
         Alert.alert(
-            // Nome provisório
             'Alertar Contatos',
             'Deseja enviar um comunicado no whatsapp para pessoas com que teve contato?',
             [
-                { text: 'Sim', onPress: () => Linking.openURL(`whatsapp://send?text=${translate("badReport.alertMessages.covidSuspect")}`) },
+                { text: 'Sim', onPress: () => { Linking.openURL(`whatsapp://send?text=${translate("badReport.alertMessages.covidSuspect")}`); this.showAlert(responseJson) } },
                 { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
             ],
             { cancelable: false }
@@ -246,10 +243,9 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                // Esperando a estrutura exata da resposta da API
-                // para ajustar o IF abaixo
-                if (responseJson.syndrome.name == "covid19") {
-                    this.showCovidAlert(responseJson)
+                const covidProfile = this.verifyCOVID()
+                if (covidProfile) {
+                    this.showCovidAlert(covidProfile, responseJson)
                 } else {
                     this.showAlert(responseJson)
                 }
@@ -272,43 +268,21 @@ class BadReport extends Component {
             }
         })
 
-        //Condição para o Cenario 1. Caso seja falsa retorna cenario 2
         if (cont_1 >= 1 && cont_2 < 2){
-            Alert.alert(
-                'Mantenha a atenção!',
-                'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\nFonte: Ministério da Saúde',
-                [
-                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
-                ],
-                { cancelable: false }
-            )
-            //console.warn("1 - VOCE ESTA NO PRIMEIRO NIVEL  1 DE COVID")
+            return {
+                title: 'Mantenha a atenção',
+                message: 'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\nFonte: Ministério da Saúde'
+            }
         } else if (cont_2 >= 2){
-            Alert.alert(
-                'Atenção: Procure avaliação médica!',
-                'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde',
-                [
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
-                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
-                ],
-                { cancelable: false }
-            )
-            //console.warn("2 - VOCE ESTA NO PRIMEIRO NIVEL 2 DE COVID")
-        } else if (cont_1 <= 1 && cont_2 <= 2){
-            Alert.alert(
-                'Obrigado por reportar!',
-                'É importante continuar usando o app para monitorar seu estado de saúde.',
-                [
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
-                ],
-                { cancelable: false }
-            )
-            //console.warn("Obrigado Por Reportar")
+            return {
+                title: 'Atenção: Procure avaliação médica!',
+                message: 'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde'
+            }
         }
     }
 
-    sheradReport = () => {
+    // Não está sendo utilizada
+    sharedReport = () => {
         if (this.state.contactWithSymptom != null) {
             Alert.alert(
                 'Deseja Compartilhar o App?',
