@@ -253,10 +253,12 @@ class Perfil extends Component {
   }
 
   showUserModal = async () => {
-    await this.setState({ modalVisibleUser: true })
-    if (this.userGroup !== null) {
+    if (this.state.userGroup) {
       await this.setState({ groupCheckbox: true })
+    } else {
+      await this.setState({ groupCheckbox: false })
     }
+    await this.setState({ modalVisibleUser: true })
   }
 
   handleCancel = async () => {
@@ -268,7 +270,10 @@ class Perfil extends Component {
   handleEdit = async () => {
     await this.setState({ modalVisibleUser: false })
     await this.setState({ userName: this.state.userSelect, userIdCode: this.state.userIdSelect })
-    this.editUser()
+    if (this.state.groupCheckbox === false) {
+      await this.setState({ userGroup: null, userIdCode: null, userGroupName: null, userIdSelect: null })
+    }
+    await this.editUser()
   }
 
   render() {

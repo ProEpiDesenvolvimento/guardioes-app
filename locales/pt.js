@@ -208,8 +208,8 @@ export default {
     "home": {
         "title": "Guardiões da Saúde",
         "toastAlertMessage": "Aperte mais uma vez para sair",
-        "hello": "Olá ",
-        "nowAGuardian": "Agora você é um guardião da saúde!",
+        "hello": "Olá, ",
+        "nowAGuardian": "Guardião da Saúde",
         "selectProfile": "Selecione um Perfil:",
         "addProfile": "Adicionar Perfil",
         "reportRumor": "Relatar Rumor",
@@ -236,7 +236,8 @@ export default {
     "maps": {
         "title": "Mapa da Saúde",
         "reportGood": "Bem",
-        "reportBad": "Mal"
+        "reportBad": "Mal",
+        "guide": `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`
     },
     "news": {
         "title": "Notícias"
@@ -288,7 +289,7 @@ export default {
         "toHelp": "Ajuda",
         "toAbout": "Sobre",
         "moreComing": "Temos mais vindo aí!",
-        "healthDiary": "Diário da Saúde",
+        "healthDiary": "Diário",
         "healthMap": "Mapa da Saúde"
     },
     "rumor": {

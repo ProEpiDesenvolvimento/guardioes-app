@@ -128,8 +128,8 @@ class Diario extends Component {
         })
 
         let totalReports = (markedDateNo.length + markedDate.length)
-        let GoodPercent = ((markedDateNo.length / totalReports) * 100).toFixed(2)
-        let BadPercent = ((markedDate.length / totalReports) * 100).toFixed(2)
+        let GoodPercent = ((markedDateNo.length / totalReports) * 100).toFixed(0)
+        let BadPercent = ((markedDate.length / totalReports) * 100).toFixed(0)
 
         this.setState({
             GoodPercent: GoodPercent,
@@ -142,8 +142,8 @@ class Diario extends Component {
             markedDateNo: markedDateNo,
         })
 
-        let BadReport = markedDate.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#BF092E' } }), {});
-        let GoodReport = markedDateNo.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#058B09' } }), {});
+        let BadReport = markedDate.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {});
+        let GoodReport = markedDateNo.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {});
 
         Object.assign(GoodReport, BadReport);
 
@@ -203,6 +203,7 @@ class Diario extends Component {
                                     }
                                 })
                             }}
+                            theme={calendarTheme}
                         />
                     </View>
                 </ScrollView>
@@ -214,13 +215,14 @@ class Diario extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#ffffff'
     },
     Top: {
         //paddingTop: scale(15),
         height: '16%',
         flexDirection: 'row',
-        backgroundColor: '#2298BF',
-        borderColor: 'red',
+        backgroundColor: '#348EAC',
+        //borderColor: 'red',
         //borderWidth: 1,
     },
     userAvatar: {
@@ -229,28 +231,31 @@ const styles = StyleSheet.create({
         paddingRight: 15
     },
     UserInfos: {
-        borderColor: 'green',
+        //borderColor: 'green',
         //borderWidth: 1,
     },
     UserName: {
         fontFamily: 'roboto',
+        fontWeight: 'bold',
         fontSize: 24,
+        width: '100%',
         color: 'white',
-        marginTop: 15,
+        marginTop: 20,
     },
     NumReports: {
         fontSize: 20,
-        color: '#166B87',
+        color: '#000000',
         fontWeight: 'bold',
         margin: 10,
     },
     LeftTop: {
+        backgroundColor: '#ffffff',
         flexDirection: 'column',
         alignItems: 'center',
     },
     UserReport: {
         flexDirection: 'row',
-        margin: 2
+        margin: 15
     },
     UserData: {
         alignItems: 'center',
@@ -259,7 +264,7 @@ const styles = StyleSheet.create({
     percentReport: {
         fontFamily: 'roboto',
         fontSize: 24,
-        color: '#166B87',
+        color: '#000000',
         marginTop: 7,
     },
     columnData: {
@@ -279,17 +284,17 @@ const styles = StyleSheet.create({
         color: '#058B09',
     },
     ViewCalendario: {
-        backgroundColor: '#348EAC',
+        backgroundColor: '#166b87',
         alignItems: 'center',
+    },
+    CalendarDate: {
+        marginBottom: 35,
     },
     Calendario: {
         fontFamily: 'roboto',
-        fontSize: 28,
+        fontWeight: 'bold',
+        fontSize: 24,
         color: 'white'
-
-    },
-    CalendarDate: {
-        marginBottom: 10,
     },
     chartView: {
         flex: 1,
@@ -307,4 +312,21 @@ const styles = StyleSheet.create({
 
     },
 });
+
+const calendarTheme = {
+    calendarBackground: '#348EAC',
+    textSectionTitleColor: '#ffffff',
+    textSectionTitleDisabledColor: '#c4c4c4',
+    selectedDayTextColor: '#ffffff',
+    todayTextColor: '#ffffff',
+    dayTextColor: '#ffffff',
+    textDisabledColor: '#c4c4c4',
+    arrowColor: '#ffffff',
+    disabledArrowColor: '#c4c4c4',
+    monthTextColor: '#ffffff',
+    textMonthFontWeight: 'bold',
+    textDayFontSize: 18,
+    textMonthFontSize: 20,
+    textDayHeaderFontSize: 16
+}
 export default Diario;

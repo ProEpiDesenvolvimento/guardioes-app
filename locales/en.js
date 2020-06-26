@@ -33,7 +33,7 @@ export default {
         "loginbutton": "Login",
         "connectWithFacebook": "Login with Facebook",
         "facebookLogin": {
-            "error": "Erro on login: ",
+            "error": "Error on login: ",
             "canceled": "Canceled"
         },
         "awesomeAlert": {
@@ -105,36 +105,36 @@ export default {
         Por exemplo, se você ver que em uma certa área tem muitos relatos de sintomas de gripe você pode tomar um suco de laranja, ou se tiver sintomas de Dengue você pode evitar passar no lugar."
     },
     "badReport": {
-        "title": "O que está sentindo?",
-        "sickAge": "Desde quando está se sentindo mal?",
-        "symptoms": "Selecione abaixo os sintomas que voce está sentindo neste momento:",
-        "blisters": "Bolhas na Pele",
-        "noseCongestion": "Congestão Nasal",
-        "diarrhea": "Diarréia",
-        "breathingDifficulty": "Dificuldade de respirar",
-        "jointPain": "Dor nas Articulações",
-        "headache": "Dor de cabeça",
-        "stomachAche": "Dor no Estômago",
-        "musclePain": "Dor nos Músculos",
-        "eyePain": "Dor nos Olhos",
-        "chills": "Calafrios",
-        "fever": "Febre",
-        "fellingIll": "Mal-estar",
-        "redSpots": "Manchas vermelhas no corpo",
-        "sickness": "Náuseas",
-        "redishEyes": "Olhos vermelhos",
-        "feetEyeRedissh": "Pele e olhos avermelhados",
-        "bleeding": "Sangramentos",
-        "cough": "Tosse",
-        "vomiting": "Vômito",
-        "answerQuestions": "Responda as perguntas a seguir:",
+        "title": "What are you feeling?",
+        "sickAge": "Since when have you been feeling bad?",
+        "symptoms": "Select the symptoms you are feeling now:",
+        "blisters": "Blisters",
+        "noseCongestion": "Nasal Congestion",
+        "diarrhea": "Diarrhea",
+        "breathingDifficulty": "Breathing Difficulty",
+        "jointPain": "Joint Pain",
+        "headache": "Headache",
+        "stomachAche": "Stomachache",
+        "musclePain": "Muscle Pain",
+        "eyePain": "Eye Pain",
+        "chills": "Chills",
+        "fever": "Fever",
+        "fellingIll": "Discomfort",
+        "redSpots": "Red Spots on body",
+        "sickness": "Nausea",
+        "redishEyes": "Redish Eyes",
+        "feetEyeRedissh": "Redish skin and eyes",
+        "bleeding": "Bleeding",
+        "cough": "Cough",
+        "vomiting": "Vomiting",
+        "answerQuestions": "Anwser the following questions:",
         "checkboxes": {
-            "first": "Teve contato com alguem que apresentava os mesmos sintomas?",
-            "second": "Procurou algum serviço hospitalar?",
-            "third": "Deixou seu local de residência nos ultimos 14 dias?"
+            "first": "Have had contact with someone with the same symptoms?",
+            "second": "Seeked medical help?",
+            "third": "Left your house in the last 14 days?"
         },
-        "checkboxConfirm": "Confirmar",
-        "checkboxDateConfirmation": "A data deve ser preenchida",
+        "checkboxConfirm": "Confirm",
+        "checkboxDateConfirmation": "The date must be filled",
         "alertMessages": {
             "sending": "Sending...",
             "thanks": "Thanks!",
@@ -151,7 +151,7 @@ export default {
         "selectProfile": "Selecione o perfil que quer reportar"
     },
     "advices": {
-        "title": "Dicas de Saúde",
+        "title": "Dicas",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevencao",
@@ -185,7 +185,7 @@ export default {
         }
     },
     "diary": {
-        "title": "Diário da Saúde",
+        "title": "Diário",
         "participate": "Participações",
         "good": "Bem",
         "bad": "Mal",
@@ -204,8 +204,8 @@ export default {
     "home": {
         "title": "Guardiões da Saúde",
         "toastAlertMessage": "Aperte mais uma vez para sair",
-        "hello": "Olá",
-        "nowAGuardian": "Agora você é um guardião da saúde!",
+        "hello": "Hi, ",
+        "nowAGuardian": "Guardião da Saúde",
         "selectProfile": "Selecione um Perfil:",
         "addProfile": "Adicionar Perfil",
         "reportRumor": "Report Rumor",
@@ -232,7 +232,8 @@ export default {
     "maps": {
         "title": "Mapa da Saúde",
         "reportGood": "Bem",
-        "reportBad": "Mal"
+        "reportBad": "Mal",
+        "guide": `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`
     },
     "news": {
         "title": "Notícias"
