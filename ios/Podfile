@@ -39,12 +39,17 @@ target 'guardioesapp' do
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   
-  
   pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+  # React Native Maps dependencies
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
 
   target 'guardioesappTests' do
     inherit! :search_paths
