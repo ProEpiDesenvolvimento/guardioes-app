@@ -33,7 +33,7 @@ class Maps extends Component {
             dataFilterd: [],
             polygonState: "Federal District",
             mapViewPolygon: false,
-            showAlert: true,
+            showAlert: false,
             initialRegion: {
                 latitude: -15.8194724,
                 longitude: -47.924146,
@@ -52,7 +52,13 @@ class Maps extends Component {
 
     fetchData = async () => {
         const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userToken });
+        
+        let showAlert = JSON.parse(await AsyncStorage.getItem('showMapTip'));
+        if (showAlert == null) {
+            showAlert = true
+        }
+
+        this.setState({ userToken, showAlert });
         this.getSurvey();
     }
 
@@ -245,7 +251,8 @@ class Maps extends Component {
                     onCancelPressed={() => {
                         this.setState({
                             showAlert: false
-                          });
+                        });
+                        AsyncStorage.setItem('showMapTip', JSON.stringify(false));
                     }}
                     />
                 {/*<TouchableOpacity style={styles.mapChange}
