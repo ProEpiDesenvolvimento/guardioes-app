@@ -199,9 +199,12 @@ class Maps extends Component {
         while (!clusterImages.imgLevels.includes(reqNum)) {
             reqNum--
         }
+        let orderOfMagnitude = Math.floor(Math.log(pointCount) / Math.log(CLUSTER_SIZE_DIVIDER))
+        if (orderOfMagnitude < 0) orderOfMagnitude = 0
+        if (orderOfMagnitude > 6) orderOfMagnitude = 6
         const zeroCoordinate = coordinate.latitude === 0 && coordinate.longitude === 0
         let message = 'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'
-        const image = clusterImages.reqFiles[clusterImages.imgLevels.indexOf(reqNum)]
+        const image = clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]
         if (zeroCoordinate) {
             message = "Essas pessoas não compartilharam seu local"
         }
@@ -263,7 +266,8 @@ class Maps extends Component {
 // define your styles
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'flex-end' },
-    map: { 
+    map: {
+        flex: 1,
         position: 'absolute',
         top: 0,
         left: 0,
