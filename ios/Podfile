@@ -45,16 +45,16 @@ target 'guardioesapp' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  target 'guardioesappTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
   # React Native Maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
-
-  target 'guardioesappTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
   use_native_modules!
 end
