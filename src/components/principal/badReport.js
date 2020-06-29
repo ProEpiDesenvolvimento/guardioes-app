@@ -16,6 +16,8 @@ import Geolocation from 'react-native-geolocation-service';
 import ModalSelector from 'react-native-modal-selector';
 import { country, localSymptom } from '../../utils/selectorUtils';
 import { Redirect } from '../../utils/constUtils';
+import Share from "react-native-share";
+import { cardWhatsapp } from '../../imgs/cardWhatsapp/cardWhatsapp_base64';
 
 let data = new Date();
 let d = data.getDate();
@@ -23,6 +25,12 @@ let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
 let today = d + "-" + m + "-" + y;
+
+const shareOptions = {
+    title: "titulo",
+    message: "mensagem",
+    url: cardWhatsapp
+};
 
 class BadReport extends Component {
     static navigationOptions = {
@@ -197,7 +205,13 @@ class BadReport extends Component {
             'Alertar Contatos',
             'Deseja enviar um comunicado no whatsapp para pessoas com que teve contato?',
             [
-                { text: 'Sim', onPress: () => { Linking.openURL(`whatsapp://send?text=${translate("badReport.alertMessages.covidSuspect")}`); this.showAlert(responseJson) } },
+                { text: 'Sim', onPress: () =>  {
+                        Share.open(shareOptions)
+                            .then((res) => { console.log(res) })
+                            .catch((err) => { err && console.log(err); });
+                        this.showAlert(responseJson)
+                    }
+                },
                 { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
             ],
             { cancelable: false }
@@ -278,33 +292,6 @@ class BadReport extends Component {
                 title: 'Atenção: Procure avaliação médica!',
                 message: 'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde'
             }
-        }
-    }
-
-    // Não está sendo utilizada
-    sharedReport = () => {
-        if (this.state.contactWithSymptom != null) {
-            Alert.alert(
-                'Deseja Compartilhar o App?',
-                'Compartilhe o aplicativo com as pessoas que teve contato e nos ajude a ESCREVER ALGO',
-                [
-                    {
-                        text: 'Compartilhar e Reportar', onPress: () => {
-                            if (Platform.OS === 'ios') {
-                                Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1`);
-                                this.verifyLocalization()
-                            } else {
-                                Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt`);
-                                this.verifyLocalization()
-                            }
-                        }
-                    },
-                    { text: 'Somente Reportar', onPress: () => this.verifyLocalization() },
-                ],
-                { cancelable: false }
-            )
-        } else {
-            this.verifyLocalization()
         }
     }
 
