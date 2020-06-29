@@ -119,8 +119,8 @@ class Maps extends Component {
                     initialRegion: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        latitudeDelta: 0.07,
-                        longitudeDelta: 0.07
+                        latitudeDelta: 0.06,
+                        longitudeDelta: 0.06
                     },
                     showUserLocation: true,
                     error: null,
@@ -199,12 +199,9 @@ class Maps extends Component {
         while (!clusterImages.imgLevels.includes(reqNum)) {
             reqNum--
         }
-        let orderOfMagnitude = Math.floor(Math.log(pointCount) / Math.log(CLUSTER_SIZE_DIVIDER))
-        if (orderOfMagnitude < 0) orderOfMagnitude = 0
-        if (orderOfMagnitude > 6) orderOfMagnitude = 6
         const zeroCoordinate = coordinate.latitude === 0 && coordinate.longitude === 0
         let message = 'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'
-        const image = clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]
+        const image = clusterImages.reqFiles[clusterImages.imgLevels.indexOf(reqNum)]
         if (zeroCoordinate) {
             message = "Essas pessoas não compartilharam seu local"
         }
