@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert, Linking, Platform } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import { CheckBox } from 'react-native-elements';
@@ -27,8 +27,7 @@ let y = data.getFullYear();
 let today = d + "-" + m + "-" + y;
 
 const shareOptions = {
-    title: "titulo",
-    message: "mensagem",
+    message: translate("badReport.alertMessages.covidSuspect"),
     url: cardWhatsapp
 };
 
@@ -203,16 +202,16 @@ class BadReport extends Component {
     showWhatsappAlert = (responseJson) => {
         Alert.alert(
             'Alertar Contatos',
-            'Deseja enviar um comunicado no whatsapp para pessoas com que teve contato?',
+            'Deseja compartilhar um comunicado para pessoas com que teve contato?',
             [
+                { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
                 { text: 'Sim', onPress: () =>  {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })
                             .catch((err) => { err && console.log(err); });
                         this.showAlert(responseJson)
                     }
-                },
-                { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
+                }
             ],
             { cancelable: false }
         )
