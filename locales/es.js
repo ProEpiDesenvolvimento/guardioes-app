@@ -145,7 +145,7 @@ export default {
             "reportNotSent": "Notamos que ya informó su estado de salud hoy. Gracias por el aporte!",
             "seeADoctor": "¡Recomendamos que si los síntomas continúan, busque atención médica!",
             "confirmText": "Regreso",
-            "covidSuspect": "Hola, te envío este mensaje para avisarte, porque hoy tengo algunos síntomas respiratorios, todavía no estoy seguro de que sea COVID. Es importante que refuerce sus medidas de higiene y cuarentena si es posible durante 14 días. Si tienes noticias te avisaré."
+            "covidSuspect": "Para descargar la aplicación Guardians of Health y contribuir a hacer frente a Covid-19, visite:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara descargar la aplicación del Ministerio de Salud, visite:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinición de contacto cercano: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao"
         },
         "datePlaceHolder": "Haga clic aquí para introducir la fecha!"
     },
