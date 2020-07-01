@@ -21,10 +21,9 @@ import { API_URL } from 'react-native-dotenv';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { gender, country, race, getGroups } from '../../utils/selectorUtils';
+import { gender, country, race, getGroups, schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 import Autocomplete from 'react-native-autocomplete-input';
-import { schoolcategory, college, educationLevel, schoolUnity } from '../../utils/tabletest';
 
 let data = new Date();
 let d = data.getDate();
@@ -276,23 +275,23 @@ class Registrar extends Component {
                                     <ModalSelector
                                         initValueTextStyle={{ color: 'black' }}
                                         style={{ width: '80%', height: '70%' }}
-                                        data={schoolcategory}
+                                        data={schoolCategory}
                                         initValue={this.state.initValueCategory}
                                         onChange={(option) => this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null })}
                                     />
                                 </View>
-                                {this.state.userCategory == "UnB" ?
+                                {this.state.userCategory == "UNB" ?
                                     <View style={styles.viewChildSexoRaca}>
                                         <Text style={styles.commomTextView}>Faculdade:</Text>
                                         <ModalSelector
                                             initValueTextStyle={{ color: 'black' }}
                                             style={{ width: '80%', height: '70%' }}
-                                            data={college}
+                                            data={getGroups("UNB", "","")}
                                             initValue={this.state.initValueCollege}
                                             onChange={(option) => this.setState({ userCollege: option.key, initValueCollege: option.label })}
                                         />
                                     </View>
-                                    : this.state.userCategory == "SESDF" ?
+                                    : this.state.userCategory == "SES-DF" ?
                                         <View style={styles.viewChildSexoRaca}>
                                             <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
                                             <ModalSelector
@@ -312,7 +311,7 @@ class Registrar extends Component {
                                         <ModalSelector
                                             initValueTextStyle={{ color: 'black' }}
                                             style={{ width: '80%', height: '70%' }}
-                                            data={getCity("DISTRITO FEDERAL")}
+                                            data={schoolLocation}
                                             initValue={this.state.initValueSchoolLocation}
                                             onChange={(option) => this.setState({ userSchoolLocation: option.key, initValueSchoolLocation: option.label })}
                                         />
@@ -323,29 +322,15 @@ class Registrar extends Component {
                                             <ModalSelector
                                                 initValueTextStyle={{ color: 'black' }}
                                                 style={{ width: '80%', height: '70%' }}
-                                                data={schoolUnity}
+                                                data={getGroups("SES-DF", this.state.userEducationLevel, this.state.userSchoolLocation)}
                                                 initValue={this.state.initValueGroup}
                                                 onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
                                             />
                                         </View>
                                         : null}
                                 </View>
-
-
-
-
                                 : this.state.userCollege != null ?
                                     <View style={styles.viewRow}>
-                                        <View style={styles.viewChildSexoRaca}>
-                                            <Text style={styles.commomTextView}>Instituição:</Text>
-                                            <ModalSelector
-                                                initValueTextStyle={{ color: 'black' }}
-                                                style={{ width: '80%', height: '70%' }}
-                                                data={getGroups()}
-                                                initValue={this.state.initValueGroup}
-                                                onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                            />
-                                        </View>
                                         <View style={styles.viewChildSexoRaca}>
                                             <Text style={styles.commomTextView}>Nº de Identificação:</Text>
                                             <TextInput style={styles.formInput50}

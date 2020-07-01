@@ -79,48 +79,32 @@ export const household = [
     { key: 'Outros', label: "Outros" }
 ];
 
-
-/*export function getGroups(){
+export function getGroups(cat, lev, cyt){
     const groups = []
-    fetch(`${API_URL}/groups/`, {
+    fetch(`http://localhost:3001/school_units_list/`, {
+        method: 'POST',
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
         },
-    })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            responseJson.groups.map(group => {
-                groups.push({ key: group.id, label: group.description })
-            })
+        body: JSON.stringify({
+            "filter":
+            {
+                category: cat,
+                level: lev,
+                city: cyt,
+            }
         })
-    return groups
-}*/
-
-export function getGroups(){
-    const groups = []
-    fetch(`${API_URL}/school_units/`, {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/json',
-        },
     })
         .then((response) => response.json())
         .then((responseJson) => {
+            console.warn(responseJson)
             responseJson.school_units.map(group => {
                 groups.push({ key: group.id, label: group.description })
             })
         })
     return groups
 }
-
-/*export function getGroups() {
-    const groups = []
-    ShcoolsSheet.school_units.map(group => {
-        groups.push({ key: group.id, label: group.description })
-    })
-    return groups
-}*/
 
 export function getGroupName(ID) {
     let groupName = []
@@ -141,6 +125,91 @@ export function getGroupName(ID) {
         })
     return groupName;
 }
+
+export const schoolCategory = [
+    { key: 'UNB', label: "Universidade de Brasília" },
+    { key: 'SES-DF', label: "Secretaria de Educação do Distrito Fereral" },
+];
+
+export const educationLevel = [
+    { key: 'Ensino Médio', label: "Ensino Médio" },
+    { key: 'Ensino Fundamental', label: "Ensino Fundamental" },
+    { key: 'Ensino Infantil', label: "Ensino Infantil" }
+];
+
+export const schoolLocation = [
+    { key: 'Águas Claras', label: "Águas Claras" },
+    { key: 'Brasília', label: "Brasília" },
+    { key: 'Brazlândia', label: "Brazlândia" },
+    { key: 'Candangolândia', label: "Candangolândia" },
+    { key: 'Ceilândia', label: "Ceilândia" },
+    { key: 'Fercal', label: "Fercal" },
+    { key: 'Gama', label: "Gama" },
+    { key: 'Guará', label: "Guará" },
+    { key: 'Itapoã', label: "Itapoã" },
+    { key: 'Lago Sul', label: "Lago Sul" },
+    { key: 'Núcleo Bandeirante', label: "Núcleo Bandeirante" },
+    { key: 'Paranoá', label: "Paranoá" },
+    { key: 'Park Way', label: "Park Way" },
+    { key: 'Planaltina', label: "Planaltina" },
+    { key: 'Recanto das Emas', label: "Recanto das Emas" },
+    { key: 'Riacho Fundo I', label: "Riacho Fundo I" },
+    { key: 'Riacho Fundo II', label: "Riacho Fundo II" },
+    { key: 'Samambaia', label: "Samambaia" },
+    { key: 'Santa Maria', label: "Santa Maria" },
+    { key: 'São Sebastião', label: "São Sebastião" },
+    { key: 'SCIA', label: "SCIA" },
+    { key: 'SIA', label: "SIA" },
+    { key: 'Sobradinho I', label: "Sobradinho I" },
+    { key: 'Sobradinho II', label: "Sobradinho II" },
+    { key: 'Taguatinga', label: "Taguatinga" },
+    { key: 'Vicente Pires', label: "Vicente Pires" }
+];
+
+/*
+export function getGroups(){
+    const groups = []
+    fetch(`${API_URL}/school_units/`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            responseJson.school_units.map(group => {
+                groups.push({ key: group.id, label: group.description })
+            })
+        })
+    return groups
+}
+*/
+
+/*export function getGroups() {
+    const groups = []
+    ShcoolsSheet.school_units.map(group => {
+        groups.push({ key: group.id, label: group.description })
+    })
+    return groups
+}*/
+
+/*export function getGroups(){
+    const groups = []
+    fetch(`${API_URL}/groups/`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            responseJson.groups.map(group => {
+                groups.push({ key: group.id, label: group.description })
+            })
+        })
+    return groups
+}*/
+
 
 /*
 //////USO EM TESTES
