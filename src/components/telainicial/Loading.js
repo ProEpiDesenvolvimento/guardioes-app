@@ -78,11 +78,12 @@ class AuthLoadingScreen extends React.Component {
         if (response.status == 200) {
           RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
           this.props.navigation.navigate('BottomMenu');
-
-        } else {
-          this._logoutApp();
-          this.props.navigation.navigate('Cadastro');
         }
+        else if (response.status == 401) {
+          this._logoutApp();
+        }
+
+        this.props.navigation.navigate('Cadastro');
       })
   };
 
