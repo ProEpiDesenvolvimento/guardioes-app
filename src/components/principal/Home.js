@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
@@ -258,8 +258,7 @@ class Home extends Component {
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
 
-        const welcomeMessage = translate("home.hello") + this.getNameParts(this.state.userName);
-        const householdHowYouFellingText = translate("home.householdHowYouFelling_part_1") + this.getNameParts(this.state.householdName) + translate("home.householdHowYouFelling_part_2");
+        const welcomeMessage = translate("home.hello") + this.getNameParts(this.state.userSelect);
         const householdsData = this.state.data;
 
         const userIsProfessional = (
@@ -293,20 +292,6 @@ class Home extends Component {
             </Text>
         )
 
-        const householdHowYouFelling = (
-            <Text style={styles.textFelling}>
-                {householdHowYouFellingText}
-            </Text>
-        )
-
-        let howYouFelling;
-        if (this.state.householdID !== null) {
-            howYouFelling = householdHowYouFelling
-        }
-        else {
-            howYouFelling = userHowYouFelling
-        }
-
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor='#348EAC' />
@@ -336,7 +321,7 @@ class Home extends Component {
                     </LinearGradient>
 
                     <View style={[styles.viewReport, styles.shadow]}>
-                        {howYouFelling}
+                        {userHowYouFelling}
 
                         <View style={styles.containerGoodBad}>
                             <TouchableOpacity //onPress={this._isconnected}
@@ -421,7 +406,20 @@ class Home extends Component {
                         </Modal>
                     </View>
 
-                    
+                    <View style={styles.viewStatus}>
+                        <View style={styles.viewStatusIcon}>
+                            <FontAwesome name="check-circle" size={50} color='#ffffff' style={styles.statusIcon} />
+                        </View>
+                        
+                        <View style={styles.viewStatusContent}>
+                            <Text style={styles.textStatusTitle}>
+                                Status nos últimos 7 dias:
+                            </Text>
+                            <Text style={styles.textStatusContent}>
+                                Você tem se sentido bem
+                            </Text>
+                        </View>
+                    </View>
 
                     {isProfessionalTrue}
                 </ScrollView>
@@ -480,7 +478,7 @@ const styles = StyleSheet.create({
     },
     menuBars: {
         position: 'absolute',
-        left: '1%',
+        left: '2%',
         top: 0,
         padding: '2%',
     },
@@ -519,7 +517,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '85%',
+        width: '90%',
         marginTop: -75,
     },
     textFelling: {
@@ -534,7 +532,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '80%',
         marginTop: scale(20),
-        marginBottom: scale(30)
+        marginBottom: scale(32)
     },
     viewChildBad: {
         width: '49.25%',
@@ -559,20 +557,36 @@ const styles = StyleSheet.create({
         fontSize: 18,
         alignSelf: 'center'
     },
-    viewBox: {
+    viewStatus: {
         backgroundColor: '#348EAC',
         flexDirection: 'row',
-        width: '85%',
+        width: '90%',
         borderRadius: 10,
-        borderColor: '#c4c4c4',
-        borderWidth: 1,
-        marginTop: '0%',
+        //borderColor: '#c4c4c4',
+        //borderWidth: 1,
+        marginTop: '2%',
     },
-    textBox: {
+    viewStatusIcon: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    statusIcon: {
+        margin: scale(20),
+    },
+    viewStatusContent: {
+        marginTop: scale(18),
+    },
+    textStatusTitle: {
         fontFamily: 'roboto',
         fontWeight: 'bold',
-        fontSize: scale(18),
+        fontSize: scale(16),
         color: '#ffffff',
+    },
+    textStatusContent: {
+        fontFamily: 'roboto',
+        fontSize: scale(16),
+        color: '#ffffff',
+        marginTop: scale(5),
     },
     viewHouseholdSelect: {
         alignItems: 'center',
@@ -627,7 +641,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5,
     },
 });

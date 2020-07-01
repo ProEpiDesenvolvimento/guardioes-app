@@ -82,7 +82,7 @@ export const BottomMenu = createBottomTabNavigator({
             style: {
                 minHeight: 60,
                 height: '10%',
-                maxHeight: 70,
+                //maxHeight: 70,
                 backgroundColor: '#ffffff',
                 borderTopWidth: 0,
                 shadowColor: "#000",
