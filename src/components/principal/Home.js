@@ -19,8 +19,6 @@ let d = data.getDate();
 let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
-let today = y + "-" + m + "-" + d;
-
 class Home extends Component {
     navOptions // rolê para acessar a drawer em uma função estática
 
@@ -36,6 +34,7 @@ class Home extends Component {
             userToken: null,
             householdName: null,
             householdID: null,
+            userLastSurveys: [{ household: {} }],
             userLatitude: 'unknown',
             userLongitude: 'unknown',
             error: null,
@@ -134,6 +133,7 @@ class Home extends Component {
         AsyncStorage.setItem('userSelected', this.state.userSelect);
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();
+        this.getUserLastSurveys();
     }
 
     getNameParts = (fullName, firstandLast = false) => {
@@ -165,6 +165,47 @@ class Home extends Component {
                 })
                 //console.warn(this.state.data)
             })
+    }
+
+    getUserLastSurveys = async () => {
+        return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                let lastWeek = new Date();
+                lastWeek.setDate(d - 7);
+                lastWeek.setHours(0, 0, 0, 0);
+
+                const userLastSurveys = responseJson.surveys.filter(survey => 
+                    new Date(survey.created_at).getTime() >= lastWeek.getTime()
+                );
+
+                this.setState({ userLastSurveys });
+                this.getUserHealth();
+            })
+    }
+
+    getUserHealth = () => {
+        let userBadReports = 0
+
+        this.state.userLastSurveys.map(survey => {
+            if (this.state.householdID) {
+                if (survey.symptom.length > 0 && survey.household && survey.household.id == this.state.householdID) {
+                    userBadReports = userBadReports + 1;
+                }
+            }
+            else {
+                if (survey.symptom.length > 0) {
+                    userBadReports = userBadReports + 1;
+                }
+            }
+        })
+        this.setState({ userBadReports });
     }
 
     verifyLocalization = async () => {
@@ -292,6 +333,8 @@ class Home extends Component {
             </Text>
         )
 
+        const hasBadReports = this.state.userBadReports > 2
+
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor='#348EAC' />
@@ -363,6 +406,7 @@ class Home extends Component {
                                                 AsyncStorage.setItem('userSelected', this.state.userSelect);
                                                 AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
                                                 AsyncStorage.removeItem('householdID');
+                                                this.getUserHealth();
                                             }}
                                         />
                                         <Text>{this.getNameParts(this.state.userName, true)}</Text>
@@ -383,6 +427,7 @@ class Home extends Component {
                                                                 AsyncStorage.setItem('userSelected', this.state.userSelect);
                                                                 AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
                                                                 AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                                                this.getUserHealth();
                                                             }}
                                                         />
                                                         <Text>{this.getNameParts(household.description, true)}</Text>
@@ -396,8 +441,7 @@ class Home extends Component {
                                     <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
                                         navigate('Household');
                                         this.setModalVisible(!this.state.modalVisible);
-                                    }
-                                    }>
+                                    }}>
                                         <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
                                         <Text>{translate("home.addProfile")}</Text>
                                     </TouchableOpacity>
@@ -406,17 +450,17 @@ class Home extends Component {
                         </Modal>
                     </View>
 
-                    <View style={styles.viewStatus}>
+                    <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
                         <View style={styles.viewStatusIcon}>
-                            <FontAwesome name="check-circle" size={50} color='#ffffff' style={styles.statusIcon} />
+                            <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
                         </View>
                         
                         <View style={styles.viewStatusContent}>
                             <Text style={styles.textStatusTitle}>
-                                Status nos últimos 7 dias:
+                                {translate("home.statusLast7Days")}
                             </Text>
                             <Text style={styles.textStatusContent}>
-                                Você tem se sentido bem
+                                {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
                             </Text>
                         </View>
                     </View>
@@ -565,6 +609,12 @@ const styles = StyleSheet.create({
         //borderColor: '#c4c4c4',
         //borderWidth: 1,
         marginTop: '2%',
+    },
+    viewStatusGood: {
+        backgroundColor: '#348EAC',
+    },
+    viewStatusBad: {
+        backgroundColor: '#F18F01',
     },
     viewStatusIcon: {
         alignItems: 'center',
