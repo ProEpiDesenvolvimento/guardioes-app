@@ -13,6 +13,8 @@ import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 
+FontAwesome.loadFont();
+
 let data = new Date();
 let d = data.getDate();
 let m = data.getMonth() + 1;
