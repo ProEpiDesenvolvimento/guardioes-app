@@ -319,6 +319,10 @@ class Home extends Component {
                             source={Imagem['NullAvatar']}
                             activeOpacity={0.6}
                             containerStyle={styles.avatarTop}
+                            onPress={() => {
+                                this.getHouseholds();
+                                this.setModalVisible(true);
+                            }}
                         />
                         <View style={styles.viewWelcome}>
                             <Text style={styles.textHelloUser}>
@@ -331,92 +335,7 @@ class Home extends Component {
                         </View>
                     </LinearGradient>
 
-                    <View style={[styles.viewHousehold, styles.shadow]}>
-                        <View style={styles.viewHouseholdSelect}>
-                            <Modal
-                                animationType="fade"
-                                transparent={true}
-                                visible={this.state.modalVisible}
-                                onRequestClose={() => {
-                                    this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                                }}>
-                                <View style={styles.modalView}>
-                                    <View style={styles.modalViewTop}>
-                                        <View style={styles.viewAvatar}>
-                                            <Avatar
-                                                size="large"
-                                                rounded
-                                                source={Imagem[this.state.userAvatar]}
-                                                activeOpacity={0.6}
-                                                onPress={async () => {
-                                                    await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
-                                                    this.setModalVisible(!this.state.modalVisible);
-                                                    AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                    AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                    AsyncStorage.removeItem('householdID');
-                                                }}
-                                            />
-                                            <Text>{this.getNameParts(this.state.userName, true)}</Text>
-                                        </View>
-                                        <ScrollView horizontal={true}>
-                                            {householdsData != null ?
-                                                householdsData.map((household, key) => {
-                                                    return (
-                                                        <View style={styles.viewAvatar} key={key}>
-                                                            <Avatar
-                                                                size="large"
-                                                                rounded
-                                                                source={Imagem[household.picture]}
-                                                                activeOpacity={0.7}
-                                                                onPress={async () => {
-                                                                    await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
-                                                                    this.setModalVisible(!this.state.modalVisible);
-                                                                    AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                                    AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                                    AsyncStorage.setItem('householdID', this.state.householdID.toString());
-                                                                }}
-                                                            />
-                                                            <Text>{this.getNameParts(household.description, true)}</Text>
-                                                        </View>
-                                                    )
-                                                })
-                                                : null}
-                                        </ScrollView>
-                                    </View>
-                                    <View style={styles.modalViewBottom}>
-                                        <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
-                                            navigate('Household');
-                                            this.setModalVisible(!this.state.modalVisible);
-                                        }
-                                        }>
-                                            <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
-                                            <Text>{translate("home.addProfile")}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </Modal>
-                            <Text style={{ marginBottom: 7 }}>{translate("home.selectProfile")}</Text>
-                            <Avatar
-                                size="large"
-                                rounded
-                                source={Imagem[this.state.avatarSelect]}
-                                activeOpacity={0.6}
-                                onPress={() => {
-                                    this.getHouseholds();
-                                    this.setModalVisible(true);
-                                }}
-                            />
-                            <Text>{this.getNameParts(this.state.userSelect, true)}</Text>
-                        </View>
-                        <View style={styles.viewHouseholdAdd}>
-                            <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => navigate('Household')}>
-                                <FontAwesome name="plus-circle" size={35} color='rgba(22, 107, 135, 1)' />
-                                <Text>{translate("home.addProfile")}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={styles.viewReport}>
+                    <View style={[styles.viewReport, styles.shadow]}>
                         {howYouFelling}
 
                         <View style={styles.containerGoodBad}>
@@ -436,6 +355,73 @@ class Home extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
+
+                    <View style={styles.viewHouseholdSelect}>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={this.state.modalVisible}
+                            onRequestClose={() => {
+                                this.setModalVisible(!this.state.modalVisible); //Exit to modal view
+                            }}>
+                            <View style={styles.modalView}>
+                                <View style={styles.modalViewTop}>
+                                    <View style={styles.viewAvatar}>
+                                        <Avatar
+                                            size="large"
+                                            rounded
+                                            source={Imagem[this.state.userAvatar]}
+                                            activeOpacity={0.6}
+                                            onPress={async () => {
+                                                await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+                                                this.setModalVisible(!this.state.modalVisible);
+                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                AsyncStorage.removeItem('householdID');
+                                            }}
+                                        />
+                                        <Text>{this.getNameParts(this.state.userName, true)}</Text>
+                                    </View>
+                                    <ScrollView horizontal={true}>
+                                        {householdsData != null ?
+                                            householdsData.map((household, key) => {
+                                                return (
+                                                    <View style={styles.viewAvatar} key={key}>
+                                                        <Avatar
+                                                            size="large"
+                                                            rounded
+                                                            source={Imagem[household.picture]}
+                                                            activeOpacity={0.6}
+                                                            onPress={async () => {
+                                                                await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
+                                                                this.setModalVisible(!this.state.modalVisible);
+                                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                                AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                                            }}
+                                                        />
+                                                        <Text>{this.getNameParts(household.description, true)}</Text>
+                                                    </View>
+                                                )
+                                            })
+                                            : null}
+                                    </ScrollView>
+                                </View>
+                                <View style={styles.modalViewBottom}>
+                                    <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
+                                        navigate('Household');
+                                        this.setModalVisible(!this.state.modalVisible);
+                                    }
+                                    }>
+                                        <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
+                                        <Text>{translate("home.addProfile")}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+
+                    
 
                     {isProfessionalTrue}
                 </ScrollView>
@@ -486,16 +472,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollView: {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f4f4f4',
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        width: '100%',
-    },
-    viewTop: {
-        backgroundColor: '#348EAC',
-        alignItems: 'center',
-        justifyContent: 'center',
         width: '100%',
     },
     menuBars: {
@@ -504,101 +484,106 @@ const styles = StyleSheet.create({
         top: 0,
         padding: '2%',
     },
+    viewTop: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+    },
     avatarTop: {
         borderColor: '#ffffff',
         borderWidth: 3,
-        height: 140,
-        width: 140,
-        marginTop: 40
+        height: scale(108),
+        width: scale(108),
+        marginTop: 50
     },
     viewWelcome: {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '8%',
+        marginBottom: 95,
     },
     textHelloUser: {
-        fontSize: 25,
+        fontSize: scale(22),
         fontFamily: 'roboto',
         fontWeight: 'bold',
         color: '#ffffff',
-        marginTop: '4%'
+        marginTop: '3%'
     },
     textNewGuardion: {
-        fontSize: 20,
+        fontSize: scale(16),
         fontFamily: 'roboto',
         color: '#ffffff',
     },
-    viewHousehold: {
-        backgroundColor: '#ffffff',
-        flexDirection: 'row',
-        width: '85%',
-        borderRadius: 10,
-        //borderColor: '#c4c4c4',
-        //borderWidth: 1,
-        marginTop: '8%',
-    },
-    viewHouseholdSelect: {
-        width: '50%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: '4%',
-    },
-    viewHouseholdAdd: {
-        width: '50%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: '4%',
-    },
     viewReport: {
-        backgroundColor: '#348EAC',
+        backgroundColor: '#ffffff',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '85%',
-        marginTop: '8%',
+        marginTop: -75,
     },
     textFelling: {
         fontFamily: 'roboto',
         fontWeight: 'bold',
-        fontSize: 20,
-        color: '#ffffff',
-        marginTop: 15
+        fontSize: scale(18),
+        color: '#32323B',
+        marginTop: scale(25)
     },
     containerGoodBad: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '80%',
-        marginTop: 15,
-        marginBottom: 20
+        marginTop: scale(20),
+        marginBottom: scale(30)
     },
     viewChildBad: {
-        width: '49.5%',
-        borderTopRightRadius: 30,
-        borderBottomRightRadius: 30,
+        width: '49.25%',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
         backgroundColor: '#F18F01',
         justifyContent: 'center',
-        paddingVertical: 10
+        paddingVertical: 15
     },
     viewChildGood: {
-        width: '49.5%',
-        borderTopLeftRadius: 30,
-        borderBottomLeftRadius: 30,
+        width: '49.25%',
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
         backgroundColor: '#5DD39E',
         justifyContent: 'center',
-        paddingVertical: 10
+        paddingVertical: 15
     },
     textChoiceButton: {
         fontFamily: 'roboto',
+        fontWeight: 'bold',
         color: '#ffffff',
-        fontSize: 20,
+        fontSize: 18,
         alignSelf: 'center'
+    },
+    viewBox: {
+        backgroundColor: '#348EAC',
+        flexDirection: 'row',
+        width: '85%',
+        borderRadius: 10,
+        borderColor: '#c4c4c4',
+        borderWidth: 1,
+        marginTop: '0%',
+    },
+    textBox: {
+        fontFamily: 'roboto',
+        fontWeight: 'bold',
+        fontSize: scale(18),
+        color: '#ffffff',
+    },
+    viewHouseholdSelect: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '4%',
     },
     modalView: {
         alignSelf: 'center',
         width: '93%',
         marginTop: scale(210),
-        borderRadius: 30,
+        borderRadius: 15,
         backgroundColor: 'white',
         shadowColor: 'gray',
         shadowOffset: {
@@ -627,8 +612,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         fontWeight: 'bold',
-        marginTop: 15,
-        marginBottom: 15,
+        marginTop: 16,
+        marginBottom: 16,
         height: 38,
         justifyContent: 'center',
         //width: '35%',

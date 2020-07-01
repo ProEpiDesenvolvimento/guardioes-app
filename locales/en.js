@@ -205,7 +205,7 @@ export default {
         "toastAlertMessage": "Aperte mais uma vez para sair",
         "hello": "Hi, ",
         "nowAGuardian": "Guardião da Saúde",
-        "selectProfile": "Selecione um Perfil:",
+        "selectProfile": "Select a Profile",
         "addProfile": "Adicionar Perfil",
         "reportRumor": "Report Rumor",
         "reportRumorMessage": "Relatar um rumor de alguma coisa bla bla bla",

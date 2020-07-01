@@ -80,11 +80,10 @@ export const BottomMenu = createBottomTabNavigator({
         }),
         tabBarOptions: {
             style: {
-                height: '10%',
                 minHeight: 60,
+                height: '10%',
                 maxHeight: 70,
                 backgroundColor: '#ffffff',
-                //borderTopColor: '#c4c4c4',
                 borderTopWidth: 0,
                 shadowColor: "#000",
                 shadowOffset: {
