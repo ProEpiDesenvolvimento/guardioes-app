@@ -49,9 +49,9 @@ class Registrar extends Component {
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
             groupCheckbox: false,
-            userGroup: 0,
+            userGroup: null,
             groupValue: 'Selecionar',
-            userIdCode: 0,
+            userIdCode: null,
         }
     }
 
@@ -177,8 +177,6 @@ class Registrar extends Component {
                         </View>
                     </View>
 
-                    {/* =================================================================================== */}
-
                     <View>
                         <CheckBox
                                 title={"É integrante de alguma instituição de Ensino?"}
@@ -210,9 +208,6 @@ class Registrar extends Component {
                                 </View>
                                 : null}
                     </View>
-
-                    {/* =================================================================================== */}
-
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>Parentesco:</Text>
@@ -298,7 +293,6 @@ class Registrar extends Component {
 
     create = () => {
         this.showAlert()
-        console.log(API_URL)
         fetch(`${API_URL}/users/${this.state.userID}/households`, {
             method: 'POST',
             headers: {
@@ -337,13 +331,9 @@ class Registrar extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //borderColor: 'red',
-        //borderWidth: 3,
     },
     scroll: {
         flex: 1,
-        //borderColor: 'green',
-        //borderWidth: 3,
         width: '100%',
         justifyContent: 'space-between'
     },
@@ -365,7 +355,6 @@ const styles = StyleSheet.create({
     viewChildPais: {
         width: "50%",
         height: 65,
-        //flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
