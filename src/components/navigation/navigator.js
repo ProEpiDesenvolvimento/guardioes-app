@@ -51,7 +51,7 @@ export const BottomMenu = createBottomTabNavigator({
     Home,
     Diario,
     Mapa: { screen: Maps },
-    Conselho,
+    Conselho, 
     Noticias,
 },
     {
@@ -81,8 +81,8 @@ export const BottomMenu = createBottomTabNavigator({
         tabBarOptions: {
             style: {
                 height: '10%',
-                minHeight: 60,
-                maxHeight: 70,
+                // minHeight: 60,
+                // maxHeight: 70,
                 backgroundColor: '#ffffff',
                 //borderTopColor: '#c4c4c4',
                 borderTopWidth: 0,
@@ -100,7 +100,8 @@ export const BottomMenu = createBottomTabNavigator({
             labelStyle: {
                 fontSize: 11,
                 fontWeight: 'bold',
-                marginBottom: 5,
+                marginBottom: -20,
+                //margin: 0,
             },
         },
     }
