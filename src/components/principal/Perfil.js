@@ -163,7 +163,9 @@ class Perfil extends Component {
           gender: this.state.householdGender,
           race: this.state.householdRace,
           kinship: this.state.kinship,
-          picture: this.state.picture
+          picture: this.state.picture,
+          school_unit_id: this.householdGroup,
+          identification_code: this.householdIdCode
         }
       )
     })
@@ -173,7 +175,6 @@ class Perfil extends Component {
           this.getHouseholds();
         } else {
           console.warn(response.status)
-
         }
       })
   }
@@ -247,7 +248,7 @@ class Perfil extends Component {
         riskGroup: responseJson.user.risk_group,
         userState: responseJson.user.state,
         userCity: responseJson.user.city,
-        userGroupName: groupName
+        userGroupName: groupName,
       })
     })
   }
@@ -282,6 +283,7 @@ class Perfil extends Component {
 
     return (
       <View style={styles.container}>
+
         <Modal //Modal View for household
           animationType="fade"
           transparent={true}
@@ -382,6 +384,40 @@ class Perfil extends Component {
                 onChange={(option) => this.setState({ kinship: option.key })}
               />
             </View>
+
+            <View style={{ paddingTop: 15 }}>
+                <CheckBox
+                  title={"É integrante de alguma instituição de Ensino?"}
+                  containerStyle={styles.CheckBoxStyle}
+                  size={scale(16)}
+                  checked={this.state.groupCheckbox}
+                  onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
+                />
+              </View>
+              {this.state.groupCheckbox ?
+                <View style={styles.viewRow}>
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Instituição:</Text>
+                    <ModalSelector
+                      initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                      style={{ width: '80%', height: '70%' }}
+                      data={getGroups()}
+                      initValue={this.state.householdGroupName}
+                      onChange={(option) => this.setState({ householdGroup: option.key, householdGroupName: option.label })}
+                    />
+                  </View>
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                    <TextInput style={styles.formInput50}
+                      returnKeyType='done'
+                      keyboardType='number-pad'
+                      value={this.state.householdIdCode}
+                      onChangeText={text => this.setState({ householdIdCode: text })}
+                    />
+                  </View>
+                </View>
+                : null}
+
             <View style={styles.buttonView}>
               <Button
                 title="Editar"
@@ -636,8 +672,17 @@ class Perfil extends Component {
                         householdCountry: household.country,
                         householdGender: household.gender,
                         householdRace: household.race,
-                        kinship: household.kinship
+                        kinship: household.kinship,
                       });
+                      if (household.school_unit_id) {
+                        let householdGroupName = await getGroupName(household.school_unit_id);
+                        await this.setState({
+                          householdIdCode: household.identification_code,
+                          householdGroup: household.school_unit_id,
+                          householdGroupName: householdGroupName,
+                          groupCheckbox: true,
+                        });
+                      }
                       this.setModalVisible(true);
                     }}>
                       <FontAwesome name="edit" size={scale(25)} color='rgba(22, 107, 135, 1)' />
