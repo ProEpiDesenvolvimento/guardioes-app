@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Mo
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
+import { getNameParts } from '../../utils/constUtils';
 import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
@@ -134,20 +135,6 @@ class Home extends Component {
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();
         this.getUserLastSurveys();
-    }
-
-    getNameParts = (fullName, firstandLast = false) => {
-        if (fullName) {
-            let nameParts = fullName.split(" ");
-            let length = nameParts.length;
-
-            if (firstandLast && length > 1) {
-                return `${nameParts[0]} ${nameParts[length-1]}`;
-            }
-            else {
-                return nameParts[0];
-            }
-        }
     }
 
     getHouseholds = () => {//Get households
@@ -299,7 +286,7 @@ class Home extends Component {
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
 
-        const welcomeMessage = translate("home.hello") + this.getNameParts(this.state.userSelect);
+        const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
         const householdsData = this.state.data;
 
         const userIsProfessional = (
@@ -337,7 +324,7 @@ class Home extends Component {
 
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor='#348EAC' />
+                <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
 
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <LinearGradient style={styles.viewTop} colors={['#348EAC', '#166b87']}>
@@ -409,7 +396,7 @@ class Home extends Component {
                                                 this.getUserHealth();
                                             }}
                                         />
-                                        <Text>{this.getNameParts(this.state.userName, true)}</Text>
+                                        <Text>{getNameParts(this.state.userName, true)}</Text>
                                     </View>
                                     <ScrollView horizontal={true}>
                                         {householdsData != null ?
@@ -430,7 +417,7 @@ class Home extends Component {
                                                                 this.getUserHealth();
                                                             }}
                                                         />
-                                                        <Text>{this.getNameParts(household.description, true)}</Text>
+                                                        <Text>{getNameParts(household.description, true)}</Text>
                                                     </View>
                                                 )
                                             })
@@ -618,7 +605,6 @@ const styles = StyleSheet.create({
     },
     viewStatusIcon: {
         alignItems: 'center',
-        justifyContent: 'center',
     },
     statusIcon: {
         margin: scale(20),
@@ -636,7 +622,7 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: scale(16),
         color: '#ffffff',
-        marginTop: scale(5),
+        marginVertical: scale(5),
     },
     viewHouseholdSelect: {
         alignItems: 'center',

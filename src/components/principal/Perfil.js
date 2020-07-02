@@ -568,7 +568,7 @@ class Perfil extends Component {
 
               <View style={styles.buttonView}>
                 <Button
-                  title="Editar"
+                  title="Salvar"
                   color="#348EAC"
                   onPress={async () => {
                     await this.handleEdit()

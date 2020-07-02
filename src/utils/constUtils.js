@@ -2,6 +2,20 @@ import { Alert, Linking } from 'react-native';
 
 import Geolocation from 'react-native-geolocation-service';
 
+export const getNameParts = (fullName, firstandLast = false) => {
+    if (fullName) {
+        let nameParts = fullName.split(" ");
+        let length = nameParts.length;
+
+        if (firstandLast && length > 1) {
+            return `${nameParts[0]} ${nameParts[length-1]}`;
+        }
+        else {
+            return nameParts[0];
+        }
+    }
+}
+
 export const Redirect = (titulo, message, url) => {
     Alert.alert(
         `${titulo}`,

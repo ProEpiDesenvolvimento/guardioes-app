@@ -44,7 +44,8 @@ export const Cadastro = createStackNavigator({
             headerTitleStyle: {
                 fontFamily: 'roboto',
             }
-        }
+        },
+        cardStyle: { shadowColor: 'transparent' },
     })
 
 export const BottomMenu = createBottomTabNavigator({
@@ -62,7 +63,7 @@ export const BottomMenu = createBottomTabNavigator({
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'home';
-                    return <MaterialIcons name={iconName} size={35} color={tintColor} />;
+                    return <MaterialIcons name={iconName} size={scale(30)} color={tintColor} />;
                 } else if (routeName === 'Diario') {
                     iconName = 'event';
                 } else if (routeName === 'Mapa') {
@@ -75,32 +76,27 @@ export const BottomMenu = createBottomTabNavigator({
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <MaterialIcons name={iconName} size={30} color={tintColor} />;
+                return <MaterialIcons name={iconName} size={scale(30)} color={tintColor} />;
             },
         }),
         tabBarOptions: {
             style: {
-                minHeight: 60,
+                //minHeight: 60,
                 height: '10%',
                 //maxHeight: 70,
                 backgroundColor: '#ffffff',
-                borderTopWidth: 0,
-                shadowColor: "#000",
-                shadowOffset: {
-                    width: 0,
-                    height: 7,
-                },
-                shadowOpacity: 0.43,
-                shadowRadius: 9.51,
-                elevation: 15,
+                //borderTopWidth: 0,
             },
             activeTintColor: '#348EAC',
             inactiveTintColor: '#c4c4c4',
+            /*
             labelStyle: {
-                fontSize: 11,
+                fontFamily: 'roboto',
                 fontWeight: 'bold',
+                fontSize: 11,
                 marginBottom: 5,
             },
+            */
         },
     }
 )
@@ -129,7 +125,8 @@ export const Stack = createStackNavigator({
             headerTitleStyle: {
                 fontFamily: 'roboto',
             }
-        }
+        },
+        cardStyle: { shadowColor: 'transparent' },
     }
 )
 

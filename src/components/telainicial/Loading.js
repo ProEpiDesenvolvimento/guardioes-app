@@ -81,15 +81,17 @@ class AuthLoadingScreen extends React.Component {
         }
         else if (response.status == 401) {
           this._logoutApp();
+          this.props.navigation.navigate('Cadastro');
         }
-
-        this.props.navigation.navigate('Cadastro');
+        else {
+          this.props.navigation.navigate('Cadastro');
+        }
       })
   };
 
   // Render any loading content that you like here
   render() {
-    const statusColor = (<StatusBar backgroundColor='#348EAC' />)
+    const statusColor = (<StatusBar backgroundColor='#348EAC' barStyle="light-content" />)
 
     const logoBR = (
       <Image style={styles.imageLogo} source={imagemLogoBR} />
@@ -116,7 +118,6 @@ class AuthLoadingScreen extends React.Component {
           <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoUnB} /></View>
         </View>
         <ActivityIndicator size="large" color="#ffffff" />
-        <StatusBar barStyle="default" />
       </LinearGradient>
     );
   }
