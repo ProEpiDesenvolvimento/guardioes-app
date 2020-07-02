@@ -65,7 +65,7 @@ class Registrar extends Component {
             initValueCity: "Selecionar",
             initValueGroup: "Selecionar",
             initValueCategory: "Selecionar",
-            initValueCollege: "Selecionar",
+            initValueSchoolLocation: "Selecionar",
             initValueEducationLevel: "Selecionar"
         }
     }
@@ -286,9 +286,9 @@ class Registrar extends Component {
                                         <ModalSelector
                                             initValueTextStyle={{ color: 'black' }}
                                             style={{ width: '80%', height: '70%' }}
-                                            data={getGroups("UNB", "","")}
-                                            initValue={this.state.initValueCollege}
-                                            onChange={(option) => this.setState({ userCollege: option.key, initValueCollege: option.label })}
+                                            data={getGroups("UNB", "", "")}
+                                            initValue={this.state.initValueGroup}
+                                            onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
                                         />
                                     </View>
                                     : this.state.userCategory == "SES-DF" ?
@@ -329,7 +329,7 @@ class Registrar extends Component {
                                         </View>
                                         : null}
                                 </View>
-                                : this.state.userCollege != null ?
+                                : this.state.userGroup != null && this.state.userCategory == "UNB"?
                                     <View style={styles.viewRow}>
                                         <View style={styles.viewChildSexoRaca}>
                                             <Text style={styles.commomTextView}>Nº de Identificação:</Text>
@@ -446,13 +446,17 @@ class Registrar extends Component {
                 if (this.state.userPwd.length < 8) {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
-                    if (this.state.groupCheckbox == true && (this.state.userGroup == null || this.state.userIdCode == null)) {
-                        Alert.alert("Instituição e Número de Identificação devem estar preenchidos")
+                    if (this.state.groupCheckbox == true && this.state.userGroup == null) {
+                        Alert.alert("Instituição deve estar preenchida")
                     } else {
                         if (this.state.userCountry == null) {
                             Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
                         } else {
-                            this.avatarSelector();
+                            if (this.state.userCategory == "UNB" && this.state.userIdCode == null) {
+                                Alert.alert("Número de Identificação deve estar preenchido")
+                            } else {
+                                this.avatarSelector();
+                            }
                         }
                     }
                 }
