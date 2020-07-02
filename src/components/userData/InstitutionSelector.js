@@ -4,12 +4,15 @@ import {
     Text,
     View,
     TextInput,
+    Alert,
 } from 'react-native'
 import { scale } from '../../utils/scallingUtils'
 import { CheckBox } from 'react-native-elements'
 import ModalSelector from 'react-native-modal-selector'
-import { getGroups, schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils'
+import { schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils'
 import Autocomplete from 'react-native-autocomplete-input'
+import AwesomeAlert from 'react-native-awesome-alerts';
+import { API_URL } from 'react-native-dotenv';
 
 class InstitutionSelector extends Component {
     constructor(props) {
@@ -33,16 +36,66 @@ class InstitutionSelector extends Component {
         this.props.setUserInstitutionCallback(this.state.userIdCode, this.state.userGroup)
     }
 
+    loadingSchools(Category, Level, City) {
+        const groups = []
+        this.showAlert()
+        fetch(`${API_URL}/school_units_list/`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "filter":
+                {
+                    category: Category,
+                    level: Level,
+                    city: City,
+                }
+            })
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    this.hideAlert();
+                    return response.json()
+                }
+            })
+            .then((responseJson) => {
+                //console.warn(responseJson)
+                
+                responseJson.school_units.map(group => {
+                    groups.push({ key: group.id, label: group.description })
+                })
+                this.setState({ groups })
+                this.hideAlert();
+            })
+    }
+
+    showAlert = () => {
+        this.setState({
+            showAlert: true,
+            showProgressBar: true
+        });
+    };
+
+    hideAlert = () => {
+        this.setState({
+            showAlert: false
+        })
+    };
+
+
     render() {
+        const { showAlert } = this.state;
         return (
-            <View style={{marginBottom: 10}}>
+            <View style={{ marginBottom: 10 }}>
                 <CheckBox
                     title={"É integrante de alguma instituição de Ensino?"}
                     containerStyle={styles.CheckBoxStyle}
                     size={scale(16)}
                     checked={this.state.groupCheckbox}
-                    onPress={ () => this.setState({ groupCheckbox: !this.state.groupCheckbox }) }
-                    />
+                    onPress={() => this.setState({ groupCheckbox: !this.state.groupCheckbox })}
+                />
                 {this.state.groupCheckbox ?
                     <View>
                         <View style={styles.viewRow}>
@@ -53,8 +106,8 @@ class InstitutionSelector extends Component {
                                     style={{ width: '80%', height: '70%' }}
                                     data={schoolCategory}
                                     initValue={this.state.initValueCategory}
-                                    onChange={(option) => this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null })}
-                                    />
+                                    onChange={(option) => { if (option.key == "UNB") { this.loadingSchools(option.key) } this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null }) }}
+                                />
                             </View>
                             {this.state.userCategory == "UNB" ?
                                 <View style={styles.viewChildSexoRaca}>
@@ -62,16 +115,16 @@ class InstitutionSelector extends Component {
                                     <ModalSelector
                                         initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                         style={{ width: '80%', height: '70%' }}
-                                        data={getGroups("UNB", "", "")}
+                                        data={this.state.groups}
                                         initValue={this.state.initValueGroup}
                                         onChange={async (option) => {
                                             await this.setState({ userGroup: option.key, initValueGroup: option.label })
                                             this.updateParent()
                                         }}
-                                        />
+                                    />
                                 </View>
                                 : this.state.userCategory == "SES-DF" ?
-                                <View style={styles.viewChildSexoRaca}>
+                                    <View style={styles.viewChildSexoRaca}>
                                         <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
                                         <ModalSelector
                                             initValueTextStyle={{ color: 'black', fontSize: 10 }}
@@ -79,7 +132,7 @@ class InstitutionSelector extends Component {
                                             data={educationLevel}
                                             initValue={this.state.initValueEducationLevel}
                                             onChange={(option) => this.setState({ userEducationLevel: option.key, initValueEducationLevel: option.label })}
-                                            />
+                                        />
                                     </View>
                                     : null}
                         </View>
@@ -92,8 +145,8 @@ class InstitutionSelector extends Component {
                                         style={{ width: '80%', height: '70%' }}
                                         data={schoolLocation}
                                         initValue={this.state.initValueSchoolLocation}
-                                        onChange={(option) => this.setState({ userSchoolLocation: option.key, initValueSchoolLocation: option.label })}
-                                        />
+                                        onChange={(option) => { this.loadingSchools(this.state.userCategory, this.state.userEducationLevel, option.key), this.setState({ userSchoolLocation: option.key, initValueSchoolLocation: option.label }) }}
+                                    />
                                 </View>
                                 {this.state.userSchoolLocation != null ?
                                     <View style={styles.viewChildSexoRaca}>
@@ -101,18 +154,18 @@ class InstitutionSelector extends Component {
                                         <ModalSelector
                                             initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                             style={{ width: '80%', height: '70%' }}
-                                            data={getGroups("SES-DF", this.state.userEducationLevel, this.state.userSchoolLocation)}
+                                            data={this.state.groups}
                                             initValue={this.state.initValueGroup}
                                             onChange={async (option) => {
                                                 await this.setState({ userGroup: option.key, initValueGroup: option.label })
                                                 this.updateParent()
                                             }}
-                                            />
+                                        />
                                     </View>
                                     : null}
-                                </View>
-                            : this.state.userGroup != null && this.state.userCategory == "UNB"?
-                            <View style={styles.viewRow}>
+                            </View>
+                            : this.state.userGroup != null && this.state.userCategory == "UNB" ?
+                                <View style={styles.viewRow}>
                                     <View style={styles.viewChildSexoRaca}>
                                         <Text style={styles.commomTextView}>Nº de Identificação:</Text>
                                         <TextInput style={styles.formInput50}
@@ -122,7 +175,7 @@ class InstitutionSelector extends Component {
                                                 await this.setState({ userIdCode: text })
                                                 this.updateParent()
                                             }}
-                                            />
+                                        />
                                     </View>
                                 </View>
                                 : null}
@@ -149,6 +202,15 @@ class InstitutionSelector extends Component {
                         </View>*/}
                     </View>
                     : null}
+                <AwesomeAlert
+                    show={showAlert}
+                    showProgress={this.state.showProgressBar ? true : false}
+                    title={this.state.showProgressBar ? "Carregando" : null}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={false}
+                    showConfirmButton={this.state.showProgressBar ? false : true}
+                />
             </View>
         )
 
