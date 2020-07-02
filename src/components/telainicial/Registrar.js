@@ -7,9 +7,6 @@ import {
     Button,
     Keyboard,
     Alert,
-    TouchableOpacity,
-    SafeAreaView,
-    ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
@@ -21,9 +18,9 @@ import { API_URL } from 'react-native-dotenv';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { gender, country, race, getGroups, schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils';
+import { gender, country, race } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
-import Autocomplete from 'react-native-autocomplete-input';
+import InstitutionSelector from '../userData/InstitutionSelector'
 
 let data = new Date();
 let d = data.getDate();

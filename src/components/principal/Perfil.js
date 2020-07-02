@@ -403,7 +403,7 @@ class Perfil extends Component {
             </View>
               
             <View
-              style={{ marginTop: 20 }}>
+              style={{ marginTop: 15 }}>
               <InstitutionSelector
                 setUserInstitutionCallback={this.setHouseholdInstitutionCallback}/>
             </View>
@@ -542,7 +542,7 @@ class Perfil extends Component {
                 : null}
 
               <View
-                style={{ marginTop: 20 }}>
+                style={{ marginTop: 15 }}>
                 <InstitutionSelector
                   setUserInstitutionCallback={this.setUserInstitutionCallback}/>
               </View>
