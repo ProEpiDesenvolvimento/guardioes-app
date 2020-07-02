@@ -17,11 +17,11 @@ import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import { CheckBox } from 'react-native-elements';
 import ModalSelector from 'react-native-modal-selector';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { gender, country, race, getGroups } from '../../utils/selectorUtils';
+import { gender, country, race, getGroups, schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 import Autocomplete from 'react-native-autocomplete-input';
 
@@ -64,6 +64,9 @@ class Registrar extends Component {
             showProgressBar: false, //Custom Progress Bar
             initValueCity: "Selecionar",
             initValueGroup: "Selecionar",
+            initValueCategory: "Selecionar",
+            initValueSchoolLocation: "Selecionar",
+            initValueEducationLevel: "Selecionar"
         }
     }
 
@@ -265,44 +268,101 @@ class Registrar extends Component {
                         onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
                     />
                     {this.state.groupCheckbox ?
-                        <View style={styles.viewRow}>
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Instituição:</Text>
-                                {/*<Autocomplete
-                                    style={styles.AutocompleteStyle}
-                                    containerStyle={styles.AutocompleteContainer}
-                                    inputContainerStyle={styles.AutocompleteList}
-                                    listStyle={styles.AutoCompleteListStyles}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    data={school_units.length === 1 && comp(query, school_units[0].description) ? [] : school_units}
-                                    defaultValue={query}
-                                    onChangeText={text => this.setState({ query: text })}
-                                    //placeholder="Nome da instituição"
-                                    renderItem={({ item }) => (
-                                        <TouchableOpacity style={styles.AutocompleteTouchableOpacity} onPress={() => this.setState({ query: item.description, userGroup: item.description })}>
-                                            <Text style={styles.itemText}>
-                                                {item.description}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    )}
-                                />*/}
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
-                                    style={{ width: '80%', height: '70%' }}
-                                    data={getGroups()}
-                                    initValue={this.state.initValueGroup}
-                                    onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                />
+                        <View>
+                            <View style={styles.viewRow}>
+                                <View style={styles.viewChildSexoRaca}>
+                                    <Text style={styles.commomTextView}>Categoria:</Text>
+                                    <ModalSelector
+                                        initValueTextStyle={{ color: 'black' }}
+                                        style={{ width: '80%', height: '70%' }}
+                                        data={schoolCategory}
+                                        initValue={this.state.initValueCategory}
+                                        onChange={(option) => this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null })}
+                                    />
+                                </View>
+                                {this.state.userCategory == "UNB" ?
+                                    <View style={styles.viewChildSexoRaca}>
+                                        <Text style={styles.commomTextView}>Faculdade:</Text>
+                                        <ModalSelector
+                                            initValueTextStyle={{ color: 'black' }}
+                                            style={{ width: '80%', height: '70%' }}
+                                            data={getGroups("UNB", "", "")}
+                                            initValue={this.state.initValueGroup}
+                                            onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
+                                        />
+                                    </View>
+                                    : this.state.userCategory == "SES-DF" ?
+                                        <View style={styles.viewChildSexoRaca}>
+                                            <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
+                                            <ModalSelector
+                                                initValueTextStyle={{ color: 'black' }}
+                                                style={{ width: '80%', height: '70%' }}
+                                                data={educationLevel}
+                                                initValue={this.state.initValueEducationLevel}
+                                                onChange={(option) => this.setState({ userEducationLevel: option.key, initValueEducationLevel: option.label })}
+                                            />
+                                        </View>
+                                        : null}
                             </View>
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                                <TextInput style={styles.formInput50}
-                                    returnKeyType='done'
-                                    keyboardType='number-pad'
-                                    onChangeText={text => this.setState({ userIdCode: text })}
-                                />
-                            </View>
+                            {this.state.userEducationLevel != null ?
+                                <View style={styles.viewRow}>
+                                    <View style={styles.viewChildSexoRaca}>
+                                        <Text style={styles.commomTextView}>Região Administrativa:</Text>
+                                        <ModalSelector
+                                            initValueTextStyle={{ color: 'black' }}
+                                            style={{ width: '80%', height: '70%' }}
+                                            data={schoolLocation}
+                                            initValue={this.state.initValueSchoolLocation}
+                                            onChange={(option) => this.setState({ userSchoolLocation: option.key, initValueSchoolLocation: option.label })}
+                                        />
+                                    </View>
+                                    {this.state.userSchoolLocation != null ?
+                                        <View style={styles.viewChildSexoRaca}>
+                                            <Text style={styles.commomTextView}>Unidade:</Text>
+                                            <ModalSelector
+                                                initValueTextStyle={{ color: 'black' }}
+                                                style={{ width: '80%', height: '70%' }}
+                                                data={getGroups("SES-DF", this.state.userEducationLevel, this.state.userSchoolLocation)}
+                                                initValue={this.state.initValueGroup}
+                                                onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
+                                            />
+                                        </View>
+                                        : null}
+                                </View>
+                                : this.state.userGroup != null && this.state.userCategory == "UNB"?
+                                    <View style={styles.viewRow}>
+                                        <View style={styles.viewChildSexoRaca}>
+                                            <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                                            <TextInput style={styles.formInput50}
+                                                returnKeyType='done'
+                                                keyboardType='number-pad'
+                                                onChangeText={text => this.setState({ userIdCode: text })}
+                                            />
+                                        </View>
+                                    </View>
+                                    : null}
+
+
+                            {/*<View style={styles.viewRow}>
+                                <View style={styles.viewChildSexoRaca}>
+                                    <Text style={styles.commomTextView}>Instituição:</Text>
+                                    <ModalSelector
+                                        initValueTextStyle={{ color: 'black' }}
+                                        style={{ width: '80%', height: '70%' }}
+                                        data={getGroups()}
+                                        initValue={this.state.initValueGroup}
+                                        onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
+                                    />
+                                </View>
+                                <View style={styles.viewChildSexoRaca}>
+                                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                                    <TextInput style={styles.formInput50}
+                                        returnKeyType='done'
+                                        keyboardType='number-pad'
+                                        onChangeText={text => this.setState({ userIdCode: text })}
+                                    />
+                                </View>
+                    </View>*/}
                         </View>
                         : null}
 
@@ -386,13 +446,17 @@ class Registrar extends Component {
                 if (this.state.userPwd.length < 8) {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
-                    if (this.state.groupCheckbox == true && (this.state.userGroup == null || this.state.userIdCode == null)) {
-                        Alert.alert("Instituição e Número de Identificação devem estar preenchidos")
+                    if (this.state.groupCheckbox == true && this.state.userGroup == null) {
+                        Alert.alert("Instituição deve estar preenchida")
                     } else {
                         if (this.state.userCountry == null) {
                             Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
                         } else {
-                            this.avatarSelector();
+                            if (this.state.userCategory == "UNB" && this.state.userIdCode == null) {
+                                Alert.alert("Número de Identificação deve estar preenchido")
+                            } else {
+                                this.avatarSelector();
+                            }
                         }
                     }
                 }
@@ -473,9 +537,9 @@ class Registrar extends Component {
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 
-                RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
 
                 this.props.navigation.navigate('Home');
                 this.hideAlert();
@@ -596,7 +660,7 @@ const styles = StyleSheet.create({
     AutocompleteStyle: {
         width: '80%',
         height: 35,
-        fontSize: 14 
+        fontSize: 14
     },
     AutocompleteContainer: {
         width: "80%",
@@ -609,7 +673,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#348EAC'
     },
-    AutoCompleteListStyles:{
+    AutoCompleteListStyles: {
         borderRadius: 5,
         backgroundColor: "rgba(218,218,218,0.90)",
         maxHeight: 150
