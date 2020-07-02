@@ -81,22 +81,21 @@ export const BottomMenu = createBottomTabNavigator({
         }),
         tabBarOptions: {
             style: {
-                //minHeight: 60,
+                minHeight: 60,
                 height: '10%',
                 //maxHeight: 70,
                 backgroundColor: '#ffffff',
-                //borderTopWidth: 0,
+                borderTopWidth: 0,
             },
             activeTintColor: '#348EAC',
             inactiveTintColor: '#c4c4c4',
-            /*
             labelStyle: {
                 fontFamily: 'roboto',
                 fontWeight: 'bold',
                 fontSize: 11,
+                marginTop: 5,
                 marginBottom: 5,
             },
-            */
         },
     }
 )

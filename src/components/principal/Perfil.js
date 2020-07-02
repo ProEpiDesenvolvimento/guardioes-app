@@ -384,7 +384,7 @@ class Perfil extends Component {
             </View>
             <View style={styles.buttonView}>
               <Button
-                title="Editar"
+                title="Salvar"
                 color="#348EAC"
                 onPress={() => {
                   this.avatarHouseholdSelector();

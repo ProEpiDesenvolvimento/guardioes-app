@@ -15,6 +15,8 @@ import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import LinearGradient from 'react-native-linear-gradient';
 
+FontAwesome.loadFont();
+
 let data = new Date();
 let d = data.getDate();
 let m = data.getMonth() + 1;
