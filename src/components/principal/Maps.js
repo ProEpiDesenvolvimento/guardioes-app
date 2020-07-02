@@ -238,6 +238,7 @@ class Maps extends Component {
                     ref={(r) => { this.map = r }}
                     renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
                     renderCluster={this.renderCluster}
+                    onPress={() => { console.log("Clicou no mapa") }}
                 />
                 <AwesomeAlert
                     show={showAlert}
