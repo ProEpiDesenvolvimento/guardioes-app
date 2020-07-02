@@ -106,9 +106,9 @@ export function getGroups(cat, lev, cyt){
     return groups
 }
 
-export function getGroupName(ID) {
+export async function getGroupName(ID) {
     let groupName = []
-    fetch(`${API_URL}/school_units/`, {
+    await fetch(`${API_URL}/school_units/`, {
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
