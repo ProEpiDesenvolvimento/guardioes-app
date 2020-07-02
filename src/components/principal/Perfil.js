@@ -12,6 +12,7 @@ import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
+import InstitutionSelector from '../userData/InstitutionSelector'
 
 FontAwesome.loadFont();
 
@@ -279,6 +280,20 @@ class Perfil extends Component {
     await this.editUser()
   }
 
+  setUserInstitutionCallback = (userIdCode, userGroup) => {
+    this.setState({
+        userIdCode: userIdCode,
+        userGroup: userGroup,
+    })
+  }
+
+  setHouseholdInstitutionCallback = (householdIdCode, householdGroup) => {
+    this.setState({
+        householdIdCode: householdIdCode,
+        householdGroup: householdGroup,
+    })
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     const householdsData = this.state.dataSource;
@@ -386,39 +401,12 @@ class Perfil extends Component {
                 onChange={(option) => this.setState({ kinship: option.key })}
               />
             </View>
-
-            <View style={{ paddingTop: 15 }}>
-                <CheckBox
-                  title={"É integrante de alguma instituição de Ensino?"}
-                  containerStyle={styles.CheckBoxStyle}
-                  size={scale(16)}
-                  checked={this.state.groupCheckbox}
-                  onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-                />
-              </View>
-              {this.state.groupCheckbox ?
-                <View style={styles.viewRow}>
-                  <View style={styles.viewChildSexoRaca}>
-                    <Text style={styles.commomTextView}>Instituição:</Text>
-                    <ModalSelector
-                      initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                      style={{ width: '80%', height: '70%' }}
-                      data={getGroups()}
-                      initValue={this.state.householdGroupName}
-                      onChange={(option) => this.setState({ householdGroup: option.key, householdGroupName: option.label })}
-                    />
-                  </View>
-                  <View style={styles.viewChildSexoRaca}>
-                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                    <TextInput style={styles.formInput50}
-                      returnKeyType='done'
-                      keyboardType='number-pad'
-                      value={this.state.householdIdCode}
-                      onChangeText={text => this.setState({ householdIdCode: text })}
-                    />
-                  </View>
-                </View>
-                : null}
+              
+            <View
+              style={{ marginTop: 20 }}>
+              <InstitutionSelector
+                setUserInstitutionCallback={this.setHouseholdInstitutionCallback}/>
+            </View>
 
             <View style={styles.buttonView}>
               <Button
@@ -553,56 +541,11 @@ class Perfil extends Component {
                 </View>
                 : null}
 
-              <View style={{ paddingTop: 15 }}>
-                {/*<CheckBox
-                  title={"Voce é um profissional da Saude"}
-                  checked={this.state.isProfessional}
-                  containerStyle={styles.CheckBoxStyle}
-                  size={scale(16)}
-                  onPress={() => {
-                    this.setState({ isProfessional: !this.state.isProfessional })
-                  }}
-                />
-                <CheckBox
-                  title={"Faz parte do Grupo de Risco?"}
-                  checked={this.state.riskGroup}
-                  containerStyle={styles.CheckBoxStyle}
-                  size={scale(16)}
-                  onPress={() => {
-                    this.setState({ riskGroup: !this.state.riskGroup })
-                  }}
-                />*/}
-                <CheckBox
-                  title={"É integrante de alguma instituição de Ensino?"}
-                  containerStyle={styles.CheckBoxStyle}
-                  size={scale(16)}
-                  checked={this.state.groupCheckbox}
-                  onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-                />
+              <View
+                style={{ marginTop: 20 }}>
+                <InstitutionSelector
+                  setUserInstitutionCallback={this.setUserInstitutionCallback}/>
               </View>
-              {this.state.groupCheckbox ?
-                <View style={styles.viewRow}>
-                  <View style={styles.viewChildSexoRaca}>
-                    <Text style={styles.commomTextView}>Instituição:</Text>
-                    <ModalSelector
-                      initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                      style={{ width: '80%', height: '70%' }}
-                      data={getGroups()}
-                      initValue={this.state.userGroupName}
-                      onChange={(option) => this.setState({ userGroup: option.key, userGroupName: option.label })}
-                    />
-                  </View>
-                  <View style={styles.viewChildSexoRaca}>
-                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                    <TextInput style={styles.formInput50}
-                      returnKeyType='done'
-                      keyboardType='number-pad'
-                      value={this.state.userIdSelect}
-                      onChangeText={text => this.setState({ userIdSelect: text })}
-                    />
-                  </View>
-                </View>
-                : null}
 
               <View style={styles.buttonView}>
                 <Button

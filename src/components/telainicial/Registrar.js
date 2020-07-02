@@ -62,11 +62,6 @@ class Registrar extends Component {
             riskGroup: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
-            initValueCity: "Selecionar",
-            initValueGroup: "Selecionar",
-            initValueCategory: "Selecionar",
-            initValueSchoolLocation: "Selecionar",
-            initValueEducationLevel: "Selecionar"
         }
     }
 
@@ -97,6 +92,13 @@ class Registrar extends Component {
         return school_units.filter(school => school.description.search(regex) >= 0);
     }
 
+    setUserInstitutionCallback = (userIdCode, userGroup) => {
+        this.setState({
+            userIdCode: userIdCode,
+            userGroup: userGroup,
+        })
+    }
+
     render() {
         const { showAlert } = this.state;
         const { query } = this.state;
@@ -119,7 +121,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                             <ModalSelector
-                                initValueTextStyle={{ color: 'black' }}
+                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                 style={{ width: '80%', height: '70%' }}
                                 data={gender}
                                 initValue={"Selecionar"}
@@ -130,7 +132,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                             <ModalSelector
-                                initValueTextStyle={{ color: 'black' }}
+                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                 style={{ width: '80%', height: '70%' }}
                                 data={race}
                                 initValue={"Selecionar"}
@@ -180,7 +182,7 @@ class Registrar extends Component {
                             <Text style={styles.commomTextView}>{translate("register.country")}</Text>
 
                             <ModalSelector
-                                initValueTextStyle={{ color: 'black' }}
+                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                 style={{ width: '80%', height: '70%' }}
                                 data={country}
                                 initValue={"Selecionar"}
@@ -195,7 +197,7 @@ class Registrar extends Component {
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Estado:</Text>
                                 <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
+                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                     style={{ width: '80%', height: '70%' }}
                                     data={state}
                                     initValue={"Selecionar"}
@@ -206,7 +208,7 @@ class Registrar extends Component {
                             <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>Município:</Text>
                                 <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
+                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                     style={{ width: '80%', height: '70%' }}
                                     data={getCity(this.state.userState)}
                                     initValue={this.state.initValueCity}
@@ -230,7 +232,7 @@ class Registrar extends Component {
                         {!this.state.residenceCountryCheckbox ?
                             <View style={styles.viewRowCenter}>
                                 <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
+                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
                                     style={{ width: '80%', height: '70%', alignSelf: 'center' }}
                                     data={country}
                                     initValue={"Selecionar"}
@@ -260,111 +262,9 @@ class Registrar extends Component {
                             }}
                         />
                     </View>
-                    <CheckBox
-                        title={"É integrante de alguma instituição de Ensino?"}
-                        containerStyle={styles.CheckBoxStyle}
-                        size={scale(16)}
-                        checked={this.state.groupCheckbox}
-                        onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-                    />
-                    {this.state.groupCheckbox ?
-                        <View>
-                            <View style={styles.viewRow}>
-                                <View style={styles.viewChildSexoRaca}>
-                                    <Text style={styles.commomTextView}>Categoria:</Text>
-                                    <ModalSelector
-                                        initValueTextStyle={{ color: 'black' }}
-                                        style={{ width: '80%', height: '70%' }}
-                                        data={schoolCategory}
-                                        initValue={this.state.initValueCategory}
-                                        onChange={(option) => this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null })}
-                                    />
-                                </View>
-                                {this.state.userCategory == "UNB" ?
-                                    <View style={styles.viewChildSexoRaca}>
-                                        <Text style={styles.commomTextView}>Faculdade:</Text>
-                                        <ModalSelector
-                                            initValueTextStyle={{ color: 'black' }}
-                                            style={{ width: '80%', height: '70%' }}
-                                            data={getGroups("UNB", "", "")}
-                                            initValue={this.state.initValueGroup}
-                                            onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                        />
-                                    </View>
-                                    : this.state.userCategory == "SES-DF" ?
-                                        <View style={styles.viewChildSexoRaca}>
-                                            <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
-                                            <ModalSelector
-                                                initValueTextStyle={{ color: 'black' }}
-                                                style={{ width: '80%', height: '70%' }}
-                                                data={educationLevel}
-                                                initValue={this.state.initValueEducationLevel}
-                                                onChange={(option) => this.setState({ userEducationLevel: option.key, initValueEducationLevel: option.label })}
-                                            />
-                                        </View>
-                                        : null}
-                            </View>
-                            {this.state.userEducationLevel != null ?
-                                <View style={styles.viewRow}>
-                                    <View style={styles.viewChildSexoRaca}>
-                                        <Text style={styles.commomTextView}>Região Administrativa:</Text>
-                                        <ModalSelector
-                                            initValueTextStyle={{ color: 'black' }}
-                                            style={{ width: '80%', height: '70%' }}
-                                            data={schoolLocation}
-                                            initValue={this.state.initValueSchoolLocation}
-                                            onChange={(option) => this.setState({ userSchoolLocation: option.key, initValueSchoolLocation: option.label })}
-                                        />
-                                    </View>
-                                    {this.state.userSchoolLocation != null ?
-                                        <View style={styles.viewChildSexoRaca}>
-                                            <Text style={styles.commomTextView}>Unidade:</Text>
-                                            <ModalSelector
-                                                initValueTextStyle={{ color: 'black' }}
-                                                style={{ width: '80%', height: '70%' }}
-                                                data={getGroups("SES-DF", this.state.userEducationLevel, this.state.userSchoolLocation)}
-                                                initValue={this.state.initValueGroup}
-                                                onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                            />
-                                        </View>
-                                        : null}
-                                </View>
-                                : this.state.userGroup != null && this.state.userCategory == "UNB"?
-                                    <View style={styles.viewRow}>
-                                        <View style={styles.viewChildSexoRaca}>
-                                            <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                                            <TextInput style={styles.formInput50}
-                                                returnKeyType='done'
-                                                keyboardType='number-pad'
-                                                onChangeText={text => this.setState({ userIdCode: text })}
-                                            />
-                                        </View>
-                                    </View>
-                                    : null}
-
-
-                            {/*<View style={styles.viewRow}>
-                                <View style={styles.viewChildSexoRaca}>
-                                    <Text style={styles.commomTextView}>Instituição:</Text>
-                                    <ModalSelector
-                                        initValueTextStyle={{ color: 'black' }}
-                                        style={{ width: '80%', height: '70%' }}
-                                        data={getGroups()}
-                                        initValue={this.state.initValueGroup}
-                                        onChange={(option) => this.setState({ userGroup: option.key, initValueGroup: option.label })}
-                                    />
-                                </View>
-                                <View style={styles.viewChildSexoRaca}>
-                                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                                    <TextInput style={styles.formInput50}
-                                        returnKeyType='done'
-                                        keyboardType='number-pad'
-                                        onChangeText={text => this.setState({ userIdCode: text })}
-                                    />
-                                </View>
-                    </View>*/}
-                        </View>
-                        : null}
+                    
+                    <InstitutionSelector 
+                        setUserInstitutionCallback={this.setUserInstitutionCallback}/>
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>{translate("register.email")}</Text>
