@@ -3,9 +3,6 @@ import { SafeAreaView } from 'react-native';
 import * as Navegar from './src/components/navigation/navigator';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
-import Icon from 'react-native-vector-icons/FontAwesome'
-
-Icon.loadFont();
 
 class Guardioes extends Component {
   constructor(properties) {

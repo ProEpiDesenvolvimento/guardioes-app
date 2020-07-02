@@ -5,7 +5,7 @@ import RNSecureStorage from 'rn-secure-storage';
 import ClusteredMapView from '../../utils/MarkerClustering'
 import clusterImages from '../../utils/MarkerClustering/imgImport'
 import mapStyle from '../../utils/MarkerClustering/mapStyle'
-import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import Geolocation from 'react-native-geolocation-service';
@@ -229,7 +229,6 @@ class Maps extends Component {
         return (
             <View style={styles.container}>
                 <ClusteredMapView
-                    provider={PROVIDER_GOOGLE}
                     key={this.state.mapKey}
                     showsUserLocation={this.state.showUserLocation}
                     style={styles.map}
