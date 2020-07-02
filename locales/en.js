@@ -84,7 +84,7 @@ export default {
     },
     "ajuda": {
         "title": "Help",
-        "useTermsBtn": "Use terms and policies",
+        "useTermsBtn": "Terms and policies",
         "tutorialBtn": "Tutorial"
     },
     "tutorial": {
@@ -146,120 +146,120 @@ export default {
     },
     "chooseReporter": {
         "title": "Guardiões da Saúde",
-        "whoToReport": "Quem participará?",
-        "selectProfile": "Selecione o perfil que quer reportar"
+        "whoToReport": "Who will report?",
+        "selectProfile": "Select a profile to report"
     },
     "advices": {
-        "title": "Dicas",
+        "title": "Tips",
         "advicesCaseChoices": {
             "prevention": {
-                "caseChoice": "Prevencao",
-                "screenTitle": "Prevenção"
+                "caseChoice": "Prevention",
+                "screenTitle": "Prevention"
             },
             "travelerHealth": {
-                "caseChoice": "Saude do Viajante",
-                "screenTitle": "Saúde do Viajante"
+                "caseChoice": "Travelers Health",
+                "screenTitle": "Travelers Health"
             },
             "dengueChicungunyaZica": {
-                "caseChoice": "Dengue, Chikungunya e Zika",
-                "screenTitle": "Dengue, Chikungunya e Zika"
+                "caseChoice": "Dengue, Chikungunya and Zika",
+                "screenTitle": "Dengue, Chikungunya and Zika"
             },
             "imunoPreventables": {
-                "caseChoice": "Enfermidades Imunopreviniveis",
-                "screenTitle": "Enfermidades Imunopreviníveis"
+                "caseChoice": "Immunopreventable Diseases",
+                "screenTitle": "Immunopreventable Diseases"
             },
             "usefulNumbers": {
-                "caseChoice": "Telefones Uteis",
-                "screenTitle": "Telefones Úteis"
+                "caseChoice": "Useful Phone Numbers",
+                "screenTitle": "Useful Phone Numbers"
             }
             
         },
         "buttons": {
-            "healthInst": "Instituições de Saúde",
-            "pharmacy": "Farmácias",
+            "healthInst": "Health Institutions",
+            "pharmacy": "Pharmacies",
             "messages": {
-                "title": "Redirecionando...",
-                "subtitle": "Deseja ser redirecionado para o Google Maps?"
+                "title": "Redirecting...",
+                "subtitle": "Do you want to be redirected to Google Maps?"
             }
         }
     },
     "diary": {
-        "title": "Diário",
-        "participate": "Participações",
-        "good": "Bem",
-        "bad": "Mal",
-        "report": " informe",
-        "reports": " informes",
-        "calendar": "Calendário",
-        "timesPerMonth": "Quantidade de informes por mês",
+        "title": "Diary",
+        "participate": "Participants",
+        "good": "Good",
+        "bad": "Ill",
+        "report": " report",
+        "reports": " reports",
+        "calendar": "Calendar",
+        "timesPerMonth": "Monthly reports",
         "charts": {
             "label": {
-                "good": "BEM",
-                "bad": "Mal"
+                "good": "Good",
+                "bad": "Ill"
             },
-            "chartDescription": "Quantidade de relatos por mês"
+            "chartDescription": "How many reports per month"
         }
     },
     "home": {
         "title": "Guardiões da Saúde",
-        "toastAlertMessage": "Aperte mais uma vez para sair",
+        "toastAlertMessage": "Press one more time to quit",
         "hello": "Hi, ",
         "nowAGuardian": "Guardião da Saúde",
-        "selectProfile": "Selecione um Perfil:",
-        "addProfile": "Adicionar Perfil",
+        "selectProfile": "Select a profile:",
+        "addProfile": "Add a Profile",
         "reportRumor": "Report Rumor",
-        "reportRumorMessage": "Relatar um rumor de alguma coisa bla bla bla",
-        "userHowYouFelling": "Como está se sentindo hoje?",
-        "householdHowYouFelling_part_1": "Como ",
-        "householdHowYouFelling_part_2": " se sente hoje?",
+        "reportRumorMessage": "Report a rumor",
+        "userHowYouFelling": "How are you feeling today?",
+        "householdHowYouFelling_part_1": "How ",
+        "householdHowYouFelling_part_2": " are you feeling today?",
         "homeButtons": {
-            "news": "Notícias",
-            "healthTips": "Dicas",
-            "healthDiary": "Diário",
-            "healthMap": "Mapa da Saúde"
+            "news": "News",
+            "healthTips": "Tips",
+            "healthDiary": "Health Diary",
+            "healthMap": "Health Map"
         }
     },
     "profiles": {
-        "profile": "Perfil",
-        "households": "Familiares",
+        "profile": "Profile",
+        "households": "Relatives",
     },
     "locationRequest": {
-        "requestLocationMessageTitle": "Permitir o uso de sua localização",
-        "requestLocationMessageMessage": "O Guardiões da Saúde precisa da sua localização para você acessar o Mapa da Saúde",
-        "requestDenied": "Permissão negada"
+        "requestLocationMessageTitle": "Allow the use of you location",
+        "requestLocationMessageMessage": "Guardiões da Saúde needs your location to acess the Health Map",
+        "requestDenied": "Permission denied"
     },
     "maps": {
-        "title": "Mapa da Saúde",
-        "reportGood": "Bem",
-        "reportBad": "Mal",
-        "guide": `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`
+        "title": "Health Map",
+        "reportGood": "Good",
+        "reportBad": "Ill",
+        "guide": `Each point in the map represents a person or group of people.\n\nThe color represents the percentage of 'bads' and the size, the number of people.\n\nYou can tap the points to know more.`
     },
     "news": {
-        "title": "Notícias"
+        "title": "News"
     },
     "report": {
-        "title": "Novo Relato",
-        "howHealth": "Como você se sente?",
-        "goodChoice": "BEM",
-        "badChoice": "MAL",
-        "else": "Se a opção escolhida for 'MAL' poderá selecionar os sintomas na seguinte tela."
+        "title": "New report",
+        "howHealth": "How are you feeling?",
+        "goodChoice": "Good",
+        "badChoice": "Ill",
+        "else": "If you've selected 'Ill' you can select the symptoms in the next screen."
     },
     "about": {
-        "title": "Sobre",
+        "title": "About",
 
         "tituloBtnUnb": 'Universidade de Brasilia',
-        "mensagemBtnUnb": 'Deseja ser redirecionado ao website da UnB?',
+        "mensagemBtnUnb": `Do you want to be redirected to UnB's website?`,
         "linkBtnUnb": 'https://www.unb.br',
 
         "tituloBtnProEpi": 'ProEpi - Associação Brasileira de Profissionais de Epidemiologia de Campo',
-        "mensagemBtnProEpi": 'Deseja ser redirecionado ao website da ProEpi?',
+        "mensagemBtnProEpi": `Do you want to be redirected to ProEpi's website?`,
         "linkBtnProEPi": 'https://proepi.org.br/',
 
-        "textoSobreTitulo": '\nSobre a Aplicação Guardiões da Saúde\n',
-        "textoSobre": 'A aplicação "Guardiões da Saúde" foi desenvolvida para celulares e tablets com sistema operacional Android, em um trabalho colaborativo do Ministério da Saúde do Brasil e apoio da Fundação Skoll para os Jogos Olímpicos. Uma nova versão está sendo desenvolvida pela Universidade de Brasília e pela ProEpi. O Instituto Nacional de Saúde está integrado a essa cooperação para que a ferramenta também possa ser usada na Colômbia como estratégia para fortalecer o monitoramento de eventos de interesse em saúde pública e a detecção de surtos relacionados a eventos massivos.'
+        "textoSobreTitulo": '\nAbout Guardiões da Saúde\n',
+        "textoSobre": 'The app "Guardiões da Saúde" was developed for phones and tablets using Android, in colaboration with the Health Minitry of Brasil and suport from Skoll Foundation for the Olympics. A new version is being develped by the University of Brasília and ProEpi. The National Institute of Health is cooperating so that the tool can also be used in Colombia as a strategy to strengthen this monitoring on events of interest in public health and the detection of outbreaks.'
     },
     "useTerms": {
-        "title": "Termos e Políticas",
+        "title": "Terms and Policies",
         "terms": {
             "textoTermosTitulo": '\nTermo de uso – Guardiões da Saúde \n\n Por favor, leia estes termos legais de uso antes de usar o aplicativo "Guardiões da Saúde”. Para realizar qualquer colaboração, acesse ou baixe qualquer informação deste aplicativo. Ao acessar ou usar o aplicativo "Guardiões da Saúde", você aceita e concorda em obedecer aos termos e condições estabelecidos nos "Termos de Uso". Esses termos consistem em um contrato de colaboração entre você e o aplicativo "Guardiões da Saúde", que abrange todo o seu acesso e uso, que inclui o uso de todas as informações, dados, ferramentas, produtos, serviços e outros conteúdos disponíveis no aplicativo. Ao usar este aplicativo, você confirma que entende e concorda com as seguintes condições:',
             "textoTermos_1": '\n1. RESPEITO AS LEIS \n\n O usuário registrado deve acessar o aplicativo "Guardiões da Saúde" somente para fins legais e relacionados à saúde. O usuário concorda em usar o aplicativo apenas para os fins apropriados e de acordo com estes termos e limitações legais, bem como com qualquer política aplicável no Brasil. Seu acesso é proibido em territórios onde o conteúdo é considerado ilegal. Aqueles que optarem por acessar este site de outros lugares, o farão por sua própria iniciativa e serão responsáveis pelo cumprimento das leis locais aplicáveis. Os materiais não devem ser usados ou exportados em violação das leis brasileira. Qualquer pendência em relação aos materiais será resolvida pelas leis brasileira. A alteração não autorizada do conteúdo deste site é expressamente proibida.',
