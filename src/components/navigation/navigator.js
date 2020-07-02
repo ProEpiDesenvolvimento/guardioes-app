@@ -63,7 +63,7 @@ export const BottomMenu = createBottomTabNavigator({
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'home';
-                    return <MaterialIcons name={iconName} size={scale(30)} color={tintColor} />;
+                    return <MaterialIcons name={iconName} size={scale(25)} color={tintColor} />;
                 } else if (routeName === 'Diario') {
                     iconName = 'event';
                 } else if (routeName === 'Mapa') {
@@ -76,14 +76,17 @@ export const BottomMenu = createBottomTabNavigator({
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <MaterialIcons name={iconName} size={scale(30)} color={tintColor} />;
+                return <MaterialIcons name={iconName} size={scale(25)} color={tintColor} />;
             },
         }),
         tabBarOptions: {
             style: {
-                minHeight: 60,
-                height: '10%',
+                //minHeight: 60,
+                maxHeight: '11%',
                 //maxHeight: 70,
+                paddingTop: 5,
+                //justifyContent: 'center',
+                //alignItem: 'center',
                 backgroundColor: '#ffffff',
                 borderTopWidth: 0,
             },
@@ -93,8 +96,7 @@ export const BottomMenu = createBottomTabNavigator({
                 fontFamily: 'roboto',
                 fontWeight: 'bold',
                 fontSize: 11,
-                marginTop: 5,
-                marginBottom: 5,
+                // paddingTop: 5,
             },
         },
     }

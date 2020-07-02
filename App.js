@@ -42,9 +42,9 @@ class Guardioes extends Component {
     return (
       <>
       <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-      <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>        
+      
         <Navegar.Authentication />
-      </SafeAreaView>
+      
       </>
     );
   }

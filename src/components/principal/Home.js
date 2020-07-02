@@ -606,10 +606,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#F18F01',
     },
     viewStatusIcon: {
+        justifyContent: 'center',
         alignItems: 'center',
     },
     statusIcon: {
-        margin: scale(20),
+        marginHorizontal: scale(25),
+        marginTop: scale(10)
     },
     viewStatusContent: {
         marginTop: scale(18),
@@ -624,7 +626,8 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: scale(16),
         color: '#ffffff',
-        marginVertical: scale(5),
+        marginTop: scale(5),
+        marginBottom: scale(18),
     },
     viewHouseholdSelect: {
         alignItems: 'center',
