@@ -128,7 +128,7 @@ export async function getGroupName(ID) {
 
 export const schoolCategory = [
     { key: 'UNB', label: "Universidade de Brasília" },
-    { key: 'SES-DF', label: "Secretaria de Educação do Distrito Fereral" },
+    { key: 'SES-DF', label: "Secretaria de Educação do Distrito Federal" },
 ];
 
 export const educationLevel = [

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -12,35 +13,51 @@ import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName, schoolCategory, educationLevel, schoolLocation } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
+=======
+import React, { Component } from 'react'
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import RNSecureStorage from 'rn-secure-storage'
+import * as Imagem from '../../imgs/imageConst'
+import { Avatar } from 'react-native-elements'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { scale } from '../../utils/scallingUtils'
+import DatePicker from 'react-native-datepicker'
+import {API_URL} from 'react-native-dotenv'
+import translate from '../../../locales/i18n'
+import ModalSelector from 'react-native-modal-selector'
+import { gender, country, race, household, getGroups, getGroupName } from '../../utils/selectorUtils'
+import { state, getCity } from '../../utils/brasil'
+>>>>>>> b6ca3d4077f0ae956996a95b833ffce55f103c70
 import InstitutionSelector from '../userData/InstitutionSelector'
 
-FontAwesome.loadFont();
+FontAwesome.loadFont()
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
+let data = new Date()
+let d = data.getDate()
+let m = data.getMonth() + 1
+let y = data.getFullYear()
 
-let today = d + "-" + m + "-" + y;
+let today = d + "-" + m + "-" + y
 
 class Perfil extends Component {
   static navigationOptions = {
     title: "Perfil"
   }
   constructor(props) {
-    super(props);
-    this.getInfo();
+    super(props)
+    this.getInfo()
     this.state = {
       modalVisibleHousehold: false,
       modalVisibleUser: false,
-    };
+    }
   }
 
   setModalVisible(visible) {
     if (this.state.userModal == true) {
-      this.setState({ modalVisibleUser: visible });
+      this.setState({ modalVisibleUser: visible })
     } else {
-      this.setState({ modalVisibleHousehold: visible });
+      this.setState({ modalVisibleHousehold: visible })
     }
   }
 
@@ -57,20 +74,20 @@ class Perfil extends Component {
         { text: 'OK', onPress: () => this.deleteHousehold() },
       ],
       { cancelable: false },
-    );
+    )
   }
 
   getInfo = async () => { //Get user info
-    const userID = await AsyncStorage.getItem('userID');
-    const userName = await AsyncStorage.getItem('userName');
-    const userAvatar = await AsyncStorage.getItem('userAvatar');
-    const userToken = await RNSecureStorage.get('userToken');
+    const userID = await AsyncStorage.getItem('userID')
+    const userName = await AsyncStorage.getItem('userName')
+    const userAvatar = await AsyncStorage.getItem('userAvatar')
+    const userToken = await RNSecureStorage.get('userToken')
 
-    this.setState({ userName, userID, userToken, userAvatar });
-    await this.getAllUserInfos();
-    this.setState({ userSelect: this.state.userName });
-    this.setState({ userIdSelect: this.state.userIdCode });
-    this.getHouseholds();
+    this.setState({ userName, userID, userToken, userAvatar })
+    await this.getAllUserInfos()
+    this.setState({ userSelect: this.state.userName })
+    this.setState({ userIdSelect: this.state.userIdCode })
+    this.getHouseholds()
   }
 
   getHouseholds = () => {//Get households
@@ -98,7 +115,7 @@ class Perfil extends Component {
       },
     }).then((response) => {
       console.warn(response.status)
-      this.getHouseholds();
+      this.getHouseholds()
     })
   }
 
@@ -106,48 +123,48 @@ class Perfil extends Component {
     if (this.state.householdGender == "Masculino") {
       switch (this.state.kinship) {
         case "Pai":
-          await this.setState({ picture: "Father" });
-          break;
+          await this.setState({ picture: "Father" })
+          break
         case "Mãe":
-          await this.setState({ picture: "Mother" });
-          break;
+          await this.setState({ picture: "Mother" })
+          break
         case "conjuge":
-          await this.setState({ picture: "Father" });
-          break;
+          await this.setState({ picture: "Father" })
+          break
         case "Avós":
-          await this.setState({ picture: "Grandfather" });
-          break;
+          await this.setState({ picture: "Grandfather" })
+          break
         case "Filhos":
-          await this.setState({ picture: "Son" });
-          break;
+          await this.setState({ picture: "Son" })
+          break
         case "Irmãos":
-          await this.setState({ picture: "Brother" });
-          break;
+          await this.setState({ picture: "Brother" })
+          break
       }
     } else {
       switch (this.state.kinship) {
         case "Mãe":
-          await this.setState({ picture: "Mother" });
-          break;
+          await this.setState({ picture: "Mother" })
+          break
         case "Pai":
-          await this.setState({ picture: "Father" });
-          break;
+          await this.setState({ picture: "Father" })
+          break
         case "conjuge":
-          await this.setState({ picture: "Mother" });
-          break;
+          await this.setState({ picture: "Mother" })
+          break
         case "Avós":
-          await this.setState({ picture: "Grandmother" });
-          break;
+          await this.setState({ picture: "Grandmother" })
+          break
         case "Filhos":
-          await this.setState({ picture: "Daughter" });
-          break;
+          await this.setState({ picture: "Daughter" })
+          break
         case "Irmãos":
-          await this.setState({ picture: "Sister" });
-          break;
+          await this.setState({ picture: "Sister" })
+          break
       }
     }
 
-    this.editHousehold();
+    this.editHousehold()
   }
 
   editHousehold = () => {
@@ -181,7 +198,7 @@ class Perfil extends Component {
       .then((response) => {
         if (response.status == 200) {
           console.warn(response.status)
-          this.getHouseholds();
+          this.getHouseholds()
         } else {
           console.warn(response.status)
         }
@@ -214,7 +231,7 @@ class Perfil extends Component {
       .then((response) => {
         if (response.status == 200) {
           console.warn(response.status)
-          //this.getHouseholds();
+          //this.getHouseholds()
         } else {
           console.warn(response.status)
 
@@ -236,13 +253,13 @@ class Perfil extends Component {
         console.warn(response.status)
       }
     }).then((responseJson) => {
-      responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).join('');
-      responseJson.user.birthdate = responseJson.user.birthdate.split('');
-      let str = '';
-      str = responseJson.user.birthdate[8] + responseJson.user.birthdate[9] + '-' + responseJson.user.birthdate[5] + responseJson.user.birthdate[6] + '-';
-      str += responseJson.user.birthdate[0] + responseJson.user.birthdate[1] + responseJson.user.birthdate[2] + responseJson.user.birthdate[3];
+      responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).join('')
+      responseJson.user.birthdate = responseJson.user.birthdate.split('')
+      let str = ''
+      str = responseJson.user.birthdate[8] + responseJson.user.birthdate[9] + '-' + responseJson.user.birthdate[5] + responseJson.user.birthdate[6] + '-'
+      str += responseJson.user.birthdate[0] + responseJson.user.birthdate[1] + responseJson.user.birthdate[2] + responseJson.user.birthdate[3]
 
-      let groupName = getGroupName(responseJson.user.school_unit_id);
+      let groupName = getGroupName(responseJson.user.school_unit_id)
 
       this.setState({
         userName: responseJson.user.user_name,
@@ -336,8 +353,8 @@ class Perfil extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    const householdsData = this.state.dataSource;
+    const { navigate } = this.props.navigation
+    const householdsData = this.state.dataSource
 
     return (
       <View style={styles.container}>
@@ -347,7 +364,7 @@ class Perfil extends Component {
           transparent={true}
           visible={this.state.modalVisibleHousehold}
           onRequestClose={() => {
-            this.setModalVisible(!this.state.modalVisibleHousehold); //Exit to modal view
+            this.setModalVisible(!this.state.modalVisibleHousehold) //Exit to modal view
           }}>
           <View style={styles.modalView}>
             <View style={{ paddingTop: 10 }}></View>
@@ -565,15 +582,15 @@ class Perfil extends Component {
                 title="Salvar"
                 color="#348EAC"
                 onPress={() => {
-                  this.avatarHouseholdSelector();
-                  this.setModalVisible(!this.state.modalVisibleHousehold);
+                  this.avatarHouseholdSelector()
+                  this.setModalVisible(!this.state.modalVisibleHousehold)
                 }} />
               <View style={{ margin: 5 }}></View>
               <Button
                 title="Cancelar"
                 color="#348EAC"
                 onPress={() => {
-                  this.setModalVisible(!this.state.modalVisibleHousehold);
+                  this.setModalVisible(!this.state.modalVisibleHousehold)
                 }} />
               {this.state.groupCheckbox && !this.state.householdNewInst ?
               <View>
@@ -723,7 +740,7 @@ class Perfil extends Component {
                   title="Cancelar"
                   color="#348EAC"
                   onPress={() => {
-                    this.handleCancel();
+                    this.handleCancel()
                   }} />
               </View>
             </View>
@@ -780,8 +797,8 @@ class Perfil extends Component {
                       <FontAwesome name="edit" size={scale(25)} color='rgba(22, 107, 135, 1)' />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                      this.setState({ householdID: household.id });
-                      this.confirmDelete();
+                      this.setState({ householdID: household.id })
+                      this.confirmDelete()
                     }}>
                       <FontAwesome name="trash" size={scale(25)} color='rgba(22, 107, 135, 1)' />
                     </TouchableOpacity>
@@ -792,7 +809,7 @@ class Perfil extends Component {
             : null}
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
@@ -966,6 +983,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'gray'
   }
-});
+})
 
-export default Perfil;
+export default Perfil

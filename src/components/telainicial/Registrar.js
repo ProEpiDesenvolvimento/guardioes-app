@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
     StyleSheet,
     Text,
@@ -7,28 +7,28 @@ import {
     Button,
     Keyboard,
     Alert,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import DatePicker from 'react-native-datepicker';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import { scale } from '../../utils/scallingUtils';
-import translate from '../../../locales/i18n';
-import { API_URL } from 'react-native-dotenv';
-import { CheckBox } from 'react-native-elements';
-import ModalSelector from 'react-native-modal-selector';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { gender, country, race } from '../../utils/selectorUtils';
-import { state, getCity } from '../../utils/brasil';
+} from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
+import DatePicker from 'react-native-datepicker'
+import AwesomeAlert from 'react-native-awesome-alerts'
+import { scale } from '../../utils/scallingUtils'
+import translate from '../../../locales/i18n'
+import { API_URL } from 'react-native-dotenv'
+import { CheckBox } from 'react-native-elements'
+import ModalSelector from 'react-native-modal-selector'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
+import { gender, country, race } from '../../utils/selectorUtils'
+import { state, getCity } from '../../utils/brasil'
 import InstitutionSelector from '../userData/InstitutionSelector'
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
+let data = new Date()
+let d = data.getDate()
+let m = data.getMonth() + 1
+let y = data.getFullYear()
 
-// let today = y + "-" + m + "-" + d;
-let minDate = d + "-" + m + "-" + (y - 13);
+// let today = y + "-" + m + "-" + d
+let minDate = d + "-" + m + "-" + (y - 13)
 // let tomorrow = y + "-" + m + "-" + (d + 1)
 
 class Registrar extends Component {
@@ -36,7 +36,7 @@ class Registrar extends Component {
         title: translate("register.title")
     }
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             school_units: [],
             query: '',
@@ -66,14 +66,14 @@ class Registrar extends Component {
         this.setState({
             showAlert: true,
             showProgressBar: true
-        });
-    };
+        })
+    }
 
     hideAlert = () => {
         this.setState({
             showAlert: false
         })
-    };
+    }
 
     componentDidMount() {
         //this.setState({ school_units: ShcoolsSheet.school_units }) //Usado para o autocomplete
@@ -81,12 +81,12 @@ class Registrar extends Component {
 
     findFilm(query) {
         if (query === '') {
-            return [];
+            return []
         }
 
-        const { school_units } = this.state;
-        const regex = new RegExp(`${query.trim()}`, 'i');
-        return school_units.filter(school => school.description.search(regex) >= 0);
+        const { school_units } = this.state
+        const regex = new RegExp(`${query.trim()}`, 'i')
+        return school_units.filter(school => school.description.search(regex) >= 0)
     }
 
     setUserInstitutionCallback = (userIdCode, userGroup) => {
@@ -97,10 +97,10 @@ class Registrar extends Component {
     }
 
     render() {
-        const { showAlert } = this.state;
-        const { query } = this.state;
-        const school_units = this.findFilm(query);
-        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
+        const { showAlert } = this.state
+        const { query } = this.state
+        const school_units = this.findFilm(query)
+        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
 
         return (
             <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
@@ -119,7 +119,7 @@ class Registrar extends Component {
                             <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                             <ModalSelector
                                 initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%' }}
+                                style={{ width: '80%', height: '70%', fontSize: 10 }}
                                 data={gender}
                                 initValue={"Selecionar"}
                                 onChange={(option) => this.setState({ userGender: option.key })}
@@ -130,7 +130,7 @@ class Registrar extends Component {
                             <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                             <ModalSelector
                                 initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%' }}
+                                style={{ width: '80%', height: '70%', fontSize: 10 }}
                                 data={race}
                                 initValue={"Selecionar"}
                                 onChange={(option) => this.setState({ userRace: option.key })}
@@ -162,13 +162,16 @@ class Registrar extends Component {
                                     dateText: {
                                         justifyContent: "center",
                                         fontFamily: 'roboto',
-                                        fontSize: 17
+                                        marginBottom: 9,
+                                        fontSize: 10,
+                                        color: 'black'
                                     },
                                     placeholderText: {
+                                        marginBottom: 9,
+                                        fontSize: 10,
                                         justifyContent: "center",
                                         fontFamily: 'roboto',
-                                        fontSize: 15,
-                                        color: 'black'
+                                        color: '#555'
                                     }
                                 }}
                                 onDateChange={date => this.setState({ userDob: date })}
@@ -180,7 +183,7 @@ class Registrar extends Component {
 
                             <ModalSelector
                                 initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%' }}
+                                style={{ width: '80%', height: '70%', fontSize: 10 }}
                                 data={country}
                                 initValue={"Selecionar"}
                                 onChange={(option) => this.setState({ userCountry: option.key })}
@@ -195,7 +198,7 @@ class Registrar extends Component {
                                 <Text style={styles.commomTextView}>Estado:</Text>
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                    style={{ width: '80%', height: '70%' }}
+                                    style={{ width: '80%', height: '70%', fontSize: 10 }}
                                     data={state}
                                     initValue={"Selecionar"}
                                     onChange={(option) => this.setState({ userState: option.key })}
@@ -206,7 +209,7 @@ class Registrar extends Component {
                                 <Text style={styles.commomTextView}>Município:</Text>
                                 <ModalSelector
                                     initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                    style={{ width: '80%', height: '70%' }}
+                                    style={{ width: '80%', height: '70%', fontSize: 10 }}
                                     data={getCity(this.state.userState)}
                                     initValue={this.state.initValueCity}
                                     onModalClose={(option) => this.setState({ userCity: option.key, initValueCity: option.key })}
@@ -318,19 +321,19 @@ class Registrar extends Component {
                     showConfirmButton={this.state.showProgressBar ? false : true}
                 />
             </KeyboardAwareScrollView>
-        );
+        )
 
     }
 
     avatarSelector = async () => {
         if (this.state.userGender == "Masculino") {
-            await this.setState({ picture: "Father" });
+            await this.setState({ picture: "Father" })
         } else if (this.state.userGender == "Feminino") {
-            await this.setState({ picture: "Mother" });
+            await this.setState({ picture: "Mother" })
         } else if (this.state.userGender == null) {
-            await this.setState({ picture: "NullAvatar" });
+            await this.setState({ picture: "NullAvatar" })
         }
-        this.create();
+        this.create()
     }
 
     verifyInfos = async () => {
@@ -352,7 +355,7 @@ class Registrar extends Component {
                             if (this.state.userCategory == "UNB" && this.state.userIdCode == null) {
                                 Alert.alert("Número de Identificação deve estar preenchido")
                             } else {
-                                this.avatarSelector();
+                                this.avatarSelector()
                             }
                         }
                     }
@@ -393,9 +396,9 @@ class Registrar extends Component {
         })
             .then((response) => {
                 if (response.status === 200) {
-                    this.loginAfterCreate();
+                    this.loginAfterCreate()
                 } else {
-                    this.hideAlert();
+                    this.hideAlert()
                     return response.json()
                 }
             }).then((responseJson) => {
@@ -421,25 +424,25 @@ class Registrar extends Component {
         })
             .then((response) => {
                 if (response.status == 200) {
-                    this.setState({ userToken: response.headers.map.authorization });
+                    this.setState({ userToken: response.headers.map.authorization })
                     return response.json()
                 } else {
-                    alert("Algo deu errado");
-                    this.hideAlert();
+                    alert("Algo deu errado")
+                    this.hideAlert()
                 }
             })
             .then((responseJson) => {
-                AsyncStorage.setItem('userID', responseJson.user.id.toString());
-                AsyncStorage.setItem('userName', responseJson.user.user_name);
-                AsyncStorage.setItem('userAvatar', responseJson.user.picture);
-                AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
+                AsyncStorage.setItem('userID', responseJson.user.id.toString())
+                AsyncStorage.setItem('userName', responseJson.user.user_name)
+                AsyncStorage.setItem('userAvatar', responseJson.user.picture)
+                AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString())
 
-                RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
-                RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
-                RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
+                RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
+                RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
-                this.props.navigation.navigate('Home');
-                this.hideAlert();
+                this.props.navigation.navigate('Home')
+                this.hideAlert()
             })
     }
 }
@@ -589,7 +592,7 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto',
         color: 'rgba(33,113,245,1)'
     },
-});
+})
 
 //make this component available to the app
-export default Registrar;
+export default Registrar
