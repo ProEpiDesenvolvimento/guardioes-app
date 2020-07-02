@@ -20,7 +20,12 @@ class InstitutionSelector extends Component {
             initValueGroup: "Selecionar",
             initValueCategory: "Selecionar",
             initValueSchoolLocation: "Selecionar",
-            initValueEducationLevel: "Selecionar"
+            initValueEducationLevel: "Selecionar",
+            ValueCity: null,
+            ValueGroup: null,
+            ValueCategory: null,
+            ValueSchoolLocation: null,
+            ValueEducationLevel: null,
         }
     }
 
