@@ -256,8 +256,10 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson.messages.top_3[0].name === "Síndrome Gripal") {
-                    this.showCovidAlert(responseJson)
+                console.warn(responseJson)
+                if (responseJson && !responseJson.errors) {
+                    if (responseJson.messages.top_3[0].name === "Síndrome Gripal")
+                        this.showCovidAlert(responseJson)
                 } else {
                     this.showAlert(responseJson)
                 }
