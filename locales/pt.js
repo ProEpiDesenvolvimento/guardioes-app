@@ -215,7 +215,7 @@ export default {
         "statusLast7DaysGood": "Você tem se sentido bem.",
         "statusLast7DaysBad": "Você não esteve bem.",
         "reportRumor": "Relatar Rumor",
-        "reportRumorMessage": "Relatar um rumor de alguma coisa bla bla bla",
+        "reportRumorMessage": "Por aqui você pode enviar um relato em baseado em informações recebidas de várias pessoas e também relatar a ocorrência de doenças ou agravos não corriqueiros.",
         "userHowYouFelling": "Como está se sentindo hoje?",
         "householdHowYouFelling_part_1": "Como ",
         "householdHowYouFelling_part_2": " se sente hoje?",
