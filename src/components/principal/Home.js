@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
+import { getNameParts } from '../../utils/constUtils';
 import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
@@ -21,8 +22,6 @@ let d = data.getDate();
 let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
-let today = y + "-" + m + "-" + d;
-
 class Home extends Component {
     navOptions // rolê para acessar a drawer em uma função estática
 
@@ -38,6 +37,7 @@ class Home extends Component {
             userToken: null,
             householdName: null,
             householdID: null,
+            userLastSurveys: [{ household: {} }],
             userLatitude: 'unknown',
             userLongitude: 'unknown',
             error: null,
@@ -136,20 +136,7 @@ class Home extends Component {
         AsyncStorage.setItem('userSelected', this.state.userSelect);
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();
-    }
-
-    getNameParts = (fullName, firstandLast = false) => {
-        if (fullName) {
-            let nameParts = fullName.split(" ");
-            let length = nameParts.length;
-
-            if (firstandLast && length > 1) {
-                return `${nameParts[0]} ${nameParts[length-1]}`;
-            }
-            else {
-                return nameParts[0];
-            }
-        }
+        this.getUserLastSurveys();
     }
 
     getHouseholds = () => {//Get households
@@ -167,6 +154,47 @@ class Home extends Component {
                 })
                 //console.warn(this.state.data)
             })
+    }
+
+    getUserLastSurveys = async () => {
+        return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                let lastWeek = new Date();
+                lastWeek.setDate(d - 7);
+                lastWeek.setHours(0, 0, 0, 0);
+
+                const userLastSurveys = responseJson.surveys.filter(survey => 
+                    new Date(survey.created_at).getTime() >= lastWeek.getTime()
+                );
+
+                this.setState({ userLastSurveys });
+                this.getUserHealth();
+            })
+    }
+
+    getUserHealth = () => {
+        let userBadReports = 0
+
+        this.state.userLastSurveys.map(survey => {
+            if (this.state.householdID) {
+                if (survey.symptom.length > 0 && survey.household && survey.household.id == this.state.householdID) {
+                    userBadReports = userBadReports + 1;
+                }
+            }
+            else {
+                if (survey.symptom.length > 0) {
+                    userBadReports = userBadReports + 1;
+                }
+            }
+        })
+        this.setState({ userBadReports });
     }
 
     verifyLocalization = async () => {
@@ -260,8 +288,7 @@ class Home extends Component {
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
 
-        const welcomeMessage = translate("home.hello") + this.getNameParts(this.state.userName);
-        const householdHowYouFellingText = translate("home.householdHowYouFelling_part_1") + this.getNameParts(this.state.householdName) + translate("home.householdHowYouFelling_part_2");
+        const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
         const householdsData = this.state.data;
 
         const userIsProfessional = (
@@ -295,23 +322,11 @@ class Home extends Component {
             </Text>
         )
 
-        const householdHowYouFelling = (
-            <Text style={styles.textFelling}>
-                {householdHowYouFellingText}
-            </Text>
-        )
-
-        let howYouFelling;
-        if (this.state.householdID !== null) {
-            howYouFelling = householdHowYouFelling
-        }
-        else {
-            howYouFelling = userHowYouFelling
-        }
+        const hasBadReports = this.state.userBadReports > 2
 
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor='#348EAC' />
+                <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
 
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <LinearGradient style={styles.viewTop} colors={['#348EAC', '#166b87']}>
@@ -321,6 +336,10 @@ class Home extends Component {
                             source={Imagem['NullAvatar']}
                             activeOpacity={0.6}
                             containerStyle={styles.avatarTop}
+                            onPress={() => {
+                                this.getHouseholds();
+                                this.setModalVisible(true);
+                            }}
                         />
                         <View style={styles.viewWelcome}>
                             <Text style={styles.textHelloUser}>
@@ -333,93 +352,8 @@ class Home extends Component {
                         </View>
                     </LinearGradient>
 
-                    <View style={[styles.viewHousehold, styles.shadow]}>
-                        <View style={styles.viewHouseholdSelect}>
-                            <Modal
-                                animationType="fade"
-                                transparent={true}
-                                visible={this.state.modalVisible}
-                                onRequestClose={() => {
-                                    this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                                }}>
-                                <View style={styles.modalView}>
-                                    <View style={styles.modalViewTop}>
-                                        <View style={styles.viewAvatar}>
-                                            <Avatar
-                                                size="large"
-                                                rounded
-                                                source={Imagem[this.state.userAvatar]}
-                                                activeOpacity={0.6}
-                                                onPress={async () => {
-                                                    await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
-                                                    this.setModalVisible(!this.state.modalVisible);
-                                                    AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                    AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                    AsyncStorage.removeItem('householdID');
-                                                }}
-                                            />
-                                            <Text>{this.getNameParts(this.state.userName, true)}</Text>
-                                        </View>
-                                        <ScrollView horizontal={true}>
-                                            {householdsData != null ?
-                                                householdsData.map((household, key) => {
-                                                    return (
-                                                        <View style={styles.viewAvatar} key={key}>
-                                                            <Avatar
-                                                                size="large"
-                                                                rounded
-                                                                source={Imagem[household.picture]}
-                                                                activeOpacity={0.7}
-                                                                onPress={async () => {
-                                                                    await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
-                                                                    this.setModalVisible(!this.state.modalVisible);
-                                                                    AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                                    AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                                    AsyncStorage.setItem('householdID', this.state.householdID.toString());
-                                                                }}
-                                                            />
-                                                            <Text>{this.getNameParts(household.description, true)}</Text>
-                                                        </View>
-                                                    )
-                                                })
-                                                : null}
-                                        </ScrollView>
-                                    </View>
-                                    <View style={styles.modalViewBottom}>
-                                        <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
-                                            navigate('Household');
-                                            this.setModalVisible(!this.state.modalVisible);
-                                        }
-                                        }>
-                                            <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
-                                            <Text>{translate("home.addProfile")}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </Modal>
-                            <Text style={{ marginBottom: 7 }}>{translate("home.selectProfile")}</Text>
-                            <Avatar
-                                size="large"
-                                rounded
-                                source={Imagem[this.state.avatarSelect]}
-                                activeOpacity={0.6}
-                                onPress={() => {
-                                    this.getHouseholds();
-                                    this.setModalVisible(true);
-                                }}
-                            />
-                            <Text>{this.getNameParts(this.state.userSelect, true)}</Text>
-                        </View>
-                        <View style={styles.viewHouseholdAdd}>
-                            <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => navigate('Household')}>
-                                <FontAwesome name="plus-circle" size={35} color='rgba(22, 107, 135, 1)' />
-                                <Text>{translate("home.addProfile")}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={styles.viewReport}>
-                        {howYouFelling}
+                    <View style={[styles.viewReport, styles.shadow]}>
+                        {userHowYouFelling}
 
                         <View style={styles.containerGoodBad}>
                             <TouchableOpacity //onPress={this._isconnected}
@@ -436,6 +370,87 @@ class Home extends Component {
                             >
                                 <Text style={styles.textChoiceButton}>{translate("report.badChoice")}</Text>
                             </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View style={styles.viewHouseholdSelect}>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={this.state.modalVisible}
+                            onRequestClose={() => {
+                                this.setModalVisible(!this.state.modalVisible); //Exit to modal view
+                            }}>
+                            <View style={styles.modalView}>
+                                <View style={styles.modalViewTop}>
+                                    <View style={styles.viewAvatar}>
+                                        <Avatar
+                                            size="large"
+                                            rounded
+                                            source={Imagem[this.state.userAvatar]}
+                                            activeOpacity={0.6}
+                                            onPress={async () => {
+                                                await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+                                                this.setModalVisible(!this.state.modalVisible);
+                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                AsyncStorage.removeItem('householdID');
+                                                this.getUserHealth();
+                                            }}
+                                        />
+                                        <Text>{getNameParts(this.state.userName, true)}</Text>
+                                    </View>
+                                    <ScrollView horizontal={true}>
+                                        {householdsData != null ?
+                                            householdsData.map((household, key) => {
+                                                return (
+                                                    <View style={styles.viewAvatar} key={key}>
+                                                        <Avatar
+                                                            size="large"
+                                                            rounded
+                                                            source={Imagem[household.picture]}
+                                                            activeOpacity={0.6}
+                                                            onPress={async () => {
+                                                                await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
+                                                                this.setModalVisible(!this.state.modalVisible);
+                                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                                AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                                                this.getUserHealth();
+                                                            }}
+                                                        />
+                                                        <Text>{getNameParts(household.description, true)}</Text>
+                                                    </View>
+                                                )
+                                            })
+                                            : null}
+                                    </ScrollView>
+                                </View>
+                                <View style={styles.modalViewBottom}>
+                                    <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
+                                        navigate('Household');
+                                        this.setModalVisible(!this.state.modalVisible);
+                                    }}>
+                                        <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
+                                        <Text>{translate("home.addProfile")}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+
+                    <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
+                        <View style={styles.viewStatusIcon}>
+                            <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
+                        </View>
+                        
+                        <View style={styles.viewStatusContent}>
+                            <Text style={styles.textStatusTitle}>
+                                {translate("home.statusLast7Days")}
+                            </Text>
+                            <Text style={styles.textStatusContent}>
+                                {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
+                            </Text>
                         </View>
                     </View>
 
@@ -488,119 +503,138 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollView: {
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f4f4f4',
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
     },
+    menuBars: {
+        position: 'absolute',
+        left: '2%',
+        top: 0,
+        padding: '2%',
+    },
     viewTop: {
-        backgroundColor: '#348EAC',
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
     },
-    menuBars: {
-        position: 'absolute',
-        left: '1%',
-        top: 0,
-        padding: '2%',
-    },
     avatarTop: {
         borderColor: '#ffffff',
         borderWidth: 3,
-        height: 140,
-        width: 140,
-        marginTop: 40
+        height: scale(108),
+        width: scale(108),
+        marginTop: 50
     },
     viewWelcome: {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '8%',
+        marginBottom: 95,
     },
     textHelloUser: {
-        fontSize: 25,
+        fontSize: scale(22),
         fontFamily: 'roboto',
         fontWeight: 'bold',
         color: '#ffffff',
-        marginTop: '4%'
+        marginTop: '3%'
     },
     textNewGuardion: {
-        fontSize: 20,
+        fontSize: scale(16),
         fontFamily: 'roboto',
         color: '#ffffff',
     },
-    viewHousehold: {
-        backgroundColor: '#ffffff',
-        flexDirection: 'row',
-        width: '85%',
-        borderRadius: 10,
-        //borderColor: '#c4c4c4',
-        //borderWidth: 1,
-        marginTop: '8%',
-    },
-    viewHouseholdSelect: {
-        width: '50%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: '4%',
-    },
-    viewHouseholdAdd: {
-        width: '50%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: '4%',
-    },
     viewReport: {
-        backgroundColor: '#348EAC',
+        backgroundColor: '#ffffff',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '85%',
-        marginTop: '8%',
+        width: '90%',
+        marginTop: -75,
     },
     textFelling: {
         fontFamily: 'roboto',
         fontWeight: 'bold',
-        fontSize: 20,
-        color: '#ffffff',
-        marginTop: 15
+        fontSize: scale(18),
+        color: '#32323B',
+        marginTop: scale(25)
     },
     containerGoodBad: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '80%',
-        marginTop: 15,
-        marginBottom: 20
+        marginTop: scale(20),
+        marginBottom: scale(32)
     },
     viewChildBad: {
-        width: '49.5%',
-        borderTopRightRadius: 30,
-        borderBottomRightRadius: 30,
+        width: '49.25%',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
         backgroundColor: '#F18F01',
         justifyContent: 'center',
-        paddingVertical: 10
+        paddingVertical: 15
     },
     viewChildGood: {
-        width: '49.5%',
-        borderTopLeftRadius: 30,
-        borderBottomLeftRadius: 30,
+        width: '49.25%',
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
         backgroundColor: '#5DD39E',
         justifyContent: 'center',
-        paddingVertical: 10
+        paddingVertical: 15
     },
     textChoiceButton: {
         fontFamily: 'roboto',
+        fontWeight: 'bold',
         color: '#ffffff',
-        fontSize: 20,
+        fontSize: 18,
         alignSelf: 'center'
+    },
+    viewStatus: {
+        backgroundColor: '#348EAC',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '90%',
+        borderRadius: 10,
+        //borderColor: '#c4c4c4',
+        //borderWidth: 1,
+        marginTop: scale(8),
+        padding: scale(22),
+    },
+    viewStatusGood: {
+        backgroundColor: '#348EAC',
+    },
+    viewStatusBad: {
+        backgroundColor: '#F18F01',
+    },
+    viewStatusIcon: {
+        marginRight: scale(20),
+    },
+    viewStatusContent: {
+        //borderColor: '#c4c4c4',
+        //borderWidth: 1,
+    },
+    textStatusTitle: {
+        fontFamily: 'roboto',
+        fontWeight: 'bold',
+        fontSize: scale(16),
+        color: '#ffffff',
+    },
+    textStatusContent: {
+        fontFamily: 'roboto',
+        fontSize: scale(16),
+        color: '#ffffff',
+    },
+    viewHouseholdSelect: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '4%',
     },
     modalView: {
         alignSelf: 'center',
         width: '93%',
         marginTop: scale(210),
-        borderRadius: 30,
+        borderRadius: 15,
         backgroundColor: 'white',
         shadowColor: 'gray',
         shadowOffset: {
@@ -629,8 +663,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         fontWeight: 'bold',
-        marginTop: 15,
-        marginBottom: 15,
+        marginTop: 16,
+        marginBottom: 16,
         height: 38,
         justifyContent: 'center',
         //width: '35%',
@@ -644,7 +678,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5,
     },
 });
