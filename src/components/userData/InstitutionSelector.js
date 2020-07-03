@@ -23,7 +23,9 @@ class InstitutionSelector extends Component {
             initValueGroup: "Selecionar",
             initValueCategory: "Selecionar",
             initValueSchoolLocation: "Selecionar",
-            initValueEducationLevel: "Selecionar"
+            initValueEducationLevel: "Selecionar",
+            showAlert: false, //Custom Alerts
+            showProgressBar: false, //Custom Progress Bar
         }
     }
 
@@ -51,18 +53,17 @@ class InstitutionSelector extends Component {
         })
             .then((response) => {
                 if (response.status === 200) {
-                    this.hideAlert();
+                    setTimeout(() => {
+                        this.hideAlert()
+                      }, 1500);
                     return response.json()
                 }
             })
             .then((responseJson) => {
-                //console.warn(responseJson)
-                
                 responseJson.school_units.map(group => {
                     groups.push({ key: group.id, label: group.description })
                 })
                 this.setState({ groups })
-                this.hideAlert();
             })
     }
 
