@@ -78,9 +78,12 @@ class AuthLoadingScreen extends React.Component {
         if (response.status == 200) {
           RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
           this.props.navigation.navigate('BottomMenu');
-
-        } else {
+        }
+        else if (response.status == 401) {
           this._logoutApp();
+          this.props.navigation.navigate('Cadastro');
+        }
+        else {
           this.props.navigation.navigate('Cadastro');
         }
       })
@@ -88,7 +91,7 @@ class AuthLoadingScreen extends React.Component {
 
   // Render any loading content that you like here
   render() {
-    const statusColor = (<StatusBar backgroundColor='#348EAC' />)
+    const statusColor = (<StatusBar backgroundColor='#348EAC' barStyle="light-content" />)
 
     const logoBR = (
       <Image style={styles.imageLogo} source={imagemLogoBR} />
@@ -115,7 +118,6 @@ class AuthLoadingScreen extends React.Component {
           <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoUnB} /></View>
         </View>
         <ActivityIndicator size="large" color="#ffffff" />
-        <StatusBar barStyle="default" />
       </LinearGradient>
     );
   }

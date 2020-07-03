@@ -73,7 +73,7 @@ class Login extends Component {
           }
 
         return (
-            <KeyboardAwareScrollView style={styles.container}>
+            <KeyboardAwareScrollView contentContainerStyle={styles.container}>
                 <View style={styles.scroll}>
                 <View style={styles.viewImage}>
                     {imageType}
@@ -162,8 +162,13 @@ class Login extends Component {
                     if (response.status == 200) {
                         this.setState({ userToken: response.headers.map.authorization });
                         return response.json()
-                    } else {
+                    }
+                    else if (response.status == 401) {
                         Alert.alert("Email ou senha inválida.");
+                        this.hideAlert();
+                    }
+                    else {
+                        Alert.alert("Ocorreu um erro, tente novamente depois.");
                         this.hideAlert();
                     }
                 })
@@ -202,7 +207,7 @@ const emojis = [
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
     },
     scroll: {
         flex: 1,
@@ -236,7 +241,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#348EAC',
-        paddingBottom: 0,
+        paddingBottom: 10,
         paddingTop: 2,
     },
     commomText: {
