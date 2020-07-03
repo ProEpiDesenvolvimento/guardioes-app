@@ -68,6 +68,7 @@ class InstitutionSelector extends Component {
     }
 
     showAlert = () => {
+        this.props.setAlert(true, true)
         this.setState({
             showAlert: true,
             showProgressBar: true
@@ -75,6 +76,7 @@ class InstitutionSelector extends Component {
     };
 
     hideAlert = () => {
+        this.props.setAlert(false, false)
         this.setState({
             showAlert: false
         })
@@ -198,15 +200,6 @@ class InstitutionSelector extends Component {
                         </View>*/}
                     </View>
                     : null}
-                <AwesomeAlert
-                    show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
-                    title={this.state.showProgressBar ? "Carregando" : null}
-                    closeOnTouchOutside={false}
-                    closeOnHardwareBackPress={false}
-                    showCancelButton={false}
-                    showConfirmButton={this.state.showProgressBar ? false : true}
-                />
             </View>
         )
 

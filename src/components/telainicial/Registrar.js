@@ -75,6 +75,13 @@ class Registrar extends Component {
         })
     }
 
+    setAlert = (alert, loadingBar) => {
+        this.setState({
+            showAlert: alert,
+            showProgressBar: loadingBar
+        })
+    }
+
     componentDidMount() {
         //this.setState({ school_units: ShcoolsSheet.school_units }) //Usado para o autocomplete
     }
@@ -264,7 +271,8 @@ class Registrar extends Component {
                     </View>
                     
                     <InstitutionSelector 
-                        setUserInstitutionCallback={this.setUserInstitutionCallback}/>
+                        setUserInstitutionCallback={this.setUserInstitutionCallback}
+                        setAlert={this.setAlert}/>
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>{translate("register.email")}</Text>
@@ -312,13 +320,9 @@ class Registrar extends Component {
 
                 </View>
                 <AwesomeAlert
-                    show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
-                    title={this.state.showProgressBar ? translate("register.awesomeAlert.registeringMessage") : null}
-                    closeOnTouchOutside={false}
-                    closeOnHardwareBackPress={false}
-                    showCancelButton={false}
-                    showConfirmButton={this.state.showProgressBar ? false : true}
+                    show={this.state.showAlert}
+                    showProgress={true}
+                    title={"Carregando"}
                 />
             </KeyboardAwareScrollView>
         )
