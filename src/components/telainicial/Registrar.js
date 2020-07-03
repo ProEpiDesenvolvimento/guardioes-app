@@ -11,7 +11,6 @@ import {
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import DatePicker from 'react-native-datepicker'
-import AwesomeAlert from 'react-native-awesome-alerts'
 import { scale } from '../../utils/scallingUtils'
 import translate from '../../../locales/i18n'
 import { API_URL } from 'react-native-dotenv'
@@ -21,6 +20,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { gender, country, race } from '../../utils/selectorUtils'
 import { state, getCity } from '../../utils/brasil'
 import InstitutionSelector from '../userData/InstitutionSelector'
+import LoadingModal from '../modals/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -75,10 +75,9 @@ class Registrar extends Component {
         })
     }
 
-    setAlert = (alert, loadingBar) => {
+    setAlert = (alert) => {
         this.setState({
-            showAlert: alert,
-            showProgressBar: loadingBar
+            showAlert: alert
         })
     }
 
@@ -317,13 +316,8 @@ class Registrar extends Component {
                             onPress={() => this.verifyInfos()}
                         />
                     </View>
-
                 </View>
-                <AwesomeAlert
-                    show={this.state.showAlert}
-                    showProgress={true}
-                    title={"Carregando"}
-                />
+                <LoadingModal show={showAlert}/>
             </KeyboardAwareScrollView>
         )
 

@@ -19,6 +19,7 @@ import ModalSelector from 'react-native-modal-selector'
 import { gender, country, race, household } from '../../utils/selectorUtils'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import InstitutionSelector from '../userData/InstitutionSelector'
+import LoadingModal from '../modals/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -49,6 +50,7 @@ class Registrar extends Component {
             groupCheckbox: false,
             userIdCode: null,
             userGroup: null,
+            loadingAlert: false
         }
     }
 
@@ -62,6 +64,12 @@ class Registrar extends Component {
     hideAlert = () => {
         this.setState({
             showAlert: false
+        })
+    }
+
+    setLoadingAlert = (alert) => {
+        this.setState({
+            loadingAlert: alert
         })
     }
 
@@ -96,8 +104,8 @@ class Registrar extends Component {
         const { showAlert } = this.state
 
         return (
-            <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                <View style={styles.scroll}>
+            <View style={styles.scroll}>
+                <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>{translate("register.name")}</Text>
@@ -182,7 +190,8 @@ class Registrar extends Component {
                     </View>
 
                     <InstitutionSelector 
-                        setUserInstitutionCallback={this.setUserInstitutionCallback}/>
+                        setUserInstitutionCallback={this.setUserInstitutionCallback}
+                        setAlert={this.setLoadingAlert}/>
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>Parentesco:</Text>
@@ -212,8 +221,9 @@ class Registrar extends Component {
                         showCancelButton={false}
                         showConfirmButton={this.state.showProgressBar ? false : true}
                     />
-                </View>
-            </KeyboardAwareScrollView>
+                </KeyboardAwareScrollView>
+                <LoadingModal show={this.state.loadingAlert}/>
+            </View>
         )
 
     }

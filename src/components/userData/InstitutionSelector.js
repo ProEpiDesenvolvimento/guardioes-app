@@ -11,7 +11,6 @@ import { CheckBox } from 'react-native-elements'
 import ModalSelector from 'react-native-modal-selector'
 import { schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils'
 import Autocomplete from 'react-native-autocomplete-input'
-import AwesomeAlert from 'react-native-awesome-alerts';
 import { API_URL } from 'react-native-dotenv';
 
 class InstitutionSelector extends Component {
@@ -24,8 +23,6 @@ class InstitutionSelector extends Component {
             initValueCategory: "Selecionar",
             initValueSchoolLocation: "Selecionar",
             initValueEducationLevel: "Selecionar",
-            showAlert: false, //Custom Alerts
-            showProgressBar: false, //Custom Progress Bar
         }
     }
 
@@ -35,7 +32,7 @@ class InstitutionSelector extends Component {
 
     loadingSchools(Category, Level, City) {
         const groups = []
-        this.showAlert()
+        this.props.setAlert(true)
         fetch(`${API_URL}/school_units_list/`, {
             method: 'POST',
             headers: {
@@ -54,7 +51,7 @@ class InstitutionSelector extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     setTimeout(() => {
-                        this.hideAlert()
+                        this.props.setAlert(false)
                       }, 1500);
                     return response.json()
                 }
@@ -67,24 +64,7 @@ class InstitutionSelector extends Component {
             })
     }
 
-    showAlert = () => {
-        this.props.setAlert(true, true)
-        this.setState({
-            showAlert: true,
-            showProgressBar: true
-        });
-    };
-
-    hideAlert = () => {
-        this.props.setAlert(false, false)
-        this.setState({
-            showAlert: false
-        })
-    };
-
-
     render() {
-        const { showAlert } = this.state;
         return (
             <View style={{ marginBottom: 10 }}>
                 <CheckBox
