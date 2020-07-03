@@ -187,10 +187,10 @@ class BadReport extends Component {
         );
     }
 
-    showCovidAlert = (covidProfile, responseJson) => {
+    showCovidAlert = (responseJson) => {
         Alert.alert(
-            covidProfile.title,
-            covidProfile.message,
+            responseJson.messages.top_syndrome_message.title,
+            responseJson.messages.top_syndrome_message.warning_message,
             [
                 { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
                 { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) },
@@ -256,42 +256,12 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                const covidProfile = this.verifyCOVID()
-                if (covidProfile) {
-                    this.showCovidAlert(covidProfile, responseJson)
+                if (responseJson.messages.top_3[0].name === "Síndrome Gripal") {
+                    this.showCovidAlert(responseJson)
                 } else {
                     this.showAlert(responseJson)
                 }
             })
-    }
-
-    verifyCOVID = () => {
-        let cont_1 = 0
-        let cont_2 = 0
-        this.state.symptoms.map(symptom => {
-            if (symptom == "Febre") {
-                this.state.symptoms.map(symptom => {
-                    if (symptom == "DordeGarganta" || symptom == "DificuldadeParaRespirar" || symptom == "Tosse") {
-                        cont_1 = cont_1 + 1 
-                    }
-                    if (symptom == "DordeGarganta" || symptom == "DificuldadeParaRespirar" || symptom == "Tosse" || symptom == "Cansaco" || symptom == "Mal-estar"){
-                        cont_2 = cont_2 + 1
-                    }
-                })
-            }
-        })
-
-        if (cont_1 >= 1 && cont_2 < 2){
-            return {
-                title: 'Mantenha a atenção',
-                message: 'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\nFonte: Ministério da Saúde'
-            }
-        } else if (cont_2 >= 2){
-            return {
-                title: 'Atenção: Procure avaliação médica!',
-                message: 'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde'
-            }
-        }
     }
 
     render() {
