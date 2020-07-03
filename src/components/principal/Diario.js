@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
-import { View, Text, ScrollView, StyleSheet, Image } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
-import RNSecureStorage from 'rn-secure-storage'
-import { Calendar } from 'react-native-calendars'
-import moment from 'moment'
-import { Avatar } from 'react-native-elements'
-import * as Imagem from '../../imgs/imageConst'
-import { Dimensions } from 'react-native'
-import translate from '../../../locales/i18n'
-import {API_URL} from 'react-native-dotenv'
+import React, { Component } from 'react';
+import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment';
+import { Avatar } from 'react-native-elements';
+import * as Imagem from '../../imgs/imageConst';
+import { getNameParts } from '../../utils/constUtils';
+import { Dimensions } from 'react-native';
+import translate from '../../../locales/i18n';
+import {API_URL} from 'react-native-dotenv';
 
 let data = new Date()
 let d = data.getDate()
@@ -163,7 +164,7 @@ class Diario extends Component {
                         </View>
                         <View style={styles.UserInfos}>
                             <Text style={styles.UserName}>
-                                {this.state.userSelected}
+                                {getNameParts(this.state.userSelected, true)}
                             </Text>
                         </View>
                     </View>

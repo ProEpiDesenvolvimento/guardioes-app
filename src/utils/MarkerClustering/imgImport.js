@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
 /* NOTE: require() only works with static file paths, that's why the code below looks like that */
 export default {
     reqFiles: [[    

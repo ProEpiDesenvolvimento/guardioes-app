@@ -33,7 +33,7 @@ class Maps extends Component {
             dataFilterd: [],
             polygonState: "Federal District",
             mapViewPolygon: false,
-            showAlert: true,
+            showAlert: false,
             initialRegion: {
                 latitude: -15.8194724,
                 longitude: -47.924146,
@@ -52,7 +52,13 @@ class Maps extends Component {
 
     fetchData = async () => {
         const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userToken });
+        
+        let showAlert = JSON.parse(await AsyncStorage.getItem('showMapTip'));
+        if (showAlert == null) {
+            showAlert = true
+        }
+
+        this.setState({ userToken, showAlert });
         this.getSurvey();
     }
 
@@ -113,8 +119,8 @@ class Maps extends Component {
                     initialRegion: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
-                        latitudeDelta: 0.07,
-                        longitudeDelta: 0.07
+                        latitudeDelta: 0.06,
+                        longitudeDelta: 0.06
                     },
                     showUserLocation: true,
                     error: null,
@@ -207,17 +213,16 @@ class Maps extends Component {
                 anchor={{x:0.5,y:0.5}}
                 centerOffset={{x:0.5,y:0.5}}
                 coordinate={coordinate}
-                style={{width:200, height: 200}}
                 image={image}
                 title={'Pessoas: ' + pointCount}
                 description={message}
-                tracksViewChanges={false}>
-            </Marker>
+                tracksViewChanges={false}
+            />
         )
     }
 
-    renderBadMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={redMarker} style={{ width: 13, height: 14 }} />
-    renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={greenMarker} style={{ width: 13, height: 14 }} />
+    renderBadMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={redMarker} tracksViewChanges={false} />
+    renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={greenMarker} tracksViewChanges={false} />
 
     render() {
         const {showAlert} = this.state;
@@ -226,14 +231,15 @@ class Maps extends Component {
                 <ClusteredMapView
                     key={this.state.mapKey}
                     showsUserLocation={this.state.showUserLocation}
-                    style={{ flex: 1 }}
+                    style={styles.map}
                     data={this.coordsFilter()}
                     initialRegion={this.state.initialRegion}
                     customMapStyle={mapStyle}
                     ref={(r) => { this.map = r }}
                     renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
-                    renderCluster={this.renderCluster} >
-                </ClusteredMapView>
+                    renderCluster={this.renderCluster}
+                    onPress={() => { console.log("Clicou no mapa") }}
+                />
                 <AwesomeAlert
                     show={showAlert}
                     message={translate(`maps.guide`)}
@@ -245,13 +251,14 @@ class Maps extends Component {
                     onCancelPressed={() => {
                         this.setState({
                             showAlert: false
-                          });
+                        });
+                        AsyncStorage.setItem('showMapTip', JSON.stringify(false));
                     }}
-                    />
+                />
                 {/*<TouchableOpacity style={styles.mapChange}
                     onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
                     <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
-        </TouchableOpacity>*/}
+                </TouchableOpacity>*/}
             </View>
         );
     }
@@ -260,7 +267,12 @@ class Maps extends Component {
 // define your styles
 const styles = StyleSheet.create({
     container: { flex: 1, justifyContent: 'flex-end' },
-    map: { flex: 1 },
+    map: {
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+    },
     mapChange: {
         position: 'absolute',
         bottom: '2%',
@@ -279,9 +291,6 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: 15,
         color: 'rgba(22, 107, 135, 1)'
-    },
-    myClusterTextStyle: {
-        color: 'white'
     }
 });
 
