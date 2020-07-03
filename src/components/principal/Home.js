@@ -592,12 +592,14 @@ const styles = StyleSheet.create({
     },
     viewStatus: {
         backgroundColor: '#348EAC',
+        alignItems: 'center',
         flexDirection: 'row',
         width: '90%',
         borderRadius: 10,
         //borderColor: '#c4c4c4',
         //borderWidth: 1,
-        marginTop: '2%',
+        marginTop: scale(8),
+        padding: scale(22),
     },
     viewStatusGood: {
         backgroundColor: '#348EAC',
@@ -606,15 +608,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#F18F01',
     },
     viewStatusIcon: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    statusIcon: {
-        marginHorizontal: scale(25),
-        marginTop: scale(10)
+        marginRight: scale(20),
     },
     viewStatusContent: {
-        marginTop: scale(18),
+        //borderColor: '#c4c4c4',
+        //borderWidth: 1,
     },
     textStatusTitle: {
         fontFamily: 'roboto',
@@ -626,8 +624,6 @@ const styles = StyleSheet.create({
         fontFamily: 'roboto',
         fontSize: scale(16),
         color: '#ffffff',
-        marginTop: scale(5),
-        marginBottom: scale(18),
     },
     viewHouseholdSelect: {
         alignItems: 'center',

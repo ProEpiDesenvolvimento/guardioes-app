@@ -289,8 +289,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     CalendarDate: {
-        backgroundColor: '#348EAC',
-        flex: 1,
         marginBottom: 35,
     },
     Calendario: {

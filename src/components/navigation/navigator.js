@@ -81,12 +81,10 @@ export const BottomMenu = createBottomTabNavigator({
         }),
         tabBarOptions: {
             style: {
-                //minHeight: 60,
-                maxHeight: '11%',
+                minHeight: 60,
+                height: '10%',
                 //maxHeight: 70,
                 paddingTop: 5,
-                //justifyContent: 'center',
-                //alignItem: 'center',
                 backgroundColor: '#ffffff',
                 borderTopWidth: 0,
             },
@@ -96,7 +94,7 @@ export const BottomMenu = createBottomTabNavigator({
                 fontFamily: 'roboto',
                 fontWeight: 'bold',
                 fontSize: 11,
-                // paddingTop: 5,
+                marginBottom: 5,
             },
         },
     }
