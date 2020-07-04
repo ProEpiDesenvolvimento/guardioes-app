@@ -11,6 +11,7 @@ import {API_URL} from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
+import { getNameParts } from '../../utils/constUtils';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import ModalSelector from 'react-native-modal-selector';
@@ -340,7 +341,7 @@ class BadReport extends Component {
                     </View>
                     <View style={styles.UserInfos}>
                         <Text style={styles.UserName}>
-                            {this.state.userSelected}
+                            {getNameParts(this.state.userSelected, true)}
                         </Text>
                     </View>
                 </View>

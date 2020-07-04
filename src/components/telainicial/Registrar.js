@@ -101,7 +101,7 @@ class Registrar extends Component {
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
         return (
-            <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
+            <KeyboardAwareScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps={true}>
                 <View style={styles.scroll}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
@@ -487,7 +487,7 @@ class Registrar extends Component {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         //borderColor: 'red',
         //borderWidth: 3,
     },
