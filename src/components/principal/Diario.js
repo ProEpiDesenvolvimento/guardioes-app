@@ -11,22 +11,20 @@ import { Dimensions } from 'react-native';
 import translate from '../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
-let h = data.getHours();
+let data = new Date()
+let d = data.getDate()
+let m = data.getMonth() + 1
+let y = data.getFullYear()
+let h = data.getHours()
 
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 
 class Diario extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            //this.getInfo();
-        });
+        })
         this.state = {
             data: [],
             x: 0,
@@ -34,23 +32,23 @@ class Diario extends Component {
             BadData: [],
             BadPlot: [{ y: 0, x: 0, marked: "" }],
             NoPlot: [{ y: 0, x: 0, marked: "" }]
-        };
+        }
     }
     
     componentDidMount () {
-        this.getInfo();
+        this.getInfo()
     }
 
 
     handleSelect(event) {
-        let entry = event.nativeEvent;
+        let entry = event.nativeEvent
         if (entry == null) {
-            this.setState({ ...this.state, selectedEntry: null });
+            this.setState({ ...this.state, selectedEntry: null })
         } else {
-            this.setState({ ...this.state, selectedEntry: JSON.stringify(entry) });
+            this.setState({ ...this.state, selectedEntry: JSON.stringify(entry) })
         }
 
-        console.log(event.nativeEvent);
+        console.log(event.nativeEvent)
     }
 
     static navigationOptions = {
@@ -58,22 +56,22 @@ class Diario extends Component {
     }
 
     getInfo = async () => { //Get user infos
-        const userID = await AsyncStorage.getItem('userID');
-        const userName = await AsyncStorage.getItem('userName');
-        const userSelected = await AsyncStorage.getItem('userSelected');
-        const avatarSelect = await AsyncStorage.getItem('avatarSelected');
-        const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userName, userSelected, userID, userToken, avatarSelect });
+        const userID = await AsyncStorage.getItem('userID')
+        const userName = await AsyncStorage.getItem('userName')
+        const userSelected = await AsyncStorage.getItem('userSelected')
+        const avatarSelect = await AsyncStorage.getItem('avatarSelected')
+        const userToken = await RNSecureStorage.get('userToken')
+        this.setState({ userName, userSelected, userID, userToken, avatarSelect })
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected == this.state.userName) {
             this.setState({ householdID: null })
         } else {
-            const householdID = await AsyncStorage.getItem('householdID');
+            const householdID = await AsyncStorage.getItem('householdID')
             this.setState({ householdID })
         }
 
-        this.getSurvey();
+        this.getSurvey()
     }
 
     getSurvey = () => {//Get Survey
@@ -105,11 +103,11 @@ class Diario extends Component {
             if (this.state.householdID == null) {//Condição para verificar se exise household
                 if (survey.household == null) {
                     if (survey.symptom && survey.symptom.length) { //BadReport
-                        markedDate.push(survey.bad_since);
-                        markedDateAll.push(survey);
+                        markedDate.push(survey.bad_since)
+                        markedDateAll.push(survey)
                     }
                     else { //GoodReport
-                        markedDateNo.push(survey.created_at.split("T", 1).toString());
+                        markedDateNo.push(survey.created_at.split("T", 1).toString())
                     }
                 }
 
@@ -117,11 +115,11 @@ class Diario extends Component {
                 if (survey.household != null) {
                     if (survey.household.id == this.state.householdID) {
                         if (survey.symptom && survey.symptom.length) { //Household BadReport
-                            markedDate.push(survey.bad_since);
-                            markedDateAll.push(survey);
+                            markedDate.push(survey.bad_since)
+                            markedDateAll.push(survey)
                         }
                         else { //Household GoodReport
-                            markedDateNo.push(survey.created_at.split("T", 1).toString());
+                            markedDateNo.push(survey.created_at.split("T", 1).toString())
                         }
                     }
                 }
@@ -143,12 +141,12 @@ class Diario extends Component {
             markedDateNo: markedDateNo,
         })
 
-        let BadReport = markedDate.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {});
-        let GoodReport = markedDateNo.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {});
+        let BadReport = markedDate.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {})
+        let GoodReport = markedDateNo.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {})
 
-        Object.assign(GoodReport, BadReport);
+        Object.assign(GoodReport, BadReport)
 
-        this.setState({ datesMarked: GoodReport });
+        this.setState({ datesMarked: GoodReport })
     }
 
     render() {
@@ -197,7 +195,7 @@ class Diario extends Component {
                             current={_today}
                             markedDates={this.state.datesMarked}
                             onDayPress={(day) => {
-                                let symptomDate = this.state.markedDateAll;
+                                let symptomDate = this.state.markedDateAll
                                 symptomDate.map(symptomMarker => {
                                     if(symptomMarker.bad_since == day.dateString){
                                         console.warn(symptomMarker.symptom)
@@ -209,7 +207,7 @@ class Diario extends Component {
                     </View>
                 </ScrollView>
             </View>
-        );
+        )
     }
 }
 
@@ -312,7 +310,7 @@ const styles = StyleSheet.create({
         color: 'white'
 
     },
-});
+})
 
 const calendarTheme = {
     calendarBackground: '#348EAC',
@@ -330,4 +328,5 @@ const calendarTheme = {
     textMonthFontSize: 20,
     textDayHeaderFontSize: 16
 }
-export default Diario;
+
+export default Diario
