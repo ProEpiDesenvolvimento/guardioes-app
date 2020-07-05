@@ -109,7 +109,7 @@ class Registrar extends Component {
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
 
         return (
-            <KeyboardAwareScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps={true}>
+            <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
                 <View style={styles.scroll}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
@@ -149,7 +149,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.birth")}</Text>
                             <DatePicker
-                                style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
+                                style={{ width: '80%', height: scale(26), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
                                 showIcon={false}
                                 date={this.state.userDob}
                                 androidMode='spinner'

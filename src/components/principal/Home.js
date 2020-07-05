@@ -240,7 +240,7 @@ class Home extends Component {
               onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
-            { text: 'Premitir', onPress: () => this.requestFineLocationPermission() },
+            { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
           ],
           { cancelable: false },
         );
