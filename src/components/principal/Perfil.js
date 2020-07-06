@@ -292,26 +292,16 @@ class Perfil extends Component {
     await this.editUser()
   }
 
-  // setUserInstitutionCallback = (userIdCode, userGroup) => {
-  //   this.setState({
-  //       userIdCode: userIdCode,
-  //       userGroup: userGroup,
-  //   })
-  // }
-
-  // setHouseholdInstitutionCallback = (householdIdCode, householdGroup) => {
-  //   this.setState({
-  //       householdIdCode: householdIdCode,
-  //       householdGroup: householdGroup
-  //   })
-  // }
-
   loadHouseholdInfo = async (household) => {
+    // Trata a data de nascimento do household para o formato apropriado
+    let householdBirthdate = household.birthdate.split('-');
+    householdBirthdate = householdBirthdate[2] + '-' + householdBirthdate[1] + '-' + householdBirthdate[0];
+    
     this.setState({
       // atributos do household
       householdID: household.id,
       householdName: household.description,
-      householdDob: household.birthdate,
+      householdDob: householdBirthdate,
       householdCountry: household.country,
       householdGender: household.gender,
       householdRace: household.race,
@@ -399,7 +389,7 @@ class Perfil extends Component {
                   initValueTextStyle={{ color: 'black' }}
                   style={{ width: '80%', height: '70%' }}
                   data={race}
-                  initValue={translate("raceChoices.white")}
+                  initValue={this.state.householdRace}
                   onChange={(option) => this.setState({ householdRace: option.key })}
                 />
               </View>
@@ -465,7 +455,6 @@ class Perfil extends Component {
               />
             </View>
 
-            {/*===================================================================*/}
             <View style={{ paddingTop: 15 }}>
               <CheckBox
                 title={"É integrante de alguma instituição de Ensino?"}
@@ -732,7 +721,6 @@ class Perfil extends Component {
                 </View>
                 : null}
 
-            {/*DOIS - 2 ========================================================*/}
             <View style={{ paddingTop: 15 }}>
               <CheckBox
                 title={"É integrante de alguma instituição de Ensino?"}
