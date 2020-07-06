@@ -366,7 +366,7 @@ class Perfil extends Component {
             <View style={styles.viewCommom}>
               <Text style={styles.commomText}>{translate("register.name")}</Text>
               <TextInput style={styles.formInput}
-                placeholder={this.state.householdName}
+                value={this.state.householdName}
                 onChangeText={text => this.setState({ householdName: text })}
               />
             </View>
@@ -907,9 +907,9 @@ class Perfil extends Component {
         </View>
         <ScrollView>
           {householdsData != null ?
-            householdsData.map(household => {
+            householdsData.map((household, key) => {
               return (
-                <View style={styles.viewHousehold}>
+                <View style={styles.viewHousehold} key={key}>
                   <Avatar
                     size="large"
                     rounded
