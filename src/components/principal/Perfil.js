@@ -207,7 +207,8 @@ class Perfil extends Component {
           is_professional: this.state.isProfessional,
           risk_group: this.state.riskGroup,
           state: this.state.userState,
-          city: this.state.userCity
+          city: this.state.userCity,
+          country: this.state.userCountry
         }
       )
     })
@@ -690,8 +691,14 @@ class Perfil extends Component {
                 </View>
 
                 <View style={styles.viewChildSexoRaca}>
-                  <Text style={styles.commomTextView}>País de Origem:</Text>
-                  <Text style={styles.textBornCountry}>{this.state.userCountry}</Text>
+                  <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={country}
+                    initValue={this.state.userCountry}
+                    onChange={(option) => this.setState({ userCountry: option.key })}
+                  />
                 </View>
               </View>
 
