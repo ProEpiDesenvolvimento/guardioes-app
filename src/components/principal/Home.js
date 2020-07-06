@@ -189,7 +189,7 @@ class Home extends Component {
                 }
             }
             else {
-                if (survey.symptom.length > 0) {
+                if (survey.symptom.length > 0 && !survey.household) {
                     userBadReports = userBadReports + 1;
                 }
             }
