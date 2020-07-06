@@ -248,7 +248,7 @@ class BadReport extends Component {
                     latitude: this.state.userLatitude,
                     longitude: this.state.userLongitude,
                     bad_since: this.state.today_date,
-                    traveled_to: this.state.country,
+                    traveled_to: this.state.hadTraveled,
                     went_to_hospital: this.state.lookedForHospital,
                     contact_with_symptom: this.state.contactWithSymptom,
                     symptom: this.state.symptoms
@@ -386,7 +386,7 @@ class BadReport extends Component {
                         checked={this.state.hadTraveled}
                         onPress={async () => await this.setState({ hadTraveled: !this.state.hadTraveled })}
                     />
-                    {traveledTrue}
+                    {/*traveledTrue*/}
                     <CheckBox
                         title={translate("badReport.checkboxes.first")}
                         textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
