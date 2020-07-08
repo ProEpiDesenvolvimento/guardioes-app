@@ -12,7 +12,7 @@ class Noticias extends Component {
         return (
             <View style={styles.container}>
                 <WebView
-                    source={{ uri: 'https://twitter.com/Proepi_' }}
+                    source={{ uri: 'https://twitter.com/guardioesunb' }}
                 />
             </View>
         );

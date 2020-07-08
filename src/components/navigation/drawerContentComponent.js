@@ -5,6 +5,7 @@ import RNSecureStorage from 'rn-secure-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { getNameParts } from '../../utils/constUtils';
 import { moderateScale, verticalScale, scale } from '../../utils/scallingUtils';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
@@ -22,8 +23,6 @@ export default class drawerContentComponents extends Component {
             userName: null
         }
     }
-
-
 
     //Funcao responsavel por pegar as variaveis do Facebook e salva-las em variaveis de estado 
     getInfo = async () => {
@@ -68,7 +67,7 @@ export default class drawerContentComponents extends Component {
                                 activeOpacity={0.7}
                             />
                         </View>
-                        <Text style={styles.headerText}>{this.state.userName}</Text>
+                        <Text style={styles.headerText}>{getNameParts(this.state.userName, true)}</Text>
                     </View>
 
                     <TouchableOpacity
@@ -126,7 +125,7 @@ export default class drawerContentComponents extends Component {
                         <Text style={styles.drawerItemsTxt}>{translate("drawer.toAbout")}</Text>
                     </TouchableOpacity>
 
-                    <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 85 }]}>
+                    <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 25 }]}>
                         <Text style={[styles.drawerItemsTxt, { fontSize: 20, fontWeight: 'bold' }]} onPress={this._logoutApp}>
                             {translate("drawer.logOut")}
                         </Text>
@@ -143,12 +142,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     headerContainer: {
-        height: moderateScale(250),
+        height: moderateScale(230),
         backgroundColor: 'white',
         marginBottom: 15
     },
     headerText: {
-        fontSize: 24,
+        fontSize: 22,
         fontFamily: 'roboto',
         fontWeight: 'bold',
         alignSelf: 'center',

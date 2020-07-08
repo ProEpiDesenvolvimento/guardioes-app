@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert, Linking, Platform } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import { CheckBox } from 'react-native-elements';
@@ -7,15 +7,18 @@ import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../utils/scallingUtils';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
+import { getNameParts } from '../../utils/constUtils';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import ModalSelector from 'react-native-modal-selector';
 import { country, localSymptom } from '../../utils/selectorUtils';
 import { Redirect } from '../../utils/constUtils';
+import Share from "react-native-share";
+import { cardWhatsapp } from '../../imgs/cardWhatsapp/cardWhatsapp_base64';
 
 let data = new Date();
 let d = data.getDate();
@@ -23,6 +26,11 @@ let m = data.getMonth() + 1;
 let y = data.getFullYear();
 
 let today = d + "-" + m + "-" + y;
+
+const shareOptions = {
+    message: translate("badReport.alertMessages.covidSuspect"),
+    url: cardWhatsapp
+};
 
 class BadReport extends Component {
     static navigationOptions = {
@@ -59,7 +67,6 @@ class BadReport extends Component {
             alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
-        console.warn(alertMessage)
     }
 
     showLoadingAlert = () => {
@@ -175,10 +182,40 @@ class BadReport extends Component {
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },
-                { text: 'Premitir', onPress: () => this.requestFineLocationPermission() },
+                { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
             ],
             { cancelable: false },
         );
+    }
+
+    showCovidAlert = (responseJson) => {
+        Alert.alert(
+            responseJson.messages.top_syndrome_message.title,
+            responseJson.messages.top_syndrome_message.warning_message,
+            [
+                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
+                { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    showWhatsappAlert = (responseJson) => {
+        Alert.alert(
+            'Alertar Contatos',
+            'Deseja compartilhar um comunicado para pessoas com que teve contato?',
+            [
+                { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
+                { text: 'Sim', onPress: () =>  {
+                        Share.open(shareOptions)
+                            .then((res) => { console.log(res) })
+                            .catch((err) => { err && console.log(err); });
+                        this.showAlert(responseJson)
+                    }
+                }
+            ],
+            { cancelable: false }
+        )
     }
 
     sendSurvey = async () => {
@@ -211,7 +248,7 @@ class BadReport extends Component {
                     latitude: this.state.userLatitude,
                     longitude: this.state.userLongitude,
                     bad_since: this.state.today_date,
-                    traveled_to: this.state.country,
+                    traveled_to: this.state.hadTraveled,
                     went_to_hospital: this.state.lookedForHospital,
                     contact_with_symptom: this.state.contactWithSymptom,
                     symptom: this.state.symptoms
@@ -220,87 +257,15 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                this.showAlert(responseJson)
+                if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
+                    if (responseJson.messages.top_3[0].name === "Síndrome Gripal")
+                        this.showCovidAlert(responseJson)
+                    else
+                        this.showAlert(responseJson)
+                } else {
+                    this.showAlert(responseJson)
+                }
             })
-    }
-
-    verifyCOVID = () => {
-        let cont_1 = 0
-        let cont_2 = 0
-        this.state.symptoms.map(symptom => {
-            if (symptom == "Febre") {
-                this.state.symptoms.map(symptom => {
-                    if (symptom == "DordeGarganta" || symptom == "DificuldadeParaRespirar" || symptom == "Tosse") {
-                        cont_1 = cont_1 + 1 
-                    }
-                    if (symptom == "DordeGarganta" || symptom == "DificuldadeParaRespirar" || symptom == "Tosse" || symptom == "Cansaco" || symptom == "Mal-estar"){
-                        cont_2 = cont_2 + 1
-                    }
-                })
-            }
-        })
-
-        //Condição para o Cenario 1. Caso seja falsa retorna cenario 2
-        if (cont_1 >= 1 && cont_2 < 2){
-            Alert.alert(
-                'Mantenha a atenção!',
-                'Baseado nos seus sintomas, você se enquadra  na definição de caso suspeito de síndrome gripal. A não ser que seu quadro mude, não é recomendado que você procure atendimento médico agora. Continue usando o app para monitorar seus sintomas e mantenha a precaução e a etiqueta respiratória.\n\n Fonte: Ministério da Saúde',
-                [
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
-                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
-                ],
-                { cancelable: false }
-            )
-            //console.warn("1 - VOCE ESTA NO PRIMEIRO NIVEL  1 DE COVID")
-        } else if (cont_2 >= 2){
-            Alert.alert(
-                'Atenção: Procure avaliação médica!',
-                'Baseado nos seus sintomas, você se enquadra na definição de caso suspeito de síndrome gripal. É recomendado que você procure atendimento em um serviço de urgência mais próximo. Caso não tenha condições de se deslocar, ligue para o SAMU no número 192. Ao se dirigir a um serviço de urgência, certifique-se de tomar medidas de proteção individual e etiqueta respiratória para si mesmo(a) e para eventuais acompanhantes. Note que isto não é um diagnóstico formal. Este aplicativo não substitui um exame laboratorial e apenas fornece recomendações com base nos seus sintomas.\n\n Fonte: Ministério da Saúde',
-                [
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
-                    { text: 'Mais informações', onPress: () => { this.verifyLocalization(); Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
-                ],
-                { cancelable: false }
-            )
-            //console.warn("2 - VOCE ESTA NO PRIMEIRO NIVEL 2 DE COVID")
-        } else if (cont_1 <= 1 && cont_2 <= 2){
-            Alert.alert(
-                'Obrigado por reportar!',
-                'É importante continuar usando o app para monitorar seu estado de saúde.',
-                [
-                    { text: 'Ok', onPress: () => this.verifyLocalization() },
-                ],
-                { cancelable: false }
-            )
-            //console.warn("Obrigado Por Reportar")
-        }
-    }
-
-
-    sheradReport = () => {
-        if (this.state.contactWithSymptom != null) {
-            Alert.alert(
-                'Deseja Compartilhar o App?',
-                'Compartilhe o aplicativo com as pessoas que teve contato e nos ajude a ESCREVER ALGO',
-                [
-                    {
-                        text: 'Compartilhar e Reportar', onPress: () => {
-                            if (Platform.OS === 'ios') {
-                                Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1`);
-                                this.verifyLocalization()
-                            } else {
-                                Linking.openURL(`whatsapp://send?text=Baixe o nosso aplicativo e nos ajude.... https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt`);
-                                this.verifyLocalization()
-                            }
-                        }
-                    },
-                    { text: 'Somente Reportar', onPress: () => this.verifyLocalization() },
-                ],
-                { cancelable: false }
-            )
-        } else {
-            this.verifyLocalization()
-        }
     }
 
     render() {
@@ -340,7 +305,7 @@ class BadReport extends Component {
                     </View>
                     <View style={styles.UserInfos}>
                         <Text style={styles.UserName}>
-                            {this.state.userSelected}
+                            {getNameParts(this.state.userSelected, true)}
                         </Text>
                     </View>
                 </View>
@@ -423,7 +388,7 @@ class BadReport extends Component {
                         checked={this.state.hadTraveled}
                         onPress={async () => await this.setState({ hadTraveled: !this.state.hadTraveled })}
                     />
-                    {traveledTrue}
+                    {/*traveledTrue*/}
                     <CheckBox
                         title={translate("badReport.checkboxes.first")}
                         textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
@@ -453,7 +418,7 @@ class BadReport extends Component {
 
                     <View style={styles.buttonView}>
                         <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() =>
-                            this.verifyCOVID()
+                            this.verifyLocalization()
                         } />
                     </View>
                 </ScrollView>

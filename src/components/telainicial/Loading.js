@@ -12,12 +12,34 @@ class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this._bootstrapAsync();
+    this.state = {
+      userEmail: null,
+      userPwd: null
+    }
   }
 
   getInfo = async () => { // Get user info
     const userEmail = await RNSecureStorage.get('userEmail');
     const userPwd = await RNSecureStorage.get('userPwd');
     this.setState({ userEmail, userPwd });
+  }
+
+  _logoutApp = async () => {
+    AsyncStorage.removeItem('userID');
+    AsyncStorage.removeItem('userName');
+    AsyncStorage.removeItem('userSelected');
+    AsyncStorage.removeItem('avatarSelected');
+    AsyncStorage.removeItem('householdID');
+
+    RNSecureStorage.exists('userToken').then((res) => {
+      (res) ? RNSecureStorage.remove('userToken') : false;
+    });
+    RNSecureStorage.exists('userEmail').then((res) => {
+      (res) ? RNSecureStorage.remove('userEmail') : false;
+    });
+    RNSecureStorage.exists('userPwd').then((res) => {
+      (res) ? RNSecureStorage.remove('userPwd') : false;
+    });
   }
 
   // Fetch the token from storage then navigate to our appropriate place
@@ -30,22 +52,7 @@ class AuthLoadingScreen extends React.Component {
         this.verifyUserToken();
       }, 1500);
     } else {
-      AsyncStorage.removeItem('userID');
-      AsyncStorage.removeItem('userName');
-      AsyncStorage.removeItem('userSelected');
-      AsyncStorage.removeItem('avatarSelected');
-      AsyncStorage.removeItem('householdID');
-
-      RNSecureStorage.exists('userToken').then((res) => {
-        (res) ? RNSecureStorage.remove('userToken') : false;
-      });
-      RNSecureStorage.exists('userEmail').then((res) => {
-        (res) ? RNSecureStorage.remove('userEmail') : false;
-      });
-      RNSecureStorage.exists('userPwd').then((res) => {
-        (res) ? RNSecureStorage.remove('userPwd') : false;
-      });
-      
+      this._logoutApp();
       this.props.navigation.navigate('Cadastro');
     }
   };
@@ -71,8 +78,12 @@ class AuthLoadingScreen extends React.Component {
         if (response.status == 200) {
           RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
           this.props.navigation.navigate('BottomMenu');
-
-        } else {
+        }
+        else if (response.status == 401) {
+          this._logoutApp();
+          this.props.navigation.navigate('Cadastro');
+        }
+        else {
           this.props.navigation.navigate('Cadastro');
         }
       })
@@ -80,7 +91,7 @@ class AuthLoadingScreen extends React.Component {
 
   // Render any loading content that you like here
   render() {
-    const statusColor = (<StatusBar backgroundColor='#348EAC' />)
+    const statusColor = (<StatusBar backgroundColor='#348EAC' barStyle="light-content" />)
 
     const logoBR = (
       <Image style={styles.imageLogo} source={imagemLogoBR} />
@@ -99,15 +110,14 @@ class AuthLoadingScreen extends React.Component {
     }
 
     return (
-      <LinearGradient style={styles.container} colors={['#348EAC', '#013444']} start={{ x: 1.5, y: 0.6 }} end={{ x: -0.2, y: 1.4 }}>
+      <LinearGradient style={styles.container} colors={['#348EAC', '#013444']}>
         {statusColor}
         {imageType}
         <View style={styles.viewLogos}>
           <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoProEpi} /></View>
           <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoUnB} /></View>
         </View>
-        <ActivityIndicator size="large" />
-        <StatusBar barStyle="default" />
+        <ActivityIndicator size="large" color="#ffffff" />
       </LinearGradient>
     );
   }
@@ -120,14 +130,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageLogo: {
-    height: scale(235),
+    height: scale(200),
     resizeMode: 'contain',
     marginBottom: 20,
   },
   viewLogos: {
     flexDirection: "row",
-    width: "90%",
-    height: scale(130),
+    width: "70%",
+    height: scale(110),
     //borderColor: "red",
     //borderWidth: 1,
   },
@@ -140,7 +150,7 @@ const styles = StyleSheet.create({
     //borderWidth: 1,
   },
   imageHalfLogo: {
-    width: scale(100),
+    width: scale(80),
     resizeMode: 'contain',
   },
 });

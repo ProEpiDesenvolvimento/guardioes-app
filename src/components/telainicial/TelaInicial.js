@@ -36,7 +36,7 @@ class TelaInicial extends Component {
 
     render() {
         const { navigate } = this.props.navigation
-        const statusColor = (<StatusBar backgroundColor='#348EAC' />)
+        const statusColor = (<StatusBar backgroundColor='#348EAC' barStyle="light-content" />)
 
         const logoBR = (
             <Image style={styles.imageLogo} source={imagemLogoBR} />
@@ -55,7 +55,7 @@ class TelaInicial extends Component {
         }
 
         return (
-            <LinearGradient style={styles.container} colors={['#348EAC', '#013444']} start={{ x: 1.5, y: 0.6 }} end={{ x: -0.2, y: 1.4 }}>
+            <LinearGradient style={styles.container} colors={['#348EAC', '#013444']}>
                 {statusColor}
                 <View style={styles.viewImage}>
                     {imageType}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     },
     imageLogo: {
         flex: 1,
-        width: '85%',
+        width: '75%',
         resizeMode: "contain"
     },
     viewButton: {
@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
     },
     viewLogos: {
         flexDirection: "row",
-        height: scale(100),
-        width: "80%",
+        height: scale(110),
+        width: "70%",
         //borderColor: "red",
         //borderWidth: 1,
     },
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         //borderWidth: 1,
     },
     imageHalfLogo: {
-        width: scale(90),
+        width: scale(80),
         resizeMode: 'contain',
     },
 });

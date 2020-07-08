@@ -144,7 +144,8 @@ export default {
             "reportSent": "Su relato fue enviado.",
             "reportNotSent": "Notamos que ya informó su estado de salud hoy. Gracias por el aporte!",
             "seeADoctor": "¡Recomendamos que si los síntomas continúan, busque atención médica!",
-            "confirmText": "Regreso"
+            "confirmText": "Regreso",
+            "covidSuspect": "Para descargar la aplicación Guardians of Health y contribuir a hacer frente a Covid-19, visite:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara descargar la aplicación del Ministerio de Salud, visite:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinición de contacto cercano: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao"
         },
         "datePlaceHolder": "Haga clic aquí para introducir la fecha!"
     },
@@ -207,10 +208,13 @@ export default {
     "home": {
         "title": "Guardianes de la Salud",
         "toastAlertMessage": "Apriete una vez más para salir",
-        "hello": "¡Hola",
-        "nowAGuardian": "¡Ahora usted es un guardián de la salud!",
-        "selectProfile": "Seleccione un Perfil:",
+        "hello": "¡Hola, ",
+        "nowAGuardian": "Guardián de la Salud",
+        "selectProfile": "Seleccione un Perfil",
         "addProfile": "Añadir Perfil",
+        "statusLast7Days": "Estado en los últimos 7 días:",
+        "statusLast7DaysGood": "Te has sentido bien.",
+        "statusLast7DaysBad": "Usted no estaba bien.",
         "reportRumor": "Reportar Rumor",
         "reportRumorMessage": "Relatar um rumor de alguma coisa bla bla ",
         "userHowYouFelling": "¿Cómo se siente hoy?",
@@ -235,7 +239,8 @@ export default {
     "maps": {
         "title": "Mapa de la Salud",
         "reportGood": "Bien",
-        "reportBad": "Malo"
+        "reportBad": "Malo",
+        "guide": `Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.`
     },
     "news": {
         "title": "Noticias"

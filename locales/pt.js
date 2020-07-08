@@ -144,7 +144,8 @@ export default {
             "reportSent": "Seu relato foi enviado.",
             "reportNotSent": "Notamos que você já relatou seu estado de saúde hoje. Obrigado pela contribuição!",
             "seeADoctor": "Recomendamos que, caso os sintomas continuem, procure atendimento médico!",
-            "confirmText": "Voltar"
+            "confirmText": "Voltar",
+            "covidSuspect": "Para baixar o aplicativo Guardiões da Saúde e contribuir para o enfrentamento da Covid-19, acesse:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara baixar o aplicativo do Ministério da Saúde, acesse:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinição de contato próximo: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao"
         },
         "datePlaceHolder": "Haga clic aquí para introducir la fecha!"
     },
@@ -207,12 +208,15 @@ export default {
     "home": {
         "title": "Guardiões da Saúde",
         "toastAlertMessage": "Aperte mais uma vez para sair",
-        "hello": "Olá ",
-        "nowAGuardian": "Agora você é um guardião da saúde!",
-        "selectProfile": "Selecione um Perfil:",
+        "hello": "Olá, ",
+        "nowAGuardian": "Guardião da Saúde",
+        "selectProfile": "Selecione um Perfil",
         "addProfile": "Adicionar Perfil",
+        "statusLast7Days": "Status nos últimos 7 dias:",
+        "statusLast7DaysGood": "Você tem se sentido bem.",
+        "statusLast7DaysBad": "Você não esteve bem.",
         "reportRumor": "Relatar Rumor",
-        "reportRumorMessage": "Relatar um rumor de alguma coisa bla bla bla",
+        "reportRumorMessage": "Por aqui você pode enviar um relato em baseado em informações recebidas de várias pessoas e também relatar a ocorrência de doenças ou agravos não corriqueiros.",
         "userHowYouFelling": "Como está se sentindo hoje?",
         "householdHowYouFelling_part_1": "Como ",
         "householdHowYouFelling_part_2": " se sente hoje?",
@@ -235,7 +239,8 @@ export default {
     "maps": {
         "title": "Mapa da Saúde",
         "reportGood": "Bem",
-        "reportBad": "Mal"
+        "reportBad": "Mal",
+        "guide": `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`
     },
     "news": {
         "title": "Notícias"
@@ -287,7 +292,7 @@ export default {
         "toHelp": "Ajuda",
         "toAbout": "Sobre",
         "moreComing": "Temos mais vindo aí!",
-        "healthDiary": "Diário da Saúde",
+        "healthDiary": "Diário",
         "healthMap": "Mapa da Saúde"
     },
     "rumor": {
