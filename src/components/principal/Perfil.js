@@ -12,7 +12,17 @@ import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName, schoolCategory, educationLevel, schoolLocation } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
-import InstitutionSelector from '../userData/InstitutionSelector' 
+import InstitutionSelector from '../userData/InstitutionSelector'
+import ImagePicker from 'react-native-image-picker';
+
+// More info on all the options is below in the API Reference... just some common use cases shown here
+const options = {
+  title: 'Select Avatar',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+}; 
 
 FontAwesome.loadFont()
 
@@ -34,6 +44,33 @@ class Perfil extends Component {
       modalVisibleHousehold: false,
       modalVisibleUser: false,
     }
+  }
+
+  uploadAvatar = async ()  => {
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+    
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = response.uri;
+    
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+    
+        this.setState({
+          avatarSource: source,
+        });
+        
+        //console.warn(this.state.avatarSource)
+
+        AsyncStorage.setItem('userAvatar', this.state.avatarSource);
+
+        this.getInfo()
+      }
+    });
   }
 
   setModalVisible(visible) {
@@ -878,8 +915,9 @@ class Perfil extends Component {
             <Avatar
               size="large"
               rounded
-              source={Imagem[this.state.userAvatar]}
+              source={{uri: this.state.userAvatar}}
               activeOpacity={0.7}
+              onPress={() => this.uploadAvatar()}
             />
           </View>
           <View style={styles.userInfos}>

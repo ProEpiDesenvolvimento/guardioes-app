@@ -168,7 +168,7 @@ class Diario extends Component {
                             <Avatar
                                 size="large"
                                 rounded
-                                source={Imagem[this.state.avatarSelect]}
+                                source={{uri: this.state.avatarSelect}}
                                 activeOpacity={0.7}
                             />
                         </View>

@@ -63,7 +63,7 @@ export default class drawerContentComponents extends Component {
                             <Avatar
                                 size="xlarge"
                                 rounded
-                                source={Imagem[this.state.userAvatar]}
+                                source={{uri: this.state.userAvatar}}
                                 activeOpacity={0.7}
                             />
                         </View>

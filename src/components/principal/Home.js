@@ -333,7 +333,7 @@ class Home extends Component {
                         <Avatar
                             size="xlarge"
                             rounded
-                            source={Imagem['NullAvatar']}
+                            source={{uri: this.state.avatarSelect}}
                             activeOpacity={0.6}
                             containerStyle={styles.avatarTop}
                             onPress={() => {
@@ -387,7 +387,7 @@ class Home extends Component {
                                         <Avatar
                                             size="large"
                                             rounded
-                                            source={Imagem[this.state.userAvatar]}
+                                            source={{uri: this.state.userAvatar}}
                                             activeOpacity={0.6}
                                             onPress={async () => {
                                                 await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
