@@ -17,7 +17,9 @@ import ImagePicker from 'react-native-image-picker';
 
 // More info on all the options is below in the API Reference... just some common use cases shown here
 const options = {
-  title: 'Select Avatar',
+  title: 'Selecione imagem de Perfil',
+  takePhotoButtonTitle: 'Tire uma foto',
+  chooseFromLibraryButtonTitle: 'Selecione da Galeria',
   storageOptions: {
     skipBackup: true,
     path: 'images',
