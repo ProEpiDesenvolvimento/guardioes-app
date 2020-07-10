@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Mo
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
-import { getNameParts } from '../../utils/constUtils';
+import { getNameParts, getInitials } from '../../utils/constUtils';
 import { scale } from '../../utils/scallingUtils';
 import translate from "../../../locales/i18n";
 import Emoji from 'react-native-emoji';
@@ -334,6 +334,7 @@ class Home extends Component {
                             size="xlarge"
                             rounded
                             source={{uri: this.state.avatarSelect}}
+                            title={getInitials(this.state.userSelect)}
                             activeOpacity={0.6}
                             containerStyle={styles.avatarTop}
                             onPress={() => {
@@ -388,6 +389,7 @@ class Home extends Component {
                                             size="large"
                                             rounded
                                             source={{uri: this.state.userAvatar}}
+                                            title={getInitials(this.state.userName)}
                                             activeOpacity={0.6}
                                             onPress={async () => {
                                                 await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
@@ -409,6 +411,7 @@ class Home extends Component {
                                                             size="large"
                                                             rounded
                                                             source={Imagem[household.picture]}
+                                                            title={getInitials(household.description)}
                                                             activeOpacity={0.6}
                                                             onPress={async () => {
                                                                 await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });

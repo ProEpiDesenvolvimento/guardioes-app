@@ -14,6 +14,7 @@ import { gender, country, race, household, getGroups, getGroupName, schoolCatego
 import { state, getCity } from '../../utils/brasil';
 import InstitutionSelector from '../userData/InstitutionSelector'
 import ImagePicker from 'react-native-image-picker';
+import { getInitials } from '../../utils/constUtils';
 
 // More info on all the options is below in the API Reference... just some common use cases shown here
 const options = {
@@ -48,7 +49,7 @@ class Perfil extends Component {
     }
   }
 
-  uploadAvatar = async ()  => {
+  changeAvatar = async ()  => {
     ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response);
     
@@ -65,11 +66,8 @@ class Perfil extends Component {
         this.setState({
           avatarSource: source,
         });
-        
-        //console.warn(this.state.avatarSource)
 
         AsyncStorage.setItem('userAvatar', this.state.avatarSource);
-
         this.getInfo()
       }
     });
@@ -268,10 +266,10 @@ class Perfil extends Component {
       }
     }).then((response) => {
       if (response.status == 200) {
-        console.warn(response.status)
+        //console.warn(response.status)
         return response.json()
       } else {
-        console.warn(response.status)
+        //console.warn(response.status)
       }
     }).then(async (responseJson) => {
       responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).join('')
@@ -918,8 +916,11 @@ class Perfil extends Component {
               size="large"
               rounded
               source={{uri: this.state.userAvatar}}
+              title={getInitials(this.state.userName)}
               activeOpacity={0.7}
-              onPress={() => this.uploadAvatar()}
+              showEditButton
+              editButton={ {name: 'camera-alt', type: 'material', color: '#fff', underlayColor: '#000'} }
+              onEditPress={() => this.changeAvatar()}
             />
           </View>
           <View style={styles.userInfos}>
@@ -954,6 +955,7 @@ class Perfil extends Component {
                     size="large"
                     rounded
                     source={Imagem[household.picture]}
+                    title={getInitials(household.description)}
                     activeOpacity={0.7}
                   />
                   <View style={{ flexDirection: 'column', marginLeft: 10, width: scale(220) }}>
