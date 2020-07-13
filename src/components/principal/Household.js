@@ -20,6 +20,7 @@ import { gender, country, race, household } from '../../utils/selectorUtils'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import InstitutionSelector from '../userData/InstitutionSelector'
 import LoadingModal from '../modals/LoadingModal'
+import { CheckBox } from 'react-native-elements'
 
 let data = new Date()
 let d = data.getDate()
@@ -50,7 +51,8 @@ class Registrar extends Component {
             groupCheckbox: false,
             userIdCode: null,
             userGroup: null,
-            loadingAlert: false
+            loadingAlert: false,
+            riskGroup: false
         }
     }
 
@@ -177,7 +179,6 @@ class Registrar extends Component {
 
                         <View style={styles.viewChildSexoRaca}>
                                 <Text style={styles.commomTextView}>{translate("register.country")}</Text>
-                                
                                     <ModalSelector
                                         initValueTextStyle = {{color: 'black'}}
                                         style={{width: '80%', height: '70%'}}
@@ -185,8 +186,18 @@ class Registrar extends Component {
                                         initValue={"Seleceionar"}
                                         onChange={(option) => this.setState({ householdCountry: option.key })}
                                     />
-                                
                         </View>
+                    </View>
+                    <View>
+                        <CheckBox
+                            title={"Faz parte do Grupo de Risco?"}
+                            checked={this.state.riskGroup}
+                            containerStyle={styles.CheckBoxStyle}
+                            size={scale(16)}
+                            onPress={() => {
+                                this.setState({ riskGroup: !this.state.riskGroup })
+                            }}
+                        />
                     </View>
 
                     <InstitutionSelector 
@@ -272,7 +283,6 @@ class Registrar extends Component {
                     break
             }
         }
-
         this.create()
     }
 
@@ -292,10 +302,11 @@ class Registrar extends Component {
                     country: this.state.householdCountry,
                     gender: this.state.householdGender,
                     race: this.state.householdRace,
+                    risk_group: this.state.riskGroup,
                     kinship: this.state.kinship,
                     picture: this.state.picture,
                     identification_code: this.state.userIdCode,
-                    school_unit_id: this.state.userGroup,
+                    school_unit_id: this.state.userGroup
                 }
             )
         })
