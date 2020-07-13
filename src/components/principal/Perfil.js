@@ -174,7 +174,8 @@ class Perfil extends Component {
           kinship: this.state.kinship,
           picture: this.state.picture,
           school_unit_id: this.state.householdGroup,
-          identification_code: this.state.householdIdCode
+          identification_code: this.state.householdIdCode,
+          risk_group: this.state.householdRiskGroup
         }
       )
     })
@@ -205,7 +206,7 @@ class Perfil extends Component {
           school_unit_id: this.state.userGroup,
           identification_code: this.state.userIdCode,
           is_professional: this.state.isProfessional,
-          risk_group: this.state.riskGroup,
+          risk_group: this.state.userRiskGroup,
           state: this.state.userState,
           city: this.state.userCity
         }
@@ -253,7 +254,7 @@ class Perfil extends Component {
         userIdCode: responseJson.user.identification_code,
         userEmail: responseJson.user.email,
         isProfessional: responseJson.user.is_professional,
-        riskGroup: responseJson.user.risk_group,
+        userRiskGroup: responseJson.user.risk_group,
         userState: responseJson.user.state,
         userCity: responseJson.user.city,
         userGroupName: groupName,
@@ -309,6 +310,7 @@ class Perfil extends Component {
       householdIdCode: null,
       householdGroup: null,
       householdGroupName: null,
+      householdRiskGroup: household.risk_group,
       
       // variaveis logicas
       groupCheckbox: false,
@@ -455,7 +457,19 @@ class Perfil extends Component {
               />
             </View>
 
-            <View style={{ paddingTop: 15 }}>
+            <View style={this.CheckBoxStyle}>
+              <CheckBox
+                  title={"Faz parte do Grupo de Risco?"}
+                  checked={this.state.householdRiskGroup}
+                  containerStyle={styles.CheckBoxStyle}
+                  size={scale(16)}
+                  onPress={() => {
+                      this.setState({ householdRiskGroup: !this.state.householdRiskGroup })
+                  }}
+              />
+            </View>
+
+            <View>
               <CheckBox
                 title={"É integrante de alguma instituição de Ensino?"}
                 containerStyle={styles.CheckBoxStyle}
@@ -720,8 +734,19 @@ class Perfil extends Component {
                   </View>
                 </View>
                 : null}
+                <View style={this.CheckBoxStyle}>
+                  <CheckBox
+                      title={"Faz parte do Grupo de Risco?"}
+                      checked={this.state.userRiskGroup}
+                      containerStyle={styles.CheckBoxStyle}
+                      size={scale(16)}
+                      onPress={() => {
+                          this.setState({ userRiskGroup: !this.state.userRiskGroup })
+                      }}
+                  />
+                </View>
 
-            <View style={{ paddingTop: 15 }}>
+            <View>
               <CheckBox
                 title={"É integrante de alguma instituição de Ensino?"}
                 containerStyle={styles.CheckBoxStyle}
