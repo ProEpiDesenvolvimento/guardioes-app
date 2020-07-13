@@ -78,7 +78,7 @@ export default class ClusteredMapView extends PureComponent {
       extent: this.props.extent,
       minZoom: this.props.minZoom,
       maxZoom: this.props.maxZoom,
-      radius: this.props.radius || (this.dimensions[0] * .08), // 8% of screen width
+      radius: this.props.radius || (this.dimensions[0] * this.props.screenSizeClusterPercentage),
     })
 
     // get formatted GeoPoints for cluster

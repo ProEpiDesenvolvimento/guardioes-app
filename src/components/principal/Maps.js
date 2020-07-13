@@ -236,8 +236,9 @@ class Maps extends Component {
                     initialRegion={this.state.initialRegion}
                     customMapStyle={mapStyle}
                     ref={(r) => { this.map = r }}
-                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
+                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}space
                     renderCluster={this.renderCluster}
+                    screenSizeClusterPercentage={0.13} // Cluster occupies 15% of screen 
                     onPress={() => { console.log("Clicou no mapa") }}
                 />
                 <AwesomeAlert
