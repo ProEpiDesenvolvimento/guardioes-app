@@ -1,25 +1,11 @@
-'use-strict'
-
-// base libs
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
-import {
-  Platform,
-  Dimensions,
-  LayoutAnimation
-} from 'react-native'
-// map-related libs
+import { Platform, Dimensions, LayoutAnimation } from 'react-native'
 import MapView from 'react-native-maps'
 import SuperCluster from 'supercluster'
 import GeoViewport from '@mapbox/geo-viewport'
-// components / views
 import ClusterMarker from './ClusterMarker'
-// libs / utils
-import {
-  regionToBoundingBox,
-  itemToGeoJSONFeature,
-  getCoordinatesFromItem,
-} from './util'
+import { regionToBoundingBox, itemToGeoJSONFeature } from './util'
 
 /* 
   Clustering engine is MapBox https://github.com/mapbox/supercluster
@@ -192,6 +178,3 @@ ClusteredMapView.propTypes = {
   // mutiple
   accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 }
-
-
-[0,120]
