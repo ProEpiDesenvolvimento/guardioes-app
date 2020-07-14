@@ -1,4 +1,7 @@
 export default {
+    "lang": {
+        "code": "en"
+    },
     "genderChoices": {
         "cisWoman": "Cis Woman",
         "cisMan": "Cis Man",
