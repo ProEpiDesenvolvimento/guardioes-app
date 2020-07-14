@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
 import StatusBarLight from '../../styled/StatusBarLight';
@@ -11,7 +11,7 @@ import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../../imgs/ima
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
-class AuthLoadingScreen extends React.Component {
+class AuthLoadingScreen extends Component {
     constructor(props) {
         super(props);
         this._bootstrapAsync();

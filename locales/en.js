@@ -24,7 +24,7 @@ export default {
     },
     "initialscreen": {
         "title": "Guardiões da Saúde",
-        "welcome": "Welcome!",
+        "welcome": "Welcome",
         "subwelcome": "Ready to become a Health Guardian?",
         "signup": "Sign up",
         "login": "Login"

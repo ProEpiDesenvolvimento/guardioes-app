@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar, Alert } from 'react-native';
+import { Alert } from 'react-native';
+
+import GradientBackgroundView from '../../styled/GradientBackgroundView';
+import StatusBarLight from '../../styled/StatusBarLight';
+import SnowShadow from '../../styled/SnowShadow';
+import SnowButton from '../../styled/SnowButton';
+import { Logo, WelcomeText, Label } from './styles';
+
 import AsyncStorage from '@react-native-community/async-storage';
-import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../imgs/imageConst';
-import translate from '../../../locales/i18n';
-import LinearGradient from 'react-native-linear-gradient';
-import { scale } from '../../utils/scallingUtils';
+import { imagemLogo, imagemLogoBR } from '../../../imgs/imageConst';
+import translate from '../../../../locales/i18n';
 
 const Redirect = (titulo, message, navigation) => {
     Alert.alert(
@@ -33,127 +38,39 @@ class TelaInicial extends Component {
         this.props.navigation.navigate(UserID ? 'BottomMenu' : 'Cadastro');
     }
 
-
     render() {
         const { navigate } = this.props.navigation
-        const statusColor = (<StatusBar backgroundColor='#348EAC' barStyle="light-content" />)
-
-        const logoBR = (
-            <Image style={styles.imageLogo} source={imagemLogoBR} />
-        )
-
-        const logoES = (
-            <Image style={styles.imageLogo} source={imagemLogo} />
-        )
-
-        let imageType;
-        if (translate("initialscreen.title") === "Guardianes de la Salud") {
-            imageType = logoES
+    
+        let LogoType;
+        if (translate("lang.code") === "es") {
+            LogoType = imagemLogo
         }
         else {
-            imageType = logoBR
+            LogoType = imagemLogoBR
         }
 
         return (
-            <LinearGradient style={styles.container} colors={['#348EAC', '#013444']}>
-                {statusColor}
-                <View style={styles.viewImage}>
-                    {imageType}
-                    <View style={styles.viewLogos}>
-                        <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoProEpi} /></View>
-                        <View style={styles.viewHalfLogos}><Image style={styles.imageHalfLogo} source={logoUnB} /></View>
-                    </View>
-                </View>
-                <View style={styles.viewButton}>
-                    <View style={styles.viewChildRegistar}>
-                        <TouchableOpacity onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
-                            <Text style={styles.textButton}>REGISTRAR</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.viewChildEntrar}>
-                        <TouchableOpacity onPress={() => navigate('Login')}>
-                            <Text style={styles.textButton}>ENTRAR</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </LinearGradient>
+            <GradientBackgroundView>
+                <StatusBarLight />
+
+                <Logo source={LogoType} />
+                <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
+
+                <SnowShadow>
+                    <SnowButton onPress={() => navigate('Login')}>
+                        <Label>{translate("initialscreen.login")}</Label>
+                    </SnowButton>
+                </SnowShadow>
+
+                <SnowShadow>
+                    <SnowButton onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
+                        <Label>{translate("initialscreen.signup")}</Label>
+                    </SnowButton>
+                </SnowShadow>
+            </GradientBackgroundView>
         );
     }
 }
-
-// define your styles
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    viewImage: {
-        flex: 1,
-        alignItems: 'center',
-        marginTop: scale(100),
-        marginBottom: scale(120),
-        //borderWidth: 1,
-        //borderColor: "yellow",
-    },
-    imageLogo: {
-        flex: 1,
-        width: '75%',
-        resizeMode: "contain"
-    },
-    viewButton: {
-        alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '85%',
-        height: '10%',
-        marginTop: 10,
-        marginBottom: 30,
-    },
-    viewChildEntrar: {
-        width: '49.5%',
-        borderTopRightRadius: 90,
-        borderBottomRightRadius: 90,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        borderColor: 'white',
-        borderWidth: 1
-    },
-    viewChildRegistar: {
-        width: '49.5%',
-        borderTopLeftRadius: 90,
-        borderBottomLeftRadius: 90,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        borderColor: 'white',
-        borderWidth: 1
-    },
-    textButton: {
-        fontFamily: 'roboto',
-        color: '#013444',
-        fontSize: 17,
-        alignSelf: 'center',
-        fontWeight: 'bold'
-    },
-    viewLogos: {
-        flexDirection: "row",
-        height: scale(110),
-        width: "70%",
-        //borderColor: "red",
-        //borderWidth: 1,
-    },
-    viewHalfLogos: {
-        alignItems: "center",
-        justifyContent: "center",
-        width: "50%",
-        height: "100%",
-        //borderColor: "green",
-        //borderWidth: 1,
-    },
-    imageHalfLogo: {
-        width: scale(80),
-        resizeMode: 'contain',
-    },
-});
-
 
 const textos = {
     tituloTermosDeUso: 'Termos de uso',

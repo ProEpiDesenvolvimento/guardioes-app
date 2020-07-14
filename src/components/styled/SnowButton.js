@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import { TouchableHighlight } from 'react-native';
 
+import { scale } from '../../utils/scallingUtils';
+
 export default styled(TouchableHighlight).attrs({
     underlayColor: "#c4c4c4",
 })`
@@ -9,6 +11,6 @@ export default styled(TouchableHighlight).attrs({
     border-radius: 16px;
     align-items: center;
     justify-content: center;
-    height: 45px;
+    height: ${scale(38)}px;
     width: 100%;
 `;
