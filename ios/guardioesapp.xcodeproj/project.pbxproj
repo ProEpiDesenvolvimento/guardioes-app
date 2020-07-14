@@ -24,6 +24,9 @@
 		8C9F85A9E256AEE03ED0D3D6 /* libPods-guardioesapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */; };
 		98693461100712AEC3C4F9AD /* libPods-guardioesapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */; };
 		A42466FF10C4B1A9EB62700C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */; };
+		34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */; };
+		758D12E16561465F945FC656 /* ArgentumSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 492FCC4977C74530BBEE3120 /* ArgentumSans-Regular.otf */; };
+		34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +106,9 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		FF6A2478D0E4BD62330DD59A /* Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-OneSignalNotificationServiceExtension/Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */ = {isa = PBXFileReference; name = "ArgentumSans-Medium.otf"; path = "../src/fonts/ArgentumSans-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		492FCC4977C74530BBEE3120 /* ArgentumSans-Regular.otf */ = {isa = PBXFileReference; name = "ArgentumSans-Regular.otf"; path = "../src/fonts/ArgentumSans-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */ = {isa = PBXFileReference; name = "ArgentumSans-SemiBold.otf"; path = "../src/fonts/ArgentumSans-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +229,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				CFCD70F7AB983319EE5195FF /* Pods */,
+				5D06F3FFFC8B49FAB90A4884 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -259,6 +266,17 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		5D06F3FFFC8B49FAB90A4884 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */,
+				492FCC4977C74530BBEE3120 /* ArgentumSans-Regular.otf */,
+				A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -368,7 +386,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 940;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -432,6 +450,9 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				3C9008E4242047AE0086D022 /* roboto.ttf in Resources */,
+				34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */,
+				758D12E16561465F945FC656 /* ArgentumSans-Regular.otf in Resources */,
+				34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
