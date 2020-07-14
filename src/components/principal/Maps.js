@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
+import React, { Component } from 'react'
+import { View, StyleSheet, Button, Text, TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import RNSecureStorage from 'rn-secure-storage'
 import ClusteredMapView from '../../utils/MarkerClustering'
-import clusterImages from '../../utils/MarkerClustering/imgImport'
 import mapStyle from '../../utils/MarkerClustering/mapStyle'
-import { Marker } from 'react-native-maps';
-import { API_URL } from 'react-native-dotenv';
-import translate from '../../../locales/i18n';
-import Geolocation from 'react-native-geolocation-service';
+import { API_URL } from 'react-native-dotenv'
+import translate from '../../../locales/i18n'
+import Geolocation from 'react-native-geolocation-service'
 import poligonoBR from '../../utils/DF.json'
-import AwesomeAlert from 'react-native-awesome-alerts';
+import AwesomeAlert from 'react-native-awesome-alerts'
+import { Marker } from 'react-native-maps'
 
 const greenMarker = require('../../imgs/mapIcons/green-marker.png')
 const redMarker = require('../../imgs/mapIcons/red-marker.png')
@@ -22,11 +21,11 @@ class Maps extends Component {
     }
 
     constructor(props) {
-        super(props);
+        super(props)
         this.props.navigation.addListener('didFocus', payload => {
             //console.warn(payload)
-            //this.fetchData();
-        });
+            //this.fetchData()
+        })
         this.state = {
             isLoading: true,
             dataSource: [],
@@ -43,7 +42,7 @@ class Maps extends Component {
             showUserLocation: false,
             mapKey: 0
         }
-        this.getLocation();
+        this.getLocation()
     }
     
     componentDidMount() {
@@ -51,15 +50,15 @@ class Maps extends Component {
     }
 
     fetchData = async () => {
-        const userToken = await RNSecureStorage.get('userToken');
+        const userToken = await RNSecureStorage.get('userToken')
         
-        let showAlert = JSON.parse(await AsyncStorage.getItem('showMapTip'));
+        let showAlert = JSON.parse(await AsyncStorage.getItem('showMapTip'))
         if (showAlert == null) {
             showAlert = true
         }
 
-        this.setState({ userToken, showAlert });
-        this.getSurvey();
+        this.setState({ userToken, showAlert })
+        this.getSurvey()
     }
 
     getSurvey = async () => {//Get Survey
@@ -125,11 +124,11 @@ class Maps extends Component {
                     showUserLocation: true,
                     error: null,
                     mapKey: this.state.mapKey + 1 // This forces the map component to remount with the new initial region
-                });
+                })
             },
             (error) => {},
             { enableHighAccuracy: true, timeout: 50000 },
-        );
+        )
     }
 
     CoordInsidePolygon(point, vs) {
@@ -137,20 +136,20 @@ class Maps extends Component {
         // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 
         let x = point[0]
-        let y = point[1];
+        let y = point[1]
 
-        let inside = false;
+        let inside = false
         for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-            let xi = vs[i][0], yi = vs[i][1];
-            let xj = vs[j][0], yj = vs[j][1];
+            let xi = vs[i][0], yi = vs[i][1]
+            let xj = vs[j][0], yj = vs[j][1]
 
             let intersect = ((yi > y) != (yj > y))
-                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-            if (intersect) inside = !inside;
+                && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+            if (intersect) inside = !inside
         }
 
-        return inside;
-    };
+        return inside
+    }
 
     PolygonColor(numCase, maxCase) {
         let colorR = 0
@@ -161,10 +160,10 @@ class Maps extends Component {
         }
         else {
             if (numCase <= (maxCase / 2)) {
-                colorR = ((255 * numCase) / (maxCase / 2));
+                colorR = ((255 * numCase) / (maxCase / 2))
                 fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.5)`
             } else {
-                colorG = 255 - ((255 * numCase) / maxCase);
+                colorG = 255 - ((255 * numCase) / maxCase)
                 fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.5)`
             }
         }
@@ -185,47 +184,11 @@ class Maps extends Component {
         return markers
     }
 
-    renderCluster = (cluster) => {
-        const pointCount = cluster.pointCount.toString(),
-            coordinate = cluster.coordinate,
-            clusterId = cluster.clusterId
-
-        // Clustering engine is MapBox https://github.com/mapbox/supercluster
-        const clusteringEngine = this.map.getClusteringEngine(),
-            clusteredPoints = clusteringEngine.getLeaves(clusterId, 10000)
-
-        const healthyPercentage = clusteredPoints.filter(x => !x.properties.item.symptoms).length / pointCount
-        let reqNum = Math.floor(healthyPercentage * 100.0)
-        while (!clusterImages.imgLevels.includes(reqNum)) {
-            reqNum--
-        }
-        let orderOfMagnitude = Math.floor(Math.log(pointCount) / Math.log(CLUSTER_SIZE_DIVIDER))
-        if (orderOfMagnitude < 0) orderOfMagnitude = 0
-        if (orderOfMagnitude > 6) orderOfMagnitude = 6
-        const zeroCoordinate = coordinate.latitude === 0 && coordinate.longitude === 0
-        let message = 'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'
-        const image = clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]
-        if (zeroCoordinate) {
-            message = "Essas pessoas não compartilharam seu local"
-        }
-        return (
-            <Marker
-                anchor={{x:0.5,y:0.5}}
-                centerOffset={{x:0.5,y:0.5}}
-                coordinate={coordinate}
-                image={image}
-                title={'Pessoas: ' + pointCount}
-                description={message}
-                tracksViewChanges={false}
-            />
-        )
-    }
-
     renderBadMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={redMarker} tracksViewChanges={false} />
     renderGoodMarker = (data) => <Marker key={data.id || Math.random()} coordinate={data.location} image={greenMarker} tracksViewChanges={false} />
 
     render() {
-        const {showAlert} = this.state;
+        const {showAlert} = this.state
         return (
             <View style={styles.container}>
                 <ClusteredMapView
@@ -235,11 +198,9 @@ class Maps extends Component {
                     data={this.coordsFilter()}
                     initialRegion={this.state.initialRegion}
                     customMapStyle={mapStyle}
-                    ref={(r) => { this.map = r }}
-                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}space
-                    renderCluster={this.renderCluster}
-                    screenSizeClusterPercentage={0.13} // Cluster occupies 15% of screen 
-                    onPress={() => { console.log("Clicou no mapa") }}
+                    renderMarker={{ good: this.renderGoodMarker, bad: this.renderBadMarker }}
+                    CLUSTER_SIZE_DIVIDER={CLUSTER_SIZE_DIVIDER} // The log of number of points in cluster by this constant's base defines cluster image size
+                    screenSizeClusterPercentage={0.13} // Cluster occupies 13% of screen 
                 />
                 <AwesomeAlert
                     show={showAlert}
@@ -252,8 +213,8 @@ class Maps extends Component {
                     onCancelPressed={() => {
                         this.setState({
                             showAlert: false
-                        });
-                        AsyncStorage.setItem('showMapTip', JSON.stringify(false));
+                        })
+                        AsyncStorage.setItem('showMapTip', JSON.stringify(false))
                     }}
                 />
                 {/*<TouchableOpacity style={styles.mapChange}
@@ -261,7 +222,7 @@ class Maps extends Component {
                     <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
                 </TouchableOpacity>*/}
             </View>
-        );
+        )
     }
 }
 
@@ -293,7 +254,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'rgba(22, 107, 135, 1)'
     }
-});
+})
 
 //make this component available to the app
-export default Maps;
+export default Maps
