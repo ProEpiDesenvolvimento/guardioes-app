@@ -23,8 +23,7 @@ Descrição do comportamento esperado pela feature desenvolvida.
 **Screenshots**<br>
 Pelo menos uma screenshot do bug.
 
-**Informações do Desktop:**
- - OS:
+**Informações do Dispositivo:**
+ - Modelo do Dispositivo: 
  - Versão do OS:
- - Browser:
- - Versão do Browser:
+ - Vesão do App:
