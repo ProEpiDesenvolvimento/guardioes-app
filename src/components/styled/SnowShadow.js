@@ -8,7 +8,7 @@ export default styled(ShadowView).attrs({
 })`
     width: 80%;
     background-color: #ffffff;
-    border-radius: 20px;
+    border-radius: 16px;
     margin-top: ${scale(21)}px;
     shadow-color: #ffffff;
     shadow-opacity: 0.5;

@@ -7,10 +7,8 @@ import { scale } from '../../utils/scallingUtils';
 export default styled(TouchableOpacity).attrs({
     activeOpacity: 0.3,
 })`
-    background-color: #fff;
-    border-radius: 20px;
-    align-items: center;
+    width: 80%;
     justify-content: center;
-    height: ${scale(36)}px;
-    width: 100%;
+    margin-top: ${scale(10)}px;
+    height: ${scale(38)}px;
 `;

@@ -31,9 +31,10 @@ export default {
     },
     "login": {
         "title": "Login",
-        "email": "Email:",
-        "password": "Password:",
+        "email": "Email",
+        "password": "Password",
         "loginbutton": "Login",
+        "forgetbutton": "Forget password?",
         "connectWithFacebook": "Login with Facebook",
         "facebookLogin": {
             "error": "Error on login: ",

@@ -31,9 +31,10 @@ export default {
     },
     "login": {
         "title": "Entrar",
-        "email": "Email:",
-        "password": "Contraseña:",
+        "email": "Email",
+        "password": "Contraseña",
         "loginbutton": "Entrar",
+        "forgetbutton": "¿Ha olvidado la contraseña?",
         "connectWithFacebook": "Conectar con Facebook",
         "facebookLogin": {
             "error": "Error al inicio de sersión: ",
