@@ -294,5 +294,14 @@ export default {
         "moreComing": "¡Tenemos más funciones en el futuro¡",
         "healthDiary": "Diario de Salud",
         "healthMap": "Mapa de la Salud"
+    },
+    "getToken": {
+        "verificationCode": "Código de Verificación",
+        "invalidCode": "Código invalid",
+        "confirm": "Confirmar",
+        "loading": "Cargando",
+        "verificationCodeSent": "Se ha enviado un código de verificación al correo electrónico indicado.",
+        "spamCheckWarning": "Si no aparece en su cuadro de mensaje principal, verifique su Spam.",
+        "inputVerificationCode": "Inserte el Código de verificación"
     }
 }
