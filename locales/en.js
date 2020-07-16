@@ -65,7 +65,10 @@ export default {
         "errorMessages": {
             "error": "Error",
             "allFieldsAreFilled": "All fields must be filled."
-        }
+        },
+        "riskGroupTitle": "What are the risk groups?",
+        "riskGroupMessage": "\t COVID-19 is usually more severe in people over 60 or who have lung or heart problems, diabetes or conditions that affect their immune system.",
+        "riskGroupButton": "Back"
     },
     "noInternet": {
         "noInternetConnection": "No internet access.",

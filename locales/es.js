@@ -65,7 +65,10 @@ export default {
         "errorMessages": {
             "error": "Error",
             "allFieldsAreFilled": "Todos los campos deben ser llenados"
-        }
+        },
+        "riskGroupTitle": "¿Cuáles son los grupos de riesgo?",
+        "riskGroupMessage": "\t COVID-19 es generalmente más grave en personas mayores de 60 años o que tienen problemas de salud como enfermedades pulmonares o cardíacas, diabetes o afecciones que afectan su sistema inmunológico.",
+        "riskGroupButton": "Vuelve"
     },
     "noInternet": {
         "noInternetConnection": "Sin internet!",
