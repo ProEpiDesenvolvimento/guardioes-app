@@ -44,10 +44,15 @@ export default {
             "accessing": "Entrando..."
         },
         "errorMessages": {
-            "emailPwdWrong": "Email ou senha invalidos",
-            "emailPwdCantBeBlank": "Email/senha nao podem estar em branco",
-
+            "emailPwdWrong": "Email ou senha inválidos",
+            "emailPwdCantBeBlank": "Email/senha não podem estar em branco",
+        
         }
+    },
+    "forgetPwd": {
+        "title": "Esqueci a senha",
+        "informEmail": "Informe seu email para verificação:",
+        "sendButton": "Enviar"
     },
     "register": {
         "title": "Cadastre-se",
@@ -303,12 +308,24 @@ export default {
         "rumorSent": "Rumor registrado! "
     },
     "getToken": {
-        "verificationCode": "Codigo de Verificação",
+        "title": "Código de Verificação",
         "invalidCode": "Código Inválido",
         "confirm": "Confirmar",
         "loading": "Carregando",
         "verificationCodeSent": "Foi enviado um codigo de verificação para o email indicado.",
         "spamCheckWarning": "Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.",
-        "inputVerificationCode": "Insira o Código de Verificação"
+        "inputVerificationCode": "Código",
+        "errorMessages": {
+            "verificationCodeBlank": "Digite um código de verificação"
+        }
+    },
+    "changePwd": {
+        "title": "Redefinir senha",
+        "newPwd": "Nova senha",
+        "confirmPwd": "Repita a senha",
+        "changeButton": "Redefinir",
+        "errorMessages": {
+            "shortPwd": "A senha precisa ter no mínimo 8 caracteres"
+        }
     }
 }

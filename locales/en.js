@@ -34,7 +34,7 @@ export default {
         "email": "Email",
         "password": "Password",
         "loginbutton": "Login",
-        "forgetbutton": "Forget password?",
+        "forgetbutton": "Forgot your password?",
         "connectWithFacebook": "Login with Facebook",
         "facebookLogin": {
             "error": "Error on login: ",
@@ -70,6 +70,11 @@ export default {
             "error": "Error",
             "allFieldsAreFilled": "All fields must be filled."
         }
+    },
+    "forgetPwd": {
+        "title": "Forgot password",
+        "informEmail": "Enter your email for verification:",
+        "sendButton": "Send"
     },
     "noInternet": {
         "noInternetConnection": "No internet access.",
@@ -299,12 +304,24 @@ export default {
         "rumorSent": "Rumor registered! "
     },
     "getToken": {
-        "verificationCode": "Verification Code",
+        "title": "Verification Code",
         "invalidCode": "Invalid Code",
         "confirm": "Confirm",
         "loading": "Loading",
         "verificationCodeSent": "A verification code was sent to your email.",
         "spamCheckWarning": "In case you don't find the email, make sure to check the spam folder.",
-        "inputVerificationCode": "Insert your verification code"
+        "inputVerificationCode": "Code",
+        "errorMessages": {
+            "verificationCodeBlank": "Enter a verification code"
+        }
+    },
+    "changePwd": {
+        "title": "Reset Password",
+        "newPwd": "New password",
+        "confirmPwd": "Confirm password",
+        "changeButton": "Change",
+        "errorMessages": {
+            "shortPwd": "Password must be at least 8 characters long"
+        }
     }
 }

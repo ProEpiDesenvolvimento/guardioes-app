@@ -49,6 +49,11 @@ export default {
 
         }
     },
+    "forgetPwd": {
+        "title": "Recuperar mi contraseña",
+        "informEmail": "Ingrese su email para verificación:",
+        "sendButton": "Enviar"
+    },
     "register": {
         "title": "Regístrese",
         "name": "Nombre:",
@@ -300,12 +305,24 @@ export default {
         "healthMap": "Mapa de la Salud"
     },
     "getToken": {
-        "verificationCode": "Código de Verificación",
+        "title": "Código de Verificación",
         "invalidCode": "Código invalid",
         "confirm": "Confirmar",
         "loading": "Cargando",
         "verificationCodeSent": "Se ha enviado un código de verificación al correo electrónico indicado.",
         "spamCheckWarning": "Si no aparece en su cuadro de mensaje principal, verifique su Spam.",
-        "inputVerificationCode": "Inserte el Código de verificación"
+        "inputVerificationCode": "Código",
+        "errorMessages": {
+            "verificationCodeBlank": "Ingrese un código de verificación"
+        }
+    },
+    "changePwd": {
+        "title": "Redefinir contraseña",
+        "newPwd": "Nueva contraseña",
+        "confirmPwd": "Repite la contraseña",
+        "changeButton": "Redefinir",
+        "errorMessages": {
+            "shortPwd": "La contraseña debe tener al menos 8 caracteres"
+        }
     }
 }
