@@ -297,5 +297,14 @@ export default {
     },
     "rumor": {
         "rumorSent": "Rumor registered! "
+    },
+    "getToken": {
+        "verificationCode": "Verification Code",
+        "invalidCode": "Invalid Code",
+        "confirm": "Confirm",
+        "loading": "Loading",
+        "verificationCodeSent": "A verification code was sent to your email.",
+        "spamCheckWarning": "In case you don't find the email, make sure to check the spam folder.",
+        "inputVerificationCode": "Insert your verification code"
     }
 }
