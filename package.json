@@ -33,6 +33,7 @@
     "react-native-simple-shadow-view": "^1.6.3",
     "react-native-simple-twitter": "^3.0.6",
     "react-native-svg": "^12.1.0",
+    "react-native-swiper-flatlist": "^2.0.4",
     "react-native-vector-icons": "^6.6.0",
     "react-native-webview": "^10.3.1",
     "react-navigation": "^2.18.3",

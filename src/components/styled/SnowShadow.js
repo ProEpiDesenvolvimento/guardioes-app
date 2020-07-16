@@ -13,4 +13,5 @@ export default styled(ShadowView).attrs({
     shadow-color: #ffffff;
     shadow-opacity: 0.5;
     shadow-radius: 8px;
+    shadow-offset: 0px 0px;
 `;

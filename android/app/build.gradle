@@ -134,6 +134,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 24
         versionName "2.2.2"
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {

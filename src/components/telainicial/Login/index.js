@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import Feather from 'react-native-vector-icons/Feather';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import StatusBarLight from '../../styled/StatusBarLight';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowInput from '../../styled/SnowInput';
 import SnowButton from '../../styled/SnowButton';
@@ -78,8 +77,6 @@ class Login extends Component {
         return (
             <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
                 <GradientBackgroundView>
-                    <StatusBarLight />
-
                     <ButtonBack onPress={() => navigate('TelaInicial')}>
                         <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
                     </ButtonBack>
