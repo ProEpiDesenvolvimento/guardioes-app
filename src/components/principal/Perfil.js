@@ -785,7 +785,7 @@ class Perfil extends Component {
                   }}
                 />
                 <TouchableOpacity style={{ marginRight: 15 }} onPress={async () => {
-                  this.setModalVisible(true);
+                  this.setRiskGroupModalVisible(true);
                 }}>
                   <FontAwesome name="question-circle-o" size={scale(25)} color="rgba(22, 107, 135, 1)" />
                 </TouchableOpacity>
