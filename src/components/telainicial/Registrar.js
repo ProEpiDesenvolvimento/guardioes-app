@@ -125,26 +125,26 @@ class Registrar extends Component {
                     onRequestClose={() => {
                         this.setModalVisible(!this.state.modalVisibleRiskGroup)
                     }}>
-                        <View style={styles.modalComponent}>
-                    <View style={styles.modalView}>
-                        <View style={styles.modalViewCommom}>
-                            <Text style={styles.modalTitle}>
-                                {translate("register.riskGroupTitle")}
-                            </Text>
-                            <Text style={styles.modalText}>
-                                {translate("register.riskGroupMessage")}
-                            </Text>
-                        </View>
+                    <View style={styles.modalComponent}>
+                        <View style={styles.modalView}>
+                            <View style={styles.modalViewCommom}>
+                                <Text style={styles.modalTitle}>
+                                    {translate("register.riskGroupTitle")}
+                                </Text>
+                                <Text style={styles.modalText}>
+                                    {translate("register.riskGroupMessage")}
+                                </Text>
+                            </View>
 
-                        <View style={styles.modalButton}>
-                            <Button
-                                title={translate("register.riskGroupButton")}
-                                color="#348EAC"
-                                onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisibleRiskGroup)
-                                }} />
+                            <View style={styles.modalButton}>
+                                <Button
+                                    title={translate("register.riskGroupButton")}
+                                    color="#348EAC"
+                                    onPress={() => {
+                                        this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                                    }} />
+                            </View>
                         </View>
-                    </View>
                     </View>
                 </Modal>
                 <View style={styles.scroll}>
@@ -305,7 +305,7 @@ class Registrar extends Component {
                                     this.setState({ riskGroup: !this.state.riskGroup })
                                 }}
                             />
-                            <TouchableOpacity style={{marginRight: 15}} onPress={async () => {
+                            <TouchableOpacity style={{ marginRight: 15 }} onPress={async () => {
                                 this.setModalVisible(true);
                             }}>
                                 <FontAwesome name="question-circle-o" size={scale(25)} color="rgba(22, 107, 135, 1)" />
@@ -637,7 +637,7 @@ const styles = StyleSheet.create({
     modalComponent: {
         flex: 1,
         justifyContent: 'center',
-        alignItems:"center"
+        alignItems: "center"
     },
     modalView: {
         height: "35%",
@@ -694,8 +694,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     riskGroupView: {
-        flexDirection: "row", 
-        alignItems: "center", 
+        flexDirection: "row",
+        alignItems: "center",
         justifyContent: "center",
     }
 })
