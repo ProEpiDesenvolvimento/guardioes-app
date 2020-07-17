@@ -90,7 +90,7 @@ export const BottomMenu = createBottomTabNavigator({
             activeTintColor: '#348EAC',
             inactiveTintColor: '#c4c4c4',
             labelStyle: {
-                fontFamily: 'ArgentumSans-Regular',
+                fontFamily: 'ArgentumSans',
                 fontSize: 12,
                 marginBottom: 10,
             },

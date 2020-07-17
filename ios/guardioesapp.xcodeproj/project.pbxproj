@@ -25,7 +25,7 @@
 		98693461100712AEC3C4F9AD /* libPods-guardioesapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */; };
 		A42466FF10C4B1A9EB62700C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */; };
-		758D12E16561465F945FC656 /* ArgentumSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 492FCC4977C74530BBEE3120 /* ArgentumSans-Regular.otf */; };
+		758D12E16561465F945FC656 /* ArgentumSans.otf in Resources */ = {isa = PBXBuildFile; fileRef = 492FCC4977C74530BBEE3120 /* ArgentumSans.otf */; };
 		34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */; };
 /* End PBXBuildFile section */
 
@@ -107,7 +107,7 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		FF6A2478D0E4BD62330DD59A /* Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-OneSignalNotificationServiceExtension/Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */ = {isa = PBXFileReference; name = "ArgentumSans-Medium.otf"; path = "../src/fonts/ArgentumSans-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		492FCC4977C74530BBEE3120 /* ArgentumSans-Regular.otf */ = {isa = PBXFileReference; name = "ArgentumSans-Regular.otf"; path = "../src/fonts/ArgentumSans-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		492FCC4977C74530BBEE3120 /* ArgentumSans.otf */ = {isa = PBXFileReference; name = "ArgentumSans.otf"; path = "../src/fonts/ArgentumSans.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */ = {isa = PBXFileReference; name = "ArgentumSans-SemiBold.otf"; path = "../src/fonts/ArgentumSans-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
@@ -271,7 +271,7 @@
 			isa = "PBXGroup";
 			children = (
 				BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */,
-				492FCC4977C74530BBEE3120 /* ArgentumSans-Regular.otf */,
+				492FCC4977C74530BBEE3120 /* ArgentumSans.otf */,
 				A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */,
 			);
 			name = Resources;
@@ -451,7 +451,7 @@
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				3C9008E4242047AE0086D022 /* roboto.ttf in Resources */,
 				34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */,
-				758D12E16561465F945FC656 /* ArgentumSans-Regular.otf in Resources */,
+				758D12E16561465F945FC656 /* ArgentumSans.otf in Resources */,
 				34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
