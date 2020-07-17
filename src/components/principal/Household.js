@@ -6,7 +6,9 @@ import {
     TextInput,
     Button,
     NetInfo,
-    Alert
+    Alert,
+    Modal,
+    TouchableOpacity
 } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
@@ -21,6 +23,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import InstitutionSelector from '../userData/InstitutionSelector'
 import LoadingModal from '../modals/LoadingModal'
 import { CheckBox } from 'react-native-elements'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 let data = new Date()
 let d = data.getDate()
@@ -52,8 +55,13 @@ class Registrar extends Component {
             userIdCode: null,
             userGroup: null,
             loadingAlert: false,
-            riskGroup: false
+            riskGroup: false,
+            modalVisibleRiskGroup: false,
         }
+    }
+
+    setModalVisible(visible) {
+        this.setState({ modalVisibleRiskGroup: visible })
     }
 
     showAlert = () => {
@@ -107,6 +115,35 @@ class Registrar extends Component {
 
         return (
             <View style={styles.scroll}>
+                <Modal //Modal View for Risk Group Message
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.modalVisibleRiskGroup}
+                    onRequestClose={() => {
+                        this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                    }}>
+                    <View style={styles.modalComponent}>
+                        <View style={styles.modalView}>
+                            <View style={styles.modalViewCommom}>
+                                <Text style={styles.modalTitle}>
+                                    {translate("register.riskGroupTitle")}
+                                </Text>
+                                <Text style={styles.modalText}>
+                                    {translate("register.riskGroupMessage")}
+                                </Text>
+                            </View>
+
+                            <View style={styles.modalButton}>
+                                <Button
+                                    title={translate("register.riskGroupButton")}
+                                    color="#348EAC"
+                                    onPress={() => {
+                                        this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                                    }} />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
                     <View style={{ paddingTop: 10 }}></View>
                     <View style={styles.viewCommom}>
@@ -120,7 +157,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
                             <ModalSelector
-                                initValueTextStyle = {{color: 'black'}}
+                                initValueTextStyle={{ color: 'black' }}
                                 style={{ width: '80%', height: '70%' }}
                                 data={gender}
                                 initValue={"Selecionar"}
@@ -131,7 +168,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.race")}</Text>
                             <ModalSelector
-                                initValueTextStyle = {{color: 'black'}}
+                                initValueTextStyle={{ color: 'black' }}
                                 style={{ width: '80%', height: '70%' }}
                                 data={race}
                                 initValue={"Selecionar"}
@@ -145,7 +182,7 @@ class Registrar extends Component {
                         <View style={styles.viewChildSexoRaca}>
                             <Text style={styles.commomTextView}>{translate("register.birth")}</Text>
                             <DatePicker
-                                style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)'}}
+                                style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
                                 showIcon={false}
                                 date={this.state.householdDob}
                                 androidMode='spinner'
@@ -178,36 +215,41 @@ class Registrar extends Component {
                         </View>
 
                         <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>{translate("register.country")}</Text>
-                                    <ModalSelector
-                                        initValueTextStyle = {{color: 'black'}}
-                                        style={{width: '80%', height: '70%'}}
-                                        data={country}
-                                        initValue={"Seleceionar"}
-                                        onChange={(option) => this.setState({ householdCountry: option.key })}
-                                    />
+                            <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                            <ModalSelector
+                                initValueTextStyle={{ color: 'black' }}
+                                style={{ width: '80%', height: '70%' }}
+                                data={country}
+                                initValue={"Selecionar"}
+                                onChange={(option) => this.setState({ householdCountry: option.key })}
+                            />
                         </View>
                     </View>
-                    <View>
+                    <View style={styles.riskGroupView}>
                         <CheckBox
                             title={"Faz parte do Grupo de Risco?"}
                             checked={this.state.riskGroup}
-                            containerStyle={styles.CheckBoxStyle}
+                            containerStyle={styles.riskGroupCheckBoxStyle}
                             size={scale(16)}
                             onPress={() => {
                                 this.setState({ riskGroup: !this.state.riskGroup })
                             }}
                         />
+                        <TouchableOpacity style={{ marginRight: 15 }} onPress={async () => {
+                            this.setModalVisible(true);
+                        }}>
+                            <FontAwesome name="question-circle-o" size={scale(25)} color="rgba(22, 107, 135, 1)" />
+                        </TouchableOpacity>
                     </View>
 
-                    <InstitutionSelector 
+                    <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
-                        setAlert={this.setLoadingAlert}/>
+                        setAlert={this.setLoadingAlert} />
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>Parentesco:</Text>
                         <ModalSelector
-                            initValueTextStyle = {{color: 'black'}}
+                            initValueTextStyle={{ color: 'black' }}
                             style={{ width: '90%', height: '70%' }}
                             data={household}
                             initValue={this.state.kinship}
@@ -233,7 +275,7 @@ class Registrar extends Component {
                         showConfirmButton={this.state.showProgressBar ? false : true}
                     />
                 </KeyboardAwareScrollView>
-                <LoadingModal show={this.state.loadingAlert}/>
+                <LoadingModal show={this.state.loadingAlert} />
             </View>
         )
 
@@ -417,6 +459,70 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         paddingTop: 2,
     },
+    modalComponent: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: "center"
+    },
+    modalView: {
+        height: "35%",
+        alignSelf: "center",
+        justifyContent: "center",
+        width: "93%",
+        marginTop: "15%",
+        marginBottom: "15%",
+        borderRadius: 20,
+        backgroundColor: "white",
+        shadowColor: "gray",
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 5,
+        shadowOpacity: 1.0,
+        elevation: 15,
+    },
+    modalViewCommom: {
+        marginTop: "30%",
+        marginBottom: "5%",
+    },
+    modalTitle: {
+        fontSize: 17,
+        fontFamily: 'roboto',
+        color: '#465F6C',
+        alignSelf: 'flex-start',
+        textAlign: 'justify',
+        paddingLeft: "5%",
+        paddingRight: "5%",
+        fontWeight: "bold",
+        paddingBottom: 5
+    },
+    modalText: {
+        fontSize: 17,
+        fontFamily: 'roboto',
+        color: '#465F6C',
+        alignSelf: 'flex-start',
+        textAlign: 'justify',
+        paddingLeft: "5%",
+        paddingRight: "5%",
+    },
+    modalButton: {
+        width: "50%",
+        alignSelf: 'center',
+    },
+    riskGroupCheckBoxStyle: {
+        width: '80%',
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.11)',
+        backgroundColor: 'transparent',
+        alignSelf: "center",
+    },
+    riskGroupView: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    }
 })
 
 export default Registrar
