@@ -1,5 +1,5 @@
 import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 import Loading from '../telainicial/Loading';
@@ -22,7 +22,7 @@ import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
 
-MaterialIcons.loadFont();
+Feather.loadFont();
 
 export const Cadastro = createStackNavigator({
     TelaInicial: { screen: TelaInicial },
@@ -59,20 +59,19 @@ export const BottomMenu = createBottomTabNavigator({
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'home';
-                    return <MaterialIcons name={iconName} size={scale(25)} color={tintColor} />;
                 } else if (routeName === 'Diario') {
-                    iconName = 'event';
+                    iconName = 'clipboard';
                 } else if (routeName === 'Mapa') {
                     iconName = 'map';
                 } else if (routeName === 'Conselho') {
-                    iconName = 'favorite';
+                    iconName = 'heart';
                 } else if (routeName === 'Noticias') {
-                    iconName = 'mode-comment';
+                    iconName = 'message-square';
                 }
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <MaterialIcons name={iconName} size={scale(25)} color={tintColor} />;
+                return <Feather name={iconName} size={scale(26)} color={tintColor} />;
             },
         }),
         tabBarOptions: {
@@ -80,18 +79,24 @@ export const BottomMenu = createBottomTabNavigator({
                 minHeight: 60,
                 height: '10%',
                 //maxHeight: 70,
-                paddingTop: 5,
                 backgroundColor: '#ffffff',
                 borderTopWidth: 0,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+                justifyContent: 'flex-start',
+                paddingTop: 5,
+                elevation: 20,
             },
             activeTintColor: '#348EAC',
             inactiveTintColor: '#c4c4c4',
             labelStyle: {
-                fontFamily: 'roboto',
-                fontWeight: 'bold',
-                fontSize: 11,
-                marginBottom: 5,
+                fontFamily: 'ArgentumSans-Regular',
+                fontSize: 12,
+                marginBottom: 10,
             },
+            tabStyle: {
+                width: 'auto',
+            }
         },
     }
 )
@@ -121,7 +126,7 @@ export const Stack = createStackNavigator({
                 fontFamily: 'roboto',
             }
         },
-        cardStyle: { shadowColor: 'transparent' },
+        cardStyle: { shadowColor: 'transparent', backgroundColor: '#F8F8F8' },
     }
 )
 
