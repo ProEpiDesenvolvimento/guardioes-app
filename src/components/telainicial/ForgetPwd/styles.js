@@ -18,7 +18,7 @@ export const PageTitle = styled.Text`
     font-family: 'ArgentumSans-SemiBold';
     font-size: ${scale(21)}px;
     color: #ffffff;
-    margin-top: 5%;
+    margin-top: 10%;
     margin-bottom: 15%;
 `;
 
@@ -27,7 +27,7 @@ export const LabelWrapper = styled.Text`
     margin-bottom: ${percentage(2)}px;
 `;
 
-export const InputLabel = styled.Text`
+export const TextLabel = styled.Text`
     font-family: 'ArgentumSans-Medium';
     font-size: ${scale(15)}px;
     color: #ffffff;

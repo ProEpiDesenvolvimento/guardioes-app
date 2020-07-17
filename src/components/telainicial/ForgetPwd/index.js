@@ -8,7 +8,8 @@ import GradientBackgroundView from '../../styled/GradientBackgroundView';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowInput from '../../styled/SnowInput';
 import SnowButton from '../../styled/SnowButton';
-import { ButtonBack, ScreenView, PageTitle, LabelWrapper, InputLabel, Label } from './styles';
+import { ButtonBack, ScreenView, PageTitle, LabelWrapper, TextLabel, Label } from './styles';
+import PasswordIcon from '../../../imgs/icons/password.svg';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { scale, percentage } from '../../../utils/scallingUtils';
@@ -98,7 +99,6 @@ class ForgetPwd extends Component {
                     Alert.alert(translate("getToken.invalidCode"));
                 } else {
                     this.setState({ verificationToken: responseJson.reset_password_token });
-                    console.log(this.state.verificationToken)
                     this.goToNextScreen();
                     this.hideAlert()
                 }
@@ -145,10 +145,12 @@ class ForgetPwd extends Component {
                             ref={(swiper) => this.swiper = swiper}
                         >
                             <ScreenView style={{width: percentage(100)}}>
+                                <PasswordIcon height={scale(68)} width={scale(68)} fill="#ffffff" />
+
                                 <PageTitle>{translate("forgetPwd.title")}</PageTitle>
                                 
                                 <LabelWrapper>
-                                    <InputLabel>{translate("forgetPwd.informEmail")}</InputLabel>
+                                    <TextLabel>{translate("forgetPwd.informEmail")}</TextLabel>
                                 </LabelWrapper>
 
                                 <SnowInput
@@ -175,11 +177,11 @@ class ForgetPwd extends Component {
                                 <PageTitle>{translate("getToken.title")}</PageTitle>
 
                                 <LabelWrapper>
-                                    <InputLabel>{translate("getToken.verificationCodeSent")}</InputLabel>
+                                    <TextLabel>{translate("getToken.verificationCodeSent")}</TextLabel>
                                 </LabelWrapper>
 
                                 <LabelWrapper>
-                                    <InputLabel>{translate("getToken.spamCheckWarning")}</InputLabel>
+                                    <TextLabel>{translate("getToken.spamCheckWarning")}</TextLabel>
                                 </LabelWrapper>
 
                                 <SnowInput
@@ -198,7 +200,7 @@ class ForgetPwd extends Component {
                                             else {
                                                 this.confirmVerificationCode()
                                             }
-                                            this.goToNextScreen()
+                                            //this.goToNextScreen()
                                         }}
                                     >
                                         <Label>{translate("getToken.confirm")}</Label>
