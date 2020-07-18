@@ -59,20 +59,20 @@ export const AppName = styled.Text`
   font-weight: 500;
 `;
 
-export const StatusContainer = styled.View`
+export const StatusContainer = styled.View.attrs({
+  shadowColor: '#000',
+  shadowOffset: {width: 0, height: 4},
+  shadowOpacity: 0.15,
+  shadowRadius: 4.65,
+  elevation: 8,
+})`
   margin-top: -20%;
   background: white;
-  border-radius: 20;
-  margin-right: 30px;
-  margin-left: 30px;
+  border-radius: 20px;
+  margin-right: 6%;
+  margin-left: 6%;
   padding: 30px;
-  padding-bottom: 30px;
   align-items: center;
-  shadow-color: #000;
-  shadow-offset: {width: 0, height: 4};
-  shadow-opacity: 0.15;
-  shadow-radius: 4.65;
-  elevation: 8;
 `;
 
 export const Text = styled.Text`
@@ -86,7 +86,13 @@ export const StatusBemMal = styled.View`
   flex-direction: row;
 `;
 
-export const Bem = styled(TouchableOpacity)`
+export const Bem = styled(TouchableOpacity).attrs({
+  shadowColor: '#348eac',
+  shadowOffset: {width: 0, height: 4},
+  shadowOpacity: 0.30,
+  shadowRadius: 4.65,
+  elevation: 8,
+})` 
   height: 60px;
   width: 120px;
   background: #348eac;
@@ -95,31 +101,59 @@ export const Bem = styled(TouchableOpacity)`
   margin-right: 3px;
   align-items: center;
   justify-content: center;
-  shadow-color: #348eac;
-  shadow-offset: {width: 0, height: 4};
-  shadow-opacity: 0.30;
-  shadow-radius: 4.65;
-  elevation: 8;
 `;
 
-export const Mal = styled(TouchableOpacity)`
+export const Mal = styled(TouchableOpacity).attrs({
+  shadowColor: '#348eac',
+  shadowOffset: {width: 0, height: 4},
+  shadowOpacity: 0.30, 
+  shadowRadius: 4.65,
+  elevation: 8,
+})`
   height: 60px;
   width: 120px;
   background: #f18f01;
-  border-bottom-right-radius: 22;
-  border-top-right-radius: 22;
+  border-bottom-right-radius: 22px;
+  border-top-right-radius: 22px;
   margin-left: 3px;
   align-items: center;
   justify-content: center;
-  shadow-color: #f18f01;
-  shadow-offset: {width: 0, height: 4};
-  shadow-opacity: 0.30;
-  shadow-radius: 4.65;
-  elevation: 8;
 `;
 
 export const StatusText = styled.Text`
   font-weight: bold;
   color: white;
   font-size: 16px;
+`;
+
+export const Alertas = styled.Text`
+  margin-top: 8%;
+  margin-bottom: 8%;
+  font-size: 22px;
+  font-weight: 500;
+  margin-left: 8%;
+`;
+
+export const BairroContainer = styled.View`
+  flex: 1;
+`;
+
+export const StatusBairro = styled.View`
+  background-color: #5DD39E;
+  border-radius: 20px;
+  margin-right: 6%;
+  margin-left: 6%;
+  padding: 30px;
+  align-items: flex-start;
+`;
+
+export const StatusTitle = styled.Text`
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+export const StatusBairroText = styled.Text`
+  color: white;
+  font-size: 20px;
 `;

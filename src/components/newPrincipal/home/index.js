@@ -19,6 +19,11 @@ import {
   StatusText,
   Bem,
   Mal,
+  Alertas,
+  StatusBairro,
+  StatusTitle,
+  StatusBairroText,
+  BairroContainer,
 } from './styles';
 
 export default function Inicio() {
@@ -50,6 +55,13 @@ export default function Inicio() {
               </Mal>
             </StatusBemMal>
           </StatusContainer>
+          <Alertas>Alertas</Alertas>
+          <BairroContainer>
+            <StatusBairro>
+              <StatusTitle>Status do seu bairro: </StatusTitle>
+              <StatusBairroText>Maioria sentindo-se bem</StatusBairroText>
+            </StatusBairro>
+          </BairroContainer>
         </ScrolView>
       </Container>
     </>
