@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import { StatusBar } from 'react-native';
 // import { Avatar } from 'react-native-elements';
 
 import * as Imagem from '../../../imgs/imageConst';
@@ -23,8 +23,8 @@ import {
 
 export default function Inicio() {
   return (
-    <>
-      <SafeAreaView backgroundColor="#348EAC" />
+    <>  
+      <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
       <Container>
         <ScrolView>
           <Background>
