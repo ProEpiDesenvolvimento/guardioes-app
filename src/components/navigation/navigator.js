@@ -94,7 +94,6 @@ export const BottomMenu = createBottomTabNavigator({
             labelStyle: {
                 fontFamily: 'ArgentumSans',
                 fontSize: 12,
-                marginBottom: 10,
             },
             tabStyle: {
                 width: 'auto',

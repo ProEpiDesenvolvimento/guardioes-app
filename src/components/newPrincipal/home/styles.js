@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { scale } from '../../../utils/scallingUtils';
+
 export const Container = styled.View`
   flex: 1;
 `;
@@ -29,12 +31,12 @@ export const Avatar = styled.Image`
   border-radius: 50;
   border-color: #ffffff;
   border-width: 3px;
-  max-height: 60px;
-  max-width: 60px;
+  height: ${scale(60)}px;
+  width: ${scale(60)}px;;
 `;
 
 export const UserView = styled.View`
-  margin-top: -30%;
+  margin-top: -22%;
   flex: 1;
   justify-content: space-between;
   align-content: center;
@@ -49,12 +51,12 @@ export const NamesContainer = styled.View`
 
 export const TextName = styled.Text`
   font-weight: bold;
-  font-size: 22px;
+  font-size: ${scale(20)}px;
   color: white;
 `;
 
 export const AppName = styled.Text`
-  font-size: 20px;
+  font-size: ${scale(18)}px;
   color: white;
   font-weight: 500;
 `;
@@ -71,14 +73,14 @@ export const StatusContainer = styled.View.attrs({
   border-radius: 20px;
   margin-right: 6%;
   margin-left: 6%;
-  padding: 30px;
+  padding: 10%;
   align-items: center;
 `;
 
 export const Text = styled.Text`
   margin-bottom: 20px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: ${scale(16)}px;
 `;
 
 export const StatusBemMal = styled.View`
@@ -86,13 +88,7 @@ export const StatusBemMal = styled.View`
   flex-direction: row;
 `;
 
-export const Bem = styled(TouchableOpacity).attrs({
-  shadowColor: '#348eac',
-  shadowOffset: {width: 0, height: 4},
-  shadowOpacity: 0.30,
-  shadowRadius: 4.65,
-  elevation: 8,
-})` 
+export const Bem = styled(TouchableOpacity)` 
   height: 60px;
   width: 120px;
   background: #348eac;
@@ -103,13 +99,7 @@ export const Bem = styled(TouchableOpacity).attrs({
   justify-content: center;
 `;
 
-export const Mal = styled(TouchableOpacity).attrs({
-  shadowColor: '#348eac',
-  shadowOffset: {width: 0, height: 4},
-  shadowOpacity: 0.30, 
-  shadowRadius: 4.65,
-  elevation: 8,
-})`
+export const Mal = styled(TouchableOpacity)`
   height: 60px;
   width: 120px;
   background: #f18f01;
@@ -123,37 +113,44 @@ export const Mal = styled(TouchableOpacity).attrs({
 export const StatusText = styled.Text`
   font-weight: bold;
   color: white;
-  font-size: 16px;
+  font-size: ${scale(15)}px;
 `;
 
 export const Alertas = styled.Text`
   margin-top: 8%;
   margin-bottom: 8%;
-  font-size: 22px;
+  font-size: ${scale(20)}px;
   font-weight: 500;
   margin-left: 8%;
 `;
 
 export const BairroContainer = styled.View`
   flex: 1;
-`;
-
-export const StatusBairro = styled.View`
   background-color: #5DD39E;
   border-radius: 20px;
   margin-right: 6%;
   margin-left: 6%;
-  padding: 30px;
+  padding: 20px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+export const StatusBairro = styled.View`
   align-items: flex-start;
 `;
 
 export const StatusTitle = styled.Text`
   color: white;
-  font-size: 20px;
+  font-size: ${scale(18)}px;
   font-weight: bold;
+  margin-bottom: ${scale(5)}px;
 `;
 
 export const StatusBairroText = styled.Text`
   color: white;
-  font-size: 20px;
+  font-size: ${scale(18)}px;
+  font-weight: 500;
 `;
