@@ -1,7 +1,8 @@
 import React from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-// import { Avatar } from 'react-native-elements';
+import { getNameParts } from '../../../utils/constUtils';
+import translate from "../../../../locales/i18n";
 
 import * as Imagem from '../../../imgs/imageConst';
 
@@ -15,7 +16,7 @@ import {
   TextName,
   AppName,
   StatusContainer,
-  Text,
+  TextStyle,
   StatusBemMal,
   StatusText,
   Bem,
@@ -30,6 +31,7 @@ import {
 Feather.loadFont();
 
 export default function Inicio() {
+
   return (
     <>  
       <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
@@ -53,7 +55,7 @@ export default function Inicio() {
             </UserView>
           </Background>
           <StatusContainer>
-            <Text>Como está se sentindo hoje?</Text>
+            <TextStyle>Como está se sentindo hoje?</TextStyle>
             <StatusBemMal>
               <Bem>
                 <StatusText>BEM</StatusText>

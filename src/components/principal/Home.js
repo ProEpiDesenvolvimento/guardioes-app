@@ -10,12 +10,35 @@ import Emoji from 'react-native-emoji';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {API_URL} from 'react-native-dotenv';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import LinearGradient from 'react-native-linear-gradient';
+import Feather from 'react-native-vector-icons/Feather';
 
-FontAwesome.loadFont();
+
+Feather.loadFont();
+
+import {
+  Container,
+  ScrollViewStyle,
+  Background,
+  Avatar,
+  UserView,
+  Button,
+  NamesContainer,
+  TextName,
+  AppName,
+  StatusContainer,
+  TextStyle,
+  StatusBemMal,
+  StatusText,
+  Bem,
+  Mal,
+  Alertas,
+  StatusBairro,
+  StatusTitle,
+  StatusBairroText,
+  BairroContainer,
+} from './styles';
 
 let data = new Date();
 let d = data.getDate();
@@ -326,138 +349,144 @@ class Home extends Component {
 
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
-
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <LinearGradient style={styles.viewTop} colors={['#348EAC', '#166b87']}>
-                        <Avatar
-                            size="xlarge"
-                            rounded
+                <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
+                <Container>
+                  <ScrollViewStyle>
+                      <Background>
+                          <Feather name="menu"
+                            size={32} 
+                            color='#ffffff' 
+                            style={styles.menuBars}
+                            onPress={() => this.props.navigation.openDrawer()}
+                          />
+                        <UserView>  
+                          <NamesContainer>
+                            <TextName>{welcomeMessage}</TextName>
+                            <AppName>{translate("home.nowAGuardian")}</AppName>
+                          </NamesContainer>
+                          <Button onPress={() => {
+                              this.getHouseholds();
+                              this.setModalVisible(true);
+                          }}>
+                          <Avatar
                             source={Imagem['NullAvatar']}
                             activeOpacity={0.6}
-                            containerStyle={styles.avatarTop}
-                            onPress={() => {
-                                this.getHouseholds();
-                                this.setModalVisible(true);
-                            }}
-                        />
-                        <View style={styles.viewWelcome}>
-                            <Text style={styles.textHelloUser}>
-                                {welcomeMessage}
-                            </Text>
+                          />
+                          </Button>
+                          
+                        </UserView>
+                      </Background>
+                      <StatusContainer>
+                        <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
+                        <StatusBemMal>
+                          <Bem onPress={() => this.verifyLocalization()}>
+                            <StatusText>{translate("report.goodChoice")}</StatusText>
+                          </Bem>
+                          <Mal onPress={() => navigate('BadReport')}>
+                            <StatusText>{translate("report.badChoice")}</StatusText>
+                          </Mal>
+                        </StatusBemMal>
+                      </StatusContainer>
+                      
+                      <Alertas>Alertas</Alertas> 
+                      <BairroContainer>
+                        <Feather name='alert-circle' size={70} color='#fff' />  
+                        <StatusBairro>
+                          <StatusTitle>Status do seu bairro: </StatusTitle>
+                          <StatusBairroText>Maioria sentindo-se bem</StatusBairroText>
+                        </StatusBairro>
+                      </BairroContainer>
 
-                            <Text style={styles.textNewGuardion}>
-                                {translate("home.nowAGuardian")}
-                            </Text>
-                        </View>
-                    </LinearGradient>
+                      <View style={styles.viewHouseholdSelect}>
+                          <Modal
+                              animationType="fade"
+                              transparent={true}
+                              visible={this.state.modalVisible}
+                              onRequestClose={() => {
+                                  this.setModalVisible(!this.state.modalVisible); //Exit to modal view
+                              }}>
+                              <View style={styles.modalView}>
+                                  <View style={styles.modalViewTop}>
+                                      <View style={styles.viewAvatar}>
+                                          <Avatar
+                                              size="large"
+                                              rounded
+                                              source={Imagem[this.state.userAvatar]}
+                                              activeOpacity={0.6}
+                                              onPress={async () => {
+                                                  await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+                                                  this.setModalVisible(!this.state.modalVisible);
+                                                  AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                                  AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                  AsyncStorage.removeItem('householdID');
+                                                  this.getUserHealth();
+                                              }}
+                                          />
+                                          <Text>{getNameParts(this.state.userName, true)}</Text>
+                                      </View>
+                                      <ScrollView horizontal={true}>
+                                          {householdsData != null ?
+                                              householdsData.map((household, key) => {
+                                                  return (
+                                                      <View style={styles.viewAvatar} key={key}>
+                                                          <Avatar
+                                                              size="large"
+                                                              rounded
+                                                              source={Imagem[household.picture]}
+                                                              activeOpacity={0.6}
+                                                              onPress={async () => {
+                                                                  await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
+                                                                  this.setModalVisible(!this.state.modalVisible);
+                                                                  AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                                                  AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                                  AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                                                  this.getUserHealth();
+                                                              }}
+                                                          />
+                                                          <Text>{getNameParts(household.description, true)}</Text>
+                                                      </View>
+                                                  )
+                                              })
+                                              : null}
+                                      </ScrollView>
+                                  </View>
+                                  <View style={styles.modalViewBottom}>
+                                      <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
+                                          navigate('Household');
+                                          this.setModalVisible(!this.state.modalVisible);
+                                      }}>
+                                          <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
+                                          <Text>{translate("home.addProfile")}</Text>
+                                      </TouchableOpacity>
+                                  </View>
+                              </View>
+                          </Modal>
+                      </View>
 
-                    <View style={[styles.viewReport, styles.shadow]}>
-                        {userHowYouFelling}
+                      <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
+                          <View style={styles.viewStatusIcon}>
+                              <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
+                          </View>
+                          
+                          <View style={styles.viewStatusContent}>
+                              <Text style={styles.textStatusTitle}>
+                                  {translate("home.statusLast7Days")}
+                              </Text>
+                              <Text style={styles.textStatusContent}>
+                                  {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
+                              </Text>
+                          </View>
+                      </View>
 
-                        <View style={styles.containerGoodBad}>
-                            <TouchableOpacity //onPress={this._isconnected}
-                                style={[styles.viewChildGood, styles.shadow]}
-                                activeOpacity={0.6}
-                                onPress={() => this.verifyLocalization()}
-                            >
-                                <Text style={styles.textChoiceButton}>{translate("report.goodChoice")}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                style={[styles.viewChildBad, styles.shadow]}
-                                activeOpacity={0.6}
-                                onPress={() => navigate('BadReport')}
-                            >
-                                <Text style={styles.textChoiceButton}>{translate("report.badChoice")}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={styles.viewHouseholdSelect}>
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={this.state.modalVisible}
-                            onRequestClose={() => {
-                                this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                            }}>
-                            <View style={styles.modalView}>
-                                <View style={styles.modalViewTop}>
-                                    <View style={styles.viewAvatar}>
-                                        <Avatar
-                                            size="large"
-                                            rounded
-                                            source={Imagem[this.state.userAvatar]}
-                                            activeOpacity={0.6}
-                                            onPress={async () => {
-                                                await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
-                                                this.setModalVisible(!this.state.modalVisible);
-                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                AsyncStorage.removeItem('householdID');
-                                                this.getUserHealth();
-                                            }}
-                                        />
-                                        <Text>{getNameParts(this.state.userName, true)}</Text>
-                                    </View>
-                                    <ScrollView horizontal={true}>
-                                        {householdsData != null ?
-                                            householdsData.map((household, key) => {
-                                                return (
-                                                    <View style={styles.viewAvatar} key={key}>
-                                                        <Avatar
-                                                            size="large"
-                                                            rounded
-                                                            source={Imagem[household.picture]}
-                                                            activeOpacity={0.6}
-                                                            onPress={async () => {
-                                                                await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
-                                                                this.setModalVisible(!this.state.modalVisible);
-                                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                                AsyncStorage.setItem('householdID', this.state.householdID.toString());
-                                                                this.getUserHealth();
-                                                            }}
-                                                        />
-                                                        <Text>{getNameParts(household.description, true)}</Text>
-                                                    </View>
-                                                )
-                                            })
-                                            : null}
-                                    </ScrollView>
-                                </View>
-                                <View style={styles.modalViewBottom}>
-                                    <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
-                                        navigate('Household');
-                                        this.setModalVisible(!this.state.modalVisible);
-                                    }}>
-                                        <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
-                                        <Text>{translate("home.addProfile")}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </Modal>
-                    </View>
-
-                    <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
-                        <View style={styles.viewStatusIcon}>
-                            <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
-                        </View>
-                        
-                        <View style={styles.viewStatusContent}>
-                            <Text style={styles.textStatusTitle}>
-                                {translate("home.statusLast7Days")}
-                            </Text>
-                            <Text style={styles.textStatusContent}>
-                                {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
-                            </Text>
-                        </View>
-                    </View>
-
-                    {isProfessionalTrue}
-                </ScrollView>
-
-                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={32} color='#ffffff' style={styles.menuBars}/>
+                      {isProfessionalTrue}
+                  </ScrollViewStyle>
+                  <Feather name="menu"
+                    size={32} 
+                    color='#ffffff' 
+                    style={styles.menuBars}
+                    onPress={() => this.props.navigation.openDrawer()}
+                  />
+                </Container>                           
 
                 <AwesomeAlert
                     show={showAlert}

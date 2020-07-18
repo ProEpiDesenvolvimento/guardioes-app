@@ -47,19 +47,19 @@ export const Cadastro = createStackNavigator({
     })
 
 export const BottomMenu = createBottomTabNavigator({
-    NewHome,
+    Home,
     Diario,
     Mapa: { screen: Maps },
     Conselho,
     Noticias,
 },
     {
-        initialRouteName: 'NewHome',
+        initialRouteName: 'Home',
         navigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                if (routeName === 'NewHome') {
+                if (routeName === 'Home') {
                     iconName = 'home';
                 } else if (routeName === 'Diario') {
                     iconName = 'clipboard';

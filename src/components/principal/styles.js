@@ -2,13 +2,13 @@ import styled from 'styled-components/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { scale } from '../../../utils/scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 
 export const Container = styled.View`
   flex: 1;
 `;
 
-export const ScrolView = styled.ScrollView.attrs({
+export const ScrollViewStyle = styled.ScrollView.attrs({
   backgroundColor: '#f4f4f4',
   flexGrow: 1,
   alignItems: 'center',
@@ -33,6 +33,10 @@ export const Avatar = styled.Image`
   border-width: 3px;
   height: ${scale(60)}px;
   width: ${scale(60)}px;;
+`;
+
+export const Button = styled.TouchableOpacity`
+  flex-wrap: wrap;
 `;
 
 export const UserView = styled.View`
