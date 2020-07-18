@@ -25,4 +25,7 @@ export const Brother = require('./avatar/brother.png');
 export const Son = require('./avatar/son.png');
 export const Daughter = require('./avatar/daughter.png');
 
+//Advices Icons
+import InsectSVG from './advices/insect.svg';
+export const InsectIcon = InsectSVG;
 
