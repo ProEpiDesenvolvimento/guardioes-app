@@ -121,8 +121,8 @@ export const StatusText = styled.Text`
 `;
 
 export const Alertas = styled.Text`
-  margin-top: 8%;
-  margin-bottom: 8%;
+  margin-top: ${scale(25)}px;
+  margin-bottom: ${scale(5)}px;
   font-size: ${scale(20)}px;
   font-weight: 500;
   margin-left: 8%;
