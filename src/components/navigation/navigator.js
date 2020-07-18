@@ -22,6 +22,8 @@ import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
 
+import NewHome from '../newPrincipal/home';
+
 Feather.loadFont();
 
 export const Cadastro = createStackNavigator({
@@ -45,19 +47,19 @@ export const Cadastro = createStackNavigator({
     })
 
 export const BottomMenu = createBottomTabNavigator({
-    Home,
+    NewHome,
     Diario,
     Mapa: { screen: Maps },
     Conselho,
     Noticias,
 },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'NewHome',
         navigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                if (routeName === 'Home') {
+                if (routeName === 'NewHome') {
                     iconName = 'home';
                 } else if (routeName === 'Diario') {
                     iconName = 'clipboard';
