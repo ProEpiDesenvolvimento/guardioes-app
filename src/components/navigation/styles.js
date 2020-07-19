@@ -45,3 +45,21 @@ export const Aplicativo = styled.Text`
   font-weight: 500;
   margin-left: 8%;
 `;
+
+export const SocialContainer = styled.View`
+  margin-top: ${(scale(-70))}px;
+  flex: 1;
+  flex-direction: row;
+  margin-left: ${(scale(75))}px;
+  margin-right: ${(scale(75))}px;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+export const RedeSocial = styled.View`
+  border-radius: 50;
+  background-color: #348eac;
+  padding: ${scale(10)}px;
+`;

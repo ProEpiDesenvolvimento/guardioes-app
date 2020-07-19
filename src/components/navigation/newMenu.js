@@ -7,7 +7,16 @@ import { scale } from '../../utils/scallingUtils';
 
 Feather.loadFont();
 
-import { Container, Avatar, AvatarContainer, UserOption, TextOption, Aplicativo } from './styles';
+import { 
+	Container, 
+	Avatar,
+	AvatarContainer, 
+	UserOption, 
+	TextOption, 
+	Aplicativo, 
+	SocialContainer,
+	RedeSocial
+} from './styles';
 
 export default function drawerContentComponents(){
 	const [userName, setUserName] = useState('')
@@ -85,6 +94,22 @@ export default function drawerContentComponents(){
 						Sobre
 					</TextOption>
 				</UserOption>
+				<SocialContainer>
+					<RedeSocial>
+						<Feather name='twitter'
+							size={scale(28)} 
+							color='#ffffff' 
+							style={styles.iconRedeSocial}
+						/>
+					</RedeSocial>
+					<RedeSocial>
+						<Feather name='instagram'
+							size={scale(28)} 
+							color='#ffffff' 
+							style={styles.iconRedeSocial}
+						/>
+					</RedeSocial>
+				</SocialContainer>
 			</Container>
 		</>
 	)
@@ -93,6 +118,9 @@ export default function drawerContentComponents(){
 const styles = StyleSheet.create({
 	iconStyle: {
 		marginLeft: scale(5),
+	},
+	iconRedeSocial: {
+		alignSelf: 'center',
 	},
 	menuOptionColor: {
 		backgroundColor: '#5DD39E',
