@@ -32,7 +32,7 @@ export const Avatar = styled.Image`
   border-color: #ffffff;
   border-width: 3px;
   height: ${scale(60)}px;
-  width: ${scale(60)}px;;
+  width: ${scale(60)}px;
 `;
 
 export const Button = styled.TouchableOpacity`

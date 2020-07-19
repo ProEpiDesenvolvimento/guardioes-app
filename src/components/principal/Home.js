@@ -353,12 +353,6 @@ class Home extends Component {
           <Container>
             <ScrollViewStyle>
               <Background>
-                <Feather name="menu"
-                  size={32} 
-                  color='#ffffff' 
-                  style={styles.menuBars}
-                  onPress={() => this.props.navigation.openDrawer()}
-                />
                 <UserView>  
                   <NamesContainer>
                     <TextName>{welcomeMessage}</TextName>
