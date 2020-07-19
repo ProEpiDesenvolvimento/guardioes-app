@@ -202,8 +202,8 @@ export default {
         "participate": "Participaciones",
         "good": "Bien",
         "bad": "Apenas",
-        "report": " informe",
-        "reports": " informes",
+        "report": " vez",
+        "reports": " veces",
         "calendar": "Calendario",
         "timesPerMonth": "Cantidad de informes por mes",
         "charts": {

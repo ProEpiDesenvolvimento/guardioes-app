@@ -198,8 +198,8 @@ export default {
         "participate": "Participants",
         "good": "Good",
         "bad": "Ill",
-        "report": " report",
-        "reports": " reports",
+        "report": " time",
+        "reports": " times",
         "calendar": "Calendar",
         "timesPerMonth": "Monthly reports",
         "charts": {
