@@ -25,7 +25,15 @@ export const Brother = require('./avatar/brother.png');
 export const Son = require('./avatar/son.png');
 export const Daughter = require('./avatar/daughter.png');
 
-//Advices Icons
-import InsectSVG from './advices/insect.svg';
-export const InsectIcon = InsectSVG;
+//Diary Icons
+export {default as HappyIcon} from './diversos/happy.svg';
+export {default as SadIcon} from './diversos/sad.svg';
 
+//Advices Icons
+export {default as HelplineIcon} from './advices/helpline.svg';
+export {default as HospitalIcon} from './advices/hospital.svg';
+export {default as InsectIcon} from './advices/insect.svg';
+export {default as SickIcon} from './advices/sick.svg';
+export {default as TentIcon} from './advices/tent.svg';
+export {default as VaccineIcon} from './advices/vaccine.svg';
+export {default as WashIcon} from './advices/wash.svg';
