@@ -65,7 +65,10 @@ export default {
         "errorMessages": {
             "error": "Error",
             "allFieldsAreFilled": "Todos los campos deben ser llenados"
-        }
+        },
+        "riskGroupTitle": "¿Cuáles son los grupos de riesgo?",
+        "riskGroupMessage": "\t COVID-19 es generalmente más grave en personas mayores de 60 años o que tienen problemas de salud como enfermedades pulmonares o cardíacas, diabetes o afecciones que afectan su sistema inmunológico.",
+        "riskGroupButton": "Vuelve"
     },
     "noInternet": {
         "noInternetConnection": "Sin internet!",
@@ -294,5 +297,14 @@ export default {
         "moreComing": "¡Tenemos más funciones en el futuro¡",
         "healthDiary": "Diario de Salud",
         "healthMap": "Mapa de la Salud"
+    },
+    "getToken": {
+        "verificationCode": "Código de Verificación",
+        "invalidCode": "Código invalid",
+        "confirm": "Confirmar",
+        "loading": "Cargando",
+        "verificationCodeSent": "Se ha enviado un código de verificación al correo electrónico indicado.",
+        "spamCheckWarning": "Si no aparece en su cuadro de mensaje principal, verifique su Spam.",
+        "inputVerificationCode": "Inserte el Código de verificación"
     }
 }

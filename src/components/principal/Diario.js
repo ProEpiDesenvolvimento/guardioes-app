@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
@@ -10,6 +10,15 @@ import { getNameParts } from '../../utils/constUtils';
 import { Dimensions } from 'react-native';
 import translate from '../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
+
+LocaleConfig.locales['pt'] = {
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    dayNames: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']
+};
+
+LocaleConfig.defaultLocale = 'pt';
 
 let data = new Date()
 let d = data.getDate()
@@ -24,6 +33,7 @@ class Diario extends Component {
     constructor(props) {
         super(props)
         this.props.navigation.addListener('didFocus', payload => {
+            this.getInfo();
         })
         this.state = {
             data: [],
@@ -103,7 +113,7 @@ class Diario extends Component {
             if (this.state.householdID == null) {//Condição para verificar se exise household
                 if (survey.household == null) {
                     if (survey.symptom && survey.symptom.length) { //BadReport
-                        markedDate.push(survey.bad_since)
+                        markedDate.push(survey.created_at.split("T", 1).toString())
                         markedDateAll.push(survey)
                     }
                     else { //GoodReport
@@ -115,7 +125,7 @@ class Diario extends Component {
                 if (survey.household != null) {
                     if (survey.household.id == this.state.householdID) {
                         if (survey.symptom && survey.symptom.length) { //Household BadReport
-                            markedDate.push(survey.bad_since)
+                            markedDate.push(survey.created_at.split("T", 1).toString())
                             markedDateAll.push(survey)
                         }
                         else { //Household GoodReport
