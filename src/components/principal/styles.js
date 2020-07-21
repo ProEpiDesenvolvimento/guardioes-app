@@ -19,16 +19,16 @@ export const ScrollViewStyle = styled.ScrollView.attrs({
 export const Background = styled(LinearGradient).attrs({
   colors: ['#348eac', '#5DD39E'],
 })`
-  min-height: 45%;
+  min-height: ${scale(45)}%;
   min-width: 100%;
-  border-bottom-left-radius: 50;
-  border-bottom-right-radius: 50;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
   flex: 1;
 `;
 
 export const Avatar = styled.Image`
-  margin-right: 10%;
-  border-radius: 50;
+  margin-right: ${scale(8)}%;
+  border-radius: 50px;
   border-color: #ffffff;
   border-width: 3px;
   height: ${scale(60)}px;
@@ -40,7 +40,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const UserView = styled.View`
-  margin-top: -22%;
+  margin-top: ${scale(-22)}%;
   flex: 1;
   justify-content: space-between;
   align-content: center;
@@ -50,7 +50,7 @@ export const UserView = styled.View`
 `;
 
 export const NamesContainer = styled.View`
-  margin-left: 10%;
+  margin-left: ${scale(8)}%;
 `;
 
 export const TextName = styled.Text`
@@ -72,17 +72,17 @@ export const StatusContainer = styled.View.attrs({
   shadowRadius: 4.65,
   elevation: 8,
 })`
-  margin-top: -20%;
+  margin-top: ${scale(-20)}%;
   background: white;
   border-radius: 20px;
-  margin-right: 6%;
-  margin-left: 6%;
-  padding: 10%;
+  margin-right: ${scale(6)}%;
+  margin-left: ${scale(6)}%;
+  padding: ${scale(8)}%;
   align-items: center;
 `;
 
 export const TextStyle = styled.Text`
-  margin-bottom: 20px;
+  margin-bottom: ${scale(20)}px;
   font-weight: bold;
   font-size: ${scale(16)}px;
 `;
@@ -93,23 +93,23 @@ export const StatusBemMal = styled.View`
 `;
 
 export const Bem = styled(TouchableOpacity)` 
-  height: 60px;
-  width: 120px;
+  height: ${scale(50)}px;
+  width: ${scale(100)}px;
   background: #348eac;
-  border-bottom-left-radius: 22;
-  border-top-left-radius: 22;
-  margin-right: 3px;
+  border-bottom-left-radius: 22px;
+  border-top-left-radius: 22px;
+  margin-right: ${scale(2)}px;
   align-items: center;
   justify-content: center;
 `;
 
 export const Mal = styled(TouchableOpacity)`
-  height: 60px;
-  width: 120px;
+  height: ${scale(50)}px;
+  width: ${scale(100)}px;
   background: #f18f01;
   border-bottom-right-radius: 22px;
   border-top-right-radius: 22px;
-  margin-left: 3px;
+  margin-left: ${scale(2)}px;
   align-items: center;
   justify-content: center;
 `;
@@ -125,16 +125,16 @@ export const Alertas = styled.Text`
   margin-bottom: ${scale(5)}px;
   font-size: ${scale(20)}px;
   font-weight: 500;
-  margin-left: 8%;
+  margin-left: ${scale(6)}%;
 `;
 
 export const BairroContainer = styled.View`
   flex: 1;
   background-color: #5DD39E;
   border-radius: 20px;
-  margin-right: 6%;
-  margin-left: 6%;
-  padding: 20px;
+  margin-right: ${scale(6)}%;
+  margin-left: ${scale(6)}%;
+  padding: ${scale(20)}px;
   flex-direction: row;
   justify-content: space-evenly;
   align-content: center;
