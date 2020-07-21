@@ -2,6 +2,7 @@ import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
+import { HeaderNavigator, BackButton, ScreenTitle } from './styles';
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';
 import Registrar from '../telainicial/Registrar';
@@ -115,17 +116,18 @@ export const Stack = createStackNavigator({
 },
     {
         initialRouteName: 'BottomMenu',
-        navigationOptions: {
-            headerTintColor: '#ffffff',
-            headerStyle: {
-                backgroundColor: '#348EAC',
-                elevation: 10,
-
-            },
-            headerTitleStyle: {
-                fontFamily: 'roboto',
-            }
-        },
+        navigationOptions: ({ navigation }) => ({
+            header: (
+                <HeaderNavigator>
+                    <BackButton onPress={() => navigation.goBack()}>
+                        <Feather name="chevron-left" size={scale(38)} color="#ffffff" />
+                    </BackButton>
+                    <ScreenTitle>
+                        {navigation.state.routeName}
+                    </ScreenTitle>
+                </HeaderNavigator>
+            ),
+        }),
         cardStyle: { shadowColor: 'transparent', backgroundColor: '#F8F8F8' },
     }
 )
