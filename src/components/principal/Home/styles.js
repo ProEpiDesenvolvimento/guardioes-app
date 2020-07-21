@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { scale } from '../../utils/scallingUtils';
+import { scale } from '../../../utils/scallingUtils';
 
 export const Container = styled.View`
   flex: 1;

@@ -13,8 +13,8 @@ import Conselho from '../principal/Conselho';
 import Noticias from '../principal/Noticias';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
-// import drawerContentComponents from './drawerContentComponent';
-import drawerContentComponents from './newMenu';
+import drawerContentComponents from './drawerContentComponent';
+// import drawerContentComponents from './newMenu';
 import Maps from '../principal/Maps';
 import Perfil from '../principal/Perfil';
 import Ajuda from '../principal/Ajuda';
@@ -22,8 +22,6 @@ import { Tutorial } from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
-
-import NewHome from '../newPrincipal/home';
 
 Feather.loadFont();
 

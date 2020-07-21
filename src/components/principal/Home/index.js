@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import * as Imagem from '../../imgs/imageConst';
-import { getNameParts } from '../../utils/constUtils';
-import { scale } from '../../utils/scallingUtils';
-import translate from "../../../locales/i18n";
-import Emoji from 'react-native-emoji';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import {API_URL} from 'react-native-dotenv';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { PermissionsAndroid } from 'react-native';
+import {API_URL} from 'react-native-dotenv';
+import RNSecureStorage from 'rn-secure-storage';
+import AsyncStorage from '@react-native-community/async-storage';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
+import Emoji from 'react-native-emoji';
 
+import * as Imagem from '../../../imgs/imageConst';
+import { getNameParts } from '../../../utils/constUtils';
+import translate from "../../../../locales/i18n";
+import { scale } from "../../../utils/scallingUtils";
 
-Feather.loadFont();
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    TouchableOpacity, 
+    StatusBar, 
+    NetInfo, 
+    Alert, 
+    Modal, 
+    ScrollView
+} from 'react-native';
 
 import {
   Container,
@@ -39,6 +48,8 @@ import {
   StatusBairroText,
   BairroContainer,
 } from './styles';
+
+Feather.loadFont();
 
 let data = new Date();
 let d = data.getDate();

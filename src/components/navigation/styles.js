@@ -5,6 +5,9 @@ export const Container = styled.View`
   flex: 1;
 `;
 
+export const Button = styled.TouchableOpacity`
+`;
+
 export const Avatar = styled.Image`
   border-radius: 50;
   border-color: #ffffff;
@@ -43,7 +46,7 @@ export const Aplicativo = styled.Text`
   margin-top:${scale(30)}px;
   font-size: ${scale(18)}px;
   font-weight: 500;
-  margin-left: 8%;
+  margin-left: ${scale(8)}%;
 `;
 
 export const SocialContainer = styled.View`
@@ -59,7 +62,7 @@ export const SocialContainer = styled.View`
 `;
 
 export const RedeSocial = styled.View`
-  border-radius: 50;
+  border-radius: 50px;
   background-color: #348eac;
   padding: ${scale(10)}px;
 `;
