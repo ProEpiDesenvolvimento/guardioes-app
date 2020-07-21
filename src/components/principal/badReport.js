@@ -120,8 +120,11 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                const alfabetica = responseJson.symptoms.sort(function (a, b) {
+                    return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);
+                });
                 this.setState({
-                    dataSource: responseJson.symptoms
+                    dataSource: alfabetica
                 })
             })
     }
