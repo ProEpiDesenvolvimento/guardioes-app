@@ -292,7 +292,7 @@ class Perfil extends Component {
 
   handleEdit = async () => {
     await this.setState({
-      modalVisibleUser: false
+      modalVisibleUser: false,
       userName: this.state.userSelect 
     })
     if (this.state.groupCheckbox === false) {
