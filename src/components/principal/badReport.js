@@ -120,8 +120,11 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                const alfabetica = responseJson.symptoms.sort(function (a, b) {
+                    return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);
+                });
                 this.setState({
-                    dataSource: responseJson.symptoms
+                    dataSource: alfabetica
                 })
             })
     }
@@ -188,14 +191,22 @@ class BadReport extends Component {
         );
     }
 
-    showCovidAlert = (responseJson) => {
+    showSyndromeAlert = (responseJson) => {
+        let data = []
+        if (responseJson.messages.top_3[0].name === "Síndrome Gripal") {
+            data = [
+                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
+                { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) }
+            ]
+        } else {
+            data = [
+                { text: 'Ok', onPress: () => this.showAlert(responseJson) }
+            ]
+        }
         Alert.alert(
             responseJson.messages.top_syndrome_message.title,
             responseJson.messages.top_syndrome_message.warning_message,
-            [
-                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
-                { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) },
-            ],
+            data,
             { cancelable: false }
         )
     }
@@ -258,8 +269,8 @@ class BadReport extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
-                    if (responseJson.messages.top_3[0].name === "Síndrome Gripal")
-                        this.showCovidAlert(responseJson)
+                    if (responseJson.messages.top_3[0])
+                        this.showSyndromeAlert(responseJson)
                     else
                         this.showAlert(responseJson)
                 } else {

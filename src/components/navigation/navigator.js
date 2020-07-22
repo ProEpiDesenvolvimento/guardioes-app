@@ -15,9 +15,9 @@ import Noticias from '../principal/Noticias';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
 import drawerContentComponents from './drawerContentComponent';
-// import drawerContentComponents from './newMenu';
 import Maps from '../principal/Maps';
 import Perfil from '../principal/Perfil';
+import EditarPerfil from '../principal/EditarPerfil';
 import Ajuda from '../principal/Ajuda';
 import { Tutorial } from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
@@ -107,6 +107,7 @@ export const Stack = createStackNavigator({
     BadReport,
     Household,
     Perfil,
+    EditarPerfil,
     Ajuda,
     Household,
     TermosPoliticas,

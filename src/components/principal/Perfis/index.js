@@ -27,7 +27,7 @@ let y = data.getFullYear()
 
 let today = d + "-" + m + "-" + y
 
-class Perfil extends Component {
+class Perfis extends Component {
     static navigationOptions = {
         title: "Perfis"
     }
@@ -910,9 +910,9 @@ class Perfil extends Component {
                 </HouseholdWrapper>
                 
                 {householdsData != null ?
-                    householdsData.map((household, key) => {
+                    householdsData.map((household) => {
                         return (
-                            <Household key={key}>
+                            <Household key={household.id}>
                                 <AvatarWrapper>
                                     <Avatar
                                         size={scale(58)}
@@ -1058,4 +1058,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Perfil
+export default Perfis

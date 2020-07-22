@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { scale } from '../../utils/scallingUtils';
-import translate from '../../../locales/i18n';
+import { scale } from '../../../utils/scallingUtils';
+import translate from '../../../../locales/i18n';
 
 class TermosPoliticas extends Component {
     static navigationOptions = {

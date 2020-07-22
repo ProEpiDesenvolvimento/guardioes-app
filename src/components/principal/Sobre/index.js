@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { logoAzUnB, logoAzProEpi } from '../../imgs/imageConst';
-import { scale } from '../../utils/scallingUtils';
-import { Redirect } from '../../utils/constUtils';
-import translate from "../../../locales/i18n";
+import { logoAzUnB, logoAzProEpi } from '../../../imgs/imageConst';
+import { scale } from '../../../utils/scallingUtils';
+import { Redirect } from '../../../utils/constUtils';
+import translate from "../../../../locales/i18n";
 
 class Sobre extends Component {
     static navigationOptions = {
@@ -12,22 +12,15 @@ class Sobre extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        };
+        }
     }
 
     render() {
         return (
             <ScrollView style={styles.container}>
-
                 <View style={styles.textView}>
-                    <Text style={styles.textTitulo}> {translate("about.textoSobreTitulo")} </Text>
-                    <Text style={styles.text}> {translate("about.textoSobre")} </Text>
-                    {/*<Text></Text>
-                    <Text style={styles.text}>Informações completas a respeito do Novo Coronavirus podem ser encontradas em:</Text>
-                    
-                    <TouchableOpacity onPress={() => Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")}>
-                        <Text style={styles.text}>coronavirus.saude.gov.br/</Text>
-                    </TouchableOpacity>*/}
+                    <Text style={styles.textTitulo}>{translate("about.textoSobreTitulo")}</Text>
+                    <Text style={styles.text}>{translate("about.textoSobre")}</Text>
                 </View>
 
                 <View style={styles.imagesView}>
@@ -54,8 +47,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     textView: {
-        flex: 3,
-        paddingHorizontal: '5%'
+        paddingHorizontal: '7%'
     },
     imagesView: {
         flex: 1,
@@ -64,19 +56,17 @@ const styles = StyleSheet.create({
         marginTop: scale(25),
         marginBottom: scale(20)
     },
-    text: {
-        fontFamily: 'roboto',
-        fontSize: 18,
-        fontWeight: '300',
-        textAlign: 'justify',
-        color: '#166B87'
-    },
     textTitulo: {
-        fontFamily: 'roboto',
-        fontSize: 21,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#166B87',
+        fontFamily: 'ArgentumSans-SemiBold',
+        fontSize: 30,
+        color: '#32323B',
+        //backgroundColor: '#ffffff',
+    },
+    text: {
+        fontFamily: 'ArgentumSans',
+        fontSize: 16,
+        textAlign: 'justify',
+        color: '#2b3d51'
     },
     imageLogo: {
         height: scale(100),

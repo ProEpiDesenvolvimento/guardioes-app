@@ -62,8 +62,8 @@ export const ButtonsWrapper = styled.View`
 `;
 
 export const HouseholdWrapper = styled.View`
-    padding-horizontal: ${scale(9)};
-    margin-bottom: ${percentage(6)};
+    padding-horizontal: ${scale(9)}px;
+    margin-bottom: ${percentage(6)}px;
 `;
 
 export const HouseholdTitle = styled.Text`
