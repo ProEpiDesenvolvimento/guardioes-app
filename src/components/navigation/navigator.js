@@ -15,6 +15,7 @@ import Noticias from '../principal/Noticias';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
 import drawerContentComponents from './drawerContentComponent';
+// import drawerContentComponents from './newMenu';
 import Maps from '../principal/Maps';
 import Perfil from '../principal/Perfil';
 import Ajuda from '../principal/Ajuda';
@@ -93,7 +94,6 @@ export const BottomMenu = createBottomTabNavigator({
             labelStyle: {
                 fontFamily: 'ArgentumSans',
                 fontSize: 12,
-                marginBottom: 10,
             },
             tabStyle: {
                 width: 'auto',
@@ -136,7 +136,7 @@ export const Drawer = createDrawerNavigator({
     Stacks: { screen: Stack }
 }, {
         contentComponent: drawerContentComponents,
-        drawerWidth: scale(240),
+        drawerWidth: scale(290),
     }
 );
 

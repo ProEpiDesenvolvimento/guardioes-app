@@ -5,12 +5,25 @@ import RNSecureStorage from 'rn-secure-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import { getNameParts } from '../../utils/constUtils';
 import { moderateScale, verticalScale, scale } from '../../utils/scallingUtils';
-import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import LinearGradient from 'react-native-linear-gradient';
+
+import { 
+    Container, 
+    Button,
+	Avatar,
+	AvatarContainer, 
+	UserOption, 
+	TextOption, 
+	Aplicativo, 
+	SocialContainer,
+    RedeSocial,
+    TextName,
+} from './styles';
 
 Entypo.loadFont();
 Feather.loadFont();
@@ -56,88 +69,124 @@ export default class drawerContentComponents extends Component {
         //this.getInfo();
 
         return (
-            <View style={styles.container}>
-                <LinearGradient style={styles.container} colors={['#348EAC', '#013444']} start={{ x: 1.5, y: 0.6 }} end={{ x: -0.2, y: 1.4 }}>
-                    <View style={styles.headerContainer}>
-                        <View style={styles.viewAvatar}>
-                            <Avatar
-                                size="xlarge"
-                                rounded
-                                source={Imagem[this.state.userAvatar]}
-                                activeOpacity={0.7}
+            <Container>
+                <AvatarContainer>
+					<Avatar 
+					 	source={Imagem[this.state.userAvatar]}
+					/>
+                    <TextName>
+                        {getNameParts(this.state.userName, true)} 
+                    </TextName>
+				</AvatarContainer>
+                <Button onPress={() => navigate('Perfil')}>
+                    <UserOption>
+                        <Feather name='settings'
+                            size={scale(26)} 
+                            color={'#fff'} 
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>
+                            Editar perfis
+                        </TextOption>
+                    </UserOption>
+                </Button>
+                <Button onPress={this._logoutApp}>
+                    <UserOption>
+                        <Feather name='log-out'
+                            size={scale(26)} 
+                            color='#ffffff' 
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>
+                            Sair
+                        </TextOption>
+                    </UserOption>
+                </Button>
+                <Aplicativo>
+					Aplicativo
+				</Aplicativo>
+                <Button>
+                    <UserOption style={styles.menuOptionColor}>
+                        <Feather name='share-2'
+                            size={scale(26)} 
+                            color='#ffffff' 
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>
+                            Compartilhar
+                        </TextOption>
+                    </UserOption>
+                </Button>
+                <Button onPress={() => navigate('Ajuda')}>
+                    <UserOption style={styles.menuOptionColor}>
+                        <Feather name='help-circle'
+                            size={scale(26)} 
+                            color='#ffffff' 
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>
+                            {translate("drawer.toHelp")}
+                        </TextOption>
+                    </UserOption>
+                </Button>
+                <Button onPress={() => navigate('Sobre')}>
+                    <UserOption style={styles.menuOptionColor}>
+                        <Feather name='info'
+                            size={scale(26)} 
+                            color='#ffffff' 
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>
+                            {translate("drawer.toAbout")}
+                        </TextOption>
+                    </UserOption>
+                </Button>
+                <SocialContainer>
+                    <Button onPress={() => Linking.openURL('https://twitter.com/guardioesunb')}>
+                        <RedeSocial>
+                            <Feather name='twitter'
+                                size={scale(28)} 
+                                color='#ffffff' 
+                                style={styles.iconRedeSocial}
                             />
-                        </View>
-                        <Text style={styles.headerText}>{getNameParts(this.state.userName, true)}</Text>
-                    </View>
-
-                    <TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => navigate('Perfil')}
-                    >
-                        <MaterialIcons name='supervisor-account' size={verticalScale(25)} style={styles.iconStyle} />
-                        <Text style={styles.drawerItemsTxt}>Perfis</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => navigate('Mapa')}
-                    >
-                        <MaterialIcons name='explore' size={verticalScale(25)} style={styles.iconStyle} />
-                        <Text style={styles.drawerItemsTxt}>{translate("drawer.healthMap")}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => navigate('Diario')}
-                    >
-                        <MaterialIcons name='dashboard' size={verticalScale(25)} style={styles.iconStyle} />
-                        <Text style={styles.drawerItemsTxt}>{translate("drawer.healthDiary")}</Text>
-                    </TouchableOpacity>
-
+                        </RedeSocial>
+                    </Button>
+                    <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb/')}>
+                        <RedeSocial>
+                            <Feather name='instagram'
+                                size={scale(28)} 
+                                color='#ffffff' 
+                                style={styles.iconRedeSocial}
+                            />
+                        </RedeSocial>
+                    </Button>
+				</SocialContainer>
                     {/*<TouchableOpacity
                         style={styles.itemsContainer}
                         onPress={() => navigate('Home')}
                     >
                         <FontAwesome name='bell' size={verticalScale(25)} style={styles.iconStyle} />
                         <Text style={styles.drawerItemsTxt}>Eventos Massivos</Text>
-                    </TouchableOpacity>*/}
-
-                    <TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => Linking.openURL('https://www.facebook.com/AssociacaoProEpi/')}
-                    >
-                        <Entypo name='facebook' size={verticalScale(25)} style={styles.iconStyle} />
-                        <Text style={styles.drawerItemsTxt}>{translate("drawer.toFacebook")}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => navigate('Ajuda')}
-                    >
-                        <Feather name='help-circle' size={verticalScale(25)} style={styles.iconStyle} />
-                        <Text style={styles.drawerItemsTxt}>{translate("drawer.toHelp")}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => navigate('Sobre')}
-                    >
-                        <Entypo name='info-with-circle' size={verticalScale(25)} color='gray' style={[styles.iconStyle, { paddingRight: '16%' }]} />
-                        <Text style={styles.drawerItemsTxt}>{translate("drawer.toAbout")}</Text>
-                    </TouchableOpacity>
-
-                    <View style={[{ flexDirection: 'row', justifyContent: 'center', padding: 8, marginTop: 25 }]}>
-                        <Text style={[styles.drawerItemsTxt, { fontSize: 20, fontWeight: 'bold' }]} onPress={this._logoutApp}>
-                            {translate("drawer.logOut")}
-                        </Text>
-                    </View>
-                </LinearGradient>
-            </View>
+                    </TouchableOpacity>*/}            
+            </Container>
 
         )
     }
 }
 
 const styles = StyleSheet.create({
+	iconStyle: {
+		marginLeft: scale(5),
+	},
+	iconRedeSocial: {
+		alignSelf: 'center',
+	},
+	menuOptionColor: {
+		backgroundColor: '#5DD39E',
+	}
+})
+
+/* const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
@@ -181,4 +230,4 @@ const styles = StyleSheet.create({
 
     },
 
-});
+}); */

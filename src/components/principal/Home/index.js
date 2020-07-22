@@ -1,21 +1,55 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import * as Imagem from '../../imgs/imageConst';
-import { getNameParts } from '../../utils/constUtils';
-import { scale } from '../../utils/scallingUtils';
-import translate from "../../../locales/i18n";
-import Emoji from 'react-native-emoji';
-import AwesomeAlert from 'react-native-awesome-alerts';
-import {API_URL} from 'react-native-dotenv';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Avatar } from 'react-native-elements';
 import { PermissionsAndroid } from 'react-native';
+import {API_URL} from 'react-native-dotenv';
+import RNSecureStorage from 'rn-secure-storage';
+import AsyncStorage from '@react-native-community/async-storage';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from 'react-native-geolocation-service';
-import LinearGradient from 'react-native-linear-gradient';
+import Feather from 'react-native-vector-icons/Feather';
+import Emoji from 'react-native-emoji';
 
-FontAwesome.loadFont();
+import * as Imagem from '../../../imgs/imageConst';
+import { getNameParts } from '../../../utils/constUtils';
+import translate from "../../../../locales/i18n";
+import { scale } from "../../../utils/scallingUtils";
+
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    TouchableOpacity, 
+    StatusBar, 
+    NetInfo, 
+    Alert, 
+    Modal, 
+    ScrollView
+} from 'react-native';
+
+import {
+  Container,
+  ScrollViewStyle,
+  Background,
+  Avatar,
+  UserView,
+  Button,
+  NamesContainer,
+  TextName,
+  AppName,
+  StatusContainer,
+  TextStyle,
+  StatusBemMal,
+  StatusText,
+  Bem,
+  Mal,
+  Alertas,
+  StatusBairro,
+  StatusTitle,
+  StatusBairroText,
+  BairroContainer,
+} from './styles';
+
+Feather.loadFont();
 
 let data = new Date();
 let d = data.getDate();
@@ -285,201 +319,202 @@ class Home extends Component {
     }
 
     render() {
-        const { showAlert } = this.state;
-        const { navigate } = this.props.navigation;
+      const { showAlert } = this.state;
+      const { navigate } = this.props.navigation;
 
-        const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
-        const householdsData = this.state.data;
+      const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
+      const householdsData = this.state.data;
 
-        const userIsProfessional = (
-            <View style={styles.rumorView}>
-                <TouchableOpacity
-                    //style={{ marginRight: '4%' }}
-                    onPress={() => navigate("Rumor")}
-                >
-                    <Text style={{ color: 'white', fontFamily: 'roboto', marginLeft: '6%' }}>{translate("home.reportRumor")}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => Alert.alert('', translate("home.reportRumorMessage"), [{ text: 'Ok', onPress: () => null }])}
-                >
-                    {/* <Text style={{ fontSize: 18, padding: '2%'}}> */}
-                    <FontAwesome style={{ marginRight: '2%'}} name="info-circle" size={25} color="white" />
-                    {/* </Text> */}
-                </TouchableOpacity>
-            </View>
-        )
+      const userIsProfessional = (
+          <View style={styles.rumorView}>
+              <TouchableOpacity
+                  //style={{ marginRight: '4%' }}
+                  onPress={() => navigate("Rumor")}
+              >
+                  <Text style={{ color: 'white', fontFamily: 'roboto', marginLeft: '6%' }}>{translate("home.reportRumor")}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                  onPress={() => Alert.alert('', translate("home.reportRumorMessage"), [{ text: 'Ok', onPress: () => null }])}
+              >
+                  {/* <Text style={{ fontSize: 18, padding: '2%'}}> */}
+                  <FontAwesome style={{ marginRight: '2%'}} name="info-circle" size={25} color="white" />
+                  {/* </Text> */}
+              </TouchableOpacity>
+          </View>
+      )
 
-        let isProfessionalTrue
-        if (this.state.isProfessional == "true") {
-            isProfessionalTrue = userIsProfessional
-        } else {
-            //isProfessionalTrue = userIsProfessional //Para aparecer sempre
-        }
+      let isProfessionalTrue
+      if (this.state.isProfessional == "true") {
+          isProfessionalTrue = userIsProfessional
+      } else {
+          //isProfessionalTrue = userIsProfessional //Para aparecer sempre
+      }
 
-        const userHowYouFelling = (
-            <Text style={styles.textFelling}>
-                {translate("home.userHowYouFelling")}
-            </Text>
-        )
+      const userHowYouFelling = (
+          <Text style={styles.textFelling}>
+              {translate("home.userHowYouFelling")}
+          </Text>
+      )
 
-        const hasBadReports = this.state.userBadReports > 2
+      const hasBadReports = this.state.userBadReports > 2
 
-        return (
-            <View style={styles.container}>
-                <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
+      return (
+        <View style={styles.container}>
+          <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
+          <Container>
+            <ScrollViewStyle>
+              <Background>
+                <UserView>  
+                  <NamesContainer>
+                    <TextName>{welcomeMessage}</TextName>
+                    <AppName>{translate("home.nowAGuardian")}</AppName>
+                  </NamesContainer>
+                  <Button onPress={() => {
+                      this.getHouseholds();
+                      this.setModalVisible(true);
+                  }}>
+                  <Avatar
+                    source={Imagem['NullAvatar']}
+                    activeOpacity={0.6}
+                  />
+                  </Button>
+                  
+                </UserView>
+              </Background>
+              <StatusContainer>
+                <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
+                <StatusBemMal>
+                  <Bem onPress={() => this.verifyLocalization()}>
+                    <StatusText>{translate("report.goodChoice")}</StatusText>
+                  </Bem>
+                  <Mal onPress={() => navigate('BadReport')}>
+                    <StatusText>{translate("report.badChoice")}</StatusText>
+                  </Mal>
+                </StatusBemMal>
+              </StatusContainer>
+              
+              <Alertas>Alertas</Alertas> 
+              {/* <BairroContainer>
+                <Feather name='alert-circle' size={70} color='#fff' />  
+                <StatusBairro>
+                  <StatusTitle>Status do seu bairro: </StatusTitle>
+                  <StatusBairroText>Maioria sentindo-se bem</StatusBairroText>
+                </StatusBairro>
+              </BairroContainer> */}
 
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <LinearGradient style={styles.viewTop} colors={['#348EAC', '#166b87']}>
-                        <Avatar
-                            size="xlarge"
+              <View style={styles.viewHouseholdSelect}>
+                <Modal
+                  animationType="fade"
+                  transparent={true}
+                  visible={this.state.modalVisible}
+                  onRequestClose={() => {
+                      this.setModalVisible(!this.state.modalVisible); //Exit to modal view
+                  }}>
+                  <View style={styles.modalView}>
+                    <View style={styles.modalViewTop}>
+                        <View style={styles.viewAvatar}>
+                        <Button onPress={async () => {
+                          await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+                          this.setModalVisible(!this.state.modalVisible);
+                          AsyncStorage.setItem('userSelected', this.state.userSelect);
+                          AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                          AsyncStorage.removeItem('householdID');
+                          this.getUserHealth();
+                        }}>
+                          <Avatar
+                            size="large"
                             rounded
-                            source={Imagem['NullAvatar']}
+                            source={Imagem[this.state.userAvatar]}
                             activeOpacity={0.6}
-                            containerStyle={styles.avatarTop}
-                            onPress={() => {
-                                this.getHouseholds();
-                                this.setModalVisible(true);
-                            }}
-                        />
-                        <View style={styles.viewWelcome}>
-                            <Text style={styles.textHelloUser}>
-                                {welcomeMessage}
-                            </Text>
-
-                            <Text style={styles.textNewGuardion}>
-                                {translate("home.nowAGuardian")}
-                            </Text>
+                          />
+                        </Button>
+                          <Text>{getNameParts(this.state.userName, true)}</Text>
                         </View>
-                    </LinearGradient>
-
-                    <View style={[styles.viewReport, styles.shadow]}>
-                        {userHowYouFelling}
-
-                        <View style={styles.containerGoodBad}>
-                            <TouchableOpacity //onPress={this._isconnected}
-                                style={[styles.viewChildGood, styles.shadow]}
-                                activeOpacity={0.6}
-                                onPress={() => this.verifyLocalization()}
-                            >
-                                <Text style={styles.textChoiceButton}>{translate("report.goodChoice")}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                style={[styles.viewChildBad, styles.shadow]}
-                                activeOpacity={0.6}
-                                onPress={() => navigate('BadReport')}
-                            >
-                                <Text style={styles.textChoiceButton}>{translate("report.badChoice")}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={styles.viewHouseholdSelect}>
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={this.state.modalVisible}
-                            onRequestClose={() => {
-                                this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                            }}>
-                            <View style={styles.modalView}>
-                                <View style={styles.modalViewTop}>
-                                    <View style={styles.viewAvatar}>
-                                        <Avatar
-                                            size="large"
-                                            rounded
-                                            source={Imagem[this.state.userAvatar]}
-                                            activeOpacity={0.6}
-                                            onPress={async () => {
-                                                await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
-                                                this.setModalVisible(!this.state.modalVisible);
-                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                AsyncStorage.removeItem('householdID');
-                                                this.getUserHealth();
-                                            }}
-                                        />
-                                        <Text>{getNameParts(this.state.userName, true)}</Text>
-                                    </View>
-                                    <ScrollView horizontal={true}>
-                                        {householdsData != null ?
-                                            householdsData.map((household, key) => {
-                                                return (
-                                                    <View style={styles.viewAvatar} key={key}>
-                                                        <Avatar
-                                                            size="large"
-                                                            rounded
-                                                            source={Imagem[household.picture]}
-                                                            activeOpacity={0.6}
-                                                            onPress={async () => {
-                                                                await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
-                                                                this.setModalVisible(!this.state.modalVisible);
-                                                                AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                                                                AsyncStorage.setItem('householdID', this.state.householdID.toString());
-                                                                this.getUserHealth();
-                                                            }}
-                                                        />
-                                                        <Text>{getNameParts(household.description, true)}</Text>
-                                                    </View>
-                                                )
-                                            })
-                                            : null}
-                                    </ScrollView>
-                                </View>
-                                <View style={styles.modalViewBottom}>
-                                    <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
-                                        navigate('Household');
+                        <ScrollView horizontal={true}>
+                          {householdsData != null ?
+                            householdsData.map((household, key) => {
+                              return (
+                                <View style={styles.viewAvatar} key={key}>
+                                  <Avatar
+                                    size="large"
+                                    rounded
+                                    source={Imagem[household.picture]}
+                                    activeOpacity={0.6}
+                                    onPress={async () => {
+                                        await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
                                         this.setModalVisible(!this.state.modalVisible);
-                                    }}>
-                                        <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
-                                        <Text>{translate("home.addProfile")}</Text>
-                                    </TouchableOpacity>
+                                        AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                        AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                        AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                        this.getUserHealth();
+                                    }}
+                                  />
+                                  <Text>{getNameParts(household.description, true)}</Text>
                                 </View>
-                            </View>
-                        </Modal>
-                    </View>
+                              )
+                            })
+                            : null}
+                        </ScrollView>
+                      </View>
+                      <View style={styles.modalViewBottom}>
+                        <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => {
+                          navigate('Household');
+                          this.setModalVisible(!this.state.modalVisible);
+                        }}>
+                          <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
+                          <Text>{translate("home.addProfile")}</Text>
+                        </TouchableOpacity>
+                      </View>
+                  </View>
+                </Modal>
+              </View>
 
-                    <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
-                        <View style={styles.viewStatusIcon}>
-                            <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
-                        </View>
-                        
-                        <View style={styles.viewStatusContent}>
-                            <Text style={styles.textStatusTitle}>
-                                {translate("home.statusLast7Days")}
-                            </Text>
-                            <Text style={styles.textStatusContent}>
-                                {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
-                            </Text>
-                        </View>
-                    </View>
+              <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
+                  <View style={styles.viewStatusIcon}>
+                      <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
+                  </View>
+                  
+                  <View style={styles.viewStatusContent}>
+                      <Text style={styles.textStatusTitle}>
+                          {translate("home.statusLast7Days")}
+                      </Text>
+                      <Text style={styles.textStatusContent}>
+                          {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
+                      </Text>
+                  </View>
+              </View>
 
-                    {isProfessionalTrue}
-                </ScrollView>
+              {isProfessionalTrue}
+            </ScrollViewStyle>
+            <Feather name="menu"
+              size={32} 
+              color='#ffffff' 
+              style={styles.menuBars}
+              onPress={() => this.props.navigation.openDrawer()}
+            />
+          </Container>                           
 
-                <FontAwesome name="bars" onPress={() => this.props.navigation.openDrawer()} size={32} color='#ffffff' style={styles.menuBars}/>
-
-                <AwesomeAlert
-                    show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
-                    title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-                    message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
-                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                    closeOnHardwareBackPress={false}
-                    showConfirmButton={this.state.showProgressBar ? false : true}
-                    confirmText={translate("badReport.alertMessages.confirmText")}
-                    confirmButtonColor='green'
-                    onCancelPressed={() => {
-                        this.hideAlert();
-                    }}
-                    onConfirmPressed={() => {
-                        this.hideAlert();
-                    }}
-                    onDismiss={() => this.hideAlert()}
-                />
-            </View>
-        );
-    }
+            <AwesomeAlert
+                show={showAlert}
+                showProgress={this.state.showProgressBar ? true : false}
+                title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
+                message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
+                closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={this.state.showProgressBar ? false : true}
+                confirmText={translate("badReport.alertMessages.confirmText")}
+                confirmButtonColor='green'
+                onCancelPressed={() => {
+                    this.hideAlert();
+                }}
+                onConfirmPressed={() => {
+                    this.hideAlert();
+                }}
+                onDismiss={() => this.hideAlert()}
+            />
+        </View>
+      );
+  }
 }
 
 
@@ -594,11 +629,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#348EAC',
         alignItems: 'center',
         flexDirection: 'row',
-        width: '90%',
+        marginRight: '6%',
+        marginLeft: '6%',
         borderRadius: 10,
         //borderColor: '#c4c4c4',
         //borderWidth: 1,
-        marginTop: scale(8),
         padding: scale(22),
     },
     viewStatusGood: {
