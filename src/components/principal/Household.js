@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     modalText: {
-        fontSize: 17,
+        fontSize: 16,
         fontFamily: 'roboto',
         color: '#465F6C',
         alignSelf: 'flex-start',
