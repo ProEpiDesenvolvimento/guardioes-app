@@ -11,8 +11,6 @@ export const logoAzUnB = require('./logos/logo_unb_azul.png');
 //Diversos
 export const imgTermos = require('./diversos/termos.png');
 export const imgTutorial = require('./diversos/tutorial.png');
-export const imagemGood = require('./diversos/GoodReport.png');
-export const imagemBad = require('./diversos/BadReport.png');
 
 //Avatar
 export const NullAvatar = require('./avatar/avatar.png');
