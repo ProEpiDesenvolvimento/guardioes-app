@@ -21,7 +21,8 @@ import {
 	TextOption, 
 	Aplicativo, 
 	SocialContainer,
-	RedeSocial
+    RedeSocial,
+    TextName,
 } from './styles';
 
 Entypo.loadFont();
@@ -73,6 +74,9 @@ export default class drawerContentComponents extends Component {
 					<Avatar 
 					 	source={Imagem[this.state.userAvatar]}
 					/>
+                    <TextName>
+                        {getNameParts(this.state.userName, true)} 
+                    </TextName>
 				</AvatarContainer>
                 <Button onPress={() => navigate('Perfil')}>
                     <UserOption>

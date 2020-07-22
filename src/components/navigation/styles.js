@@ -8,6 +8,13 @@ export const Container = styled.View`
 export const Button = styled.TouchableOpacity`
 `;
 
+export const TextName = styled.Text`
+  color: black;
+  font-weight: 500;
+  margin-top: ${scale(10)}px; 
+  font-size: ${scale(14)}px;
+`;
+
 export const Avatar = styled.Image`
   border-radius: 50;
   border-color: #ffffff;
