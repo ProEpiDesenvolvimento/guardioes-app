@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import SwiperFlatList from 'react-native-swiper-flatlist';
 import { LocaleConfig } from 'react-native-calendars';
+import { PieChart } from 'react-native-svg-charts'
 
-import { ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, UserChart, CalendarStyled, UserReports,
-         ReportsTitleWrapper, ReportsTitle, ReportsSubtitle, ReportsAll, ReportsWell, ReportsIll, ReportData, ReportDataTitle, ReportDataInfo } from './styles.js';
+import { ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, ChartContainer, UserChart,  } from './styles';
+import { ChartLabelGreen, ChartLabelOrange, ChartLabelGray, ChartLabel, ChartTitle, CalendarStyled, UserReports } from './styles';
+import { ReportsTitleWrapper, ReportsTitle, ReportsSubtitle, ReportsAll, ReportsWell, ReportsIll, ReportData, ReportDataTitle, ReportDataInfo } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
@@ -12,13 +15,11 @@ import RNSecureStorage from 'rn-secure-storage';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../../imgs/imageConst';
+import { HappyIcon, SadIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import { getNameParts } from '../../../utils/constUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
-
-import HappyIcon from '../../../imgs/diversos/happy.svg';
-import SadIcon from '../../../imgs/diversos/sad.svg';
 
 Feather.loadFont();
 
@@ -46,7 +47,7 @@ class Diario extends Component {
     constructor(props) {
         super(props)
         this.props.navigation.addListener('didFocus', payload => {
-            //this.getInfo();
+            //this.fetchData();
         })
         this.state = {
             data: [],
@@ -60,7 +61,7 @@ class Diario extends Component {
     }
     
     componentDidMount () {
-        this.getInfo()
+        this.fetchData()
     }
 
     handleSelect(event) {
@@ -83,7 +84,7 @@ class Diario extends Component {
         }
     }
 
-    getInfo = async () => { //Get user infos
+    fetchData = async () => { //Get user infos
         const userID = await AsyncStorage.getItem('userID')
         const userName = await AsyncStorage.getItem('userName')
         const userSelected = await AsyncStorage.getItem('userSelected')
@@ -186,6 +187,27 @@ class Diario extends Component {
             )
         }
 
+        const chartData = [
+            {
+                key: 1,
+                value: this.state.NummarkedDateNo,
+                svg: { fill: '#5DD39E' },
+                arc: { cornerRadius: 8, }
+            },
+            {
+                key: 2,
+                value: this.state.NummarkedDate,
+                svg: { fill: '#F18F01' },
+                arc: { cornerRadius: 8 }
+            },
+            {
+                key: 3,
+                value: 10,
+                svg: { fill: '#c4c4c4' },
+                arc: { cornerRadius: 8 }
+            }
+        ]
+
         return (
             <ScrollViewStyled>
                 <UserData>
@@ -204,21 +226,54 @@ class Diario extends Component {
                     </UserInfo>
                 </UserData>
                 <UserDash>
-                    <UserChart>
-                        <CalendarStyled
-                            current={_today}
-                            markedDates={this.state.datesMarked}
-                            onDayPress={(day) => {
-                                let symptomDate = this.state.markedDateAll
-                                symptomDate.map(symptomMarker => {
-                                    if(symptomMarker.bad_since == day.dateString){
-                                        console.warn(symptomMarker.symptom)
-                                    }
-                                })
-                            }}
-                            renderArrow={(direction) => this.handleCalendarArrows(direction)}
-                        />
-                    </UserChart>
+                    <SwiperFlatList
+                        showPagination={true}
+                        disableGesture={false}
+                        paginationDefaultColor="#c4c4c4"
+                        paginationActiveColor="#F18F01"
+                    >
+                        <ChartContainer>
+                            <UserChart>
+                                <CalendarStyled
+                                    current={_today}
+                                    markedDates={this.state.datesMarked}
+                                    onDayPress={(day) => {
+                                        let symptomDate = this.state.markedDateAll
+                                        symptomDate.map(symptomMarker => {
+                                            if(symptomMarker.bad_since == day.dateString){
+                                                console.warn(symptomMarker.symptom)
+                                            }
+                                        })
+                                    }}
+                                    renderArrow={(direction) => this.handleCalendarArrows(direction)}
+                                />
+                            </UserChart>
+                        </ChartContainer>
+                        <ChartContainer>
+                            <UserChart>
+                                <ChartTitle>Estatísticas</ChartTitle>
+                                    <PieChart
+                                        style={{ height: 170, marginBottom: scale(12) }}
+                                        outerRadius={'100%'}
+                                        innerRadius={'15%'}
+                                        data={chartData}
+                                    />
+                                    <View style={{alignItems: "center"}}>
+                                        <View style={{}}>
+                                            <View style={{flexDirection: 'row', alignItems: "center" }}>
+                                                <ChartLabelGreen /><ChartLabel>{this.state.GoodPercent}% - Bem</ChartLabel>
+                                            </View>
+                                            <View style={{flexDirection: 'row', alignItems: "center"}}>
+                                                <ChartLabelOrange /><ChartLabel>{this.state.BadPercent}% - Mal</ChartLabel>
+                                            </View>
+                                            <View style={{flexDirection: 'row', alignItems: "center"}}>
+                                                <ChartLabelGray /><ChartLabel>15% - Não Informado</ChartLabel>
+                                            </View>
+                                        </View>
+                                    </View>
+                            </UserChart>
+                        </ChartContainer>
+                    </SwiperFlatList>
 
                     <UserReports>
                         <ReportsTitleWrapper>

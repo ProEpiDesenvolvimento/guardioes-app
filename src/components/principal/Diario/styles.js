@@ -52,6 +52,12 @@ export const UserDash = styled.View`
     marginTop: -180px;
 `;
 
+export const ChartContainer = styled.View`
+    width: ${percentage(100)}px;
+    align-items: center;
+    overflow: visible;
+`;
+
 export const UserChart = styled(ShadowView).attrs({
 })`
     width: 90%;
@@ -63,6 +69,48 @@ export const UserChart = styled(ShadowView).attrs({
     shadow-opacity: 0.1;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
+`;
+
+export const Chart = styled.View`
+    flex-direction: row;
+`;
+
+export const ChartTitle = styled.Text`
+    font-family: ArgentumSans-Medium;
+    font-size: ${scale(16)}px;
+    color: #32323B;
+    margin: ${scale(12)}px;
+    align-self: center;
+`;
+
+const chartlabels = `
+    height: ${scale(14)}px;
+    width: ${scale(14)}px;
+    border-radius: 100px;
+    margin-right: ${scale(14)}px;
+`;
+
+export const ChartLabelGreen = styled.View`
+    ${chartlabels}
+    background-color: #5DD39E;
+`;
+
+export const ChartLabelOrange = styled.View`
+    ${chartlabels}
+    background-color: #F18F01;
+`;
+
+export const ChartLabelGray = styled.View`
+    ${chartlabels}
+    background-color: #c4c4c4;
+`;
+
+export const ChartLabel = styled.Text`
+    font-family: ArgentumSans;
+    font-size: ${scale(14)}px;
+    color: #32323B;
+    margin-bottom: ${scale(0)}px;
+    
 `;
 
 export const UserReports = styled.View`

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
-import { Container, ScrollViewStyled, TitleWrapper, Title, SubTitle, AdvicesView, AdviceShadow, Advice, AdviceTitle, AdviceIcon,
-         Details, DetailsIcon, DetailsTitleWrapper, DetailsTitle, DetailsBodyText, DetailsButton, DetailsButtonLabel } from './styles';
+import { Container, ScrollViewStyled, TitleWrapper, Title, SubTitle, AdvicesView, AdviceShadow, Advice, AdviceTitle, AdviceIcon } from './styles';
+import { Details, DetailsIcon, DetailsTitleWrapper, DetailsTitle, DetailsBodyText, DetailsButton, DetailsButtonLabel } from './styles';
 
 import RNSecureStorage from 'rn-secure-storage';
 import { Redirect } from '../../../utils/constUtils';
@@ -11,7 +11,6 @@ import { InsectIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL, APP_ID} from 'react-native-dotenv';
-//import Data from './data';
 
 Feather.loadFont();
 
@@ -23,7 +22,7 @@ class Conselho extends Component {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
             //console.log(payload)
-            //this.getInfo();
+            //this.fetchData();
         });
         this.state = {
             modalVisible: false,
@@ -33,14 +32,14 @@ class Conselho extends Component {
     }
 
     componentDidMount() {
-        this.getInfo()
+        this.fetchData()
     }
 
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
 
-    getInfo = async () => { //Get user info
+    fetchData = async () => { //Get user info
         const userToken = await RNSecureStorage.get('userToken');
         this.setState({ userToken });
         this.getContents();

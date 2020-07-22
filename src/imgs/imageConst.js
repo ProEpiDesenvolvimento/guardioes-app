@@ -8,10 +8,6 @@ export const logoUnB = require('./logos/logo_unb.png');
 export const logoAzProEpi = require('./logos/logo_proepi_azul.png');
 export const logoAzUnB = require('./logos/logo_unb_azul.png');
 
-//Diversos
-export const imgTermos = require('./diversos/termos.png');
-export const imgTutorial = require('./diversos/tutorial.png');
-
 //Avatar
 export const NullAvatar = require('./avatar/avatar.png');
 export const Father = require('./avatar/father.png');
@@ -23,11 +19,15 @@ export const Brother = require('./avatar/brother.png');
 export const Son = require('./avatar/son.png');
 export const Daughter = require('./avatar/daughter.png');
 
-//Diary Icons
+// Help
+export {default as TermsIcon} from './diversos/terms-and-conditions.svg';
+export {default as TutorialIcon} from './diversos/online-learning.svg';
+
+// Diary Icons
 export {default as HappyIcon} from './diversos/happy.svg';
 export {default as SadIcon} from './diversos/sad.svg';
 
-//Advices Icons
+// Advices Icons
 export {default as HelplineIcon} from './advices/helpline.svg';
 export {default as HospitalIcon} from './advices/hospital.svg';
 export {default as InsectIcon} from './advices/insect.svg';

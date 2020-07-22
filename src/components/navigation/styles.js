@@ -16,8 +16,8 @@ export const HeaderNavigator = styled.View`
 
 export const BackButton = styled.TouchableOpacity`
     position: absolute;
-    left: 15;
-    bottom: 10;
+    left: 15px;
+    bottom: 10px;
 `;
 
 export const ScreenTitle = styled.Text`

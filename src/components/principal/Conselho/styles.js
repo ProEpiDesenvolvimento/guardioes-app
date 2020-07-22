@@ -17,7 +17,7 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
         flexGrow: 1,
         paddingTop: percentage(6),
         paddingHorizontal: percentage(7),
-    },
+    }
 })``;
 
 export const TitleWrapper = styled.View`
