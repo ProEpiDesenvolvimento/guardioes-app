@@ -165,8 +165,8 @@ class ForgetPwd extends Component {
                                     <SnowButton
                                         onPress={() =>
                                             //console.warn(this.state.userEmail)
-                                            this.goToNextScreen()
-                                            //this.sendToken()
+                                            //this.goToNextScreen()
+                                            this.sendToken()
                                         }
                                     >
                                         <Label>{translate("forgetPwd.sendButton")}</Label>
