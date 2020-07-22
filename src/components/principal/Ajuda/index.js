@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
 
-import { Help, Box, IconWrapper, InfoContainer, InfoWrapper, Name } from './styles';
+import { Help, Box, Button, IconWrapper, InfoWrapper, Title } from './styles';
 
+import { TermsIcon, TutorialIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from "../../../../locales/i18n";
-
-import Agenda from '../../../imgs/diversos/terms-and-conditions.svg';
-import Idea from '../../../imgs/diversos/online-learning.svg';
 
 class Ajuda extends Component {
     static navigationOptions = {
@@ -19,33 +16,29 @@ class Ajuda extends Component {
         return (
             <Help>
                 <Box>
-                    <TouchableOpacity style={{flexDirection: "row", flex: 1}} onPress={() => navigate('TermosPoliticas')}>
+                    <Button onPress={() => navigate('TermosPoliticas')}>
                         <IconWrapper>
-                            <Agenda height={scale(45)} width={scale(45)} />
+                            <TermsIcon height={scale(45)} width={scale(45)} />
                         </IconWrapper>
-                        <InfoContainer>
-                            <InfoWrapper>
-                                <Name>
-                                    {translate("ajuda.useTermsBtn")}
-                                </Name>
-                            </InfoWrapper>
-                        </InfoContainer>
-                    </TouchableOpacity>
+                        <InfoWrapper>
+                            <Title>
+                                {translate("ajuda.useTermsBtn")}
+                            </Title>
+                        </InfoWrapper>
+                    </Button>
                 </Box>
 
                 <Box>
-                    <TouchableOpacity style={{flexDirection: "row", flex: 1}} onPress={() => navigate('Tutorial')}>
+                    <Button onPress={() => navigate('Tutorial')}>
                         <IconWrapper>
-                            <Idea height={scale(45)} width={scale(45)} />
+                            <TutorialIcon height={scale(45)} width={scale(45)} />
                         </IconWrapper>
-                        <InfoContainer>
-                            <InfoWrapper>
-                                <Name>
-                                    {translate("ajuda.tutorialBtn")}
-                                </Name>
-                            </InfoWrapper>
-                        </InfoContainer>
-                    </TouchableOpacity>
+                        <InfoWrapper>
+                            <Title>
+                                {translate("ajuda.tutorialBtn")}
+                            </Title>
+                        </InfoWrapper>
+                    </Button>
                 </Box>
             </Help>
         );
