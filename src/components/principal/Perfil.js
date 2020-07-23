@@ -213,7 +213,8 @@ class Perfil extends Component {
           is_professional: this.state.isProfessional,
           risk_group: this.state.userRiskGroup,
           state: this.state.userState,
-          city: this.state.userCity
+          city: this.state.userCity,
+          country: this.state.userCountry
         }
       )
     })
@@ -290,10 +291,18 @@ class Perfil extends Component {
   }
 
   handleEdit = async () => {
-    await this.setState({ modalVisibleUser: false })
-    await this.setState({ userName: this.state.userSelect })
+    await this.setState({
+      modalVisibleUser: false,
+      userName: this.state.userSelect 
+    })
     if (this.state.groupCheckbox === false) {
       await this.setState({ userGroup: null, userIdCode: null, userGroupName: null, userIdSelect: null })
+    }
+    if (this.state.userCountry !== "Brazil") {
+      this.setState({
+        userCity: null,
+        userState: null
+      })
     }
     await this.editUser()
   }
@@ -744,8 +753,14 @@ class Perfil extends Component {
                 </View>
 
                 <View style={styles.viewChildSexoRaca}>
-                  <Text style={styles.commomTextView}>País de Origem:</Text>
-                  <Text style={styles.textBornCountry}>{this.state.userCountry}</Text>
+                  <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={country}
+                    initValue={this.state.userCountry}
+                    onChange={(option) => this.setState({ userCountry: option.key })}
+                  />
                 </View>
               </View>
 
