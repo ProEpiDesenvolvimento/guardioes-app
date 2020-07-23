@@ -65,10 +65,7 @@ export default {
         "errorMessages": {
             "error": "Erro",
             "allFieldsAreFilled": "Todos os campos devem ser preenchidos"
-        },
-        "riskGroupTitle": "Quais são os grupos de risco?",
-        "riskGroupMessage": "\t O COVID-19 é geralmente mais grave em pessoas com mais de 60 anos ou que têm problemas de saúde como doenças pulmonares ou cardíacas, diabetes ou condições que afetam seu sistema imunológico.",
-        "riskGroupButton": "Voltar"
+        }
     },
     "noInternet": {
         "noInternetConnection": "Sem Internet!",
@@ -300,14 +297,5 @@ export default {
     },
     "rumor": {
         "rumorSent": "Rumor registrado! "
-    },
-    "getToken": {
-        "verificationCode": "Codigo de Verificação",
-        "invalidCode": "Código Inválido",
-        "confirm": "Confirmar",
-        "loading": "Carregando",
-        "verificationCodeSent": "Foi enviado um codigo de verificação para o email indicado.",
-        "spamCheckWarning": "Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.",
-        "inputVerificationCode": "Insira o Código de Verificação"
     }
 }

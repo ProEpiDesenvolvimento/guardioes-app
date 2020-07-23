@@ -11,7 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 
 class GetToken extends Component {
     static navigationOptions = {
-        title: translate("getToken.verificationCode"),
+        title: "Codigo de Verificação",
     }
     constructor(props) {
         super(props);
@@ -50,7 +50,7 @@ class GetToken extends Component {
             .then((responseJson) => {
                 if (responseJson.error == true) {
                     this.hideAlert();
-                    Alert.alert(translate("getToken.invalidCode"))
+                    Alert.alert("Código Inválido")
                 } else {
                     this.hideAlert();
                     RNSecureStorage.set('verificationToken', responseJson.reset_password_token, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
@@ -63,11 +63,11 @@ class GetToken extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.viewTitle}>
-                    <Text style={styles.commomTitle}>{translate("getToken.verificationCodeSent")}</Text>
-                    <Text style={styles.commomTitle}>{translate("getToken.spamCheckWarning")}</Text>
+                    <Text style={styles.commomTitle}>Foi enviado um codigo de verificação para o email incado.</Text>
+                    <Text style={styles.commomTitle}>Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.</Text>
                 </View>
                 <View style={styles.viewForm}>
-                    <Text style={styles.commomText}>{translate("getToken.inputVerificationCode")}</Text>
+                    <Text style={styles.commomText}>Insira o Código de Verificação</Text>
                     <TextInput
                         style={styles.formInput}
                         autoCapitalize='none'
@@ -77,7 +77,7 @@ class GetToken extends Component {
                     />
                     <View style={styles.buttonView}>
                         <Button
-                            title={translate("getToken.confirm")}
+                            title="Confirmar"
                             color="#348EAC"
                             onPress={() =>
                                 this.confirmVerificationCode()
@@ -88,7 +88,7 @@ class GetToken extends Component {
                 <AwesomeAlert
                     show={this.state.showAlert}
                     showProgress={this.state.showProgressBar ? true : false}
-                    title={this.state.showProgressBar ? translate("getToken.loading") : null}
+                    title={this.state.showProgressBar ? "Carregando" : null}
                     closeOnTouchOutside={this.state.showProgressBar ? false : true}
                     closeOnHardwareBackPress={false}
                     showCancelButton={false}
