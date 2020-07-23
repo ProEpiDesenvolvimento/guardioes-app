@@ -118,13 +118,13 @@ export const Stack = createStackNavigator({
     {
         initialRouteName: 'BottomMenu',
         navigationOptions: ({ navigation }) => ({
-            header: (
+            header: (props) => (
                 <HeaderNavigator>
                     <BackButton onPress={() => navigation.goBack()}>
                         <Feather name="chevron-left" size={scale(38)} color="#ffffff" />
                     </BackButton>
                     <ScreenTitle>
-                        {navigation.state.routeName}
+                        {props.scene.descriptor.options.title}
                     </ScreenTitle>
                 </HeaderNavigator>
             ),

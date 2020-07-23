@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { scale } from '../../../utils/scallingUtils';
+
+import { ScrollViewStyled, Terms } from './styles';
+
 import translate from '../../../../locales/i18n';
 
 class TermosPoliticas extends Component {
@@ -9,27 +10,23 @@ class TermosPoliticas extends Component {
     }
 
     render() {
-
         return (
-            <ScrollView>
-                <View style={{ paddingHorizontal: scale(30) }}>
-                    <Text>{translate("useTerms.terms.textoTermosTitulo")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_1")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_2")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_3")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_4")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_5")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_6")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_7")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_8")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_9")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_10")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_11")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_12")}</Text>
-                    <Text>{translate("useTerms.terms.textoTermos_13")}</Text>
-                </View>
-
-            </ScrollView>
+            <ScrollViewStyled>
+                <Terms>{translate("useTerms.terms.textoTermosTitulo")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_1")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_2")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_3")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_4")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_5")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_6")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_7")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_8")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_9")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_10")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_11")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_12")}</Terms>
+                <Terms>{translate("useTerms.terms.textoTermos_13")}</Terms>
+            </ScrollViewStyled>
         );
     }
 }

@@ -1,84 +1,73 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, Image, TouchableOpacity } from 'react-native';
-import { scale } from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
+import { TouchableOpacity } from 'react-native';
 
-onPress = (rota, navigation) => {
-    navigation.navigate(`${rota}`)
-}
+import { ScrollViewStyled, Title, Subtitle, BodyText } from './styles';
+
+import translate from '../../../../locales/i18n';
 
 class Tutorial extends Component {
     static navigationOptions = {
         title: translate("tutorial.title")
     }
     render() {
+        const { navigate } = this.props.navigation;
+
         return (
-            <ScrollView>
-                <View style={{ paddingHorizontal: scale(30) }}>
-                    {/* Titulo */}
-                    <Text style={{ fontSize: scale(20), fontWeight: 'bold' }}>{translate("tutorial.tutorial")}</Text>
+            <ScrollViewStyled>
+                <Title>
+                    {translate("tutorial.tutorial")}
+                </Title>
 
-                    {/* Como Usar */}
-                    <Text>{translate("tutorial.howToUse")}</Text>
+                {/* Como Usar */}
+                <BodyText>{translate("tutorial.howToUse")}</BodyText>
 
-                    {/* Continuacao de como usar */}
-                    <Text>{translate("tutorial.howToUse2")}</Text>
+                {/* Continuacao de como usar */}
+                <BodyText>{translate("tutorial.howToUse2")}</BodyText>
 
-                    {/* Mudando para Noticias, titulo */}
-                    <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                        onPress={() => onPress('Noticias', this.props.navigation)}
-                    >
-                        <Text style={{ fontSize: scale(15), fontWeight: 'bold', paddingVertical: scale(10), textDecorationLine: 'underline' }}>
-                            {translate("tutorial.news")}
-                        </Text>
-                        
-                    </TouchableOpacity>
+                {/* Mudando para Noticias, titulo */}
+                <TouchableOpacity onPress={() => navigate('Noticias')}>
+                    <Subtitle>
+                        {translate("tutorial.news")}
+                    </Subtitle>
+                </TouchableOpacity>
+                <BodyText>
+                    {translate("tutorial.newsCont")}
+                </BodyText>
+                
+                <BodyText style={{ fontWeight: 'bold' }}>
+                    {translate("tutorial.newsPs")}
+                </BodyText>
 
-                    {/* Conteudo de noticias */}
-                    <Text>{translate("tutorial.newsCont")}</Text>
-                    {/* Ps em noticias e um emoji piscando */}
-                    <Text style={{ fontWeight: 'bold' }}>{translate("tutorial.newsPs")}</Text>
+                {/* Conselhos de Saude */}
+                <TouchableOpacity onPress={() => navigate('Conselho')}>
+                    <Subtitle>
+                        {translate("tutorial.advices")}
+                    </Subtitle>
+                </TouchableOpacity>
+                <BodyText>
+                    {translate("tutorial.advicesCont")}
+                </BodyText>
 
-                    {/* Conselhos de Saude */}
-                    <TouchableOpacity
-                        style={{ backgroundColor: 'rgba(0,0,0,0)', flexDirection: 'row', alignItems: 'center' }}
-                        onPress={() => onPress('Conselho', this.props.navigation)}
-                    >
-                        <Text style={{ fontSize: scale(15), fontWeight: 'bold', paddingVertical: scale(10), textDecorationLine: 'underline' }}>
-                            {translate("tutorial.advices")}
-                        </Text>
-                        
-                    </TouchableOpacity>
-                    <Text>{translate("tutorial.advicesCont")}</Text>
+                {/* Diario */}
+                <TouchableOpacity onPress={() => navigate('Diario')}>
+                    <Subtitle>
+                        {translate("tutorial.diary")}
+                    </Subtitle>
+                </TouchableOpacity>
+                <BodyText>
+                    {translate("tutorial.diaryCont")}
+                </BodyText>
 
-                    {/* Diario */}
-                    <TouchableOpacity
-                        style={{ backgroundColor: 'rgba(0,0,0,0)', flexDirection: 'row', alignItems: 'center' }}
-                        onPress={() => onPress('Diario', this.props.navigation)}
-                    >
-                        <Text style={{ fontSize: scale(15), fontWeight: 'bold', paddingVertical: scale(10), textDecorationLine: 'underline' }}>
-                            {translate("tutorial.diary")}
-                        </Text>
-                    </TouchableOpacity>
-                    <Text>
-                        {translate("tutorial.diaryCont")}
-                    </Text>
-
-                    {/* Mapa da Saude */}
-                    <TouchableOpacity
-                        style={{ backgroundColor: 'rgba(0,0,0,0)', flexDirection: 'row', alignItems: 'center' }}
-                        onPress={() => onPress('Mapa', this.props.navigation)}
-                    >
-                        <Text style={{ fontSize: scale(15), fontWeight: 'bold', paddingVertical: scale(10), textDecorationLine: 'underline' }}>
-                            {translate("tutorial.healthMap")}
-                        </Text>
-                    </TouchableOpacity>
-                    <Text>
-                        {translate("tutorial.healthMapCont")}
-                    </Text>
-                </View>
-            </ScrollView>
+                {/* Mapa da Saude */}
+                <TouchableOpacity onPress={() => navigate('Mapa')}>
+                    <Subtitle>
+                        {translate("tutorial.healthMap")}
+                    </Subtitle>
+                </TouchableOpacity>
+                <BodyText>
+                    {translate("tutorial.healthMapCont")}
+                </BodyText>
+            </ScrollViewStyled>
         )
     }
 }

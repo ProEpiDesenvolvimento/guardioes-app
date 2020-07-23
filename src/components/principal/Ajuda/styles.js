@@ -5,6 +5,7 @@ import ShadowView from 'react-native-simple-shadow-view';
 import { scale, percentage } from '../../../utils/scallingUtils';
 
 export const Help = styled.View`
+    background-color: #f8f8f8;
     flex: 1;
     padding-top: ${percentage(8)}px;
     padding-horizontal: ${percentage(7)}px;
