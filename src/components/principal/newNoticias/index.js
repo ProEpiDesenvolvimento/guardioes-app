@@ -2,25 +2,13 @@ import React, {useState, useEffect} from 'react';
 import { useTwitter } from 'react-native-simple-twitter';
 import Noticias from './Noticias';
 
-import noticeImg from '../../../../doc/twitterImg.jpg'
-
 import { 
     Container, 
     ScrollNoticias, 
     NoticiasTitle, 
     FeedTitle,
-    NoticeContainer,
-    Header,
-    TwitterInfo,
-    TwitterName,
-    TwitterArroba,
-    Data,
-    NoticiaText,
-    Imagem,
     List,
 } from './styles';
-
-const data = [1,2,3,4,5,6]
 
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
