@@ -46,7 +46,7 @@ function newNoticias({ data }){
             }}
           />
         ) :
-            <Imagem source={noticeImg} />
+            null
         }
     </NoticeContainer>
   );

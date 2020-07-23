@@ -28,12 +28,12 @@ export default function newNoticias() {
   const {twitter} = useTwitter();
 
   twitter.setConsumerKey(
-    'M8wPaN9rUYK7uWhS0Z3wyK5M3',
-    'nSrWvv1SLC7j6OG6U4ZWpSUaMOhRtCkXHZhEy380MldKjLs2zs',
+    'key',
+    'key',
   );
   twitter.setAccessToken(
-    '2278065150-VNm0Jmx7iDsi237SfJGx60q1xnPBFslPEe5sB0B',
-    '31OJ3y9oSKRUJ5h8Uljq7oOnYx4x1OxyeHqm7xhHz5VRB',
+    'key',
+    'key',
   );
 
   useEffect(() => {
