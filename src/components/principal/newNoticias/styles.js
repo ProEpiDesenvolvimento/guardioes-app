@@ -6,11 +6,20 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const ScrollNoticias = styled.ScrollView`
+export const List = styled.FlatList.attrs({
+    contentContainerStyle: {padding: scale(5)},
+    showsVerticalScrollIndicator: false
+})`
+`;
+
+export const ScrollNoticias = styled.View`
     background-color: white;
     border-top-right-radius: 35px;
     border-top-left-radius: 35px;
-    padding: ${scale(22)}px;
+    padding-left: ${scale(15)}px;
+    padding-right: ${scale(15)}px;
+    padding-bottom: ${scale(55)}px;
+    padding-top: ${scale(20)}px;
 `;
 
 export const NoticiasTitle = styled.Text`
