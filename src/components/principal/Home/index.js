@@ -4,7 +4,6 @@ import {API_URL} from 'react-native-dotenv';
 import RNSecureStorage from 'rn-secure-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Emoji from 'react-native-emoji';
@@ -337,7 +336,7 @@ class Home extends Component {
                   onPress={() => Alert.alert('', translate("home.reportRumorMessage"), [{ text: 'Ok', onPress: () => null }])}
               >
                   {/* <Text style={{ fontSize: 18, padding: '2%'}}> */}
-                  <FontAwesome style={{ marginRight: '2%'}} name="info-circle" size={25} color="white" />
+                  <Feather style={{ marginRight: '2%'}} name="info" size={25} color="white" />
                   {/* </Text> */}
               </TouchableOpacity>
           </View>
@@ -461,7 +460,7 @@ class Home extends Component {
                           navigate('Household');
                           this.setModalVisible(!this.state.modalVisible);
                         }}>
-                          <FontAwesome name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
+                          <Feather name="plus-circle" size={scale(30)} color='rgba(22, 107, 135, 1)' />
                           <Text>{translate("home.addProfile")}</Text>
                         </TouchableOpacity>
                       </View>
@@ -471,7 +470,7 @@ class Home extends Component {
 
               <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
                   <View style={styles.viewStatusIcon}>
-                      <FontAwesome name={hasBadReports ? "exclamation-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
+                      <Feather name={hasBadReports ? "alert-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
                   </View>
                   
                   <View style={styles.viewStatusContent}>
