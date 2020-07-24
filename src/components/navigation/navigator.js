@@ -137,6 +137,7 @@ export const Drawer = createDrawerNavigator({
     Stacks: { screen: Stack }
 }, {
         contentComponent: drawerContentComponents,
+        drawerBackgroundColor: 'transparent',
         drawerWidth: scale(290),
     }
 );

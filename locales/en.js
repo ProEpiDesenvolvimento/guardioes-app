@@ -301,7 +301,8 @@ export default {
         "toAbout": "About",
         "moreComing": "We have more comming",
         "healthDiary": "Health Diary",
-        "healthMap": "Health Map"
+        "healthMap": "Health Map",
+        "share": "Guardiões da Saúde\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n"
     },
     "rumor": {
         "rumorSent": "Rumor registered! "

@@ -304,7 +304,8 @@ export default {
         "toAbout": "Acerca de",
         "moreComing": "¡Tenemos más funciones en el futuro¡",
         "healthDiary": "Diario de Salud",
-        "healthMap": "Mapa de la Salud"
+        "healthMap": "Mapa de la Salud",
+        "share": "Guardianes de la Salud\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n"
     },
     "getToken": {
         "title": "Código de Verificación",

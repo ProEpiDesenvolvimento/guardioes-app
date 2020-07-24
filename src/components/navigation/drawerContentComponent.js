@@ -1,33 +1,31 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import { StyleSheet, Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import { getNameParts } from '../../utils/constUtils';
-import { moderateScale, verticalScale, scale } from '../../utils/scallingUtils';
+import { Avatar } from 'react-native-elements';
+import Share from "react-native-share";
+import { scale } from '../../utils/scallingUtils';
 import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
-import LinearGradient from 'react-native-linear-gradient';
 
 import { 
-    Container, 
+    Container,
+    ScrollViewStyled,
     Button,
-	Avatar,
 	AvatarContainer, 
-	UserOption, 
+    UserOptionGreen, 
+    UserOptionBlue, 
 	TextOption, 
 	Aplicativo, 
 	SocialContainer,
     RedeSocial,
-    TextName,
 } from './styles';
 
-Entypo.loadFont();
 Feather.loadFont();
-MaterialIcons.loadFont();
+SimpleLineIcons.loadFont();
 
 export default class drawerContentComponents extends Component {
     constructor(props) {
@@ -38,14 +36,15 @@ export default class drawerContentComponents extends Component {
     }
 
     //Funcao responsavel por pegar as variaveis do Facebook e salva-las em variaveis de estado 
-    getInfo = async () => {
+    fetchData = async () => {
         let userName = await AsyncStorage.getItem('userName');
         let userAvatar = await AsyncStorage.getItem('userAvatar');
-        this.setState({ userName, userAvatar })
+        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        this.setState({ userName, userAvatar, isProfessional })
     }
 
     componentDidMount() {
-        this.getInfo()
+        this.fetchData()
     }
 
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
@@ -66,112 +65,136 @@ export default class drawerContentComponents extends Component {
     render() {
         const { navigate } = this.props.navigation;
 
-        //this.getInfo();
+        //this.fetchData();
 
         return (
             <Container>
-                <AvatarContainer>
-					<Avatar 
-					 	source={Imagem[this.state.userAvatar]}
-					/>
-                    <TextName>
-                        {getNameParts(this.state.userName, true)} 
-                    </TextName>
-				</AvatarContainer>
-                <Button onPress={() => navigate('Perfil')}>
-                    <UserOption>
-                        <Feather name='settings'
-                            size={scale(26)} 
-                            color={'#fff'} 
-                            style={styles.iconStyle}
+                <ScrollViewStyled>
+                    <AvatarContainer>
+                        <Avatar
+                            containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
+                            source={Imagem[this.state.userAvatar]}
+                            size={scale(60)}
+                            rounded
                         />
-                        <TextOption>
-                            Editar perfis
-                        </TextOption>
-                    </UserOption>
-                </Button>
-                <Button onPress={this._logoutApp}>
-                    <UserOption>
-                        <Feather name='log-out'
-                            size={scale(26)} 
-                            color='#ffffff' 
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            Sair
-                        </TextOption>
-                    </UserOption>
-                </Button>
-                <Aplicativo>
-					Aplicativo
-				</Aplicativo>
-                <Button>
-                    <UserOption style={styles.menuOptionColor}>
-                        <Feather name='share-2'
-                            size={scale(26)} 
-                            color='#ffffff' 
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            Compartilhar
-                        </TextOption>
-                    </UserOption>
-                </Button>
-                <Button onPress={() => navigate('Ajuda')}>
-                    <UserOption style={styles.menuOptionColor}>
-                        <Feather name='help-circle'
-                            size={scale(26)} 
-                            color='#ffffff' 
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            {translate("drawer.toHelp")}
-                        </TextOption>
-                    </UserOption>
-                </Button>
-                <Button onPress={() => navigate('Sobre')}>
-                    <UserOption style={styles.menuOptionColor}>
-                        <Feather name='info'
-                            size={scale(26)} 
-                            color='#ffffff' 
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            {translate("drawer.toAbout")}
-                        </TextOption>
-                    </UserOption>
-                </Button>
-                <SocialContainer>
-                    <Button onPress={() => Linking.openURL('https://twitter.com/guardioesunb')}>
-                        <RedeSocial>
-                            <Feather name='twitter'
-                                size={scale(28)} 
+                    </AvatarContainer>
+                    {this.state.isProfessional == "true" &&
+                    <Button onPress={() => navigate("Rumor")}>
+                        <UserOptionGreen>
+                            <Feather name='info'
+                                size={scale(26)} 
                                 color='#ffffff' 
-                                style={styles.iconRedeSocial}
+                                style={styles.iconStyle}
                             />
-                        </RedeSocial>
+                            <TextOption>
+                                {translate("home.reportRumor")}
+                            </TextOption>
+                        </UserOptionGreen>
                     </Button>
-                    <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb/')}>
-                        <RedeSocial>
-                            <Feather name='instagram'
-                                size={scale(28)} 
+                    }
+                    <Button onPress={() => navigate('Perfil')}>
+                        <UserOptionGreen>
+                            <Feather name='settings'
+                                size={scale(26)} 
+                                color={'#fff'} 
+                                style={styles.iconStyle}
+                            />
+                            <TextOption>
+                                Editar perfis
+                            </TextOption>
+                        </UserOptionGreen>
+                    </Button>
+                    <Button onPress={this._logoutApp}>
+                        <UserOptionGreen>
+                            <Feather name='log-out'
+                                size={scale(26)} 
                                 color='#ffffff' 
-                                style={styles.iconRedeSocial}
+                                style={styles.iconStyle}
                             />
-                        </RedeSocial>
+                            <TextOption>
+                                {translate("drawer.logOut")}
+                            </TextOption>
+                        </UserOptionGreen>
                     </Button>
-				</SocialContainer>
-                    {/*<TouchableOpacity
-                        style={styles.itemsContainer}
-                        onPress={() => navigate('Home')}
-                    >
-                        <FontAwesome name='bell' size={verticalScale(25)} style={styles.iconStyle} />
-                        <Text style={styles.drawerItemsTxt}>Eventos Massivos</Text>
-                    </TouchableOpacity>*/}            
+                    <Aplicativo>
+                        Aplicativo
+                    </Aplicativo>
+                    <Button onPress={() =>  {
+                        Share.open(shareOptions)
+                            .then((res) => { console.log(res) })
+                            .catch((err) => { err && console.log(err); });
+                        }
+                    }>
+                        <UserOptionBlue>
+                            <Feather name='share-2'
+                                size={scale(26)} 
+                                color='#ffffff' 
+                                style={styles.iconStyle}
+                            />
+                            <TextOption>
+                                Compartilhar
+                            </TextOption>
+                        </UserOptionBlue>
+                    </Button>
+                    <Button onPress={() => navigate('Ajuda')}>
+                        <UserOptionBlue>
+                            <Feather name='help-circle'
+                                size={scale(26)} 
+                                color='#ffffff' 
+                                style={styles.iconStyle}
+                            />
+                            <TextOption>
+                                {translate("drawer.toHelp")}
+                            </TextOption>
+                        </UserOptionBlue>
+                    </Button>
+                    <Button onPress={() => navigate('Sobre')}>
+                        <UserOptionBlue>
+                            <Feather name='info'
+                                size={scale(26)} 
+                                color='#ffffff' 
+                                style={styles.iconStyle}
+                            />
+                            <TextOption>
+                                {translate("drawer.toAbout")}
+                            </TextOption>
+                        </UserOptionBlue>
+                    </Button>
+                    <SocialContainer>
+                        <Button onPress={() => Linking.openURL('https://twitter.com/guardioesunb')}>
+                            <RedeSocial>
+                                <SimpleLineIcons name='social-twitter'
+                                    size={scale(28)} 
+                                    color='#ffffff' 
+                                    style={styles.iconRedeSocial}
+                                />
+                            </RedeSocial>
+                        </Button>
+                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb/')}>
+                            <RedeSocial>
+                                <SimpleLineIcons name='social-instagram'
+                                    size={scale(28)} 
+                                    color='#ffffff' 
+                                    style={styles.iconRedeSocial}
+                                />
+                            </RedeSocial>
+                        </Button>
+                    </SocialContainer>
+                        {/*<TouchableOpacity
+                            style={styles.itemsContainer}
+                            onPress={() => navigate('Home')}
+                        >
+                            <FontAwesome name='bell' size={verticalScale(25)} style={styles.iconStyle} />
+                            <Text style={styles.drawerItemsTxt}>Eventos Massivos</Text>
+                        </TouchableOpacity>*/}            
+                </ScrollViewStyled>
             </Container>
-
         )
     }
+}
+
+const shareOptions = {
+    message: translate("drawer.share")
 }
 
 const styles = StyleSheet.create({
@@ -180,54 +203,5 @@ const styles = StyleSheet.create({
 	},
 	iconRedeSocial: {
 		alignSelf: 'center',
-	},
-	menuOptionColor: {
-		backgroundColor: '#5DD39E',
 	}
-})
-
-/* const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    headerContainer: {
-        height: moderateScale(230),
-        backgroundColor: 'white',
-        marginBottom: 15
-    },
-    headerText: {
-        fontSize: 22,
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
-        alignSelf: 'center',
-        marginTop: 10,
-        color: '#166B87'
-    },
-    viewAvatar: {
-        alignSelf: 'center',
-        marginTop: 25,
-    },
-    itemsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: 8,
-        marginBottom: 10
-    },
-    iconStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingRight: '15%',
-        paddingLeft: '8%',
-        color: 'rgba(255, 255, 255, 0.3)'
-    },
-    drawerItemsTxt: {
-        textAlignVertical: 'center',
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
-        color: 'white',
-        fontSize: verticalScale(15),
-
-    },
-
-}); */
+});
