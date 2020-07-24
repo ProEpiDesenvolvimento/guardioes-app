@@ -1,37 +1,58 @@
-'use-strict'
-
-// base libs
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { PureComponent, Component } from 'react'
+import clusterImages from './imgImport'
+import { Marker } from 'react-native-maps'
 
 export default class ClusterMarker extends Component {
   constructor(props) {
     super(props)
-  }
 
-  render() {
-    const pointCount = this.props.properties.point_count // eslint-disable-line camelcase
-    const latitude = this.props.geometry.coordinates[1],
-      longitude = this.props.geometry.coordinates[0]
-
-    if (this.props.renderCluster) {
-      const cluster = {
-        pointCount,
-        coordinate: { latitude, longitude },
-        clusterId: this.props.properties.cluster_id,
-        healthyPercentage: this.props.healthyPercentage,
-        region: this.props.region
-      }
-      return this.props.renderCluster(cluster)
+    const pointCount = this.props.properties.point_count
+    const coordinate = {
+      latitude: this.props.geometry.coordinates[1],
+      longitude: this.props.geometry.coordinates[0]
+    }
+    const clusterId = this.props.properties.cluster_id
+    const clusteredPoints = this.props.clusteringEngine.getLeaves(clusterId, 10000)
+    
+    const healthyPercentage = clusteredPoints.filter(x => !x.properties.item.symptoms).length / pointCount
+    let reqNum = Math.floor(healthyPercentage * 100.0)
+    while (!clusterImages.imgLevels.includes(reqNum)) {
+      reqNum--
+    }
+    let orderOfMagnitude = Math.floor(Math.log(pointCount) / Math.log(this.props.CLUSTER_SIZE_DIVIDER))
+    if (orderOfMagnitude < 0) orderOfMagnitude = 0
+    if (orderOfMagnitude > 6) orderOfMagnitude = 6
+    const zeroCoordinate = coordinate.latitude === 0 && coordinate.longitude === 0
+    let message = 'Sintomáticos: ' + Math.floor((1.0 - healthyPercentage) * 100.0) + '%'
+    const image = clusterImages.reqFiles[orderOfMagnitude][clusterImages.imgLevels.indexOf(reqNum)]
+    if (zeroCoordinate) {
+      message = "Essas pessoas não compartilharam seu local"
     }
 
-    throw "Implement renderCluster method prop to render correctly cluster marker!"
+    this.state = {
+      image: image,
+      message: message,
+      title: 'Pessoas: ' + pointCount,
+      pointCount: pointCount,
+      coordinate: coordinate
+    }
   }
-}
 
-ClusterMarker.propTypes = {
-  renderCluster: PropTypes.func,
-  onPress: PropTypes.func.isRequired,
-  geometry: PropTypes.object.isRequired,
-  properties: PropTypes.object.isRequired,
+  shouldComponentUpdate() {
+    return false
+  }
+
+  render() {    
+    return (
+        <Marker
+            anchor={{x:0.5,y:0.5}}
+            centerOffset={{x:0.5,y:0.5}}
+            coordinate={this.state.coordinate}
+            image={this.state.image}
+            title={'Pessoas: ' + this.state.pointCount}
+            description={this.state.message}
+            tracksViewChanges={true}>
+        </Marker>
+    )
+  }
 }
