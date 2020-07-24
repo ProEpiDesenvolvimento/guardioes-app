@@ -50,10 +50,10 @@ import {
 
 Feather.loadFont();
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
+let todayDate = new Date();
+let d = todayDate.getDate();
+let m = todayDate.getMonth() + 1;
+let y = todayDate.getFullYear();
 
 class Home extends Component {
     navOptions // rolê para acessar a drawer em uma função estática
@@ -130,7 +130,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.getInfo()
+        this.fetchData()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -156,7 +156,7 @@ class Home extends Component {
         );
     }
 
-    getInfo = async () => { //Get user infos
+    fetchData = async () => { //Get user infos
         const userID = await AsyncStorage.getItem('userID');
         const userName = await AsyncStorage.getItem('userName');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
@@ -184,8 +184,10 @@ class Home extends Component {
             .then((responseJson) => {
                 this.setState({
                     data: responseJson.households,
+                    userBirth: responseJson.households[0].user.birthdate
                 })
                 //console.warn(this.state.data)
+                AsyncStorage.setItem('userBirth', this.state.userBirth);
             })
     }
 
@@ -417,6 +419,7 @@ class Home extends Component {
                           this.setModalVisible(!this.state.modalVisible);
                           AsyncStorage.setItem('userSelected', this.state.userSelect);
                           AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                          AsyncStorage.setItem('userBirth', this.state.userBirth);
                           AsyncStorage.removeItem('householdID');
                           this.getUserHealth();
                         }}>
@@ -444,6 +447,7 @@ class Home extends Component {
                                         this.setModalVisible(!this.state.modalVisible);
                                         AsyncStorage.setItem('userSelected', this.state.userSelect);
                                         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                        AsyncStorage.setItem('userBirth', household.birthdate);
                                         AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                         this.getUserHealth();
                                     }}

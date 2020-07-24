@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import LinearGradient from 'react-native-linear-gradient';
+import SwiperFlatList from 'react-native-swiper-flatlist';
 import ShadowView from 'react-native-simple-shadow-view';
 import { Calendar } from 'react-native-calendars';
 
@@ -13,6 +14,8 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
     }
 })``;
 
+const padding = 180;
+
 export const UserData = styled(LinearGradient).attrs({
     colors: ['#348EAC', '#5DD39E'],
 })`
@@ -23,7 +26,7 @@ export const UserData = styled(LinearGradient).attrs({
     justify-content: flex-start;
     padding-top: ${scale(25)}px;
     padding-horizontal: ${scale(25)}px;
-    padding-bottom: 210px;
+    padding-bottom: ${scale(25) + padding}px;
 `;
 
 export const AvatarContainer = styled.View`
@@ -49,8 +52,17 @@ export const UserDetails = styled.Text`
 
 export const UserDash = styled.View`
     align-items: center;
-    marginTop: -180px;
+    marginTop: -${padding}px;
 `;
+
+export const SliderContainer = styled.View`
+    flex: 1;
+`;
+
+export const SwiperStyled = styled(SwiperFlatList).attrs({
+    paginationDefaultColor: "#c4c4c4",
+    paginationActiveColor: "#F18F01",
+})``;
 
 export const ChartContainer = styled.View`
     width: ${percentage(100)}px;
@@ -63,7 +75,7 @@ export const UserChart = styled(ShadowView).attrs({
     width: 90%;
     background-color: #ffffff;
     border-radius: 20px;
-    margin-bottom: ${percentage(7)}px;
+    margin-bottom: ${percentage(10)}px;
     padding: ${scale(8)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
@@ -79,7 +91,7 @@ export const ChartTitle = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(16)}px;
     color: #32323B;
-    margin: ${scale(12)}px;
+    margin: ${scale(10)}px;
     align-self: center;
 `;
 
@@ -88,6 +100,16 @@ const chartlabels = `
     width: ${scale(14)}px;
     border-radius: 100px;
     margin-right: ${scale(14)}px;
+`;
+
+export const LabelContainer = styled.View`
+    align-items: center;
+    margin-bottom: ${scale(10)}px;
+`;
+
+export const LabelWrapper = styled.View`
+    flex-direction: row;
+    align-items: center;
 `;
 
 export const ChartLabelGreen = styled.View`
@@ -115,7 +137,7 @@ export const ChartLabel = styled.Text`
 
 export const UserReports = styled.View`
     width: 90%;
-    margin-bottom: ${percentage(8)}px;
+    margin-bottom: ${percentage(6)}px;
 `;
 
 export const ReportsTitleWrapper = styled.View`
@@ -150,8 +172,8 @@ export const ReportsWell = styled(ShadowView).attrs({
     flex-direction: row;
     align-items: center;
     padding: ${scale(12)}px;
-    shadow-color: #5DD39E;
-    shadow-opacity: 0.4;
+    shadow-color: #000000;
+    shadow-opacity: 0.2;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
 `;
@@ -164,8 +186,8 @@ export const ReportsIll = styled(ShadowView).attrs({
     flex-direction: row;
     align-items: center;
     padding: ${scale(12)}px;
-    shadow-color: #F18F01;
-    shadow-opacity: 0.4;
+    shadow-color: #000000;
+    shadow-opacity: 0.2;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
 `;

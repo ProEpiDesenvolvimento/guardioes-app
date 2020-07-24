@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, StyleSheet, Text} from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import SwiperFlatList from 'react-native-swiper-flatlist';
 import { LocaleConfig } from 'react-native-calendars';
 import { PieChart } from 'react-native-svg-charts'
 
-import { ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, ChartContainer, UserChart,  } from './styles';
-import { ChartLabelGreen, ChartLabelOrange, ChartLabelGray, ChartLabel, ChartTitle, CalendarStyled, UserReports } from './styles';
-import { ReportsTitleWrapper, ReportsTitle, ReportsSubtitle, ReportsAll, ReportsWell, ReportsIll, ReportData, ReportDataTitle, ReportDataInfo } from './styles';
+import { ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, SliderContainer, SwiperStyled } from './styles';
+import { ChartContainer, UserChart, LabelContainer, LabelWrapper, ChartLabelGreen, ChartLabelOrange, ChartLabelGray, ChartLabel, ChartTitle, CalendarStyled } from './styles';
+import { UserReports, ReportsTitleWrapper, ReportsTitle, ReportsSubtitle, ReportsAll, ReportsWell, ReportsIll, ReportData, ReportDataTitle, ReportDataInfo } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
@@ -32,10 +31,7 @@ LocaleConfig.locales['pt'] = {
 
 LocaleConfig.defaultLocale = 'pt';
 
-let data = new Date()
-let d = data.getDate()
-let m = data.getMonth() + 1
-let y = data.getFullYear()
+const todayDate = new Date()
 
 const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
@@ -87,10 +83,11 @@ class Diario extends Component {
     fetchData = async () => { //Get user infos
         const userID = await AsyncStorage.getItem('userID')
         const userName = await AsyncStorage.getItem('userName')
+        const userBirth = await AsyncStorage.getItem('userBirth')
         const userSelected = await AsyncStorage.getItem('userSelected')
         const avatarSelect = await AsyncStorage.getItem('avatarSelected')
         const userToken = await RNSecureStorage.get('userToken')
-        this.setState({ userName, userSelected, userID, userToken, avatarSelect })
+        this.setState({ userID, userName, userBirth, userSelected, avatarSelect, userToken })
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected == this.state.userName) {
@@ -101,6 +98,7 @@ class Diario extends Component {
         }
 
         this.getSurvey()
+        this.getUserAge()
     }
 
     getSurvey = () => {//Get Survey
@@ -118,25 +116,33 @@ class Diario extends Component {
                     isLoading: false
                 })
                 this.defineMarkedDates()
+                this.getUserParticipation()
             })
     }
 
+    getUserAge = () => {
+        const userBirthDate = new Date(this.state.userBirth)
+        const difference = todayDate.getTime() - userBirthDate.getTime()
+        const userAge = Math.floor(difference / (1000 * 60 * 60 * 24 * 365))
+
+        this.setState({ userAge })
+    }
 
     defineMarkedDates = () => {
-        let surveyData = this.state.dataSource
-        let markedDateNo = []
-        let markedDate = []
-        let markedDateAll = []
+        const surveyData = this.state.dataSource
+        let markedDatesGood = []
+        let markedDatesBad = []
+        let markedDatesAll = []
 
-        surveyData.map((survey, index) => {
+        surveyData.map((survey) => {
             if (this.state.householdID == null) {//Condição para verificar se exise household
                 if (survey.household == null) {
                     if (survey.symptom && survey.symptom.length) { //BadReport
-                        markedDate.push(survey.created_at.split("T", 1).toString())
-                        markedDateAll.push(survey)
+                        markedDatesBad.push(survey.created_at.split("T", 1).toString())
+                        markedDatesAll.push(survey)
                     }
                     else { //GoodReport
-                        markedDateNo.push(survey.created_at.split("T", 1).toString())
+                        markedDatesGood.push(survey.created_at.split("T", 1).toString())
                     }
                 }
 
@@ -144,38 +150,72 @@ class Diario extends Component {
                 if (survey.household != null) {
                     if (survey.household.id == this.state.householdID) {
                         if (survey.symptom && survey.symptom.length) { //Household BadReport
-                            markedDate.push(survey.created_at.split("T", 1).toString())
-                            markedDateAll.push(survey)
+                            markedDatesBad.push(survey.created_at.split("T", 1).toString())
+                            markedDatesAll.push(survey)
                         }
                         else { //Household GoodReport
-                            markedDateNo.push(survey.created_at.split("T", 1).toString())
+                            markedDatesGood.push(survey.created_at.split("T", 1).toString())
                         }
                     }
                 }
             }
         })
 
-        let totalReports = (markedDateNo.length + markedDate.length)
-        let GoodPercent = ((markedDateNo.length / totalReports) * 100).toFixed(0)
-        let BadPercent = ((markedDate.length / totalReports) * 100).toFixed(0)
+        let totalReports = (markedDatesGood.length + markedDatesBad.length)
+        let GoodPercent = ((markedDatesGood.length / totalReports) * 100).toFixed(0)
+        let BadPercent = ((markedDatesBad.length / totalReports) * 100).toFixed(0)
 
         this.setState({
             GoodPercent: GoodPercent,
             BadPercent: BadPercent,
             totalReports: totalReports,
-            NummarkedDateNo: markedDateNo.length,
-            NummarkedDate: markedDate.length,
-            markedDate: markedDate,
-            markedDateAll: markedDateAll,
-            markedDateNo: markedDateNo,
+            markedGoodNum: markedDatesGood.length,
+            markedBadNum: markedDatesBad.length,
+            markedDatesGood: markedDatesGood,
+            markedDatesBad: markedDatesBad,
+            markedDatesAll: markedDatesAll,
         })
 
-        let BadReport = markedDate.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {})
-        let GoodReport = markedDateNo.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {})
+        let BadReport = markedDatesBad.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {})
+        let GoodReport = markedDatesGood.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {})
 
         Object.assign(GoodReport, BadReport)
 
         this.setState({ datesMarked: GoodReport })
+    }
+
+    getUserParticipation = () => {
+        const surveyData = this.state.dataSource.reverse();
+        const GoodReports = this.state.markedGoodNum
+        const BadReports = this.state.markedBadNum
+        let firstSurvey;
+
+        for (let i = 0; i < surveyData.length; i++) {
+            if (this.state.householdID) {
+                if (surveyData[i].household.id == this.state.householdID) {
+                    firstSurvey = surveyData[i];
+                    break
+                }
+            }
+            else {
+                if (!surveyData[i].household) {
+                    firstSurvey = surveyData[i];
+                    break
+                }
+            }
+        }
+
+        const firstSurveyDate = new Date(firstSurvey.created_at)
+        const difference = todayDate.getTime() - firstSurveyDate.getTime()
+
+        const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24))
+        const totalParticipation = totalDays - this.state.totalReports
+
+        const GoodAbsPercent = ((GoodReports / totalDays) * 100).toFixed(0)
+        const BadAbsPercent = ((BadReports / totalDays) * 100).toFixed(0)
+        const PartPercent = ((totalParticipation / totalDays) * 100).toFixed(0)
+
+        this.setState({ GoodAbsPercent, BadAbsPercent, PartPercent, totalParticipation })
     }
 
     render() {
@@ -188,24 +228,9 @@ class Diario extends Component {
         }
 
         const chartData = [
-            {
-                key: 1,
-                value: this.state.NummarkedDateNo,
-                svg: { fill: '#5DD39E' },
-                arc: { cornerRadius: 8, }
-            },
-            {
-                key: 2,
-                value: this.state.NummarkedDate,
-                svg: { fill: '#F18F01' },
-                arc: { cornerRadius: 8 }
-            },
-            {
-                key: 3,
-                value: 10,
-                svg: { fill: '#c4c4c4' },
-                arc: { cornerRadius: 8 }
-            }
+            { key: 1, value: this.state.markedGoodNum, svg: { fill: '#5DD39E' }, arc: { cornerRadius: 8, } },
+            { key: 2, value: this.state.markedBadNum, svg: { fill: '#F18F01' }, arc: { cornerRadius: 8 } },
+            { key: 3, value: this.state.totalParticipation, svg: { fill: '#c4c4c4' }, arc: { cornerRadius: 8 } }
         ]
 
         return (
@@ -213,67 +238,70 @@ class Diario extends Component {
                 <UserData>
                     <AvatarContainer>
                         <Avatar
-                            containerStyle={styles.UserAvatar}
-                            size="medium"
+                            containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
+                            size={scale(50)}
                             source={Imagem[this.state.avatarSelect]}
-                            activeOpacity={0.7}
+                            activeOpacity={0.6}
                             rounded
                         />
                     </AvatarContainer>
                     <UserInfo>
                         <UserName>{getNameParts(this.state.userSelected, true)}</UserName>
-                        <UserDetails>20 anos</UserDetails>
+                        <UserDetails>{this.state.userAge} anos</UserDetails>
                     </UserInfo>
                 </UserData>
                 <UserDash>
-                    <SwiperFlatList
-                        showPagination={true}
-                        disableGesture={false}
-                        paginationDefaultColor="#c4c4c4"
-                        paginationActiveColor="#F18F01"
-                    >
-                        <ChartContainer>
-                            <UserChart>
-                                <CalendarStyled
-                                    current={_today}
-                                    markedDates={this.state.datesMarked}
-                                    onDayPress={(day) => {
-                                        let symptomDate = this.state.markedDateAll
-                                        symptomDate.map(symptomMarker => {
-                                            if(symptomMarker.bad_since == day.dateString){
-                                                console.warn(symptomMarker.symptom)
-                                            }
-                                        })
-                                    }}
-                                    renderArrow={(direction) => this.handleCalendarArrows(direction)}
-                                />
-                            </UserChart>
-                        </ChartContainer>
-                        <ChartContainer>
-                            <UserChart>
-                                <ChartTitle>Estatísticas</ChartTitle>
+                    <SliderContainer>
+                        <SwiperStyled
+                            showPagination={true}
+                            disableGesture={false}
+                        >
+                            <ChartContainer>
+                                <UserChart>
+                                    <CalendarStyled
+                                        current={_today}
+                                        markedDates={this.state.datesMarked}
+                                        onDayPress={(day) => {
+                                            let symptomDate = this.state.markedDatesAll
+                                            symptomDate.map(symptomMarker => {
+                                                if (symptomMarker.bad_since == day.dateString) {
+                                                    console.warn(symptomMarker.symptom)
+                                                }
+                                            })
+                                        }}
+                                        renderArrow={(direction) => this.handleCalendarArrows(direction)}
+                                    />
+                                </UserChart>
+                            </ChartContainer>
+                            <ChartContainer>
+                                <UserChart>
+                                    <ChartTitle>Estatísticas</ChartTitle>
                                     <PieChart
                                         style={{ height: 170, marginBottom: scale(12) }}
                                         outerRadius={'100%'}
                                         innerRadius={'15%'}
                                         data={chartData}
                                     />
-                                    <View style={{alignItems: "center"}}>
-                                        <View style={{}}>
-                                            <View style={{flexDirection: 'row', alignItems: "center" }}>
-                                                <ChartLabelGreen /><ChartLabel>{this.state.GoodPercent}% - Bem</ChartLabel>
-                                            </View>
-                                            <View style={{flexDirection: 'row', alignItems: "center"}}>
-                                                <ChartLabelOrange /><ChartLabel>{this.state.BadPercent}% - Mal</ChartLabel>
-                                            </View>
-                                            <View style={{flexDirection: 'row', alignItems: "center"}}>
-                                                <ChartLabelGray /><ChartLabel>15% - Não Informado</ChartLabel>
-                                            </View>
+                                    <LabelContainer>
+                                        <View>
+                                            <LabelWrapper>
+                                                <ChartLabelGreen />
+                                                <ChartLabel>{this.state.GoodAbsPercent}% - Bem</ChartLabel>
+                                            </LabelWrapper>
+                                            <LabelWrapper>
+                                                <ChartLabelOrange />
+                                                <ChartLabel>{this.state.BadAbsPercent}% - Mal</ChartLabel>
+                                            </LabelWrapper>
+                                            <LabelWrapper>
+                                                <ChartLabelGray />
+                                                <ChartLabel>{this.state.PartPercent}% - Não Informado</ChartLabel>
+                                            </LabelWrapper>
                                         </View>
-                                    </View>
-                            </UserChart>
-                        </ChartContainer>
-                    </SwiperFlatList>
+                                    </LabelContainer>
+                                </UserChart>
+                            </ChartContainer>
+                        </SwiperStyled>
+                    </SliderContainer>
 
                     <UserReports>
                         <ReportsTitleWrapper>
@@ -287,9 +315,9 @@ class Diario extends Component {
                                 <ReportData>
                                     <ReportDataTitle>{translate("diary.good")}</ReportDataTitle>
                                     <ReportDataInfo>
-                                        {this.state.NummarkedDateNo === 1 ? 
-                                        this.state.NummarkedDateNo + translate("diary.report") : 
-                                        this.state.NummarkedDateNo + translate("diary.reports")}
+                                        {this.state.markedGoodNum === 1 ? 
+                                        this.state.markedGoodNum + translate("diary.report") : 
+                                        this.state.markedGoodNum + translate("diary.reports")}
                                     </ReportDataInfo>
                                 </ReportData>
                             </ReportsWell>
@@ -299,9 +327,9 @@ class Diario extends Component {
                                 <ReportData>
                                     <ReportDataTitle>{translate("diary.bad")}</ReportDataTitle>
                                     <ReportDataInfo>
-                                        {this.state.NummarkedDate === 1 ? 
-                                        this.state.NummarkedDate + translate("diary.report") : 
-                                        this.state.NummarkedDate + translate("diary.reports")}
+                                        {this.state.markedBadNum === 1 ? 
+                                        this.state.markedBadNum + translate("diary.report") : 
+                                        this.state.markedBadNum + translate("diary.reports")}
                                     </ReportDataInfo>
                                 </ReportData>
                             </ReportsIll>
@@ -313,15 +341,5 @@ class Diario extends Component {
         )
     }
 }
-
-const styles = StyleSheet.create({
-    UserAvatar: {
-        borderColor: '#ffffff',
-        borderWidth: 3,
-        height: scale(50),
-        width: scale(50),
-        borderRadius: 100
-    }
-});
 
 export default Diario
