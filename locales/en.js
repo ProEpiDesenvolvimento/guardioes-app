@@ -163,6 +163,7 @@ export default {
     },
     "advices": {
         "title": "Tips",
+        "subtitle": "Keep your health up to date",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevention",

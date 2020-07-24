@@ -7,7 +7,7 @@ import { Details, DetailsIcon, DetailsTitleWrapper, DetailsTitle, DetailsBodyTex
 
 import RNSecureStorage from 'rn-secure-storage';
 import { Redirect } from '../../../utils/constUtils';
-import { InsectIcon } from '../../../imgs/imageConst';
+import { HelplineIcon, HospitalIcon, InsectIcon, SickIcon, TentIcon, VaccineIcon, WashIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL, APP_ID} from 'react-native-dotenv';
@@ -21,7 +21,6 @@ class Conselho extends Component {
     constructor(props) {
         super(props);
         this.props.navigation.addListener('didFocus', payload => {
-            //console.log(payload)
             //this.fetchData();
         });
         this.state = {
@@ -63,9 +62,26 @@ class Conselho extends Component {
     }
 
     getContentIcon = (icon) => {
-        if (icon == "insect") {
-            return (<InsectIcon height={scale(50)} width={scale(50)} />)
+        const size = scale(50);
+
+        switch (icon) {
+            case "helpline":
+                return <HelplineIcon height={size} width={size} />
+            case "hospital":
+                return <HospitalIcon height={size} width={size} />
+            case "insect":
+                return <InsectIcon height={size} width={size} />
+            case "sick":
+                return <SickIcon height={size} width={size} />
+            case "tent":
+                return <TentIcon height={size} width={size} />
+            case "vaccine":
+                return <VaccineIcon height={size} width={size} />
+            case "wash":
+                return <WashIcon height={size} width={size} />     
         }
+
+        return <SickIcon height={size} width={size} />
     }
 
     render() {
@@ -83,25 +99,11 @@ class Conselho extends Component {
             <Container>
                 <ScrollViewStyled>
                     <TitleWrapper>
-                        <Title>Dicas</Title>
-                        <SubTitle>Mantenha a saúde em dia</SubTitle>
+                        <Title>{translate("advices.title")}</Title>
+                        <SubTitle>{translate("advices.subtitle")}</SubTitle>
                     </TitleWrapper>
 
                     <AdvicesView>
-                        {/* Farmacias */}
-                        <AdviceShadow>
-                            <Advice
-                                onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=farmacias')}
-                            >
-                                <AdviceTitle>
-                                    {translate("advices.buttons.pharmacy")}
-                                </AdviceTitle>
-                                <AdviceIcon>
-                                    <InsectIcon height={scale(50)} width={scale(50)} />
-                                </AdviceIcon>
-                            </Advice>
-                        </AdviceShadow>
-
                         {contentsData != null ?
                             contentsData.map((content) => {
                                 if (content.app.id == APP_ID) {
@@ -109,16 +111,19 @@ class Conselho extends Component {
                                         <AdviceShadow key={content.id}>
                                             <Advice
                                                 onPress={() => {
-                                                    this.setModalVisible(true)
-                                                    this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
+                                                    if (content.content_type === "redirect") {
+                                                        Redirect(advicesText.redirect.title, advicesText.redirect.text, content.source_link)
+                                                    } else {
+                                                        this.setModalVisible(true)
+                                                        this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
+                                                    }
                                                 }}
                                             >
                                                     <AdviceTitle>
                                                         {content.title}
                                                     </AdviceTitle>
                                                     <AdviceIcon>
-                                                        {/*this.getContentIcon(content.icon)*/}
-                                                        <InsectIcon height={scale(50)} width={scale(50)} />
+                                                        {this.getContentIcon(content.icon)}
                                                     </AdviceIcon>
                                             </Advice>
                                         </AdviceShadow>
@@ -126,18 +131,6 @@ class Conselho extends Component {
                                 }
                             })
                         : null}
-
-                        {/* Instituicoes */}
-                        <AdviceShadow>
-                            <Advice
-                                onPress={() => Redirect(textoRedirect.hospitais.texto1, textoRedirect.hospitais.texto2, 'https://www.google.com/maps/search/?api=1&query=hospitais')}
-                            >
-                                <AdviceTitle>{translate("advices.buttons.healthInst")}</AdviceTitle>
-                                <AdviceIcon>
-                                    <InsectIcon height={scale(50)} width={scale(50)} />
-                                </AdviceIcon>
-                            </Advice>
-                        </AdviceShadow>
                     </AdvicesView>
                 </ScrollViewStyled>
 
@@ -145,9 +138,9 @@ class Conselho extends Component {
                     animationType="fade"
                     transparent={true}
                     visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                    }}
+                    onRequestClose={() => 
+                        this.setModalVisible(!this.state.modalVisible) //Exit to modal view
+                    }
                 >
                     <Details>
                         <DetailsIcon>
@@ -178,10 +171,10 @@ class Conselho extends Component {
     }
 }
 
-const textoRedirect = {
-    hospitais: {
-        texto1: translate("advices.buttons.messages.title"),
-        texto2: translate("advices.buttons.messages.subtitle")
+const advicesText = {
+    redirect: {
+        title: translate("advices.buttons.messages.title"),
+        text: translate("advices.buttons.messages.subtitle")
     }
 }
 

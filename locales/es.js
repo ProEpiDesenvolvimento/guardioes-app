@@ -166,6 +166,7 @@ export default {
     },
     "advices": {
         "title": "Consejos de Salud",
+        "subtitle": "Mantenga su salud al día",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevencao", // DO NOT CHANGE THIS!!!!!
