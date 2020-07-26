@@ -62,9 +62,9 @@ const option = `
   margin-right: ${scale(16)}px;
   margin-left: ${scale(16)}px;
   padding: ${scale(10)}px;
-  shadow-opacity: 0.4;
+  shadow-opacity: 0.2;
   shadow-radius: 10px;
-  shadow-offset: 0px 4px;
+  shadow-offset: 0px 0px;
 `;
 
 export const UserOptionGreen = styled(ShadowView).attrs({
@@ -113,7 +113,7 @@ export const RedeSocial = styled(ShadowView).attrs({
   background-color: #348eac;
   padding: ${scale(10)}px;
   shadow-color: #348eac;
-  shadow-opacity: 0.4;
+  shadow-opacity: 0.2;
   shadow-radius: 10px;
-  shadow-offset: 0px 4px;
+  shadow-offset: 0px 0px;
 `;
