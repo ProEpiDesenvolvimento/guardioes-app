@@ -94,3 +94,6 @@ export const Imagem = styled.Image`
     height: ${scale(80)}px;
     border-radius: 10px;
 `;
+
+export const Button = styled.TouchableOpacity`
+`;

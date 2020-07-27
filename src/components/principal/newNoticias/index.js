@@ -20,7 +20,7 @@ import {
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
 
-  const {twitter} = useTwitter();
+  const { twitter } = useTwitter();
 
   twitter.setConsumerKey(
     TWITTER_CONSUMERKEY1,
@@ -44,7 +44,7 @@ export default function newNoticias() {
       );
 
       setTwitter(response);
-      console.log(response[0]);
+      console.log('RESPONSE -> ', response[0]);
     }
 
     Twitter();
