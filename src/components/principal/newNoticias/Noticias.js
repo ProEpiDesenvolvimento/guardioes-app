@@ -18,7 +18,7 @@ import {
 function newNoticias({ data }){
     let twitterImage = null
 
-    const date = format(new Date(data.created_at), 'dd/MM/yyyy') 
+    const date = format(new Date(data.created_at), 'dd/MM/yy') 
 
     if(data.hasOwnProperty('extended_entities')){
         twitterImage = data.extended_entities.media[0].media_url;
