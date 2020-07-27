@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { useTwitter } from 'react-native-simple-twitter';
 import { 
   TWITTER_CONSUMERKEY1, 
@@ -19,6 +20,7 @@ import {
 
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
+    const [loading, setLoading] = useState(true);
 
   const { twitter } = useTwitter();
 
@@ -44,12 +46,20 @@ export default function newNoticias() {
       );
 
       setTwitter(response);
-      console.log('RESPONSE -> ', response[0]);
+      setLoading(false);
     }
 
     Twitter();
   }, []);
     
+  if (loading) {
+    return (
+        <View style={{ flex: 1, padding: 20 }}>
+            <ActivityIndicator />
+        </View>
+    )
+}
+
     return (
         <Container>
             <ScrollNoticias>

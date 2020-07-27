@@ -26,8 +26,6 @@ function newNoticias({ data }){
         // const twitter_utl = logdata.extended_entities.media[0].url;
     }
 
-    console.log('URL -> ', data.entities.urls);
-
   return (
     <Button
         onPress={() => Redirect(

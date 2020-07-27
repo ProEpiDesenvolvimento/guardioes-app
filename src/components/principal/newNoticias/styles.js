@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { scale } from '../../../utils/scallingUtils';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
   background-color: #348eac;
   flex: 1;
 `;
