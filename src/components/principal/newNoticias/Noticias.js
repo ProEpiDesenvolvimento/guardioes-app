@@ -18,12 +18,10 @@ import {
 function newNoticias({ data }){
     let twitterImage = null
 
-    /* const date = format(data.created_at, 'dd-MM-yyyy')
-    console.warn(date); */
+    const date = format(new Date(data.created_at), 'dd/MM/yyyy') 
 
     if(data.hasOwnProperty('extended_entities')){
         twitterImage = data.extended_entities.media[0].media_url;
-        // const twitter_utl = logdata.extended_entities.media[0].url;
     }
 
   return (
@@ -44,7 +42,7 @@ function newNoticias({ data }){
                     </TwitterArroba>
                 </TwitterInfo>
                 <Data>
-                    16/06/19
+                    {date}
                 </Data>
             </Header>
             <NoticiaText>
