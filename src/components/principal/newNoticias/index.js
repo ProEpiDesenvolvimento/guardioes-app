@@ -51,17 +51,13 @@ export default function newNoticias() {
     );
 
     setTwitter(response);
-    console.log(response[0]);
     setLoading(false);
   }
 
-/*   function TwitterOption( option ){
-    setTwitterOption(option)
-  } */
-
   useEffect(() => {
+    setLoading(true)
     Twitter(twitterOption);
-  }, []);
+  }, [twitterOption]);
     
   if (loading) {
     return (
@@ -82,10 +78,10 @@ export default function newNoticias() {
                 </FeedTitle>
                 <TwitterOptionContainer>
                   <TwitterOption>
-                    <OptionLeft >
+                    <OptionLeft onPress={() => {setTwitterOption('unb_oficial')}} >
                       <OptionText>@unb_oficial</OptionText>
                     </OptionLeft>
-                    <OptionRight >
+                    <OptionRight onPress={() => {setTwitterOption('guardioesunb')}}>
                       <OptionText>@guardioesunb</OptionText>
                     </OptionRight>
                   </TwitterOption>

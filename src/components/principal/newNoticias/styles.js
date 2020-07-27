@@ -24,7 +24,7 @@ export const TwitterOption = styled.View`
     flex-direction: row;
 `;
 
-export const OptionLeft = styled.View`
+export const OptionLeft = styled.TouchableOpacity`
     height: ${scale(50)}px;
     width: ${scale(150)}px;
     background: #5DD39E;
@@ -35,7 +35,7 @@ export const OptionLeft = styled.View`
     justify-content: center;
 `;
 
-export const OptionRight = styled.View`
+export const OptionRight = styled.TouchableOpacity`
     height: ${scale(50)}px;
     width: ${scale(150)}px;
     background: #5DD39E;
