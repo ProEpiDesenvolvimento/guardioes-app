@@ -25,14 +25,14 @@ export const ScrollNoticias = styled.View`
 export const NoticiasTitle = styled.Text`
     font-size: ${scale(20)}px;
     color: black;
-    font-weight: bold;
+    font-family: ArgentumSans-Medium;
     margin-bottom: ${scale(5)}px;
 `;
 
 export const FeedTitle = styled.Text`
     font-size: ${scale(16)}px;
+    font-family: ArgentumSans-Medium;
     color: #a8a8a7;
-    font-weight: bold;
     margin-bottom: ${scale(22)}px;
 `;
 
@@ -65,25 +65,26 @@ export const TwitterInfo = styled.View`
 
 export const TwitterName = styled.Text`
     font-size: ${scale(16)}px;
+    font-family: ArgentumSans-Medium;
     color: #348eac;
-    font-weight: bold;
 `;
 
 export const TwitterArroba = styled.Text`
     font-size: ${scale(14)}px;
+    font-family: ArgentumSans-Medium;
     color: #a8a8a7;
-    font-weight: 600;
 `;
 
 export const Data = styled.Text`
     font-size: ${scale(14)}px;
+    font-family: ArgentumSans-Medium;
     color: #a8a8a7;
-    font-weight: 500;
 `;
 
 export const NoticiaText = styled.Text` 
     font-size: ${scale(14)}px;
-    color: black;
+    color: #32323B;
+    font-family: ArgentumSans;
     margin-top: ${scale(10)}px;
 `;
 

@@ -54,6 +54,7 @@ export const NamesContainer = styled.View`
 `;
 
 export const TextName = styled.Text`
+  font-family: ArgentumSans;
   font-weight: bold;
   font-size: ${scale(20)}px;
   color: white;
@@ -61,8 +62,9 @@ export const TextName = styled.Text`
 
 export const AppName = styled.Text`
   font-size: ${scale(18)}px;
+  font-family: ArgentumSans;
   color: white;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 export const StatusContainer = styled.View.attrs({
@@ -83,7 +85,8 @@ export const StatusContainer = styled.View.attrs({
 
 export const TextStyle = styled.Text`
   margin-bottom: ${scale(20)}px;
-  font-weight: bold;
+  font-family: ArgentumSans;
+  font-weight: 500;
   font-size: ${scale(16)}px;
 `;
 
@@ -115,16 +118,18 @@ export const Mal = styled(TouchableOpacity)`
 `;
 
 export const StatusText = styled.Text`
-  font-weight: bold;
-  color: white;
   font-size: ${scale(15)}px;
+  font-weight: bold;
+  font-family: ArgentumSans;
+  color: white;
 `;
 
 export const Alertas = styled.Text`
+  font-size: ${scale(20)}px;
+  font-weight: 400;
+  font-family: ArgentumSans;
   margin-top: ${scale(25)}px;
   margin-bottom: ${scale(5)}px;
-  font-size: ${scale(20)}px;
-  font-weight: 500;
   margin-left: ${scale(6)}%;
 `;
 
@@ -148,6 +153,7 @@ export const StatusBairro = styled.View`
 
 export const StatusTitle = styled.Text`
   color: white;
+  font-family: ArgentumSans;
   font-size: ${scale(18)}px;
   font-weight: bold;
   margin-bottom: ${scale(5)}px;
@@ -155,6 +161,7 @@ export const StatusTitle = styled.Text`
 
 export const StatusBairroText = styled.Text`
   color: white;
+  font-family: ArgentumSans;
   font-size: ${scale(18)}px;
   font-weight: 500;
 `;

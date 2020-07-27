@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { useTwitter } from 'react-native-simple-twitter';
+import { 
+  TWITTER_CONSUMERKEY1, 
+  TWITTER_CONSUMERKEY2, 
+  TWITTER_ACCESS1, 
+  TWITTER_ACCESS2, 
+} from 'react-native-dotenv'
+
 import Noticias from './Noticias';
 
 import { 
@@ -16,12 +23,12 @@ export default function newNoticias() {
   const {twitter} = useTwitter();
 
   twitter.setConsumerKey(
-    'key',
-    'key',
+    TWITTER_CONSUMERKEY1,
+    TWITTER_CONSUMERKEY2,
   );
   twitter.setAccessToken(
-    'key',
-    'key',
+    TWITTER_ACCESS1,
+    TWITTER_ACCESS2,
   );
 
   useEffect(() => {
@@ -37,6 +44,7 @@ export default function newNoticias() {
       );
 
       setTwitter(response);
+      console.log(response[0]);
     }
 
     Twitter();

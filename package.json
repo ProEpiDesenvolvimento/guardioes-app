@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
+    "date-fns": "^2.15.0",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-autocomplete-input": "^4.2.0",
