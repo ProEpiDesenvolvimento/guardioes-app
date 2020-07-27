@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { scale } from '../../../utils/scallingUtils';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   background-color: #348eac;
   flex: 1;
 `;
@@ -12,7 +12,7 @@ export const List = styled.FlatList.attrs({
 })`
 `;
 
-export const ScrollNoticias = styled.View`
+export const ScrollNoticias = styled.ScrollView`
     background-color: white;
     border-top-right-radius: 35px;
     border-top-left-radius: 35px;
