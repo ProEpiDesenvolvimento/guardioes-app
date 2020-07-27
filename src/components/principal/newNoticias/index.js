@@ -59,14 +59,15 @@ export default function newNoticias() {
     Twitter(twitterOption);
   }, [twitterOption]);
     
-  if (loading) {
-    return (
-        <View style={{ flex: 1, padding: 20 }}>
-            <ActivityIndicator />
-        </View>
-    )
-}
-
+  function loadingTwitters(loading, twitters){
+    if (loading) {
+      return (
+          <View style={{ flex: 1, padding: 20 }}>
+              <ActivityIndicator />
+          </View>
+      )
+    }
+  }
     return (
         <Container>
             <ScrollNoticias>
@@ -86,9 +87,10 @@ export default function newNoticias() {
                     </OptionRight>
                   </TwitterOption>
                 </TwitterOptionContainer>
+                {loadingTwitters(loading)}
                 <List 
                     data={twitters}
-                    keyExtractor={item => String(twitters.id)}
+                    keyExtractor={twitters => String(twitters.id)}
                     renderItem={({item}) => <Noticias data={item}/>}
                 />
             </ScrollNoticias>
