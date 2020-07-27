@@ -12,6 +12,47 @@ export const List = styled.FlatList.attrs({
 })`
 `;
 
+export const TwitterOptionContainer = styled.View`
+    margin-right: ${scale(6)}%;
+    margin-left: ${scale(6)}%;
+    margin-bottom: ${scale(6)}%;
+    align-items: center;
+`;
+
+export const TwitterOption = styled.View`
+    align-self: center;
+    flex-direction: row;
+`;
+
+export const OptionLeft = styled.View`
+    height: ${scale(50)}px;
+    width: ${scale(150)}px;
+    background: #5DD39E;
+    border-bottom-left-radius: 22px;
+    border-top-left-radius: 22px;
+    margin-right: ${scale(2)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const OptionRight = styled.View`
+    height: ${scale(50)}px;
+    width: ${scale(150)}px;
+    background: #5DD39E;
+    border-bottom-right-radius: 22px;
+    border-top-right-radius: 22px;
+    margin-left: ${scale(2)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const OptionText = styled.Text`
+    font-size: ${scale(14)}px;
+    font-family: ArgentumSans-Medium;
+    color: white;
+`;
+
+
 export const ScrollNoticias = styled.ScrollView`
     background-color: white;
     border-top-right-radius: 35px;

@@ -16,11 +16,17 @@ import {
     NoticiasTitle, 
     FeedTitle,
     List,
+    TwitterOptionContainer,
+    TwitterOption,
+    OptionLeft,
+    OptionRight,
+    OptionText,
 } from './styles';
 
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [twitterOption, setTwitterOption] = useState('guardioesunb')
 
   const { twitter } = useTwitter();
 
@@ -33,23 +39,28 @@ export default function newNoticias() {
     TWITTER_ACCESS2,
   );
 
+  async function Twitter(twitterOption) {
+    const response = await twitter.api(
+      'GET',
+      '/statuses/user_timeline.json',
+      {
+        screen_name: twitterOption,
+        count: '10',
+        exclude_replies: true,
+      },
+    );
+
+    setTwitter(response);
+    console.log(response[0]);
+    setLoading(false);
+  }
+
+/*   function TwitterOption( option ){
+    setTwitterOption(option)
+  } */
+
   useEffect(() => {
-    async function Twitter() {
-      const response = await twitter.api(
-        'GET',
-        '/statuses/user_timeline.json',
-        {
-          screen_name: 'guardioesunb',
-          count: '30',
-          exclude_replies: true,
-        },
-      );
-
-      setTwitter(response);
-      setLoading(false);
-    }
-
-    Twitter();
+    Twitter(twitterOption);
   }, []);
     
   if (loading) {
@@ -69,6 +80,16 @@ export default function newNoticias() {
                 <FeedTitle>
                     Feed RSS do Guardiões
                 </FeedTitle>
+                <TwitterOptionContainer>
+                  <TwitterOption>
+                    <OptionLeft >
+                      <OptionText>@unb_oficial</OptionText>
+                    </OptionLeft>
+                    <OptionRight >
+                      <OptionText>@guardioesunb</OptionText>
+                    </OptionRight>
+                  </TwitterOption>
+                </TwitterOptionContainer>
                 <List 
                     data={twitters}
                     keyExtractor={item => String(twitters.id)}
