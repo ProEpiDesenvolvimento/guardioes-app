@@ -6,7 +6,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
-import { getNameParts } from '../../utils/constUtils';
+import { getNameParts, getInitials } from '../../utils/constUtils';
 import { Dimensions } from 'react-native';
 import translate from '../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
@@ -168,7 +168,8 @@ class Diario extends Component {
                             <Avatar
                                 size="large"
                                 rounded
-                                source={Imagem[this.state.avatarSelect]}
+                                source={{uri: this.state.avatarSelect}}
+                                title={getInitials(this.state.userSelected)}
                                 activeOpacity={0.7}
                             />
                         </View>

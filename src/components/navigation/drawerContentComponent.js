@@ -5,7 +5,7 @@ import RNSecureStorage from 'rn-secure-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { getNameParts } from '../../utils/constUtils';
+import { getNameParts, getInitials } from '../../utils/constUtils';
 import { moderateScale, verticalScale, scale } from '../../utils/scallingUtils';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../imgs/imageConst';
@@ -39,6 +39,7 @@ export default class drawerContentComponents extends Component {
     _logoutApp = async () => {
         AsyncStorage.removeItem('userID');
         AsyncStorage.removeItem('userName');
+        AsyncStorage.removeItem('userAvatar');
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
@@ -63,7 +64,8 @@ export default class drawerContentComponents extends Component {
                             <Avatar
                                 size="xlarge"
                                 rounded
-                                source={Imagem[this.state.userAvatar]}
+                                source={{uri: this.state.userAvatar}}
+                                title={getInitials(this.state.userName)}
                                 activeOpacity={0.7}
                             />
                         </View>
