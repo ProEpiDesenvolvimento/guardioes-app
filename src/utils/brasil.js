@@ -870,6 +870,7 @@ export function getCity(city) {
           case "DISTRITO FEDERAL":
                CITIES = [
                     { key: "ÁGUAS CLARAS", label: "ÁGUAS CLARAS" },
+                    { key: "ARNIQUEIRAS", label: "ARNIQUEIRAS" },
                     { key: "BRASÍLIA", label: "BRASÍLIA" },
                     { key: "BRAZLÂNDIA", label: "BRAZLÂNDIA" },
                     { key: "CANDANGOLÂNDIA", label: "CANDANGOLÂNDIA" },
@@ -897,6 +898,7 @@ export function getCity(city) {
                     { key: "SIA", label: "SIA" },
                     { key: "SOBRADINHO", label: "SOBRADINHO" },
                     { key: "SOBRADINHO II", label: "SOBRADINHO II" },
+                    { key: "SOL NASCENTE", label: "SOL NASCENTE" },
                     { key: "SUDOESTE/OCTOGONAL", label: "SUDOESTE/OCTOGONAL" },
                     { key: "TAGUATINGA", label: "TAGUATINGA" },
                     { key: "VARJÃO", label: "VARJÃO" },

@@ -65,7 +65,10 @@ export default {
         "errorMessages": {
             "error": "Error",
             "allFieldsAreFilled": "All fields must be filled."
-        }
+        },
+        "riskGroupTitle": "Risk Groups:",
+        "riskGroupMessage": "\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.",
+        "riskGroupButton": "Back"
     },
     "noInternet": {
         "noInternetConnection": "No internet access.",
@@ -293,5 +296,14 @@ export default {
     },
     "rumor": {
         "rumorSent": "Rumor registered! "
+    },
+    "getToken": {
+        "verificationCode": "Verification Code",
+        "invalidCode": "Invalid Code",
+        "confirm": "Confirm",
+        "loading": "Loading",
+        "verificationCodeSent": "A verification code was sent to your email.",
+        "spamCheckWarning": "In case you don't find the email, make sure to check the spam folder.",
+        "inputVerificationCode": "Insert your verification code"
     }
 }

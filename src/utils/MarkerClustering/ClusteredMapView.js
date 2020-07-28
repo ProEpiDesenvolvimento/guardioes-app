@@ -1,25 +1,15 @@
-'use-strict'
-
-// base libs
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
-import {
-  Platform,
-  Dimensions,
-  LayoutAnimation
-} from 'react-native'
-// map-related libs
+import { Platform, Dimensions, LayoutAnimation } from 'react-native'
 import MapView from 'react-native-maps'
 import SuperCluster from 'supercluster'
 import GeoViewport from '@mapbox/geo-viewport'
-// components / views
 import ClusterMarker from './ClusterMarker'
-// libs / utils
-import {
-  regionToBoundingBox,
-  itemToGeoJSONFeature,
-  getCoordinatesFromItem,
-} from './util'
+import { regionToBoundingBox, itemToGeoJSONFeature } from './util'
+
+/* 
+  Clustering engine is MapBox https://github.com/mapbox/supercluster
+*/
 
 export default class ClusteredMapView extends PureComponent {
 
@@ -36,7 +26,6 @@ export default class ClusteredMapView extends PureComponent {
     this.dimensions = [props.width, props.height]
 
     this.mapRef = this.mapRef.bind(this)
-    this.onClusterPress = this.onClusterPress.bind(this)
     this.onRegionChangeComplete = this.onRegionChangeComplete.bind(this)
   }
 
@@ -78,7 +67,7 @@ export default class ClusteredMapView extends PureComponent {
       extent: this.props.extent,
       minZoom: this.props.minZoom,
       maxZoom: this.props.maxZoom,
-      radius: this.props.radius || (this.dimensions[0] * .08), // 8% of screen width
+      radius: this.props.radius || (this.dimensions[0] * this.props.screenSizeClusterPercentage),
     })
 
     // get formatted GeoPoints for cluster
@@ -109,32 +98,8 @@ export default class ClusteredMapView extends PureComponent {
     return this.index.getClusters(bbox, viewport.zoom)
   }
 
-  onClusterPress(cluster) {
-
-    // cluster press behavior might be extremely custom.
-    if (!this.props.preserveClusterPressBehavior) {
-      this.props.onClusterPress && this.props.onClusterPress(cluster.properties.cluster_id)
-      return
-    }
-
-    // //////////////////////////////////////////////////////////////////////////////////
-    // NEW IMPLEMENTATION (with fitToCoordinates)
-    // //////////////////////////////////////////////////////////////////////////////////
-    // get cluster children
-    const children = this.index.getLeaves(cluster.properties.cluster_id, this.props.clusterPressMaxChildren)
-    const markers = children.map(c => c.properties.item)
-
-    const coordinates = markers.map(item => getCoordinatesFromItem(item, this.props.accessor, false))
-
-    // fit right around them, considering edge padding
-    this.mapview.fitToCoordinates(coordinates, { edgePadding: this.props.edgePadding })
-
-    this.props.onClusterPress && this.props.onClusterPress(cluster.properties.cluster_id, markers)
-  }
-
   render() {
     const { style, ...props } = this.props
-
     return (
       <MapView
         {...props}
@@ -151,10 +116,11 @@ export default class ClusteredMapView extends PureComponent {
                 return this.props.renderMarker.good(d.properties.item) // DESENHA PINO VERDE
             }
             // SE FAZ PARTE DE UM CLUSTER
+            d.CLUSTER_SIZE_DIVIDER = this.props.CLUSTER_SIZE_DIVIDER
             return (
               <ClusterMarker
                 {...d}
-                renderCluster={this.props.renderCluster}
+                clusteringEngine={this.index}
                 key={`cluster-${d.properties.cluster_id}`} 
                 region={this.state.region} />
             )
@@ -199,7 +165,6 @@ ClusteredMapView.propTypes = {
   // func
   onExplode: PropTypes.func,
   onImplode: PropTypes.func,
-  onClusterPress: PropTypes.func,
   renderMarker: PropTypes.func.isRequired,
   renderCluster: PropTypes.func.isRequired,
   // bool
@@ -213,6 +178,3 @@ ClusteredMapView.propTypes = {
   // mutiple
   accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 }
-
-
-[0,120]

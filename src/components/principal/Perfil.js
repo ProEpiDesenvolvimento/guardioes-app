@@ -7,7 +7,7 @@ import { Avatar, CheckBox } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { scale } from '../../utils/scallingUtils';
 import DatePicker from 'react-native-datepicker';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
 import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName, schoolCategory, educationLevel, schoolLocation } from '../../utils/selectorUtils';
@@ -46,6 +46,7 @@ class Perfil extends Component {
     this.state = {
       modalVisibleHousehold: false,
       modalVisibleUser: false,
+      modalVisibleRiskGroup: false,
     }
   }
 
@@ -80,6 +81,10 @@ class Perfil extends Component {
     } else {
       this.setState({ modalVisibleHousehold: visible })
     }
+  }
+
+  setRiskGroupModalVisible(visible) {
+    this.setState({ modalVisibleRiskGroup: visible })
   }
 
   confirmDelete = () => {
@@ -212,7 +217,8 @@ class Perfil extends Component {
           kinship: this.state.kinship,
           picture: this.state.picture,
           school_unit_id: this.state.householdGroup,
-          identification_code: this.state.householdIdCode
+          identification_code: this.state.householdIdCode,
+          risk_group: this.state.householdRiskGroup
         }
       )
     })
@@ -243,9 +249,10 @@ class Perfil extends Component {
           school_unit_id: this.state.userGroup,
           identification_code: this.state.userIdCode,
           is_professional: this.state.isProfessional,
-          risk_group: this.state.riskGroup,
+          risk_group: this.state.userRiskGroup,
           state: this.state.userState,
-          city: this.state.userCity
+          city: this.state.userCity,
+          country: this.state.userCountry
         }
       )
     })
@@ -291,7 +298,7 @@ class Perfil extends Component {
         userIdCode: responseJson.user.identification_code,
         userEmail: responseJson.user.email,
         isProfessional: responseJson.user.is_professional,
-        riskGroup: responseJson.user.risk_group,
+        userRiskGroup: responseJson.user.risk_group,
         userState: responseJson.user.state,
         userCity: responseJson.user.city,
         userGroupName: groupName,
@@ -322,10 +329,18 @@ class Perfil extends Component {
   }
 
   handleEdit = async () => {
-    await this.setState({ modalVisibleUser: false })
-    await this.setState({ userName: this.state.userSelect})
+    await this.setState({
+      modalVisibleUser: false,
+      userName: this.state.userSelect 
+    })
     if (this.state.groupCheckbox === false) {
       await this.setState({ userGroup: null, userIdCode: null, userGroupName: null, userIdSelect: null })
+    }
+    if (this.state.userCountry !== "Brazil") {
+      this.setState({
+        userCity: null,
+        userState: null
+      })
     }
     await this.editUser()
   }
@@ -334,7 +349,7 @@ class Perfil extends Component {
     // Trata a data de nascimento do household para o formato apropriado
     let householdBirthdate = household.birthdate.split('-');
     householdBirthdate = householdBirthdate[2] + '-' + householdBirthdate[1] + '-' + householdBirthdate[0];
-    
+
     this.setState({
       // atributos do household
       householdID: household.id,
@@ -347,7 +362,8 @@ class Perfil extends Component {
       householdIdCode: null,
       householdGroup: null,
       householdGroupName: null,
-      
+      householdRiskGroup: household.risk_group,
+
       // variaveis logicas
       groupCheckbox: false,
       householdNewInst: true,
@@ -391,6 +407,36 @@ class Perfil extends Component {
 
     return (
       <View style={styles.container}>
+
+        <Modal //Modal View for Risk Group Message
+          animationType="fade"
+          transparent={true}
+          visible={this.state.modalVisibleRiskGroup}
+          onRequestClose={() => {
+            this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
+          }}>
+          <View style={styles.modalComponent}>
+            <View style={styles.modalRiskGroupView}>
+              <View style={styles.modalViewCommom}>
+                <Text style={styles.modalTitle}>
+                  {translate("register.riskGroupTitle")}
+                </Text>
+                <Text style={styles.modalText}>
+                  {translate("register.riskGroupMessage")}
+                </Text>
+              </View>
+
+              <View style={styles.modalButton}>
+                <Button
+                  title={translate("register.riskGroupButton")}
+                  color="#348EAC"
+                  onPress={() => {
+                    this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
+                  }} />
+              </View>
+            </View>
+          </View>
+        </Modal>
 
         <Modal //Modal View for household
           animationType="fade"
@@ -493,7 +539,24 @@ class Perfil extends Component {
               />
             </View>
 
-            <View style={{ paddingTop: 15 }}>
+            <View style={styles.riskGroupView}>
+              <CheckBox
+                title={"Faz parte do Grupo de Risco?"}
+                checked={this.state.riskGroup}
+                containerStyle={styles.riskGroupCheckBoxStyle}
+                size={scale(16)}
+                onPress={() => {
+                  this.setState({ riskGroup: !this.state.riskGroup })
+                }}
+              />
+              <TouchableOpacity style={{ marginRight: 15 }} onPress={async () => {
+                this.setRiskGroupModalVisible(true);
+              }}>
+                <FontAwesome name="question-circle-o" size={scale(25)} color="rgba(22, 107, 135, 1)" />
+              </TouchableOpacity>
+            </View>
+
+            <View>
               <CheckBox
                 title={"É integrante de alguma instituição de Ensino?"}
                 containerStyle={styles.CheckBoxStyle}
@@ -502,102 +565,102 @@ class Perfil extends Component {
                 onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
               />
             </View>
-            {this.state.groupCheckbox && this.state.householdNewInst?
+            {this.state.groupCheckbox && this.state.householdNewInst ?
               <View>
                 <View style={styles.viewRow}>
+                  <View style={styles.viewChildSexoRaca}>
+                    <Text style={styles.commomTextView}>Categoria:</Text>
+                    <ModalSelector
+                      initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                      style={{ width: '80%', height: '70%' }}
+                      data={schoolCategory}
+                      initValue={this.state.initValueCategory}
+                      onChange={(option) => this.setState({ householdCategory: option.key, initValueCategory: option.label, householdEducationLevel: null })}
+                    />
+                  </View>
+                  {this.state.householdCategory == "UNB" ?
                     <View style={styles.viewChildSexoRaca}>
-                        <Text style={styles.commomTextView}>Categoria:</Text>
-                        <ModalSelector
-                            initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                            style={{ width: '80%', height: '70%' }}
-                            data={schoolCategory}
-                            initValue={this.state.initValueCategory}
-                            onChange={(option) => this.setState({ householdCategory: option.key, initValueCategory: option.label, householdEducationLevel: null })}
-                            />
+                      <Text style={styles.commomTextView}>Faculdade:</Text>
+                      <ModalSelector
+                        initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                        style={{ width: '80%', height: '70%' }}
+                        data={getGroups("UNB", "", "")}
+                        initValue={this.state.initValueGroup}
+                        onChange={async (option) => {
+                          await this.setState({ householdGroup: option.key, initValueGroup: option.label })
+                        }}
+                      />
                     </View>
-                    {this.state.householdCategory == "UNB" ?
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>Faculdade:</Text>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%' }}
-                                data={getGroups("UNB", "", "")}
-                                initValue={this.state.initValueGroup}
-                                onChange={async (option) => {
-                                    await this.setState({ householdGroup: option.key, initValueGroup: option.label })
-                                }}
-                                />
-                        </View>
-                        : this.state.householdCategory == "SES-DF" ?
-                        <View style={styles.viewChildSexoRaca}>
-                          <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
-                          <ModalSelector
-                              initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                              style={{ width: '80%', height: '70%' }}
-                              data={educationLevel}
-                              initValue={this.state.initValueEducationLevel}
-                              onChange={(option) => this.setState({ householdEducationLevel: option.key, initValueEducationLevel: option.label })}
-                              />
-                        </View>
-                        : null}
+                    : this.state.householdCategory == "SES-DF" ?
+                      <View style={styles.viewChildSexoRaca}>
+                        <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
+                        <ModalSelector
+                          initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                          style={{ width: '80%', height: '70%' }}
+                          data={educationLevel}
+                          initValue={this.state.initValueEducationLevel}
+                          onChange={(option) => this.setState({ householdEducationLevel: option.key, initValueEducationLevel: option.label })}
+                        />
+                      </View>
+                      : null}
                 </View>
                 {this.state.householdEducationLevel != null ?
                   <View style={styles.viewRow}>
                     <View style={styles.viewChildSexoRaca}>
                       <Text style={styles.commomTextView}>Região:</Text>
-                        <ModalSelector
-                          initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                          style={{ width: '80%', height: '70%' }}
-                          data={schoolLocation}
-                          initValue={this.state.initValueSchoolLocation}
-                          onChange={(option) => this.setState({ householdSchoolLocation: option.key, initValueSchoolLocation: option.label })}
-                        />
+                      <ModalSelector
+                        initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                        style={{ width: '80%', height: '70%' }}
+                        data={schoolLocation}
+                        initValue={this.state.initValueSchoolLocation}
+                        onChange={(option) => this.setState({ householdSchoolLocation: option.key, initValueSchoolLocation: option.label })}
+                      />
                     </View>
                     {this.state.householdSchoolLocation != null ?
                       <View style={styles.viewChildSexoRaca}>
                         <Text style={styles.commomTextView}>Unidade:</Text>
-                          <ModalSelector
-                            initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                            style={{ width: '80%', height: '70%' }}
-                            data={getGroups("SES-DF", this.state.householdEducationLevel, this.state.householdSchoolLocation)}
-                            initValue={this.state.initValueGroup}
-                            onChange={async (option) => {
-                              await this.setState({ householdGroup: option.key, initValueGroup: option.label })
-                            }}
-                          />
+                        <ModalSelector
+                          initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                          style={{ width: '80%', height: '70%' }}
+                          data={getGroups("SES-DF", this.state.householdEducationLevel, this.state.householdSchoolLocation)}
+                          initValue={this.state.initValueGroup}
+                          onChange={async (option) => {
+                            await this.setState({ householdGroup: option.key, initValueGroup: option.label })
+                          }}
+                        />
                       </View>
                       : null}
                   </View>
-                  : this.state.householdGroup != null && this.state.householdCategory == "UNB"?
-                  <View style={styles.viewRow}>
-                    <View style={styles.viewChildSexoRaca}>
-                      <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                      <TextInput style={styles.formInput50}
-                        returnKeyType='done'
-                        keyboardType='number-pad'
-                        value={this.state.householdIdCode}
-                        onChangeText={async (text) => {
-                          await this.setState({ householdIdCode: text })
-                        }}
-                      />
+                  : this.state.householdGroup != null && this.state.householdCategory == "UNB" ?
+                    <View style={styles.viewRow}>
+                      <View style={styles.viewChildSexoRaca}>
+                        <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                        <TextInput style={styles.formInput50}
+                          returnKeyType='done'
+                          keyboardType='number-pad'
+                          value={this.state.householdIdCode}
+                          onChangeText={async (text) => {
+                            await this.setState({ householdIdCode: text })
+                          }}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  : null}
+                    : null}
               </View>
-            : null}
-              {this.state.groupCheckbox && !this.state.householdNewInst ?
-                <View style={styles.viewRow}>
-                  <View style={styles.viewChildSexoRaca}>
-                    <Text style={styles.commomTextView}>Instituição:</Text>
-                    <ModalSelector
-                      initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                      style={{ width: '80%', height: '70%' }}
-                      data={[{key: this.state.householdGroup, label: this.state.householdGroupName}]}
-                      initValue={this.state.householdGroupName}
-                      onChange={(option) => this.setState({ householdGroup: option.key, householdGroupName: option.label })}
-                    />
-                  </View>
-                  {this.state.householdIdCode ?
+              : null}
+            {this.state.groupCheckbox && !this.state.householdNewInst ?
+              <View style={styles.viewRow}>
+                <View style={styles.viewChildSexoRaca}>
+                  <Text style={styles.commomTextView}>Instituição:</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={[{ key: this.state.householdGroup, label: this.state.householdGroupName }]}
+                    initValue={this.state.householdGroupName}
+                    onChange={(option) => this.setState({ householdGroup: option.key, householdGroupName: option.label })}
+                  />
+                </View>
+                {this.state.householdIdCode ?
                   <View style={styles.viewChildSexoRaca}>
                     <Text style={styles.commomTextView}>Nº de Identificação:</Text>
                     <TextInput style={styles.formInput50}
@@ -608,7 +671,7 @@ class Perfil extends Component {
                     />
                   </View>
                   : null}
-                </View>
+              </View>
               : null}
 
             <View style={styles.buttonView}>
@@ -627,20 +690,20 @@ class Perfil extends Component {
                   this.setModalVisible(!this.state.modalVisibleHousehold)
                 }} />
               {this.state.groupCheckbox && !this.state.householdNewInst ?
-              <View>
-              <View style={{ margin: 5 }}></View>
-              <Button
-                title="Editar instituição"
-                color="#348EAC"
-                onPress={() => {
-                  this.setState({
-                    householdNewInst: true,
-                    householdIdCode: null
-                  })
-                }}
-              />
-              </View>
-              : null}
+                <View>
+                  <View style={{ margin: 5 }}></View>
+                  <Button
+                    title="Editar instituição"
+                    color="#348EAC"
+                    onPress={() => {
+                      this.setState({
+                        householdNewInst: true,
+                        householdIdCode: null
+                      })
+                    }}
+                  />
+                </View>
+                : null}
             </View>
           </View>
         </Modal>
@@ -728,8 +791,14 @@ class Perfil extends Component {
                 </View>
 
                 <View style={styles.viewChildSexoRaca}>
-                  <Text style={styles.commomTextView}>País de Origem:</Text>
-                  <Text style={styles.textBornCountry}>{this.state.userCountry}</Text>
+                  <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={country}
+                    initValue={this.state.userCountry}
+                    onChange={(option) => this.setState({ userCountry: option.key })}
+                  />
                 </View>
               </View>
 
@@ -758,59 +827,75 @@ class Perfil extends Component {
                   </View>
                 </View>
                 : null}
+              <View style={styles.riskGroupView}>
+                <CheckBox
+                  title={"Faz parte do Grupo de Risco?"}
+                  checked={this.state.riskGroup}
+                  containerStyle={styles.riskGroupCheckBoxStyle}
+                  size={scale(16)}
+                  onPress={() => {
+                    this.setState({ riskGroup: !this.state.riskGroup })
+                  }}
+                />
+                <TouchableOpacity style={{ marginRight: 15 }} onPress={async () => {
+                  this.setRiskGroupModalVisible(true);
+                }}>
+                  <FontAwesome name="question-circle-o" size={scale(25)} color="rgba(22, 107, 135, 1)" />
+                </TouchableOpacity>
+              </View>
 
-            <View style={{ paddingTop: 15 }}>
-              <CheckBox
-                title={"É integrante de alguma instituição de Ensino?"}
-                containerStyle={styles.CheckBoxStyle}
-                size={scale(16)}
-                checked={this.state.groupCheckbox}
-                onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-              />
-            </View>
-            {this.state.groupCheckbox && this.state.userNewInst?
               <View>
-                <View style={styles.viewRow}>
+                <CheckBox
+                  title={"É integrante de alguma instituição de Ensino?"}
+                  containerStyle={styles.CheckBoxStyle}
+                  size={scale(16)}
+                  checked={this.state.groupCheckbox}
+                  onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
+                />
+              </View>
+              {this.state.groupCheckbox && this.state.userNewInst ?
+                <View>
+                  <View style={styles.viewRow}>
                     <View style={styles.viewChildSexoRaca}>
-                        <Text style={styles.commomTextView}>Categoria:</Text>
-                        <ModalSelector
-                            initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                            style={{ width: '80%', height: '70%' }}
-                            data={schoolCategory}
-                            initValue={this.state.initValueCategory}
-                            onChange={(option) => this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null })}
-                            />
+                      <Text style={styles.commomTextView}>Categoria:</Text>
+                      <ModalSelector
+                        initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                        style={{ width: '80%', height: '70%' }}
+                        data={schoolCategory}
+                        initValue={this.state.initValueCategory}
+                        onChange={(option) => this.setState({ userCategory: option.key, initValueCategory: option.label, userEducationLevel: null })}
+                      />
                     </View>
                     {this.state.userCategory == "UNB" ?
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>Faculdade:</Text>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%' }}
-                                data={getGroups("UNB", "", "")}
-                                initValue={this.state.userGroupName}
-                                onChange={async (option) => {
-                                    await this.setState({ userGroup: option.key, userGroupName: option.label })
-                                }}
-                                />
-                        </View>
-                        : this.state.userCategory == "SES-DF" ?
+                      <View style={styles.viewChildSexoRaca}>
+                        <Text style={styles.commomTextView}>Faculdade:</Text>
+                        <ModalSelector
+                          initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                          style={{ width: '80%', height: '70%' }}
+                          data={getGroups("UNB", "", "")}
+                          initValue={this.state.userGroupName}
+                          onChange={async (option) => {
+                            await this.setState({ userGroup: option.key, userGroupName: option.label })
+                          }}
+                        />
+                      </View>
+                      : this.state.userCategory == "SES-DF" ?
                         <View style={styles.viewChildSexoRaca}>
                           <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
                           <ModalSelector
-                              initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                              style={{ width: '80%', height: '70%' }}
-                              data={educationLevel}
-                              initValue={this.state.initValueEducationLevel}
-                              onChange={(option) => this.setState({ userEducationLevel: option.key, initValueEducationLevel: option.label })}
-                              />
+                            initValueTextStyle={{ color: 'black', fontSize: 10 }}
+                            style={{ width: '80%', height: '70%' }}
+                            data={educationLevel}
+                            initValue={this.state.initValueEducationLevel}
+                            onChange={(option) => this.setState({ userEducationLevel: option.key, initValueEducationLevel: option.label })}
+                          />
                         </View>
                         : null}
-                </View>
-                {this.state.userEducationLevel != null ?
-                  <View style={styles.viewRow}>
-                    <View style={styles.viewChildSexoRaca}>
-                      <Text style={styles.commomTextView}>Região:</Text>
+                  </View>
+                  {this.state.userEducationLevel != null ?
+                    <View style={styles.viewRow}>
+                      <View style={styles.viewChildSexoRaca}>
+                        <Text style={styles.commomTextView}>Região:</Text>
                         <ModalSelector
                           initValueTextStyle={{ color: 'black', fontSize: 10 }}
                           style={{ width: '80%', height: '70%' }}
@@ -818,10 +903,10 @@ class Perfil extends Component {
                           initValue={this.state.initValueSchoolLocation}
                           onChange={(option) => this.setState({ userSchoolLocation: option.key, initValueSchoolLocation: option.label })}
                         />
-                    </View>
-                    {this.state.userSchoolLocation != null ?
-                      <View style={styles.viewChildSexoRaca}>
-                        <Text style={styles.commomTextView}>Unidade:</Text>
+                      </View>
+                      {this.state.userSchoolLocation != null ?
+                        <View style={styles.viewChildSexoRaca}>
+                          <Text style={styles.commomTextView}>Unidade:</Text>
                           <ModalSelector
                             initValueTextStyle={{ color: 'black', fontSize: 10 }}
                             style={{ width: '80%', height: '70%' }}
@@ -831,26 +916,26 @@ class Perfil extends Component {
                               await this.setState({ userGroup: option.key, userGroupName: option.label })
                             }}
                           />
+                        </View>
+                        : null}
+                    </View>
+                    : this.state.userGroup != null && this.state.userCategory == "UNB" ?
+                      <View style={styles.viewRow}>
+                        <View style={styles.viewChildSexoRaca}>
+                          <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                          <TextInput style={styles.formInput50}
+                            returnKeyType='done'
+                            keyboardType='number-pad'
+                            value={this.state.userIdCode}
+                            onChangeText={async (text) => {
+                              await this.setState({ userIdCode: text })
+                            }}
+                          />
+                        </View>
                       </View>
                       : null}
-                  </View>
-                  : this.state.userGroup != null && this.state.userCategory == "UNB"?
-                  <View style={styles.viewRow}>
-                    <View style={styles.viewChildSexoRaca}>
-                      <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                      <TextInput style={styles.formInput50}
-                        returnKeyType='done'
-                        keyboardType='number-pad'
-                        value={this.state.userIdCode}
-                        onChangeText={async (text) => {
-                          await this.setState({ userIdCode: text })
-                        }}
-                      />
-                    </View>
-                  </View>
-                  : null}
-              </View>
-            : null}
+                </View>
+                : null}
               {this.state.groupCheckbox && !this.state.userNewInst ?
                 <View style={styles.viewRow}>
                   <View style={styles.viewChildSexoRaca}>
@@ -858,24 +943,24 @@ class Perfil extends Component {
                     <ModalSelector
                       initValueTextStyle={{ color: 'black', fontSize: 10 }}
                       style={{ width: '80%', height: '70%' }}
-                      data={[{key: this.state.userGroup, label: this.state.userGroupName}]}
+                      data={[{ key: this.state.userGroup, label: this.state.userGroupName }]}
                       initValue={this.state.userGroupName}
                       onChange={(option) => this.setState({ userGroup: option.key, userGroupName: option.label })}
                     />
                   </View>
                   {this.state.userIdCode ?
-                  <View style={styles.viewChildSexoRaca}>
-                    <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                    <TextInput style={styles.formInput50}
-                      returnKeyType='done'
-                      keyboardType='number-pad'
-                      value={this.state.userIdCode}
-                      onChangeText={text => this.setState({ userIdCode: text })}
-                    />
-                  </View>
-                  : null}
+                    <View style={styles.viewChildSexoRaca}>
+                      <Text style={styles.commomTextView}>Nº de Identificação:</Text>
+                      <TextInput style={styles.formInput50}
+                        returnKeyType='done'
+                        keyboardType='number-pad'
+                        value={this.state.userIdCode}
+                        onChangeText={text => this.setState({ userIdCode: text })}
+                      />
+                    </View>
+                    : null}
                 </View>
-              : null}
+                : null}
 
               <View style={styles.buttonView}>
                 <Button
@@ -892,20 +977,20 @@ class Perfil extends Component {
                     this.handleCancel()
                   }} />
                 {this.state.groupCheckbox && !this.state.userNewInst ?
-                <View>
-                <View style={{ margin: 5 }}></View>
-                <Button
-                  title="Editar instituição"
-                  color="#348EAC"
-                  onPress={() => {
-                    this.setState({
-                      userNewInst: true,
-                      userIdCode: null
-                    })
-                  }}
-                />
-                </View>
-                : null}
+                  <View>
+                    <View style={{ margin: 5 }}></View>
+                    <Button
+                      title="Editar instituição"
+                      color="#348EAC"
+                      onPress={() => {
+                        this.setState({
+                          userNewInst: true,
+                          userIdCode: null
+                        })
+                      }}
+                    />
+                  </View>
+                  : null}
               </View>
             </View>
           </ScrollView>
@@ -931,11 +1016,11 @@ class Perfil extends Component {
             <View style={{ paddingLeft: 20, justifyContent: 'center' }}>
               <View style={styles.viewButtons}>
                 <TouchableOpacity
-                  onPress={ () => {
+                  onPress={() => {
                     this.loadUserInfo()
                     this.showUserModal()
                   }
-                }>
+                  }>
                   <FontAwesome name="edit" size={scale(25)} color='rgba(255, 255, 255, 1)' />
                 </TouchableOpacity>
               </View>
@@ -1156,7 +1241,81 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     color: 'gray'
-  }
+  },
+  modalComponent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: "center"
+  },
+  modalRiskGroupView: {
+    height: "35%",
+    alignSelf: "center",
+    justifyContent: "center",
+    width: "93%",
+    marginTop: "15%",
+    marginBottom: "15%",
+    borderRadius: 20,
+    backgroundColor: "white",
+    shadowColor: "gray",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 1.0,
+    elevation: 15,
+  },
+  modalViewCommom: {
+    marginTop: "30%",
+    marginBottom: "5%",
+  },
+  modalTitle: {
+    fontSize: 17,
+    fontFamily: 'roboto',
+    color: '#465F6C',
+    alignSelf: 'flex-start',
+    textAlign: 'justify',
+    paddingLeft: "5%",
+    paddingRight: "5%",
+    fontWeight: "bold",
+    paddingBottom: 5
+  },
+  modalText: {
+    fontSize: 16,
+    fontFamily: 'roboto',
+    color: '#465F6C',
+    alignSelf: 'flex-start',
+    textAlign: 'justify',
+    paddingLeft: "5%",
+    paddingRight: "5%",
+  },
+  modalButton: {
+    width: "50%",
+    alignSelf: 'center',
+  },
+  riskGroupCheckBoxStyle: {
+    marginTop: 10,
+    width: '80%',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.11)',
+    backgroundColor: 'transparent',
+    alignSelf: "center",
+  },
+  riskGroupView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  CheckBoxStyle: {
+    width: '90%',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.11)',
+    backgroundColor: 'transparent',
+    //height: scale(32),
+    alignSelf: "center"
+  },
 })
 
 export default Perfil
