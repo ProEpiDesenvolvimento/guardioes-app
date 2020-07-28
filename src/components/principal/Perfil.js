@@ -23,7 +23,7 @@ const options = {
   chooseFromLibraryButtonTitle: 'Selecione da Galeria',
   storageOptions: {
     skipBackup: true,
-    path: 'images',
+    path: 'gds',
   },
 }; 
 
@@ -51,7 +51,7 @@ class Perfil extends Component {
 
   changeAvatar = async ()  => {
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
+      //console.log('Response = ', response);
     
       if (response.didCancel) {
         console.log('User cancelled image picker');
