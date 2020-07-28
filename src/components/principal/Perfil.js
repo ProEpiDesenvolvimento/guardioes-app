@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
@@ -58,11 +58,12 @@ class Perfil extends Component {
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        const source = response.uri;
-    
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    
+        let source = response.uri;
+
+        if (Platform.OS === 'android') {
+          source = 'content://com.guardioesapp.provider/root' + response.path
+        }
+
         this.setState({
           avatarSource: source,
         });
