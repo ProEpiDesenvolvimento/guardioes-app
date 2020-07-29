@@ -8,6 +8,8 @@ import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import Emoji from 'react-native-emoji';
 
+import { Avatar } from 'react-native-elements';
+
 import * as Imagem from '../../../imgs/imageConst';
 import { getNameParts } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
@@ -29,7 +31,6 @@ import {
   Container,
   ScrollViewStyle,
   Background,
-  Avatar,
   UserView,
   Button,
   NamesContainer,
@@ -370,16 +371,17 @@ class Home extends Component {
                     <TextName>{welcomeMessage}</TextName>
                     <AppName>{translate("home.nowAGuardian")}</AppName>
                   </NamesContainer>
-                  <Button onPress={() => {
-                      this.getHouseholds();
-                      this.setModalVisible(true);
-                  }}>
                   <Avatar
+                    containerStyle={styles.userAvatar}
+                    size={scale(60)}
                     source={Imagem['NullAvatar']}
                     activeOpacity={0.6}
+                    rounded
+                    onPress={() => {
+                        this.getHouseholds();
+                        this.setModalVisible(true);
+                    }}
                   />
-                  </Button>
-                  
                 </UserView>
               </Background>
               <StatusContainer>
@@ -414,22 +416,21 @@ class Home extends Component {
                   <View style={styles.modalView}>
                     <View style={styles.modalViewTop}>
                         <View style={styles.viewAvatar}>
-                        <Button onPress={async () => {
-                          await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
-                          this.setModalVisible(!this.state.modalVisible);
-                          AsyncStorage.setItem('userSelected', this.state.userSelect);
-                          AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
-                          AsyncStorage.setItem('userBirth', this.state.userBirth);
-                          AsyncStorage.removeItem('householdID');
-                          this.getUserHealth();
-                        }}>
                           <Avatar
                             size="large"
                             rounded
                             source={Imagem[this.state.userAvatar]}
                             activeOpacity={0.6}
+                            onPress={async () => {
+                                await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+                                this.setModalVisible(!this.state.modalVisible);
+                                AsyncStorage.setItem('userSelected', this.state.userSelect);
+                                AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                AsyncStorage.setItem('userBirth', this.state.userBirth);
+                                AsyncStorage.removeItem('householdID');
+                                this.getUserHealth();
+                            }}
                           />
-                        </Button>
                           <Text>{getNameParts(this.state.userName, true)}</Text>
                         </View>
                         <ScrollView horizontal={true}>
@@ -582,6 +583,13 @@ const styles = StyleSheet.create({
         fontSize: scale(16),
         fontFamily: 'roboto',
         color: '#ffffff',
+    },
+    userAvatar: {
+        marginRight: `${scale(8)}%`,
+        backgroundColor: '#ffffff',
+        borderRadius: 50,
+        borderColor: '#ffffff',
+        borderWidth: 3,
     },
     viewReport: {
         backgroundColor: '#ffffff',

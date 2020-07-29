@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+
 import LinearGradient from 'react-native-linear-gradient';
+import { TouchableOpacity } from 'react-native';
 
 import { scale } from '../../../utils/scallingUtils';
 
@@ -26,16 +27,9 @@ export const Background = styled(LinearGradient).attrs({
   flex: 1;
 `;
 
-export const Avatar = styled.Image`
-  margin-right: ${scale(8)}%;
-  border-radius: 50px;
-  border-color: #ffffff;
-  border-width: 3px;
-  height: ${scale(60)}px;
-  width: ${scale(60)}px;
-`;
-
-export const Button = styled.TouchableOpacity`
+export const Button = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.5
+})`
   flex-wrap: wrap;
 `;
 
@@ -92,7 +86,9 @@ export const StatusBemMal = styled.View`
   flex-direction: row;
 `;
 
-export const Bem = styled(TouchableOpacity)` 
+export const Bem = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.5
+})` 
   height: ${scale(50)}px;
   width: ${scale(100)}px;
   background: #348eac;
@@ -103,7 +99,9 @@ export const Bem = styled(TouchableOpacity)`
   justify-content: center;
 `;
 
-export const Mal = styled(TouchableOpacity)`
+export const Mal = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.5
+})`
   height: ${scale(50)}px;
   width: ${scale(100)}px;
   background: #f18f01;

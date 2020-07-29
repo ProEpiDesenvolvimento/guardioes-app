@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { FormInlineCheck, FormGroup, FormGroupChild, FormLabel, NormalInput, Selector, CheckBoxStyled } from '../principal/Household/styles';
 
 import { schoolCategory, schoolLocation, educationLevel } from '../../utils/selectorUtils'
-import { scale } from '../../utils/scallingUtils'
 import translate from '../../../locales/i18n'
 import { API_URL } from 'react-native-dotenv';
 
@@ -60,7 +59,7 @@ class InstitutionSelector extends Component {
 
     render() {
         return (
-            <View style={{ marginBottom: scale(16) }}>
+            <View>
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={"É integrante de alguma instituição de Ensino?"}

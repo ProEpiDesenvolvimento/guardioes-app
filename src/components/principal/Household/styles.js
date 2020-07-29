@@ -17,7 +17,7 @@ export const Container = styled.View`
 export const KeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
     contentContainerStyle: {
         flexGrow: 1,
-        paddingTop: percentage(7),
+        paddingVertical: percentage(7),
         paddingHorizontal: percentage(7),
     }
 })``;
@@ -124,12 +124,12 @@ export const DateSelector = styled(DatePicker).attrs({
         },
         placeholderText: {
             justifyContent: "center",
-            fontSize: scale(12),
+            fontSize: scale(14),
             color: '#c4c4c4'
         },
         dateText: {
             justifyContent: "center",
-            fontSize: scale(12),
+            fontSize: scale(14),
             color: '#32323B'
         }
     }
@@ -170,10 +170,10 @@ export const CreateContainer = styled(ShadowView).attrs({
     width: 60%;
     align-self: center;
     background-color: #348EAC;
-    border-radius: ${scale(12)}px;
+    border-radius: ${scale(16)}px;
     margin-top: ${scale(10)}px;
-    margin-bottom: ${scale(16)}px;
-    padding: 10px;
+    margin-bottom: ${scale(10)}px;
+    padding: ${scale(10)}px;
     shadow-color: #348EAC;
     shadow-opacity: 0.4;
     shadow-radius: 10px;
@@ -227,7 +227,7 @@ export const ModalButton = styled.View`
     width: 50%;
     align-self: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: ${scale(8)}px;
 `;
 
 export const ModalButtonText = styled.Text`
