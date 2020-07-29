@@ -26,7 +26,7 @@ import {
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [twitterOption, setTwitterOption] = useState('guardioesunb')
+    const [twitterOption, setTwitterOption] = useState('@Proepi_')
 
   const { twitter } = useTwitter();
 
@@ -39,18 +39,26 @@ export default function newNoticias() {
     TWITTER_ACCESS2,
   );
 
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
   async function Twitter(twitterOption) {
     const response = await twitter.api(
       'GET',
       '/statuses/user_timeline.json',
       {
         screen_name: twitterOption,
-        count: '10',
-        exclude_replies: true,
+        count: 10,
+        exclude_replies: false,
       },
     );
 
-    setTwitter(response);
+    console.log(response.length);
+    setTwitter(response)
     setLoading(false);
   }
 
@@ -59,7 +67,7 @@ export default function newNoticias() {
     Twitter(twitterOption);
   }, [twitterOption]);
     
-  function loadingTwitters(loading, twitters){
+  function loadingTwitters(loading){
     if (loading) {
       return (
           <View style={{ flex: 1, padding: 20 }}>
