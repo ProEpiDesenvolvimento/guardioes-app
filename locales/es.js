@@ -17,8 +17,12 @@ export default {
         "black": "Negro",
         "asian": "Asian"
     },
+    "selector": {
+        "label": "Seleccione",
+        "cancelButton": "Cancelar"
+    },
     "birthDetails": {
-        "format": "DD/MM/AAAA",
+        "format": "DD-MM-AAAA",
         "confirmButton": "Confirmar",
         "cancelButton": "Cancelar"
     },
