@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, Button, NetInfo, Alert } from 'react-native';
+import { Text, View, NetInfo, Alert } from 'react-native';
+
+import { Report, ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
+import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
+import { FormInline, FormLabel, Selector, CreateContainer, CreateText } from '../Household/styles';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import { CheckBox } from 'react-native-elements';
-import DatePicker from 'react-native-datepicker';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
-import { scale } from '../../utils/scallingUtils';
+import { scale } from '../../../utils/scallingUtils';
 import { API_URL } from 'react-native-dotenv';
-import translate from '../../../locales/i18n';
+import translate from '../../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
-import * as Imagem from '../../imgs/imageConst';
-import { getNameParts } from '../../utils/constUtils';
+import * as Imagem from '../../../imgs/imageConst';
+import { getNameParts } from '../../../utils/constUtils';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import ModalSelector from 'react-native-modal-selector';
-import { country, localSymptom } from '../../utils/selectorUtils';
-import { Redirect } from '../../utils/constUtils';
+import { country, localSymptom } from '../../../utils/selectorUtils';
+import { Redirect } from '../../../utils/constUtils';
 import Share from "react-native-share";
-import { cardWhatsapp } from '../../imgs/cardWhatsapp/cardWhatsapp_base64';
+import { cardWhatsapp } from '../../../imgs/cardWhatsapp/cardWhatsapp_base64';
 
 let data = new Date();
 let d = data.getDate();
@@ -158,7 +160,7 @@ class BadReport extends Component {
     async requestFineLocationPermission() {
         try {
             const granted = await PermissionsAndroid.request(
-                android.permission.ACCESS_FINE_LOCATION,
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
                     'title': translate("maps.locationRequest.requestLocationMessageTitle"),
                     'message': translate("maps.locationRequest.requestLocationMessageMessage")
@@ -284,18 +286,17 @@ class BadReport extends Component {
         const symptomsData = this.state.dataSource;
 
         const traveled = (
-            <View style={styles.viewRowCenter}>
-                <View><Text style={styles.commomTextView}>{translate("badReport.checkboxes.fourth")}</Text></View>
-                <View >
-                    <ModalSelector
-                        initValueTextStyle={{ color: 'black' }}
-                        style={{ width: '80%', height: '70%', alignSelf: 'center' }}
-                        data={country}
-                        initValue={"Selecionar"}
-                        onChange={(option) => this.setState({ country: option.key })}
-                    />
-                </View>
-            </View>
+            <FormInline>
+                <FormLabel>
+                    {translate("badReport.checkboxes.fourth")}
+                </FormLabel>
+                <Selector
+                    initValue={translate("selector.label")}
+                    cancelText={translate("selector.cancelButton")}
+                    data={country}
+                    onChange={(option) => this.setState({ country: option.key })}
+                />
+            </FormInline>
         )
 
         let traveledTrue;
@@ -304,69 +305,50 @@ class BadReport extends Component {
         }
 
         return (
-            <View style={styles.container}>
-                <View style={styles.Top}>
-                    <View style={styles.userAvatar}>
-                        <Avatar
-                            size="large"
-                            rounded
-                            source={Imagem[this.state.avatarSelect]}
-                            activeOpacity={0.7}
+            <Report>
+                <ScrollViewStyled>
+                    <User>
+                        <IconWrapper>
+                            <Avatar
+                                size={scale(60)}
+                                source={Imagem[this.state.avatarSelect]}
+                                rounded
+                            />
+                        </IconWrapper>
+                        <InfoWrapper>
+                            <Name>
+                                {getNameParts(this.state.userSelected, true)}
+                            </Name>
+                        </InfoWrapper>
+                    </User>
+
+                    <DateSince>
+                        <DateText>
+                            {translate("badReport.sickAge")}
+                        </DateText>
+                        <DateSelector
+                            placeholder={translate("badReport.datePlaceHolder")}
+                            date={this.state.today_date}
+                            format="DD-MM-YYYY"
+                            minDate="01-01-2018"
+                            maxDate={today}
+                            locale={'pt-BR'}
+                            confirmBtnText={translate("birthDetails.confirmButton")}
+                            cancelBtnText={translate("birthDetails.cancelButton")}
+                            onDateChange={(date) => { this.setState({ today_date: date }) }}
                         />
-                    </View>
-                    <View style={styles.UserInfos}>
-                        <Text style={styles.UserName}>
-                            {getNameParts(this.state.userSelected, true)}
-                        </Text>
-                    </View>
-                </View>
-                <View style={{ width: '100%', alignSeft: 'center', marginBottom: '2%', marginTop: '2%' }}>
-                    <Text style={styles.dateText}>
-                        {translate("badReport.sickAge")}
-                    </Text>
-                    <DatePicker
-                        style={{ width: '94%', marginLeft: '3%', backgroundColor: '#a9cedb', borderRadius: 5 }}
-                        date={this.state.today_date}
-                        androidMode='spinner'
-                        locale={'pt-BR'}
-                        mode="date"
-                        placeholder={translate("badReport.datePlaceHolder")}
-                        format="DD-MM-YYYY"
-                        minDate="01-01-2018"
-                        maxDate={today}
-                        confirmBtnText={translate("birthDetails.confirmButton")}
-                        cancelBtnText={translate("birthDetails.cancelButton")}
-                        customStyles={{
-                            dateInput: {
-                                borderWidth: 0
-                            },
-                            dateText: {
-                                fontFamily: 'roboto',
-                                fontSize: 20
-                            },
-                            placeholderText: {
-                                marginLeft: 14,
-                                fontFamily: 'roboto',
-                                fontSize: 18,
-                                color: '#465F6C'
-                            }
-                        }}
-                        onDateChange={(date) => { this.setState({ today_date: date }) }}
-                    />
-                </View>
-                <ScrollView style={styles.scroll}>
-                    <View style={styles.viewText}>
-                        <Text style={styles.sintomasText}>
+                    </DateSince>
+
+                    <FormTitleWrapper>
+                        <FormTitle>
                             {translate("badReport.symptoms")}
-                        </Text>
-                    </View>
+                        </FormTitle>
+                    </FormTitleWrapper>
                     {symptomsData != null ?
                         symptomsData.map((symptom, index) => {
                             return (
-                                <CheckBox
+                                <CheckBoxStyled
                                     key={index}
-                                    textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
-                                    checkedColor={'#348EAC'}
                                     title={symptom.description}
                                     checked={this.state[symptom.code]}
                                     onPress={async () => {
@@ -388,51 +370,52 @@ class BadReport extends Component {
                                 />
                             )
                         })
-                        : null}
-                    <View style={styles.viewText}>
-                        <Text style={styles.sintomasText}>{translate("badReport.answerQuestions")}</Text>
-                    </View>
-                    <CheckBox
+                    : null}
+
+                    <FormTitleWrapper>
+                        <FormTitle>
+                            {translate("badReport.answerQuestions")}
+                        </FormTitle>
+                    </FormTitleWrapper>
+                    <CheckBoxStyled
                         title={translate("badReport.checkboxes.third")}
-                        textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
-                        checkedColor={'#348EAC'}
                         checked={this.state.hadTraveled}
                         onPress={async () => await this.setState({ hadTraveled: !this.state.hadTraveled })}
                     />
                     {/*traveledTrue*/}
-                    <CheckBox
+                    <CheckBoxStyled
                         title={translate("badReport.checkboxes.first")}
-                        textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
-                        checkedColor={'#348EAC'}
                         checked={this.state.contactWithSymptomCheckbox}
                         onPress={async () => await this.setState({ contactWithSymptomCheckbox: !this.state.contactWithSymptomCheckbox })}
                     />
                     {this.state.contactWithSymptomCheckbox ?
-                        <View style={styles.viewRowCenter}>
-                            <View><Text style={styles.commomTextView}>Selecione o local onde ocorreu o contato</Text></View>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black' }}
-                                style={{ width: '80%', height: '70%', alignSelf: 'center' }}
+                        <FormInline>
+                            <FormLabel>
+                                Local onde ocorreu o contato:
+                            </FormLabel>
+                            <Selector
+                                initValue={translate("selector.label")}
+                                cancelText={translate("selector.cancelButton")}
                                 data={localSymptom}
-                                initValue={"Selecionar"}
                                 onChange={(option) => this.setState({ contactWithSymptom: option.key })}
                             />
-                        </View>
-                        : null}
-                    <CheckBox
+                        </FormInline>
+                    : null}
+                    <CheckBoxStyled
                         title={translate("badReport.checkboxes.second")}
-                        textStyle={{ color: '#348EAC', fontFamily: 'roboto' }}
-                        checkedColor={'#348EAC'}
                         checked={this.state.lookedForHospital}
                         onPress={async () => await this.setState({ lookedForHospital: !this.state.lookedForHospital })}
                     />
 
-                    <View style={styles.buttonView}>
-                        <Button title={translate("badReport.checkboxConfirm")} color="#348EAC" onPress={() =>
-                            this.verifyLocalization()
-                        } />
-                    </View>
-                </ScrollView>
+                    <Button onPress={() => this.verifyLocalization()}>
+                        <CreateContainer>
+                            <CreateText>
+                                {translate("badReport.checkboxConfirm")}
+                            </CreateText>
+                        </CreateContainer>
+                    </Button>
+                </ScrollViewStyled>
+
                 <AwesomeAlert
                     show={showAlert}
                     showProgress={this.state.progressBarAlert ? true : false}
@@ -453,7 +436,7 @@ class BadReport extends Component {
                     }}
                     onDismiss={() => this.props.navigation.navigate('Mapa')}
                 />
-            </View>
+            </Report>
         );
     }
 }
@@ -472,91 +455,6 @@ const emojis = [
         />
     )
 ]
-
-// define your styles
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        height: 550,
-        alignItems: 'center',
-        justifyContent: 'flex-start'
-    },
-    Top: {
-        height: '15%',
-        width: '100%',
-        flexDirection: 'row',
-        backgroundColor: '#2298BF',
-        borderColor: 'red',
-        //borderWidth: 1,
-    },
-    userAvatar: {
-        justifyContent: 'center',
-        paddingLeft: 15,
-        paddingRight: 15
-    },
-    UserInfos: {
-        borderColor: 'green',
-        //borderWidth: 1,
-    },
-    UserName: {
-        fontFamily: 'roboto',
-        fontSize: 24,
-        color: 'white',
-        marginTop: 15,
-    },
-    scroll: {
-        paddingRight: '5%',
-        //borderColor: 'green',
-        //borderWidth: 3,
-    },
-    sintomasText: {
-        textAlign: 'left',
-        fontWeight: 'bold',
-        marginTop: 5,
-        marginLeft: 5,
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#348EAC'
-    },
-    dateText: {
-        textAlign: 'center',
-        fontWeight: 'bold',
-        marginBottom: 5,
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#348EAC'
-    },
-    viewText: {
-        borderTopWidth: 2,
-        alignSelf: 'center',
-        width: '95%',
-        borderTopColor: '#348EAC',
-    },
-    buttonView: {
-        alignSelf: 'center',
-        //marginTop: 15,
-        //marginBottom: 20,
-        width: "60%",
-        //borderWidth: 1,
-        //borderColor: 'red'
-    },
-    commomTextView: {
-        fontSize: 15,
-        alignSelf: 'center',
-        paddingBottom: 4,
-        fontWeight: 'bold'
-    },
-    textCountry: {
-        alignSelf: 'center',
-        fontSize: 15,
-        fontFamily: 'roboto',
-    },
-    viewRowCenter: {
-        width: '100%',
-        height: scale(65),
-        justifyContent: "center"
-    },
-});
 
 //make this component available to the app
 export default BadReport;

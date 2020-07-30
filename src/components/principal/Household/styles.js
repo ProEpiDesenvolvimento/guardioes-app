@@ -144,7 +144,7 @@ export const CheckBoxStyled = styled(CheckBox).attrs({
         flex: 1,
         alignSelf: "center",
         backgroundColor: '#ffffff',
-        borderRadius: scale(12),
+        borderRadius: scale(15),
         borderWidth: 0,
         marginLeft: 0
     },
