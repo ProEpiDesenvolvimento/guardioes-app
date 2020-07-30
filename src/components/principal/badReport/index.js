@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, NetInfo, Alert } from 'react-native';
 
-import { Report, ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
+import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
-import { FormInline, FormLabel, Selector, CreateContainer, CreateText } from '../Household/styles';
+import { Container, FormInline, FormLabel, Selector, CreateContainer, CreateText } from '../Household/styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
@@ -305,7 +305,7 @@ class BadReport extends Component {
         }
 
         return (
-            <Report>
+            <Container>
                 <ScrollViewStyled>
                     <User>
                         <IconWrapper>
@@ -436,7 +436,7 @@ class BadReport extends Component {
                     }}
                     onDismiss={() => this.props.navigation.navigate('Mapa')}
                 />
-            </Report>
+            </Container>
         );
     }
 }

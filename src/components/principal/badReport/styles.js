@@ -8,11 +8,6 @@ import { TouchableOpacity } from 'react-native';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
-export const Report = styled.View`
-    background-color: #f8f8f8;
-    flex: 1;
-`;
-
 export const ScrollViewStyled = styled(ScrollView).attrs({
     contentContainerStyle: {
         flexGrow: 1,

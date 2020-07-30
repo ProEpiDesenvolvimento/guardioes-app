@@ -39,7 +39,7 @@ export const FormLabel = styled.Text`
 
 export const NormalInput = styled.TextInput`
     width: 100%;
-    height: ${scale(36)}px;
+    min-height: ${scale(36)}px;
     background-color: #ffffff;
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
