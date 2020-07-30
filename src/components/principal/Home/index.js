@@ -11,7 +11,7 @@ import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
 
 import * as Imagem from '../../../imgs/imageConst';
-import { getNameParts } from '../../../utils/constUtils';
+import { getNameParts, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
 
@@ -374,7 +374,8 @@ class Home extends Component {
                   <Avatar
                     containerStyle={styles.userAvatar}
                     size={scale(60)}
-                    source={Imagem['NullAvatar']}
+                    source={{uri: this.state.avatarSelect}}
+                    title={getInitials(this.state.userSelect)}
                     activeOpacity={0.6}
                     rounded
                     onPress={() => {
@@ -419,8 +420,8 @@ class Home extends Component {
                           <Avatar
                             size="large"
                             rounded
-                            source={Imagem[this.state.userAvatar]}
-                            activeOpacity={0.6}
+                            source={{uri: this.state.avatarSelect}}
+                            title={getInitials(this.state.userSelect)}
                             onPress={async () => {
                                 await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
                                 this.setModalVisible(!this.state.modalVisible);
@@ -440,9 +441,10 @@ class Home extends Component {
                                 <View style={styles.viewAvatar} key={key}>
                                   <Avatar
                                     size="large"
-                                    rounded
                                     source={Imagem[household.picture]}
+                                    title={getInitials(household.description)}
                                     activeOpacity={0.6}
+                                    rounded
                                     onPress={async () => {
                                         await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
                                         this.setModalVisible(!this.state.modalVisible);

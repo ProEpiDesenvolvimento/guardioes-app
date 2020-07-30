@@ -16,7 +16,7 @@ import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../../imgs/imageConst';
 import { HappyIcon, SadIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
-import { getNameParts } from '../../../utils/constUtils';
+import { getNameParts, getInitials } from '../../../utils/constUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
@@ -240,8 +240,8 @@ class Diario extends Component {
                         <Avatar
                             containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
                             size={scale(50)}
-                            source={Imagem[this.state.avatarSelect]}
-                            activeOpacity={0.6}
+                            source={{uri: this.state.avatarSelect}}
+                            title={getInitials(this.state.userSelected)}
                             rounded
                         />
                     </AvatarContainer>

@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import { getNameParts, getInitials } from '../../utils/constUtils';
 import { Avatar } from 'react-native-elements';
 import Share from "react-native-share";
-import { scale } from '../../utils/scallingUtils';
+import { verticalScale, scale } from '../../utils/scallingUtils';
 import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 
@@ -51,6 +51,7 @@ export default class drawerContentComponents extends Component {
     _logoutApp = async () => {
         AsyncStorage.removeItem('userID');
         AsyncStorage.removeItem('userName');
+        AsyncStorage.removeItem('userAvatar');
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
@@ -73,8 +74,9 @@ export default class drawerContentComponents extends Component {
                     <AvatarContainer>
                         <Avatar
                             containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
-                            source={Imagem[this.state.userAvatar]}
                             size={scale(60)}
+                            source={{uri: this.state.userAvatar}}
+                            title={getInitials(this.state.userName)}
                             rounded
                         />
                     </AvatarContainer>

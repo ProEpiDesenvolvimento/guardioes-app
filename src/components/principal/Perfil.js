@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import * as Imagem from '../../imgs/imageConst';
@@ -13,6 +13,19 @@ import ModalSelector from 'react-native-modal-selector';
 import { gender, country, race, household, getGroups, getGroupName, schoolCategory, educationLevel, schoolLocation } from '../../utils/selectorUtils';
 import { state, getCity } from '../../utils/brasil';
 import InstitutionSelector from '../userData/InstitutionSelector'
+import ImagePicker from 'react-native-image-picker';
+import { getInitials } from '../../utils/constUtils';
+
+// More info on all the options is below in the API Reference... just some common use cases shown here
+const options = {
+  title: 'Selecione imagem de Perfil',
+  takePhotoButtonTitle: 'Tire uma foto',
+  chooseFromLibraryButtonTitle: 'Selecione da Galeria',
+  storageOptions: {
+    skipBackup: true,
+    path: 'gds',
+  },
+}; 
 
 FontAwesome.loadFont()
 
@@ -35,6 +48,31 @@ class Perfil extends Component {
       modalVisibleUser: false,
       modalVisibleRiskGroup: false,
     }
+  }
+
+  changeAvatar = async ()  => {
+    ImagePicker.showImagePicker(options, (response) => {
+      //console.log('Response = ', response);
+    
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        let source = response.uri;
+
+        if (Platform.OS === 'android') {
+          source = 'content://com.guardioesapp.provider/root' + response.path
+        }
+
+        this.setState({
+          avatarSource: source,
+        });
+
+        AsyncStorage.setItem('userAvatar', this.state.avatarSource);
+        this.getInfo()
+      }
+    });
   }
 
   setModalVisible(visible) {
@@ -213,7 +251,8 @@ class Perfil extends Component {
           is_professional: this.state.isProfessional,
           risk_group: this.state.userRiskGroup,
           state: this.state.userState,
-          city: this.state.userCity
+          city: this.state.userCity,
+          country: this.state.userCountry
         }
       )
     })
@@ -235,10 +274,10 @@ class Perfil extends Component {
       }
     }).then((response) => {
       if (response.status == 200) {
-        console.warn(response.status)
+        //console.warn(response.status)
         return response.json()
       } else {
-        console.warn(response.status)
+        //console.warn(response.status)
       }
     }).then(async (responseJson) => {
       responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).join('')
@@ -290,10 +329,18 @@ class Perfil extends Component {
   }
 
   handleEdit = async () => {
-    await this.setState({ modalVisibleUser: false })
-    await this.setState({ userName: this.state.userSelect })
+    await this.setState({
+      modalVisibleUser: false,
+      userName: this.state.userSelect 
+    })
     if (this.state.groupCheckbox === false) {
       await this.setState({ userGroup: null, userIdCode: null, userGroupName: null, userIdSelect: null })
+    }
+    if (this.state.userCountry !== "Brazil") {
+      this.setState({
+        userCity: null,
+        userState: null
+      })
     }
     await this.editUser()
   }
@@ -744,8 +791,14 @@ class Perfil extends Component {
                 </View>
 
                 <View style={styles.viewChildSexoRaca}>
-                  <Text style={styles.commomTextView}>País de Origem:</Text>
-                  <Text style={styles.textBornCountry}>{this.state.userCountry}</Text>
+                  <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                  <ModalSelector
+                    initValueTextStyle={{ color: 'black' }}
+                    style={{ width: '80%', height: '70%' }}
+                    data={country}
+                    initValue={this.state.userCountry}
+                    onChange={(option) => this.setState({ userCountry: option.key })}
+                  />
                 </View>
               </View>
 
@@ -948,8 +1001,12 @@ class Perfil extends Component {
             <Avatar
               size="large"
               rounded
-              source={Imagem[this.state.userAvatar]}
+              source={{uri: this.state.userAvatar}}
+              title={getInitials(this.state.userName)}
               activeOpacity={0.7}
+              showEditButton
+              editButton={ {name: 'camera-alt', type: 'material', color: '#fff', underlayColor: '#000'} }
+              onEditPress={() => this.changeAvatar()}
             />
           </View>
           <View style={styles.userInfos}>
@@ -984,6 +1041,7 @@ class Perfil extends Component {
                     size="large"
                     rounded
                     source={Imagem[household.picture]}
+                    title={getInitials(household.description)}
                     activeOpacity={0.7}
                   />
                   <View style={{ flexDirection: 'column', marginLeft: 10, width: scale(220) }}>
@@ -1223,7 +1281,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   modalText: {
-    fontSize: 17,
+    fontSize: 16,
     fontFamily: 'roboto',
     color: '#465F6C',
     alignSelf: 'flex-start',
