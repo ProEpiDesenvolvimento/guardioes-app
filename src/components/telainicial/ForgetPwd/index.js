@@ -134,7 +134,7 @@ class ForgetPwd extends Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation;
+        const navigation  = this.props.navigation;
 
         return (
             <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -216,7 +216,7 @@ class ForgetPwd extends Component {
                                     secureTextEntry={true}
                                     returnKeyType='next'
                                     maxLength={100}
-                                    onChangeText={async (text) => await this.setState({ userEmail: text })}
+                                    onChangeText={async (text) => await this.setState({ userPwd: text })}
                                     onSubmitEditing={() => this.passwordInput.focus()}
                                 />
                                 
@@ -247,7 +247,7 @@ class ForgetPwd extends Component {
                             </ScreenView>
                         </SwiperFlatList>
 
-                    <ButtonBack onPress={() => navigate('Login')}>
+                    <ButtonBack onPress={() => navigation.goBack()}>
                         <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
                     </ButtonBack>
 
