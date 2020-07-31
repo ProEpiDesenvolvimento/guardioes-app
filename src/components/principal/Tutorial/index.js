@@ -72,4 +72,4 @@ class Tutorial extends Component {
     }
 }
 
-export { Tutorial };
+export default Tutorial;

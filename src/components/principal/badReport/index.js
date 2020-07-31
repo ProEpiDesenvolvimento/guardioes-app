@@ -3,7 +3,7 @@ import { Text, View, NetInfo, Alert } from 'react-native';
 
 import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
-import { Container, FormInline, FormLabel, Selector, CreateContainer, CreateText } from '../Household/styles';
+import { Container, FormInline, FormLabel, Selector, SendContainer, SendText } from '../Household/styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
@@ -408,11 +408,11 @@ class BadReport extends Component {
                     />
 
                     <Button onPress={() => this.verifyLocalization()}>
-                        <CreateContainer>
-                            <CreateText>
+                        <SendContainer>
+                            <SendText>
                                 {translate("badReport.checkboxConfirm")}
-                            </CreateText>
-                        </CreateContainer>
+                            </SendText>
+                        </SendContainer>
                     </Button>
                 </ScrollViewStyled>
 

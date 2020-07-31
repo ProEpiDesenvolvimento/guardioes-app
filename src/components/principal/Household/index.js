@@ -4,7 +4,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from './styles';
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from './styles';
-import { FormInlineCheck, CheckBoxStyled, Button, CreateContainer, CreateText } from './styles';
+import { FormInlineCheck, CheckBoxStyled, Button, SendContainer, SendText } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
@@ -237,9 +237,9 @@ class Registrar extends Component {
                     </FormInline>
 
                     <Button onPress={() => this.avatarSelector()}>
-                        <CreateContainer>
-                            <CreateText>Criar</CreateText>
-                        </CreateContainer>
+                        <SendContainer>
+                            <SendText>Criar</SendText>
+                        </SendContainer>
                     </Button>
                 </KeyboardScrollView>
                 <AwesomeAlert

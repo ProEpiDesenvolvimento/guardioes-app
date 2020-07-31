@@ -94,7 +94,7 @@ export default class drawerContentComponents extends Component {
                         </UserOptionGreen>
                     </Button>
                     }
-                    <Button onPress={() => navigate('Perfil')}>
+                    <Button onPress={() => navigate('Perfis')}>
                         <UserOptionGreen>
                             <Feather name='settings'
                                 size={scale(26)} 

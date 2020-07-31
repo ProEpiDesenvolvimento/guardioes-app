@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { Text, View, Modal, Keyboard } from 'react-native';
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Button, CreateContainer, CreateText } from '../Household/styles';
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput } from '../Household/styles';
+import { FormGroup, FormGroupChild, Button, SendContainer, SendText } from '../Household/styles';
 import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles';
 
 import RNSecureStorage from 'rn-secure-storage';
@@ -260,9 +261,9 @@ export class Rumor extends Component {
           </FormGroup>
 
           <Button onPress={() => this._createRumor()}>
-            <CreateContainer>
-              <CreateText>Enviar</CreateText>
-            </CreateContainer>
+            <SendContainer>
+              <SendText>Enviar</SendText>
+            </SendContainer>
           </Button>
         </KeyboardScrollView>
 

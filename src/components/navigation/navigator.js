@@ -1,8 +1,10 @@
 import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
+
+import { HeaderNavigator, BackButton, ScreenTitle } from './styles';
+
 import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
-import { HeaderNavigator, BackButton, ScreenTitle } from './styles';
 import Loading from '../telainicial/Loading';
 import TelaInicial from '../telainicial/TelaInicial';
 import Registrar from '../telainicial/Registrar';
@@ -16,10 +18,10 @@ import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
 import drawerContentComponents from './drawerContentComponent';
 import Maps from '../principal/Maps';
-import Perfil from '../principal/Perfil';
+import Perfis from '../principal/Perfis';
 import EditarPerfil from '../principal/EditarPerfil';
 import Ajuda from '../principal/Ajuda';
-import { Tutorial } from '../principal/Tutorial';
+import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
@@ -106,7 +108,7 @@ export const Stack = createStackNavigator({
     BottomMenu: { screen: BottomMenu, navigationOptions: { header: null } },
     BadReport,
     Household,
-    Perfil,
+    Perfis,
     EditarPerfil,
     Ajuda,
     Household,
@@ -135,7 +137,7 @@ export const Stack = createStackNavigator({
 
 export const Drawer = createDrawerNavigator({
     Stacks: { screen: Stack }
-}, {
+},  {
         contentComponent: drawerContentComponents,
         drawerBackgroundColor: 'transparent',
         drawerWidth: scale(290),

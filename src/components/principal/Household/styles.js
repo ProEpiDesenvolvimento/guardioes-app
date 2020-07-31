@@ -165,7 +165,7 @@ export const Button = styled(TouchableOpacity).attrs({
     activeOpacity: 0.5
 })``;
 
-export const CreateContainer = styled(ShadowView).attrs({
+export const SendContainer = styled(ShadowView).attrs({
 })`
     width: 60%;
     align-self: center;
@@ -180,7 +180,7 @@ export const CreateContainer = styled(ShadowView).attrs({
     shadow-offset: 0px 0px;
 `;
 
-export const CreateText = styled.Text`
+export const SendText = styled.Text`
     font-family: ArgentumSans;
     font-size: ${scale(14)}px;
     text-align: center;
