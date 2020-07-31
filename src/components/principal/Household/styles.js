@@ -167,13 +167,13 @@ export const Button = styled(TouchableOpacity).attrs({
 
 export const SendContainer = styled(ShadowView).attrs({
 })`
-    width: 60%;
     align-self: center;
     background-color: #348EAC;
     border-radius: ${scale(16)}px;
     margin-top: ${scale(10)}px;
     margin-bottom: ${scale(10)}px;
-    padding: ${scale(10)}px;
+    padding-vertical: ${scale(10)}px;
+    padding-horizontal: ${percentage(12)}px;
     shadow-color: #348EAC;
     shadow-opacity: 0.4;
     shadow-radius: 10px;
