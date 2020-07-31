@@ -18,10 +18,17 @@ class InstitutionSelector extends Component {
             groupList: [],
             selectionIndexes: [],
             rootGroup: null,
-            idenficationCodeInputBox: false,
-            userGroup: null,
-            userIdCode: null,
+            idCodeInputShow: false,
+            userGroup: props.userGroup || null,
+            userIdCode: props.userIdCode || null,
             selectedGroup: null,
+        }
+        // User already has a group, then find his group
+        if (props.userGroup != null && props.userGroup != undefined) {
+            this.getRootGroup(false)
+            this.buildPath(props.userGroup)
+        } else {
+            this.getRootGroup()
         }
     }
 
@@ -33,22 +40,14 @@ class InstitutionSelector extends Component {
         return isThereSelectedGroup && isIdPresentIfNeeded
     }
     
-    setupSelector() {        
-        this.getRootGroup()
-        if (this.props.userGroup != null) {
-            console.log("USER HAS A GROUP ALREADY, SELECT NEW")
-        }
-    }
-    
     updateParent() {
         if (this.isInputValid()) {
-            console.log("UPDATE PARENT WITH GROUP:", this.state.userGroup, "AND ID CODE:", this.state.userIdCode)
             this.props.setUserInstitutionCallback(this.state.userIdCode, this.state.userGroup)
         }
     }
 
-    getRootGroup() {   
-        this.props.setAlert(true) // Set loading popup
+    getRootGroup(setAlert=true) {   
+        if (setAlert) this.props.setAlert(true)
         fetch(`${API_URL}/groups/root`, {
             method: 'GET',
             headers: {
@@ -58,20 +57,54 @@ class InstitutionSelector extends Component {
         })
             .then((response) => {
                 if (response.status === 200) {
-                    this.props.setAlert(false)
                     return response.json()
                 }
             })
             .then((responseJson) => {
                 this.setState({ rootGroup: responseJson.group })
                 this.getChildren(responseJson.group.id)
+                if (setAlert) this.props.setAlert(false)
+            })
+    }
+
+    // This builds the path of current users group
+    buildPath(id) {
+        this.props.setAlert(true)
+        fetch(`${API_URL}/groups/${id}/get_path`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    return response.json()
+                }
+            })
+            .then(async (responseJson) => {
+                const groups = responseJson.groups
+                let i = 0
+                for (let group of groups) {
+                    await this.getChildren(group.id, false)
+                    this.state.selectionIndexes[i] = {
+                        label: group.description,
+                        key: group.id
+                    }
+                    i++
+                }
+                this.state.groupCheckbox = true
+                
+            })
+            .then(() => {
                 this.props.setAlert(false)
             })
     }
 
-    getChildren(id) {       
-        this.props.setAlert(true)
-        fetch(`${API_URL}/groups/${id}/get_children`, {
+    getChildren(id, setAlert=true) {       
+        if (setAlert) this.props.setAlert(true)
+        this.state.idCodeInputShow = false
+        return fetch(`${API_URL}/groups/${id}/get_children`, {
             method: 'GET',
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -86,22 +119,19 @@ class InstitutionSelector extends Component {
             .then((responseJson) => {
                 if (responseJson.is_child) {
                     this.state.userGroup = id
-                    this.props.setAlert(false)
-                    this.getGroup(id)
+                    this.getGroup(id, setAlert)
                     return
                 }
                 this.state.selectionIndexes.push({ label: "Selecionar", key: -1 })
-                console.log("PUSHING TO GROUP LIST", responseJson)
                 this.state.groupList.push(responseJson)
-                console.log("PUSHED TO GROUP LIST")
-                this.props.setAlert(false)
+                if (setAlert) this.props.setAlert(false)
             })
     }
 
-    getGroup(id) {
-        console.log("GET GROUP", id)
-        this.props.setAlert(true)
-        fetch(`${API_URL}/groups/${id}`, {
+    getGroup(id, setAlert=true) {
+        this.state.idCodeInputShow = false
+        if (setAlert) this.props.setAlert(true)
+        return fetch(`${API_URL}/groups/${id}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -115,23 +145,18 @@ class InstitutionSelector extends Component {
             })
             .then((responseJson) => {
                 this.state.selectedGroup = responseJson.group
-                console.log(responseJson)
                 if (responseJson.group.require_id) {
-                    console.log("SET ID CODE TRUE")
-                    this.state.idenficationCodeInputBox = true
+                    this.setState({idCodeInputShow: true})
                 } else {
+                    this.state.userIdCode = null
                     this.updateParent()
                 }
-                this.props.setAlert(false)
+                if (setAlert) this.props.setAlert(false)
             })
     }
     
     capitalizeFirstWords(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-    }
-
-    groupControl() {
-        return this.state.groupList.map((x, i) => this.groupComponent(x, i))
     }
 
     groupComponent(group, index) {
@@ -169,6 +194,7 @@ class InstitutionSelector extends Component {
                 <TextInput style={styles.formInput50}
                     returnKeyType='done'
                     keyboardType='number-pad'
+                    value={this.state.userIdCode}
                     onChangeText={(text) => {
                         this.state.userIdCode = text
                         this.updateParent()
@@ -192,8 +218,8 @@ class InstitutionSelector extends Component {
     }
 
     groupItemsManager() {
-        const elements = this.groupControl()
-        if (this.state.idenficationCodeInputBox) {
+        const elements = this.state.groupList.map((x, i) => this.groupComponent(x, i))
+        if (this.state.idCodeInputShow) {
             elements.push(this.identificationCodeInput())
         }
         if (elements.length == 0) {
@@ -225,7 +251,10 @@ class InstitutionSelector extends Component {
                     checked={this.state.groupCheckbox}
                     onPress={() => {
                         if (!this.state.groupCheckbox && this.state.rootGroup == null) {
-                            this.setupSelector()
+                            this.getRootGroup()
+                        } else if (this.state.groupCheckbox) {
+                            this.state.userIdCode = null
+                            this.state.userGroup = null
                         }
                         this.setState({ groupCheckbox: !this.state.groupCheckbox })
                     }}

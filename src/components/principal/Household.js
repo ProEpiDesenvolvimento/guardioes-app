@@ -348,7 +348,7 @@ class Registrar extends Component {
                     kinship: this.state.kinship,
                     picture: this.state.picture,
                     identification_code: this.state.userIdCode,
-                    school_unit_id: this.state.userGroup
+                    group_id: this.state.userGroup
                 }
             )
         })

@@ -89,10 +89,6 @@ class Registrar extends Component {
         })
     }
 
-    componentDidMount() {
-        //this.setState({ school_units: ShcoolsSheet.school_units }) //Usado para o autocomplete
-    }
-
     findFilm(query) {
         if (query === '') {
             return []
@@ -389,16 +385,12 @@ class Registrar extends Component {
                     Alert.alert("A senha precisa ter no mínimo 8 caracteres")
                 } else {
                     if (this.state.groupCheckbox == true && this.state.userGroup == null) {
-                        Alert.alert("Instituição deve estar preenchida")
+                        Alert.alert("Instituição deve estar preenchida (com sua identificação pessoal se necessário)")
                     } else {
                         if (this.state.userCountry == null) {
                             Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
                         } else {
-                            if (this.state.userCategory == "UNB" && this.state.userIdCode == null) {
-                                Alert.alert("Número de Identificação deve estar preenchido")
-                            } else {
-                                this.avatarSelector()
-                            }
+                            this.avatarSelector()
                         }
                     }
                 }
@@ -430,7 +422,7 @@ class Registrar extends Component {
                     birthdate: this.state.userDob,
                     picture: this.state.picture,
                     identification_code: this.state.userIdCode,
-                    school_unit_id: this.state.userGroup,
+                    group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
                     risk_group: this.state.riskGroup
                 }
