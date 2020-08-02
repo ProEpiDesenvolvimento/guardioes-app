@@ -1,29 +1,27 @@
 import React, { Component } from 'react'
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Button,
-    Keyboard,
-    Alert,
-    Modal,
-    TouchableOpacity
-} from 'react-native'
+import { StyleSheet, View, Keyboard, Alert, Modal } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
+
+import GradientBackgroundView from '../../styled/GradientBackgroundView'
+import SnowButton from '../../styled/SnowButton'
+import SnowShadow from '../../styled/SnowShadow'
+import { KeyboardScrollView, FormInline, NormalInput, FormGroup, FormGroupChild } from '../../principal/Household/styles'
+import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button } from '../../principal/Household/styles'
+import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../principal/Household/styles'
+import { ButtonBack, PageTitle, FormLabel, FormTip, FormSeparator, Label } from './styles'
+
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
-import DatePicker from 'react-native-datepicker'
-import { scale } from '../../utils/scallingUtils'
-import translate from '../../../locales/i18n'
+import { UserIcon } from '../../../imgs/imageConst';
+import { scale } from '../../../utils/scallingUtils'
+import translate from '../../../../locales/i18n'
 import { API_URL } from 'react-native-dotenv'
-import { CheckBox } from 'react-native-elements'
-import ModalSelector from 'react-native-modal-selector'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
-import { gender, country, race } from '../../utils/selectorUtils'
-import { state, getCity } from '../../utils/brasil'
-import InstitutionSelector from '../userData/InstitutionSelector'
-import LoadingModal from '../modals/LoadingModal'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { gender, country, race } from '../../../utils/selectorUtils'
+import { state, getCity } from '../../../utils/brasil'
+import InstitutionSelector from '../../userData/InstitutionSelector'
+import LoadingModal from '../../modals/LoadingModal'
+
+Feather.loadFont();
 
 let data = new Date()
 let d = data.getDate()
@@ -36,7 +34,7 @@ let minDate = d + "-" + m + "-" + (y - 13)
 
 class Registrar extends Component {
     static navigationOptions = {
-        title: translate("register.title")
+        header: null,
     }
     constructor(props) {
         super(props)
@@ -117,211 +115,174 @@ class Registrar extends Component {
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
 
         return (
-            <KeyboardAwareScrollView style={styles.container} keyboardShouldPersistTaps={true}>
+            <GradientBackgroundView>
                 <Modal //Modal View for Risk Group Message
                     animationType="fade"
                     transparent={true}
                     visible={this.state.modalVisibleRiskGroup}
                     onRequestClose={() => {
                         this.setModalVisible(!this.state.modalVisibleRiskGroup)
-                    }}>
-                    <View style={styles.modalComponent}>
-                        <View style={styles.modalView}>
-                            <View style={styles.modalViewCommom}>
-                                <Text style={styles.modalTitle}>
-                                    {translate("register.riskGroupTitle")}
-                                </Text>
-                                <Text style={styles.modalText}>
-                                    {translate("register.riskGroupMessage")}
-                                </Text>
-                            </View>
+                }}>
+                    <ModalContainer>
+                        <ModalBox>
+                            <ModalTitle>
+                                {translate("register.riskGroupTitle")}
+                            </ModalTitle>
 
-                            <View style={styles.modalButton}>
-                                <Button
-                                    title={translate("register.riskGroupButton")}
-                                    color="#348EAC"
-                                    onPress={() => {
-                                        this.setModalVisible(!this.state.modalVisibleRiskGroup)
-                                    }} />
-                            </View>
-                        </View>
-                    </View>
+                            <ModalText>
+                                {translate("register.riskGroupMessage")}
+                            </ModalText>
+
+                            <Button onPress={() => {
+                                    this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                                }
+                            }>
+                                <ModalButton>
+                                    <ModalButtonText>
+                                        {translate("register.riskGroupButton")}
+                                    </ModalButtonText>
+                                </ModalButton>
+                            </Button>
+                        </ModalBox>
+                    </ModalContainer>
                 </Modal>
-                <View style={styles.scroll}>
-                    <View style={{ paddingTop: 10 }}></View>
-                    <View style={styles.viewCommom}>
-                        <Text style={styles.commomText}>{translate("register.name")}</Text>
-                        <TextInput style={styles.formInput}
+
+                <KeyboardScrollView keyboardShouldPersistTaps="always">
+                    <UserIcon height={scale(68)} width={scale(68)} fill="#ffffff" />
+                    <PageTitle>{translate("register.title")}</PageTitle>
+
+                    <FormInline>
+                        <FormLabel>{translate("register.name")}</FormLabel>
+                        <NormalInput
                             returnKeyType='next'
                             onChangeText={text => this.setState({ userName: text })}
                         />
-                    </View>
+                    </FormInline>
 
-                    <View style={styles.viewRow}>
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%', fontSize: 10 }}
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.gender")}</FormLabel>
+                            <Selector
                                 data={gender}
-                                initValue={"Selecionar"}
+                                initValue={translate("selector.label")}
                                 onChange={(option) => this.setState({ userGender: option.key })}
                             />
-                        </View>
+                        </FormGroupChild>
 
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>{translate("register.race")}</Text>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%', fontSize: 10 }}
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.race")}</FormLabel>
+                            <Selector
                                 data={race}
-                                initValue={"Selecionar"}
+                                initValue={translate("selector.label")}
                                 onChange={(option) => this.setState({ userRace: option.key })}
                             />
-                        </View>
+                        </FormGroupChild>
+                    </FormGroup>
 
-                    </View>
-
-                    <View style={styles.viewRow}>
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>{translate("register.birth")}</Text>
-                            <DatePicker
-                                style={{ width: '80%', height: scale(26), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
-                                showIcon={false}
-                                date={this.state.userDob}
-                                androidMode='spinner'
-                                locale={'pt-BR'}
-                                mode="date"
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.birth")}</FormLabel>
+                            <DateSelector
                                 placeholder={translate("birthDetails.format")}
+                                date={this.state.userDob}
                                 format="DD-MM-YYYY"
                                 minDate="01-01-1918"
                                 maxDate={minDate}
+                                locale={'pt-BR'}
                                 confirmBtnText={translate("birthDetails.confirmButton")}
                                 cancelBtnText={translate("birthDetails.cancelButton")}
-                                customStyles={{
-                                    dateInput: {
-                                        borderWidth: 0
-                                    },
-                                    dateText: {
-                                        justifyContent: "center",
-                                        fontFamily: 'roboto',
-                                        marginBottom: 9,
-                                        fontSize: 10,
-                                        color: 'black'
-                                    },
-                                    placeholderText: {
-                                        marginBottom: 9,
-                                        fontSize: 10,
-                                        justifyContent: "center",
-                                        fontFamily: 'roboto',
-                                        color: '#555'
-                                    }
-                                }}
                                 onDateChange={date => this.setState({ userDob: date })}
                             />
-                        </View>
+                        </FormGroupChild>
 
-                        <View style={styles.viewChildSexoRaca}>
-                            <Text style={styles.commomTextView}>{translate("register.country")}</Text>
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.country")}</FormLabel>
 
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                style={{ width: '80%', height: '70%', fontSize: 10 }}
+                            <Selector
                                 data={country}
-                                initValue={"Selecionar"}
+                                initValue={translate("selector.label")}
                                 onChange={(option) => this.setState({ userCountry: option.key })}
                             />
-
-                        </View>
-                    </View>
+                        </FormGroupChild>
+                    </FormGroup>
 
                     {this.state.userCountry == "Brazil" ?
-                        <View style={styles.viewRow}>
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Estado:</Text>
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                    style={{ width: '80%', height: '70%', fontSize: 10 }}
+                        <FormGroup>
+                            <FormGroupChild>
+                                <FormLabel>Estado:</FormLabel>
+                                <Selector
                                     data={state}
                                     initValue={"Selecionar"}
                                     onChange={(option) => this.setState({ userState: option.key })}
                                 />
-                            </View>
+                            </FormGroupChild>
 
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Município:</Text>
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                    style={{ width: '80%', height: '70%', fontSize: 10 }}
+                            <FormGroupChild>
+                                <FormLabel>Município:</FormLabel>
+                                <Selector
                                     data={getCity(this.state.userState)}
-                                    initValue={this.state.initValueCity}
+                                    initValue={translate("selector.label")}
                                     onModalClose={(option) => this.setState({ userCity: option.key, initValueCity: option.key })}
                                 />
-                            </View>
-                        </View>
-                        : null}
+                            </FormGroupChild>
+                        </FormGroup>
+                    : null}
+
                     {this.state.userCountry != null ?
-                        <CheckBox
-                            title={this.state.userCountry + translate("register.originCountry")}
-                            containerStyle={styles.CheckBoxStyle}
-                            size={scale(16)}
-                            checked={this.state.residenceCountryCheckbox}
-                            onPress={() => {
-                                this.setState({ residence: '' })
-                                this.setState({ residenceCountryCheckbox: !this.state.residenceCountryCheckbox })
-                            }}
-                        /> : null}
-                    <View>
-                        {!this.state.residenceCountryCheckbox ?
-                            <View style={styles.viewRowCenter}>
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                    style={{ width: '80%', height: '70%', alignSelf: 'center' }}
-                                    data={country}
-                                    initValue={"Selecionar"}
-                                    onChange={(option) => this.setState({ residence: option.key })}
-                                />
+                        <FormInlineCheck>
+                            <CheckBoxStyled
+                                title={this.state.userCountry + translate("register.originCountry")}
+                                checked={this.state.residenceCountryCheckbox}
+                                onPress={() => {
+                                    this.setState({ residence: '' })
+                                    this.setState({ residenceCountryCheckbox: !this.state.residenceCountryCheckbox })
+                                }}
+                            />
+                        </FormInlineCheck>
+                    : null}
 
-                            </View>
-                            : null
-                        }
+                    {!this.state.residenceCountryCheckbox ?
+                        <FormInline>
+                            <Selector
+                                data={country}
+                                initValue={translate("selector.label")}
+                                onChange={(option) => this.setState({ residence: option.key })}
+                            />
+                        </FormInline>
+                    : null}
 
-                        <CheckBox
+                    <FormInlineCheck>
+                        <CheckBoxStyled
                             title={"Voce é um profissional da Saude"}
                             checked={this.state.isProfessional}
-                            containerStyle={styles.CheckBoxStyle}
-                            size={scale(16)}
                             onPress={() => {
                                 this.setState({ isProfessional: !this.state.isProfessional })
                             }}
                         />
-                        <View style={styles.riskGroupView}>
-                            <CheckBox
-                                title={"Faz parte do Grupo de Risco?"}
-                                checked={this.state.riskGroup}
-                                containerStyle={styles.riskGroupCheckBoxStyle}
-                                size={scale(16)}
-                                onPress={() => {
-                                    this.setState({ riskGroup: !this.state.riskGroup })
-                                }}
-                            />
-                            <TouchableOpacity style={{ marginRight: 15 }} onPress={async () => {
-                                this.setModalVisible(true);
-                            }}>
-                                <FontAwesome name="question-circle-o" size={scale(25)} color="rgba(22, 107, 135, 1)" />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    </FormInlineCheck>
+
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={"Faz parte do Grupo de Risco?"}
+                            checked={this.state.riskGroup}
+                            onPress={() => {
+                                this.setState({ riskGroup: !this.state.riskGroup })
+                            }}
+                        />
+                        <Button onPress={() => { this.setModalVisible(true) }}>
+                            <Feather name="help-circle" size={scale(25)} color="#ffffff" />
+                        </Button>
+                    </FormInlineCheck>
 
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
-                        setAlert={this.setAlert} />
+                        setAlert={this.setAlert}
+                    />
 
-                    <View style={styles.viewCommom}>
-                        <Text style={styles.commomText}>{translate("register.email")}</Text>
-                        <TextInput
+                    <FormInline>
+                        <FormLabel>{translate("register.email")}</FormLabel>
+                        <NormalInput
                             autoCapitalize='none'
-                            style={styles.formInput}
                             keyboardType='email-address'
                             multiline={false}
                             maxLength={100}
@@ -329,40 +290,36 @@ class Registrar extends Component {
                             onChangeText={email => this.setState({ userEmail: email })}
                             onSubmitEditing={() => this.passwordInput.focus()}
                         />
-                    </View>
+                    </FormInline>
 
-                    <View style={styles.viewCommom}>
-                        <Text style={styles.commomText}>{translate("register.password")}</Text>
-                        <TextInput style={styles.formInput}
+                    <FormInline>
+                        <FormLabel>{translate("register.password")}</FormLabel>
+                        <NormalInput
                             autoCapitalize='none'
                             multiline={false}
                             maxLength={100}
                             secureTextEntry={true}
-                            onChangeText={text => this.setState({ userPwd: text })}
                             ref={(input) => this.passwordInput = input}
+                            onChangeText={text => this.setState({ userPwd: text })}
                             onSubmitEditing={() => this.verifyInfos()}
                         />
-                        <Text style={{
-                            fontSize: 13,
-                            fontFamily: 'roboto',
-                            color: '#465F6C',
-                            alignSelf: 'flex-start',
-                            textAlign: 'left',
-                            paddingLeft: "5%",
-                        }}>{translate("register.passwordCondition")}</Text>
-                    </View>
+                        <FormTip>{translate("register.passwordCondition")}</FormTip>
+                    </FormInline>
 
+                    <FormSeparator>
+                        <SnowShadow>
+                            <SnowButton onPress={() => this.verifyInfos()}>
+                                <Label>{translate("register.signupButton")}</Label>
+                            </SnowButton>
+                        </SnowShadow>
+                    </FormSeparator>
 
-                    <View style={styles.buttonView}>
-                        <Button
-                            title={translate("register.signupButton")}
-                            color="#348EAC"
-                            onPress={() => this.verifyInfos()}
-                        />
-                    </View>
-                </View>
+                    <ButtonBack onPress={() => this.props.navigation.goBack()}>
+                        <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
+                    </ButtonBack>
+                </KeyboardScrollView>
                 <LoadingModal show={showAlert} />
-            </KeyboardAwareScrollView>
+            </GradientBackgroundView>
         )
 
     }
@@ -492,39 +449,11 @@ class Registrar extends Component {
 
 // define your styles
 const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        //borderColor: 'red',
-        //borderWidth: 3,
-    },
-    scroll: {
-        flex: 1,
-        //borderColor: 'green',
-        //borderWidth: 3,
-        width: '100%',
-        justifyContent: 'space-between'
-    },
-    viewCommom: {
-        width: '100%',
-        height: 65,
-        alignItems: 'center',
-    },
-    viewRow: {
-        zIndex: 1,
-        width: '100%',
-        height: 65,
-        flexDirection: 'row',
-    },
     viewRowCenter: {
         width: '100%',
         height: 65,
         flexDirection: 'row',
         justifyContent: "center"
-    },
-    viewChildSexoRaca: {
-        width: "50%",
-        height: 65,
-        alignItems: 'center',
     },
     viewChildPais: {
         width: "50%",
@@ -563,22 +492,6 @@ const styles = StyleSheet.create({
         borderBottomColor: '#348EAC',
         paddingBottom: 0,
         paddingTop: 2,
-    },
-    commomText: {
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#465F6C',
-        alignSelf: 'flex-start',
-        textAlign: 'left',
-        paddingLeft: "5%",
-    },
-    commomTextView: {
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#465F6C',
-        alignSelf: 'flex-start',
-        textAlign: 'left',
-        paddingLeft: '10%',
     },
     buttonView: {
         width: "60%",
