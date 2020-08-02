@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Alert, Keyboard, NetInfo } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import Feather from 'react-native-vector-icons/Feather';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
+import KeyboardScrollView from '../../styled/KeyboardScrollView';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowInput from '../../styled/SnowInput';
 import SnowButton from '../../styled/SnowButton';
@@ -75,12 +75,8 @@ class Login extends Component {
         }
 
         return (
-            <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
-                <GradientBackgroundView>
-                    <ButtonBack onPress={() => navigate('TelaInicial')}>
-                        <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
-                    </ButtonBack>
-
+            <GradientBackgroundView>
+                <KeyboardScrollView>
                     <Logo source={LogoType} />
                     <PageTitle>{translate("login.title")}</PageTitle>
 
@@ -115,18 +111,22 @@ class Login extends Component {
                         <LabelVisible>{translate("login.forgetbutton")}</LabelVisible>
                     </TransparentButton>
 
-                    <AwesomeAlert
-                        show={showAlert}
-                        showProgress={this.state.showProgressBar ? true : false}
-                        title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
-                        closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                        closeOnHardwareBackPress={false}
-                        showCancelButton={false}
-                        showConfirmButton={this.state.showProgressBar ? false : true}
-                        confirmButtonColor="#DD6B55"
-                    />
-                </GradientBackgroundView>
-            </KeyboardAwareScrollView>
+                    <ButtonBack onPress={() => this.props.navigation.goBack()}>
+                        <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
+                    </ButtonBack>
+                </KeyboardScrollView>
+
+                <AwesomeAlert
+                    show={showAlert}
+                    showProgress={this.state.showProgressBar ? true : false}
+                    title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
+                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={false}
+                    showConfirmButton={this.state.showProgressBar ? false : true}
+                    confirmButtonColor="#DD6B55"
+                />
+            </GradientBackgroundView>
         );
     }
 
@@ -175,8 +175,8 @@ class Login extends Component {
                     RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
-                    this.props.navigation.navigate('Home');
                     this.hideAlert();
+                    this.props.navigation.navigate('Home');
                 })
         }
     }

@@ -17,6 +17,7 @@ export const Container = styled.View`
 export const KeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
     contentContainerStyle: {
         flexGrow: 1,
+        alignItems: 'center',
         paddingVertical: percentage(7),
         paddingHorizontal: percentage(7),
     }

@@ -2,6 +2,12 @@ import styled from 'styled-components';
 
 import { scale } from '../../../utils/scallingUtils';
 
+export const Container = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`;
+
 export const Logo = styled.Image`
     height: ${scale(160)}px;
     resize-mode: contain;

@@ -8,6 +8,10 @@ export const logoUnB = require('./logos/logo_unb.png');
 export const logoAzProEpi = require('./logos/logo_proepi_azul.png');
 export const logoAzUnB = require('./logos/logo_unb_azul.png');
 
+// First Screens
+export {default as UserIcon} from './icons/user.svg';
+export {default as PasswordIcon} from './icons/password.svg';
+
 //Avatar
 export const NullAvatar = require('./avatar/avatar.png');
 export const Father = require('./avatar/father.png');
@@ -20,12 +24,12 @@ export const Son = require('./avatar/son.png');
 export const Daughter = require('./avatar/daughter.png');
 
 // Help
-export {default as TermsIcon} from './diversos/terms-and-conditions.svg';
-export {default as TutorialIcon} from './diversos/online-learning.svg';
+export {default as TermsIcon} from './icons/terms-and-conditions.svg';
+export {default as TutorialIcon} from './icons/online-learning.svg';
 
 // Diary Icons
-export {default as HappyIcon} from './diversos/happy.svg';
-export {default as SadIcon} from './diversos/sad.svg';
+export {default as HappyIcon} from './icons/happy.svg';
+export {default as SadIcon} from './icons/sad.svg';
 
 // Advices Icons
 export {default as HelplineIcon} from './advices/helpline.svg';

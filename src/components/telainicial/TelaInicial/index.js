@@ -5,7 +5,7 @@ import GradientBackgroundView from '../../styled/GradientBackgroundView';
 import StatusBarLight from '../../styled/StatusBarLight';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowButton from '../../styled/SnowButton';
-import { Logo, WelcomeText, Label } from './styles';
+import { Container, Logo, WelcomeText, Label } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { imagemLogo, imagemLogoBR } from '../../../imgs/imageConst';
@@ -53,20 +53,22 @@ class TelaInicial extends Component {
             <GradientBackgroundView>
                 <StatusBarLight />
 
-                <Logo source={LogoType} />
-                <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
+                <Container>
+                    <Logo source={LogoType} />
+                    <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
 
-                <SnowShadow>
-                    <SnowButton onPress={() => navigate('Login')}>
-                        <Label>{translate("initialscreen.login")}</Label>
-                    </SnowButton>
-                </SnowShadow>
+                    <SnowShadow>
+                        <SnowButton onPress={() => navigate('Login')}>
+                            <Label>{translate("initialscreen.login")}</Label>
+                        </SnowButton>
+                    </SnowShadow>
 
-                <SnowShadow>
-                    <SnowButton onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
-                        <Label>{translate("initialscreen.signup")}</Label>
-                    </SnowButton>
-                </SnowShadow>
+                    <SnowShadow>
+                        <SnowButton onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
+                            <Label>{translate("initialscreen.signup")}</Label>
+                        </SnowButton>
+                    </SnowShadow>
+                </Container>
             </GradientBackgroundView>
         );
     }

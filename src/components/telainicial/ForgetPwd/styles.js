@@ -9,7 +9,7 @@ export const ButtonBack = styled.TouchableOpacity`
 `;
 
 export const ScreenView = styled.View`
-    flex: 0;
+    width: ${percentage(100)}px;
     justify-content: center;
     align-items: center;
 `;

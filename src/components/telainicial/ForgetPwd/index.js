@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Alert, NetInfo, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import Feather from 'react-native-vector-icons/Feather';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
+import KeyboardScrollView from '../../styled/KeyboardScrollView';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowInput from '../../styled/SnowInput';
 import SnowButton from '../../styled/SnowButton';
 import { ButtonBack, ScreenView, PageTitle, LabelWrapper, TextLabel, Label } from './styles';
-import PasswordIcon from '../../../imgs/icons/password.svg';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { scale, percentage } from '../../../utils/scallingUtils';
+import { PasswordIcon } from '../../../imgs/imageConst';
+import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
@@ -137,14 +137,14 @@ class ForgetPwd extends Component {
         const navigation  = this.props.navigation;
 
         return (
-            <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
-                <GradientBackgroundView>
+            <GradientBackgroundView>
+                <KeyboardScrollView>
                         <SwiperFlatList
                             showPagination={false}
                             disableGesture={true}
                             ref={(swiper) => this.swiper = swiper}
                         >
-                            <ScreenView style={{width: percentage(100)}}>
+                            <ScreenView>
                                 <PasswordIcon height={scale(68)} width={scale(68)} fill="#ffffff" />
 
                                 <PageTitle>{translate("forgetPwd.title")}</PageTitle>
@@ -173,7 +173,7 @@ class ForgetPwd extends Component {
                                     </SnowButton>
                                 </SnowShadow>
                             </ScreenView>
-                            <ScreenView style={{width: percentage(100)}}>
+                            <ScreenView>
                                 <PageTitle>{translate("getToken.title")}</PageTitle>
 
                                 <LabelWrapper>
@@ -207,7 +207,7 @@ class ForgetPwd extends Component {
                                     </SnowButton>
                                 </SnowShadow>
                             </ScreenView>
-                            <ScreenView style={{width: percentage(100)}}>
+                            <ScreenView>
                                 <PageTitle>{translate("changePwd.title")}</PageTitle>
 
                                 <SnowInput
@@ -250,19 +250,19 @@ class ForgetPwd extends Component {
                     <ButtonBack onPress={() => navigation.goBack()}>
                         <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
                     </ButtonBack>
+                </KeyboardScrollView>
 
-                    <AwesomeAlert
-                        show={this.state.showAlert}
-                        showProgress={this.state.showProgressBar ? true : false}
-                        title={this.state.showProgressBar ? translate("getToken.loading") : null}
-                        closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                        closeOnHardwareBackPress={false}
-                        showCancelButton={false}
-                        showConfirmButton={this.state.showProgressBar ? false : true}
-                        confirmButtonColor="#DD6B55"
-                    />
-                </GradientBackgroundView>
-            </KeyboardAwareScrollView>
+                <AwesomeAlert
+                    show={this.state.showAlert}
+                    showProgress={this.state.showProgressBar ? true : false}
+                    title={this.state.showProgressBar ? translate("getToken.loading") : null}
+                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={false}
+                    showConfirmButton={this.state.showProgressBar ? false : true}
+                    confirmButtonColor="#DD6B55"
+                />
+            </GradientBackgroundView>
         );
     }
 }

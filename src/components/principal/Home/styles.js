@@ -2,19 +2,21 @@ import styled from 'styled-components/native';
 
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity } from 'react-native';
+import ShadowView from 'react-native-simple-shadow-view';
 
-import { scale } from '../../../utils/scallingUtils';
+import { scale, percentage } from '../../../utils/scallingUtils';
 
 export const Container = styled.View`
   flex: 1;
+  background-color: #f8f8f8;
 `;
 
 export const ScrollViewStyle = styled.ScrollView.attrs({
-  backgroundColor: '#f4f4f4',
-  flexGrow: 1,
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  width: '100%',
+  contentContainerStyle: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
 })``;
 
 export const Background = styled(LinearGradient).attrs({
@@ -22,9 +24,8 @@ export const Background = styled(LinearGradient).attrs({
 })`
   min-height: ${scale(45)}%;
   min-width: 100%;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  flex: 1;
+  border-bottom-left-radius: ${scale(25)}px;
+  border-bottom-right-radius: ${scale(25)}px;
 `;
 
 export const Button = styled(TouchableOpacity).attrs({
@@ -34,8 +35,7 @@ export const Button = styled(TouchableOpacity).attrs({
 `;
 
 export const UserView = styled.View`
-  margin-top: ${scale(-22)}%;
-  flex: 1;
+  margin-top: ${scale(20)}%;
   justify-content: space-between;
   align-content: center;
   align-items: center;
@@ -48,37 +48,39 @@ export const NamesContainer = styled.View`
 `;
 
 export const TextName = styled.Text`
-  font-weight: bold;
-  font-size: ${scale(20)}px;
+  font-family: ArgentumSans-SemiBold;
+  font-size: ${scale(18)}px;
   color: white;
+  margin-bottom: ${scale(3)}px;
 `;
 
 export const AppName = styled.Text`
-  font-size: ${scale(18)}px;
+  font-size: ${scale(16)}px;
+  font-family: ArgentumSans;
   color: white;
   font-weight: 500;
 `;
 
-export const StatusContainer = styled.View.attrs({
-  shadowColor: '#000',
-  shadowOffset: {width: 0, height: 4},
-  shadowOpacity: 0.15,
-  shadowRadius: 4.65,
-  elevation: 8,
+export const StatusContainer = styled(ShadowView).attrs({
 })`
-  margin-top: ${scale(-20)}%;
-  background: white;
-  border-radius: 20px;
-  margin-right: ${scale(6)}%;
-  margin-left: ${scale(6)}%;
-  padding: ${scale(8)}%;
-  align-items: center;
+    width: 88%;
+    margin-top: ${scale(-25)}%;
+    background: white;
+    border-radius: ${scale(20)}px;
+    padding-vertical: ${percentage(12)}px;
+    align-items: center;
+    shadow-color: #000000;
+    shadow-opacity: 0.1;
+    shadow-radius: 10px;
+    shadow-offset: 0px 4px;
 `;
 
 export const TextStyle = styled.Text`
   margin-bottom: ${scale(20)}px;
-  font-weight: bold;
+  font-family: ArgentumSans-SemiBold;
+  font-weight: 500;
   font-size: ${scale(16)}px;
+  color: #32323B;
 `;
 
 export const StatusBemMal = styled.View`
@@ -90,10 +92,10 @@ export const Bem = styled(TouchableOpacity).attrs({
   activeOpacity: 0.5
 })` 
   height: ${scale(50)}px;
-  width: ${scale(100)}px;
+  width: ${scale(114)}px;
   background: #348eac;
-  border-bottom-left-radius: 22px;
-  border-top-left-radius: 22px;
+  border-bottom-left-radius: ${scale(18)}px;
+  border-top-left-radius: ${scale(18)}px;
   margin-right: ${scale(2)}px;
   align-items: center;
   justify-content: center;
@@ -103,56 +105,60 @@ export const Mal = styled(TouchableOpacity).attrs({
   activeOpacity: 0.5
 })`
   height: ${scale(50)}px;
-  width: ${scale(100)}px;
+  width: ${scale(114)}px;
   background: #f18f01;
-  border-bottom-right-radius: 22px;
-  border-top-right-radius: 22px;
+  border-bottom-right-radius: ${scale(18)}px;
+  border-top-right-radius: ${scale(18)}px;
   margin-left: ${scale(2)}px;
   align-items: center;
   justify-content: center;
 `;
 
 export const StatusText = styled.Text`
-  font-weight: bold;
+  font-size: ${scale(14)}px;
+  font-family: ArgentumSans-Medium;
   color: white;
-  font-size: ${scale(15)}px;
 `;
 
 export const Alertas = styled.Text`
-  margin-top: ${scale(25)}px;
-  margin-bottom: ${scale(5)}px;
-  font-size: ${scale(20)}px;
-  font-weight: 500;
-  margin-left: ${scale(6)}%;
+  width: 88%;
+  font-size: ${scale(16)}px;
+  font-family: ArgentumSans-Medium;
+  color: #32323B;
+  margin-top: ${percentage(7)}px;
+  margin-bottom: ${percentage(6)}px;
+  margin-left: ${scale(20)}px;
 `;
 
-export const BairroContainer = styled.View`
-  flex: 1;
-  background-color: #5DD39E;
-  border-radius: 20px;
-  margin-right: ${scale(6)}%;
-  margin-left: ${scale(6)}%;
+export const BairroContainer = styled(ShadowView).attrs({
+})`
+  width: 88%;
+  align-items: center;
+  background-color: ${props => (props.alert ? '#f18f01' : '#5DD39E')};
+  border-radius: ${scale(18)}px;
   padding: ${scale(20)}px;
   flex-direction: row;
-  justify-content: space-evenly;
-  align-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  margin-bottom: ${percentage(7)}px;
+  shadow-color: #000000;
+  shadow-opacity: 0.2;
+  shadow-radius: 10px;
+  shadow-offset: 0px 4px;
 `;
 
 export const StatusBairro = styled.View`
   align-items: flex-start;
+  margin-left: ${scale(14)}px;
 `;
 
 export const StatusTitle = styled.Text`
   color: white;
-  font-size: ${scale(18)}px;
-  font-weight: bold;
-  margin-bottom: ${scale(5)}px;
+  font-family: ArgentumSans-SemiBold;
+  font-size: ${scale(16)}px;
 `;
 
 export const StatusBairroText = styled.Text`
   color: white;
-  font-size: ${scale(18)}px;
+  font-family: ArgentumSans;
+  font-size: ${scale(16)}px;
   font-weight: 500;
 `;

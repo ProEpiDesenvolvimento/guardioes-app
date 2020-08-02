@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
 import StatusBarLight from '../../styled/StatusBarLight';
 import SnowSpinner from '../../styled/SnowSpinner';
-import { Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './styles';
+import { Container, Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../../imgs/imageConst';
+import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
@@ -106,18 +107,21 @@ class AuthLoadingScreen extends Component {
         return (
             <GradientBackgroundView>
                 <StatusBarLight />
-                <Logo source={LogoType} />
+                
+                <Container>
+                    <Logo source={LogoType} />
 
-                <LogoContainer>
-                    <LogoWrapper>
-                        <LogoUnbProEpi source={logoProEpi} />
-                    </LogoWrapper>
-                    <LogoWrapper>
-                        <LogoUnbProEpi source={logoUnB} />
-                    </LogoWrapper>
-                </LogoContainer>
+                    <LogoContainer>
+                        <LogoWrapper>
+                            <LogoUnbProEpi source={logoProEpi} />
+                        </LogoWrapper>
+                        <LogoWrapper>
+                            <LogoUnbProEpi source={logoUnB} />
+                        </LogoWrapper>
+                    </LogoContainer>
 
-                <SnowSpinner />
+                    <SnowSpinner />
+                </Container>
             </GradientBackgroundView>
         );
     }

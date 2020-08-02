@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar, NetInfo, Alert, Modal, ScrollView } from 'react-native';
+
+import { Container, ScrollViewStyle, Background, UserView, Button, NamesContainer, TextName, AppName } from './styles';
+import { StatusContainer, TextStyle, StatusBemMal, StatusText, Bem, Mal, Alertas, StatusBairro, StatusTitle, StatusBairroText, BairroContainer } from './styles';
+
 import { PermissionsAndroid } from 'react-native';
 import {API_URL} from 'react-native-dotenv';
 import RNSecureStorage from 'rn-secure-storage';
@@ -6,50 +11,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
-
 import { Avatar } from 'react-native-elements';
-
 import * as Imagem from '../../../imgs/imageConst';
 import { getNameParts, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
 
-import { 
-    View, 
-    Text, 
-    StyleSheet, 
-    TouchableOpacity, 
-    StatusBar, 
-    NetInfo, 
-    Alert, 
-    Modal, 
-    ScrollView
-} from 'react-native';
-
-import {
-  Container,
-  ScrollViewStyle,
-  Background,
-  UserView,
-  Button,
-  NamesContainer,
-  TextName,
-  AppName,
-  StatusContainer,
-  TextStyle,
-  StatusBemMal,
-  StatusText,
-  Bem,
-  Mal,
-  Alertas,
-  StatusBairro,
-  StatusTitle,
-  StatusBairroText,
-  BairroContainer,
-} from './styles';
-
 Feather.loadFont();
+SimpleLineIcons.loadFont();
 
 let todayDate = new Date();
 let d = todayDate.getDate();
@@ -327,43 +298,12 @@ class Home extends Component {
       const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
       const householdsData = this.state.data;
 
-      const userIsProfessional = (
-          <View style={styles.rumorView}>
-              <TouchableOpacity
-                  //style={{ marginRight: '4%' }}
-                  onPress={() => navigate("Rumor")}
-              >
-                  <Text style={{ color: 'white', fontFamily: 'roboto', marginLeft: '6%' }}>{translate("home.reportRumor")}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                  onPress={() => Alert.alert('', translate("home.reportRumorMessage"), [{ text: 'Ok', onPress: () => null }])}
-              >
-                  {/* <Text style={{ fontSize: 18, padding: '2%'}}> */}
-                  <Feather style={{ marginRight: '2%'}} name="info" size={25} color="white" />
-                  {/* </Text> */}
-              </TouchableOpacity>
-          </View>
-      )
-
-      let isProfessionalTrue
-      if (this.state.isProfessional == "true") {
-          isProfessionalTrue = userIsProfessional
-      } else {
-          //isProfessionalTrue = userIsProfessional //Para aparecer sempre
-      }
-
-      const userHowYouFelling = (
-          <Text style={styles.textFelling}>
-              {translate("home.userHowYouFelling")}
-          </Text>
-      )
-
       const hasBadReports = this.state.userBadReports > 2
 
-      return (
-        <View style={styles.container}>
-          <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
+      return (          
           <Container>
+            <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
+
             <ScrollViewStyle>
               <Background>
                 <UserView>  
@@ -385,6 +325,7 @@ class Home extends Component {
                   />
                 </UserView>
               </Background>
+
               <StatusContainer>
                 <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
                 <StatusBemMal>
@@ -397,14 +338,25 @@ class Home extends Component {
                 </StatusBemMal>
               </StatusContainer>
               
-              <Alertas>Alertas</Alertas> 
-              {/* <BairroContainer>
-                <Feather name='alert-circle' size={70} color='#fff' />  
+              <Alertas>Alertas</Alertas>
+
+              {/*<BairroContainer>
+                <SimpleLineIcons name='exclamation' size={50} color='#ffffff' />  
                 <StatusBairro>
-                  <StatusTitle>Status do seu bairro: </StatusTitle>
+                  <StatusTitle>Status do seu bairro:</StatusTitle>
                   <StatusBairroText>Maioria sentindo-se bem</StatusBairroText>
                 </StatusBairro>
-              </BairroContainer> */}
+              </BairroContainer>*/}
+
+              <BairroContainer alert={hasBadReports}>
+                <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={50} color='#ffffff' /> 
+                <StatusBairro>
+                  <StatusTitle>{translate("home.statusLast7Days")}</StatusTitle>
+                  <StatusBairroText>
+                      {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
+                  </StatusBairroText>
+                </StatusBairro>
+              </BairroContainer>
 
               <View style={styles.viewHouseholdSelect}>
                 <Modal
@@ -475,30 +427,14 @@ class Home extends Component {
                 </Modal>
               </View>
 
-              <View style={[styles.viewStatus, hasBadReports ? styles.viewStatusBad : styles.viewStatusGood]}>
-                  <View style={styles.viewStatusIcon}>
-                      <Feather name={hasBadReports ? "alert-circle" : "check-circle"} size={50} color='#ffffff' style={styles.statusIcon} />
-                  </View>
-                  
-                  <View style={styles.viewStatusContent}>
-                      <Text style={styles.textStatusTitle}>
-                          {translate("home.statusLast7Days")}
-                      </Text>
-                      <Text style={styles.textStatusContent}>
-                          {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
-                      </Text>
-                  </View>
-              </View>
-
-              {isProfessionalTrue}
             </ScrollViewStyle>
-            <Feather name="menu"
-              size={32} 
-              color='#ffffff' 
-              style={styles.menuBars}
-              onPress={() => this.props.navigation.openDrawer()}
-            />
-          </Container>                           
+
+            <Button
+                style={styles.menuBars}
+                onPress={() => this.props.navigation.openDrawer()}
+            >
+                <SimpleLineIcons name="menu" size={26} color='#ffffff' />
+            </Button>
 
             <AwesomeAlert
                 show={showAlert}
@@ -518,7 +454,7 @@ class Home extends Component {
                 }}
                 onDismiss={() => this.hideAlert()}
             />
-        </View>
+          </Container>
       );
   }
 }
@@ -540,51 +476,11 @@ const emojis = [
 ]
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    scrollView: {
-        backgroundColor: '#f4f4f4',
-        flexGrow: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-    },
     menuBars: {
         position: 'absolute',
-        left: '2%',
-        top: 0,
+        left: '6%',
+        top: '3%',
         padding: '2%',
-    },
-    viewTop: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-    },
-    avatarTop: {
-        borderColor: '#ffffff',
-        borderWidth: 3,
-        height: scale(108),
-        width: scale(108),
-        marginTop: 50
-    },
-    viewWelcome: {
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 95,
-    },
-    textHelloUser: {
-        fontSize: scale(22),
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
-        color: '#ffffff',
-        marginTop: '3%'
-    },
-    textNewGuardion: {
-        fontSize: scale(16),
-        fontFamily: 'roboto',
-        color: '#ffffff',
     },
     userAvatar: {
         marginRight: `${scale(8)}%`,
@@ -592,86 +488,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderColor: '#ffffff',
         borderWidth: 3,
-    },
-    viewReport: {
-        backgroundColor: '#ffffff',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '90%',
-        marginTop: -75,
-    },
-    textFelling: {
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
-        fontSize: scale(18),
-        color: '#32323B',
-        marginTop: scale(25)
-    },
-    containerGoodBad: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%',
-        marginTop: scale(20),
-        marginBottom: scale(32)
-    },
-    viewChildBad: {
-        width: '49.25%',
-        borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
-        backgroundColor: '#F18F01',
-        justifyContent: 'center',
-        paddingVertical: 15
-    },
-    viewChildGood: {
-        width: '49.25%',
-        borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20,
-        backgroundColor: '#5DD39E',
-        justifyContent: 'center',
-        paddingVertical: 15
-    },
-    textChoiceButton: {
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
-        color: '#ffffff',
-        fontSize: 18,
-        alignSelf: 'center'
-    },
-    viewStatus: {
-        backgroundColor: '#348EAC',
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginRight: '6%',
-        marginLeft: '6%',
-        borderRadius: 10,
-        //borderColor: '#c4c4c4',
-        //borderWidth: 1,
-        padding: scale(22),
-    },
-    viewStatusGood: {
-        backgroundColor: '#348EAC',
-    },
-    viewStatusBad: {
-        backgroundColor: '#F18F01',
-    },
-    viewStatusIcon: {
-        marginRight: scale(20),
-    },
-    viewStatusContent: {
-        //borderColor: '#c4c4c4',
-        //borderWidth: 1,
-    },
-    textStatusTitle: {
-        fontFamily: 'roboto',
-        fontWeight: 'bold',
-        fontSize: scale(16),
-        color: '#ffffff',
-    },
-    textStatusContent: {
-        fontFamily: 'roboto',
-        fontSize: scale(16),
-        color: '#ffffff',
     },
     viewHouseholdSelect: {
         alignItems: 'center',
@@ -705,28 +521,6 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginTop: 17,
         marginBottom: 13
-    },
-    rumorView: {
-        backgroundColor: '#348EAC',
-        borderRadius: 20,
-        flexDirection: 'row',
-        fontWeight: 'bold',
-        marginTop: 16,
-        marginBottom: 16,
-        height: 38,
-        justifyContent: 'center',
-        //width: '35%',
-        alignItems: 'center',
-    },
-    shadow: {
-        shadowColor: "gray",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
     },
 });
 
