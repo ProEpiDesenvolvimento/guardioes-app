@@ -1,12 +1,10 @@
 //Logos
-export const imagemLogo = require('./logos/logo_branco_ES.png');
-export const imagemLogoC = require('./logos/logo_azul_ES.png');
-export const imagemLogoBR = require('./logos/logo_branco_BR.png');
-export const imagemLogoCBR = require('./logos/logo_azul_BR.png');
-export const logoProEpi = require('./logos/logo_proepi.png');
-export const logoUnB = require('./logos/logo_unb.png');
-export const logoAzProEpi = require('./logos/logo_proepi_azul.png');
-export const logoAzUnB = require('./logos/logo_unb_azul.png');
+export const GDSLogoBR = require('./logos/gds-pt-branca.png');
+export const GDSLogoES = require('./logos/gds-es-branca.png');
+export const ProEpiLogo = require('./logos/proepi.png');
+export const ProEpiLogo2 = require('./logos/proepi-branca.png');
+export const UnBLogo = require('./logos/unb.png');
+export const UnBLogo2 = require('./logos/unb-branca.png');
 
 // First Screens
 export {default as UserIcon} from './icons/user.svg';
