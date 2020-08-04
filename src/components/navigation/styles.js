@@ -47,9 +47,10 @@ export const Button = styled(TouchableOpacity).attrs({
 })``;
 
 export const AvatarContainer = styled.View`
-  margin-bottom: ${percentage(8)}px;
   align-items: center;
-  margin-top: ${percentage(8)}px;
+  flex-direction: row;
+  justify-content: center;
+  margin-vertical: ${percentage(10)}px;
 `;
 
 const option = `
@@ -97,7 +98,7 @@ export const Aplicativo = styled.Text`
 `;
 
 export const SocialContainer = styled.View`
-  margin-top: ${percentage(7)}px;
+  margin-vertical: ${percentage(7)}px;
   flex-direction: row;
   margin-left: ${(scale(75))}px;
   margin-right: ${(scale(75))}px;

@@ -14,7 +14,7 @@ import { API_URL } from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
 import * as Imagem from '../../../imgs/imageConst';
-import { getNameParts } from '../../../utils/constUtils';
+import { getNameParts, getInitials } from '../../../utils/constUtils';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { country, localSymptom } from '../../../utils/selectorUtils';
@@ -304,6 +304,8 @@ class BadReport extends Component {
             traveledTrue = traveled
         }
 
+        console.log(this.state.avatarSelect)
+
         return (
             <Container>
                 <ScrollViewStyled>
@@ -311,7 +313,8 @@ class BadReport extends Component {
                         <IconWrapper>
                             <Avatar
                                 size={scale(60)}
-                                source={Imagem[this.state.avatarSelect]}
+                                source={{uri: this.state.avatarSelect}}
+                                title={getInitials(this.state.userSelect)}
                                 rounded
                             />
                         </IconWrapper>

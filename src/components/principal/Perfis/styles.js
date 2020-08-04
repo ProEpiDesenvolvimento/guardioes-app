@@ -19,7 +19,7 @@ const Profile = `
     margin-bottom: ${percentage(7)}px;
     padding: ${scale(15)}px;
     shadow-color: #000000;
-    shadow-opacity: 0.2;
+    shadow-opacity: 0.1;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
 `;

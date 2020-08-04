@@ -88,30 +88,36 @@ export const StatusBemMal = styled.View`
   flex-direction: row;
 `;
 
+const BemMal = `
+  height: ${scale(50)}px;
+  width: ${scale(114)}px;
+  align-items: center;
+  justify-content: center;
+  shadow-opacity: 0.4;
+  shadow-radius: 10px;
+  shadow-offset: 0px 2px;
+`;
+
 export const Bem = styled(TouchableOpacity).attrs({
   activeOpacity: 0.5
 })` 
-  height: ${scale(50)}px;
-  width: ${scale(114)}px;
+  ${BemMal}
   background: #348eac;
   border-bottom-left-radius: ${scale(18)}px;
   border-top-left-radius: ${scale(18)}px;
   margin-right: ${scale(2)}px;
-  align-items: center;
-  justify-content: center;
+  shadow-color: #348eac;
 `;
 
 export const Mal = styled(TouchableOpacity).attrs({
   activeOpacity: 0.5
 })`
-  height: ${scale(50)}px;
-  width: ${scale(114)}px;
+  ${BemMal}
   background: #f18f01;
   border-bottom-right-radius: ${scale(18)}px;
   border-top-right-radius: ${scale(18)}px;
   margin-left: ${scale(2)}px;
-  align-items: center;
-  justify-content: center;
+  shadow-color: #f18f01;
 `;
 
 export const StatusText = styled.Text`
@@ -140,7 +146,7 @@ export const BairroContainer = styled(ShadowView).attrs({
   flex-direction: row;
   margin-bottom: ${percentage(7)}px;
   shadow-color: #000000;
-  shadow-opacity: 0.2;
+  shadow-opacity: 0.1;
   shadow-radius: 10px;
   shadow-offset: 0px 4px;
 `;

@@ -313,7 +313,7 @@ class Home extends Component {
                   </NamesContainer>
                   <Avatar
                     containerStyle={styles.userAvatar}
-                    size={scale(60)}
+                    size={scale(58)}
                     source={{uri: this.state.avatarSelect}}
                     title={getInitials(this.state.userSelect)}
                     activeOpacity={0.6}
@@ -341,7 +341,7 @@ class Home extends Component {
               <Alertas>Alertas</Alertas>
 
               {/*<BairroContainer>
-                <SimpleLineIcons name='exclamation' size={50} color='#ffffff' />  
+                <SimpleLineIcons name='exclamation' size={48} color='#ffffff' />  
                 <StatusBairro>
                   <StatusTitle>Status do seu bairro:</StatusTitle>
                   <StatusBairroText>Maioria sentindo-se bem</StatusBairroText>
@@ -349,7 +349,7 @@ class Home extends Component {
               </BairroContainer>*/}
 
               <BairroContainer alert={hasBadReports}>
-                <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={50} color='#ffffff' /> 
+                <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
                 <StatusBairro>
                   <StatusTitle>{translate("home.statusLast7Days")}</StatusTitle>
                   <StatusBairroText>
@@ -372,8 +372,8 @@ class Home extends Component {
                           <Avatar
                             size="large"
                             rounded
-                            source={{uri: this.state.avatarSelect}}
-                            title={getInitials(this.state.userSelect)}
+                            source={{uri: this.state.userAvatar}}
+                            title={getInitials(this.state.userName)}
                             onPress={async () => {
                                 await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
                                 this.setModalVisible(!this.state.modalVisible);

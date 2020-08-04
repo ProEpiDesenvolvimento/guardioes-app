@@ -7,7 +7,7 @@ import { Container, Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './st
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../../imgs/imageConst';
+import { GDSLogoES, GDSLogoBR, ProEpiLogo2, UnBLogo2 } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
@@ -98,10 +98,10 @@ class AuthLoadingScreen extends Component {
 
         let LogoType;
         if (translate("lang.code") === "es") {
-            LogoType = imagemLogo
+            LogoType = GDSLogoES
         }
         else {
-            LogoType = imagemLogoBR
+            LogoType = GDSLogoBR
         }
 
         return (
@@ -113,10 +113,10 @@ class AuthLoadingScreen extends Component {
 
                     <LogoContainer>
                         <LogoWrapper>
-                            <LogoUnbProEpi source={logoProEpi} />
+                            <LogoUnbProEpi source={ProEpiLogo2} />
                         </LogoWrapper>
                         <LogoWrapper>
-                            <LogoUnbProEpi source={logoUnB} />
+                            <LogoUnbProEpi source={UnBLogo2} />
                         </LogoWrapper>
                     </LogoContainer>
 

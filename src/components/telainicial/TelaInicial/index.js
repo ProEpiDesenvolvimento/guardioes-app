@@ -8,7 +8,7 @@ import SnowButton from '../../styled/SnowButton';
 import { Container, Logo, WelcomeText, Label } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { imagemLogo, imagemLogoBR } from '../../../imgs/imageConst';
+import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import translate from '../../../../locales/i18n';
 
 const Redirect = (titulo, message, navigation) => {
@@ -43,10 +43,10 @@ class TelaInicial extends Component {
     
         let LogoType;
         if (translate("lang.code") === "es") {
-            LogoType = imagemLogo
+            LogoType = GDSLogoES
         }
         else {
-            LogoType = imagemLogoBR
+            LogoType = GDSLogoBR
         }
 
         return (

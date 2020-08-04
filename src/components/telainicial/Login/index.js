@@ -13,7 +13,7 @@ import { ButtonBack, Logo, PageTitle, FormSeparator, Label, LabelVisible } from 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { imagemLogo, imagemLogoBR } from '../../../imgs/imageConst';
+import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
@@ -68,10 +68,10 @@ class Login extends Component {
 
         let LogoType;
         if (translate("lang.code") === "es") {
-            LogoType = imagemLogo
+            LogoType = GDSLogoES
         }
         else {
-            LogoType = imagemLogoBR
+            LogoType = GDSLogoBR
         }
 
         return (
