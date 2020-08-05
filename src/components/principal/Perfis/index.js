@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { ScrollViewStyled, User, AvatarWrapper, InfoContainer, InfoWrapper, Name, Relation, ButtonsWrapper } from './styles';
-import { HouseholdWrapper, HouseholdTitle, Household, HouseholdName, HouseholdRelation } from './styles';
+import { Button, HouseholdWrapper, HouseholdTitle, Household, HouseholdName, HouseholdRelation } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
@@ -26,8 +26,6 @@ class Perfis extends Component {
             this.fetchData();
         })
         this.state = {
-            modalVisibleHousehold: false,
-            modalVisibleUser: false,
             userData: {},
             householdData: {},
             isLoading: true
@@ -103,11 +101,6 @@ class Perfis extends Component {
                 City: responseJson.user.city,
                 GroupName: groupName,
 
-                initValueGroup: "Selecionar",
-                initValueCategory: "Selecionar",
-                initValueSchoolLocation: "Selecionar",
-                initValueEducationLevel: "Selecionar",
-
                 groupCheckbox,
                 NewInst,
                 SchoolLocation,
@@ -136,13 +129,11 @@ class Perfis extends Component {
     }
 
     loadHouseholdInfo = async (household) => {
-        const { navigate } = this.props.navigation
-
         // Trata a data de nascimento do household para o formato apropriado
         let birthDate = household.birthdate.split('-')
         birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
 
-        const householdGroupName = await getGroupName(household.school_unit_id)
+        const groupName = await getGroupName(household.school_unit_id)
 
         // Definindo variaveis logicas
         let groupCheckbox = false
@@ -171,7 +162,7 @@ class Perfis extends Component {
             IdCode: household.identification_code,
             Kinship: household.kinship,
             RiskGroup: household.risk_group,
-            GroupName: householdGroupName,
+            GroupName: groupName,
             
             groupCheckbox,
             NewInst,
@@ -181,35 +172,6 @@ class Perfis extends Component {
         }
 
         this.setState({ householdData });
-    }
-
-    confirmDelete = () => {
-        Alert.alert(
-            "Deletar Usuário",
-            "Deseja deletar esse usuário?",
-            [
-                {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                { text: 'OK', onPress: () => this.deleteHousehold() },
-            ],
-            { cancelable: false },
-        )
-    }
-
-    deleteHousehold = () => {
-        return fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
-            method: 'DELETE',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                Authorization: `${this.state.userToken}`
-            },
-        }).then((response) => {
-            console.warn(response.status)
-            this.getHouseholds()
-        })
     }
 
     render() {
@@ -242,13 +204,13 @@ class Perfis extends Component {
                             <Relation>Proprietário</Relation>
                         </InfoWrapper>
                         <ButtonsWrapper>
-                            <TouchableOpacity
-                                onPress={async () => {
+                            <Button
+                                onPress={() => {
                                     navigate('EditarPerfil', { isUser: true, data: this.state.userData });
                                 }
                             }>
                                 <Feather name="edit" size={scale(25)} color='#ffffff' />
-                            </TouchableOpacity>
+                            </Button>
                         </ButtonsWrapper>
                     </InfoContainer>
                 </User>
@@ -256,7 +218,7 @@ class Perfis extends Component {
                 <HouseholdWrapper>
                     <HouseholdTitle>{translate("profiles.households")}</HouseholdTitle>
                 </HouseholdWrapper>
-                
+
                 {householdsData != null ?
                     householdsData.map((household) => {
                         return (
@@ -275,14 +237,14 @@ class Perfis extends Component {
                                         <HouseholdRelation>{household.kinship}</HouseholdRelation>
                                     </InfoWrapper>
                                     <ButtonsWrapper>
-                                        <TouchableOpacity
+                                        <Button
                                             onPress={async () => {
                                                 await this.loadHouseholdInfo(household);
                                                 navigate('EditarPerfil', { isUser: false, data: this.state.householdData });
                                             }
                                         }>
                                             <Feather name="edit" size={scale(25)} color='#348EAC' />
-                                        </TouchableOpacity>
+                                        </Button>
                                     </ButtonsWrapper>
                                 </InfoContainer>
                             </Household>

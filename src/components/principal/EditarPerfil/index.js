@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Alert, Modal } from 'react-native';
+import { View, StyleSheet, Alert, Modal, Platform } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../Household/styles';
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from '../Household/styles';
-import { FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles';
+import { ReadOnlyInput, FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles';
+import { Delete } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
@@ -34,6 +35,10 @@ class EditarPerfil extends Component {
         this.state = {
             isUser: null,
             modalVisibleRiskGroup: false,
+            CategoryLabel: translate("selector.label"),
+            GroupLabel: translate("selector.label"),
+            SchoolLocationLabel: translate("selector.label"),
+            EducationLevelLabel: translate("selector.label"),
         }
     }
 
@@ -66,25 +71,23 @@ class EditarPerfil extends Component {
 
     changeAvatar = () => {
         ImagePicker.showImagePicker(options, (response) => {
-          //console.log('Response = ', response);
+            //console.log('Response = ', response);
+            
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton === 'remove') {
+                this.setState({ Picture: 'default' })
+            } else {
+                let source = response.uri;
         
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else {
-            let source = response.uri;
-    
-            if (Platform.OS === 'android') {
-              source = 'content://com.guardioesapp.provider/root' + response.path
+                if (Platform.OS === 'android') {
+                    source = 'content://com.guardioesapp.provider/root' + response.path
+                }
+        
+                this.setState({ Picture: source })
             }
-    
-            this.setState({
-              avatarSource: source,
-            });
-    
-            AsyncStorage.setItem('userAvatar', this.state.avatarSource);
-          }
         });
     }
 
@@ -114,11 +117,13 @@ class EditarPerfil extends Component {
             )
         })
             .then((response) => {
+                console.warn(response.status)
                 if (response.status == 200) {
-                    console.warn(response.status)
+                    AsyncStorage.setItem('userName', this.state.Name)
+                    AsyncStorage.setItem('userAvatar', this.state.Picture)
                     this.props.navigation.goBack()
                 } else {
-                    console.warn(response.status)
+                    Alert.alert("Ocorreu um erro, tente novamente depois.")
                 }
             })
     }
@@ -147,11 +152,11 @@ class EditarPerfil extends Component {
             )
         })
             .then((response) => {
+                console.warn(response.status)
                 if (response.status == 200) {
-                    console.warn(response.status)
                     this.props.navigation.goBack()
                 } else {
-                    console.warn(response.status)
+                    Alert.alert("Ocorreu um erro, tente novamente depois.")
                 }
             })
     }
@@ -197,21 +202,28 @@ class EditarPerfil extends Component {
                     </ModalContainer>
                 </Modal>
                 <KeyboardScrollView>
-                    <Avatar
-                        size={scale(90)}
-                        source={{uri: this.state.Picture}}
-                        title={getInitials(this.state.Name)}
-                        activeOpacity={0.7}
-                        showEditButton
-                        rounded
-                        editButton={{name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000'}}
-                        onEditPress={() => this.changeAvatar()}
-                    />
+                    <FormInline>
+                        <Avatar
+                            size={scale(90)}
+                            source={{uri: this.state.Picture}}
+                            title={getInitials(this.state.Name)}
+                            activeOpacity={0.7}
+                            showEditButton
+                            rounded
+                            editButton={{name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000'}}
+                            onEditPress={() => this.changeAvatar()}
+                        />
+                        {!isUser &&
+                            <Delete onPress={() => this.confirmDelete()}>
+                                <Feather name="trash-2" size={scale(25)} color='#ffffff' />
+                            </Delete>
+                        }
+                    </FormInline>
 
-                    { isUser ? 
+                    {isUser ? 
                         <FormInline>
-                            <FormLabel>Email:</FormLabel>
-                            <Text style={{ color: 'gray', fontSize: 17, textAlign: "center" }}>{this.state.Email}</Text>
+                            <FormLabel>{translate("register.email")}</FormLabel>
+                            <ReadOnlyInput>{this.state.Email}</ReadOnlyInput>
                         </FormInline>
                     : null}
 
@@ -247,7 +259,7 @@ class EditarPerfil extends Component {
 
                     <FormGroup>
                         <FormGroupChild>
-                            <FormLabel>Nascimento:</FormLabel>
+                            <FormLabel>{translate("register.birth")}</FormLabel>
                             <DateSelector
                                 placeholder={translate("birthDetails.format")}
                                 date={this.state.Birth}
@@ -290,7 +302,7 @@ class EditarPerfil extends Component {
                                     data={getCity(this.state.State)}
                                     initValue={this.state.City}
                                     cancelText={translate("selector.cancelButton")}
-                                    onModalClose={(option) => this.setState({ City: option.key, initValueCity: option.key })}
+                                    onModalClose={(option) => this.setState({ City: option.key })}
                                 />
                             </FormGroupChild>
                         </FormGroup>
@@ -338,9 +350,9 @@ class EditarPerfil extends Component {
                                     <FormLabel>Categoria:</FormLabel>
                                     <Selector
                                         data={schoolCategory}
-                                        initValue={this.state.initValueCategory}
+                                        initValue={this.state.CategoryLabel}
                                         cancelText={translate("selector.cancelButton")}
-                                        onChange={(option) => this.setState({ Category: option.key, initValueCategory: option.label, EducationLevel: null })}
+                                        onChange={(option) => this.setState({ Category: option.key, CategoryLabel: option.label, EducationLevel: null })}
                                     />
                                 </FormGroupChild>
                                 {this.state.Category == "UNB" ?
@@ -348,10 +360,10 @@ class EditarPerfil extends Component {
                                         <FormLabel>Faculdade:</FormLabel>
                                         <Selector
                                             data={getGroups("UNB", "", "")}
-                                            initValue={this.state.initValueGroup}
+                                            initValue={this.state.GroupLabel}
                                             cancelText={translate("selector.cancelButton")}
                                             onChange={async (option) => {
-                                                await this.setState({ Group: option.key, initValueGroup: option.label })
+                                                await this.setState({ Group: option.key, GroupLabel: option.label })
                                             }}
                                         />
                                     </FormGroupChild>
@@ -360,9 +372,9 @@ class EditarPerfil extends Component {
                                         <FormLabel>Nivel de Ensino:</FormLabel>
                                         <Selector
                                             data={educationLevel}
-                                            initValue={this.state.initValueEducationLevel}
+                                            initValue={this.state.EducationLevelLabel}
                                             cancelText={translate("selector.cancelButton")}
-                                            onChange={(option) => this.setState({ EducationLevel: option.key, initValueEducationLevel: option.label })}
+                                            onChange={(option) => this.setState({ EducationLevel: option.key, EducationLevelLabel: option.label })}
                                         />
                                     </FormGroupChild>
                                 : null}
@@ -373,9 +385,9 @@ class EditarPerfil extends Component {
                                         <FormLabel>Região:</FormLabel>
                                             <Selector
                                                 data={schoolLocation}
-                                                initValue={this.state.initValueSchoolLocation}
+                                                initValue={this.state.SchoolLocationLabel}
                                                 cancelText={translate("selector.cancelButton")}
-                                                onChange={(option) => this.setState({ SchoolLocation: option.key, initValueSchoolLocation: option.label })}
+                                                onChange={(option) => this.setState({ SchoolLocation: option.key, SchoolLocationLabel: option.label })}
                                             />
                                     </FormGroupChild>
                                     {this.state.SchoolLocation != null ?
@@ -460,12 +472,48 @@ class EditarPerfil extends Component {
             </Container>
         )
     }
+
+    confirmDelete = () => {
+        Alert.alert(
+            "Deletar usuário",
+            "Deseja deletar esse usuário?",
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => this.deleteHousehold() },
+            ],
+            { cancelable: false },
+        )
+    }
+    
+    deleteHousehold = () => {
+        return fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                Authorization: `${this.state.userToken}`
+            },
+        }).then((response) => {
+            console.warn(response.status)
+            if (response.status == 204) {
+                this.props.navigation.goBack()
+            } else {
+                Alert.alert("Ocorreu um erro, tente novamente depois.")
+            }
+        })
+    }
 }
 
 const options = {
     title: 'Selecione imagem de Perfil',
     takePhotoButtonTitle: 'Tire uma foto',
     chooseFromLibraryButtonTitle: 'Selecione da Galeria',
+    customButtons: [{ name: 'remove', title: 'Remover foto' }],
+    noData: true,
+    quality: 0.5,
     storageOptions: {
       skipBackup: true,
       path: 'gds',

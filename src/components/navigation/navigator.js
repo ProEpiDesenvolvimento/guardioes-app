@@ -1,7 +1,7 @@
 import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 
-import { HeaderNavigator, BackButton, ScreenTitle } from './styles';
+import { HeaderNavigator, BackButton, ScreenTitle, Empty } from './styles';
 
 import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
@@ -128,6 +128,7 @@ export const Stack = createStackNavigator({
                     <ScreenTitle>
                         {props.scene.descriptor.options.title}
                     </ScreenTitle>
+                    <Empty />
                 </HeaderNavigator>
             ),
         }),

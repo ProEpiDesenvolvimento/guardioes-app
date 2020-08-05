@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, NetInfo, Alert } from 'react-native';
+import { Text, View, NetInfo, Alert, Platform, ActivityIndicator } from 'react-native';
 
 import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
@@ -13,7 +13,6 @@ import { scale } from '../../../utils/scallingUtils';
 import { API_URL } from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
 import { Avatar } from 'react-native-elements';
-import * as Imagem from '../../../imgs/imageConst';
 import { getNameParts, getInitials } from '../../../utils/constUtils';
 import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
@@ -44,7 +43,7 @@ class BadReport extends Component {
         this.getLocation();
         this.fetchData();
         this.state = {
-            cca2: 'BR',
+            isLoading: true,
             country: 'Brazil',
             contactWithSymptomCheckbox: false,
             contactWithSymptom: null,
@@ -126,7 +125,8 @@ class BadReport extends Component {
                     return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);
                 });
                 this.setState({
-                    dataSource: alfabetica
+                    dataSource: alfabetica,
+                    isLoading: false
                 })
             })
     }
@@ -167,10 +167,13 @@ class BadReport extends Component {
                 }
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                this.componentDidMount
+                console.log('You can use the location');
             } else {
                 console.warn(translate("maps.locationRequest.requestDenied"))
-                this.props.navigation.navigate('Home')
+
+                if (Platform.OS === 'android') {
+                    this.props.navigation.navigate('Home')
+                }
             }
         } catch (err) {
             console.warn(err)
@@ -285,6 +288,14 @@ class BadReport extends Component {
         const { showAlert } = this.state;
         const symptomsData = this.state.dataSource;
 
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, padding: 20 }}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
+
         const traveled = (
             <FormInline>
                 <FormLabel>
@@ -312,7 +323,7 @@ class BadReport extends Component {
                     <User>
                         <IconWrapper>
                             <Avatar
-                                size={scale(60)}
+                                size={scale(58)}
                                 source={{uri: this.state.avatarSelect}}
                                 title={getInitials(this.state.userSelect)}
                                 rounded

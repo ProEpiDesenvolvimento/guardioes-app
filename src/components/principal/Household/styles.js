@@ -50,6 +50,13 @@ export const NormalInput = styled.TextInput`
     padding-horizontal: ${scale(12)}px;
 `;
 
+export const ReadOnlyInput = styled.Text`
+    font-family: ArgentumSans-Medium;
+    font-size: ${scale(14)}px;
+    color: #c4c4c4;
+    text-align: center;
+`;
+
 export const FormGroup = styled.View`
     width: 100%;
     flex-direction: row;
@@ -73,7 +80,9 @@ export const FormInlineCheck = styled.View`
 
 export const Selector = styled(ModalSelector).attrs({
     initValueTextStyle: {
-        color: '#32323B' 
+        fontFamily: 'ArgentumSans',
+        fontSize: scale(13),
+        color: '#32323B'
     },
     touchableActiveOpacity: 0.5,
     selectStyle: {
@@ -82,6 +91,8 @@ export const Selector = styled(ModalSelector).attrs({
         borderWidth: 0,
     },
     selectTextStyle: {
+        fontFamily: 'ArgentumSans',
+        fontSize: scale(13),
         color: '#32323B'
     },
     overlayStyle: {
@@ -126,12 +137,14 @@ export const DateSelector = styled(DatePicker).attrs({
         },
         placeholderText: {
             justifyContent: "center",
-            fontSize: scale(14),
-            color: '#c4c4c4'
+            fontFamily: 'ArgentumSans',
+            fontSize: scale(13),
+            color: '#32323B'
         },
         dateText: {
             justifyContent: "center",
-            fontSize: scale(14),
+            fontFamily: 'ArgentumSans',
+            fontSize: scale(13),
             color: '#32323B'
         }
     }
@@ -172,7 +185,6 @@ export const SendContainer = styled(ShadowView).attrs({
     align-self: center;
     background-color: #348EAC;
     border-radius: ${scale(16)}px;
-    margin-top: ${scale(10)}px;
     margin-bottom: ${scale(10)}px;
     padding-vertical: ${scale(10)}px;
     padding-horizontal: ${percentage(12)}px;
@@ -191,6 +203,7 @@ export const SendText = styled.Text`
 
 export const ModalContainer = styled.View`
     flex: 1;
+    background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
 `;
@@ -199,7 +212,7 @@ export const ModalBox = styled(ShadowView).attrs({
 })`
     width: 90%;
     background-color: #ffffff;
-    border-radius: ${scale(12)}px;
+    border-radius: ${scale(18)}px;
     align-self: center;
     justify-content: center;
     padding: ${scale(16)}px;

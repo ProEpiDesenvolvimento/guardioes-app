@@ -12,7 +12,6 @@ import { getInitials } from '../../utils/constUtils';
 import { Avatar } from 'react-native-elements';
 import Share from "react-native-share";
 import { scale } from '../../utils/scallingUtils';
-import * as Imagem from '../../imgs/imageConst';
 import translate from '../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 

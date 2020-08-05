@@ -10,17 +10,6 @@ export const UnBLogo2 = require('./logos/unb-branca.png');
 export {default as UserIcon} from './icons/user.svg';
 export {default as PasswordIcon} from './icons/password.svg';
 
-//Avatar
-export const NullAvatar = require('./avatar/avatar.png');
-export const Father = require('./avatar/father.png');
-export const Mother = require('./avatar/mother.png');
-export const Grandfather = require('./avatar/grandfather.png');
-export const Grandmother = require('./avatar/grandmother.png');
-export const Sister = require('./avatar/sister.png');
-export const Brother = require('./avatar/brother.png');
-export const Son = require('./avatar/son.png');
-export const Daughter = require('./avatar/daughter.png');
-
 // Help
 export {default as TermsIcon} from './icons/terms-and-conditions.svg';
 export {default as TutorialIcon} from './icons/online-learning.svg';

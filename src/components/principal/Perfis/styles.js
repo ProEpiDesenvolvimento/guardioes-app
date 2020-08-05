@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import ShadowView from 'react-native-simple-shadow-view';
+import { TouchableOpacity } from 'react-native';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
@@ -60,6 +61,10 @@ export const Relation = styled.Text`
 export const ButtonsWrapper = styled.View`
     justify-content: center;
 `;
+
+export const Button = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.2
+})``;
 
 export const HouseholdWrapper = styled.View`
     padding-horizontal: ${scale(9)}px;

@@ -14,7 +14,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
-import * as Imagem from '../../../imgs/imageConst';
 import { getNameParts, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";

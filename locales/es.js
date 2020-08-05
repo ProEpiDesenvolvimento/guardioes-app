@@ -64,7 +64,7 @@ export default {
         "lastname": "Apellido:",
         "gender": "Género:",
         "race": "Raza:",
-        "birth": "Fecha de nacimiento:",
+        "birth": "Nacimiento:",
         "country": "País de origen:",
         "originCountry": "es su país de residencia?",
         "email": "Email:",
