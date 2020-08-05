@@ -13,7 +13,6 @@ import RNSecureStorage from 'rn-secure-storage';
 
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
-import * as Imagem from '../../../imgs/imageConst';
 import { HappyIcon, SadIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import { getNameParts, getInitials } from '../../../utils/constUtils';
@@ -43,7 +42,7 @@ class Diario extends Component {
     constructor(props) {
         super(props)
         this.props.navigation.addListener('didFocus', payload => {
-            //this.fetchData();
+            this.fetchData();
         })
         this.state = {
             data: [],
@@ -54,10 +53,6 @@ class Diario extends Component {
             NoPlot: [{ y: 0, x: 0, marked: "" }],
             isLoading: true
         }
-    }
-    
-    componentDidMount () {
-        this.fetchData()
     }
 
     handleSelect(event) {

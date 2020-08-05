@@ -46,8 +46,8 @@ export const NormalInput = styled.TextInput`
     font-size: ${scale(14)}px;
     color: #32323B;
     border-radius: ${scale(12)}px;
-    padding-bottom: 0px;
-    padding-top: 0px;
+    padding-vertical: 0px;
+    padding-horizontal: ${scale(12)}px;
 `;
 
 export const FormGroup = styled.View`
@@ -59,6 +59,7 @@ export const FormGroup = styled.View`
 
 export const FormGroupChild = styled.View`
     width: 48%;
+    align-items: center;
     justify-content: space-between;
 `;
 
@@ -72,7 +73,7 @@ export const FormInlineCheck = styled.View`
 
 export const Selector = styled(ModalSelector).attrs({
     initValueTextStyle: {
-        color: '#c4c4c4' 
+        color: '#32323B' 
     },
     touchableActiveOpacity: 0.5,
     selectStyle: {
