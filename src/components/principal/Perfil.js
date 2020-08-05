@@ -72,6 +72,14 @@ class Perfil extends Component {
     })
   }
 
+  setUserInstituitionComponentError = (error) => {
+    this.state.userInstituitionComponentError = error
+  }
+
+  setHouseholdInstituitionComponentError = (error) => {
+    this.state.householdInstituitionComponentError = error
+  }
+
   changeAvatar = async ()  => {
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
@@ -213,7 +221,33 @@ class Perfil extends Component {
     this.editHousehold()
   }
 
+  isHouseholdDataValid = () => {
+    if (this.state.householdName == null || this.state.householdName == '' || this.state.householdDob == null) {
+        Alert.alert("O nome e data de nascimento devem estar preenchidos\n")
+        return false
+    } else if (this.state.householdGender == null || this.state.householdRace == null) {
+        Alert.alert("A raça e genero devem estar preenchidos")
+        return false
+    } else if (this.state.kinship == null) {
+        Alert.alert("O parentesco deve estar preenchido")
+        return false
+    } else if (this.state.householdInstituitionComponentError != null &&
+        this.state.householdInstituitionComponentError != undefined &&
+        this.state.householdInstituitionComponentError.length > 0) {
+        Alert.alert(this.state.householdInstituitionComponentError)
+        return false
+    } else if (this.state.householdCountry == null) {
+        Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+        return false
+    }
+    return true
+}
+
   editHousehold = () => {
+    if (!this.isHouseholdDataValid()) {
+      return
+    }
+    this.setAlert(true)
     fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
       method: 'PATCH',
       headers: {
@@ -240,13 +274,40 @@ class Perfil extends Component {
         if (response.status == 200) {
           console.warn(response.status)
           this.getHouseholds()
-        } else {
+          this.setState({
+            modalVisibleHousehold: !this.state.modalVisibleHousehold
+          })
+        this.setAlert(false)
+      } else {
           console.warn(response.status)
         }
       })
   }
 
+  isUserDataValid = () => {
+    if (this.state.userName == null || this.state.userName == '') {
+        Alert.alert("Nome não pode ficar em branco")
+        return false
+    } else if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
+        Alert.alert("Estado e Cidade devem estar preenchidos")
+        return false
+    } else if (this.state.userInstituitionComponentError != null &&
+        this.state.userInstituitionComponentError != undefined &&
+        this.state.userInstituitionComponentError.length > 0) {
+        Alert.alert(this.state.userInstituitionComponentError)
+        return false
+    } else if (this.state.userCountry == null) {
+        Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+        return false
+    }
+    return true
+}
+
   editUser = () => {
+    if (!this.isUserDataValid()) {
+      return
+    }
+    this.setAlert(true)
     fetch(`${API_URL}/users/${this.state.userID}`, {
       method: 'PATCH',
       headers: {
@@ -273,7 +334,10 @@ class Perfil extends Component {
       .then((response) => {
         if (response.status == 200) {
           console.warn(response.status)
-          //this.getHouseholds()
+          this.setState({
+            modalVisibleUser: false
+          })
+          this.setAlert(false)
         } else {
           console.warn(response.status)
         }
@@ -331,11 +395,10 @@ class Perfil extends Component {
 
   handleEdit = async () => {
     await this.setState({
-      modalVisibleUser: false,
       userName: this.state.userSelect 
     })
     if (this.state.userCountry !== "Brazil") {
-      this.setState({
+      await this.setState({
         userCity: null,
         userState: null
       })
@@ -539,7 +602,8 @@ class Perfil extends Component {
               setUserInstitutionCallback={this.setHouseholdInstitutionCallback}
               setAlert={this.setAlert}
               userGroup={this.state.householdGroup}
-              userIdCode={this.state.householdIdCode}/>
+              userIdCode={this.state.householdIdCode}
+              setErrorCallback={this.setHouseholdInstituitionComponentError}/>
 
             <View style={styles.buttonView}>
               <Button
@@ -547,7 +611,6 @@ class Perfil extends Component {
                 color="#348EAC"
                 onPress={() => {
                   this.avatarHouseholdSelector()
-                  this.setModalVisible(!this.state.modalVisibleHousehold)
                 }} />
               <View style={{ margin: 5 }}></View>
               <Button
@@ -702,7 +765,8 @@ class Perfil extends Component {
                 setUserInstitutionCallback={this.setUserInstitutionCallback}
                 setAlert={this.setAlert}
                 userGroup={this.state.userGroup}
-                userIdCode={this.state.userIdCode}/>
+                userIdCode={this.state.userIdCode}
+                setErrorCallback={this.setUserInstituitionComponentError}/>
 
               <View style={styles.buttonView}>
                 <Button

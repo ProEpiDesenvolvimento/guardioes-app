@@ -41,11 +41,11 @@ class Registrar extends Component {
         this.getInfo()
         this.state = {
             statusCode: null,
-            kinship: 'Pai',
+            kinship: null,
             householdName: null,
-            householdGender: 'Masculino',
-            householdCountry: 'Brazil',
-            householdRace: 'Blanco',
+            householdGender: null,
+            householdCountry: null,
+            householdRace: null,
             householdDob: null,
             userID: null,
             cca2: 'BR',
@@ -108,6 +108,10 @@ class Registrar extends Component {
             userIdCode: userIdCode,
             userGroup: userGroup,
         })
+    }
+
+    setInstituitionComponentError = (error) => {
+        this.state.instituitionComponentError = error
     }
 
     render() {
@@ -244,7 +248,8 @@ class Registrar extends Component {
 
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
-                        setAlert={this.setLoadingAlert} />
+                        setAlert={this.setLoadingAlert}
+                        setErrorCallback={this.setInstituitionComponentError}/>
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>Parentesco:</Text>
@@ -252,7 +257,7 @@ class Registrar extends Component {
                             initValueTextStyle={{ color: 'black' }}
                             style={{ width: '90%', height: '70%' }}
                             data={household}
-                            initValue={this.state.kinship}
+                            initValue={'Selecionar'}
                             onChange={(option) => this.setState({ kinship: option.key })}
                         />
                     </View>
@@ -328,7 +333,33 @@ class Registrar extends Component {
         this.create()
     }
 
+    isHouseholdDataValid = () => {
+        let error = false
+        if (this.state.householdName == null || this.state.householdName == '' || this.state.householdDob == null) {
+            Alert.alert("O nome e data de nascimento devem estar preenchidos\n")
+            error = true
+        } else if (this.state.householdGender == null || this.state.householdRace == null) {
+            Alert.alert("A raça e genero devem estar preenchidos")
+            error = true
+        } else if (this.state.kinship == null) {
+            Alert.alert("O parentesco deve estar preenchido")
+            error = true
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            error = true
+        } else if (this.state.householdCountry == null) {
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+            error = true
+        }
+        return !error
+    }
+
     create = () => {
+        if (!this.isHouseholdDataValid()) {
+            return
+        }
         this.showAlert()
         fetch(`${API_URL}/users/${this.state.userID}/households`, {
             method: 'POST',

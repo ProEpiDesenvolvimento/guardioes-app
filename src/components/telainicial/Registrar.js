@@ -106,6 +106,10 @@ class Registrar extends Component {
         })
     }
 
+    setInstituitionComponentError = (error) => {
+        this.state.instituitionComponentError = error
+    }
+
     render() {
         const { showAlert } = this.state
         const { query } = this.state
@@ -311,7 +315,8 @@ class Registrar extends Component {
 
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
-                        setAlert={this.setAlert} />
+                        setAlert={this.setAlert}
+                        setErrorCallback={this.setInstituitionComponentError} />
 
                     <View style={styles.viewCommom}>
                         <Text style={styles.commomText}>{translate("register.email")}</Text>
@@ -336,7 +341,7 @@ class Registrar extends Component {
                             secureTextEntry={true}
                             onChangeText={text => this.setState({ userPwd: text })}
                             ref={(input) => this.passwordInput = input}
-                            onSubmitEditing={() => this.verifyInfos()}
+                            onSubmitEditing={() => this.validateUserData()}
                         />
                         <Text style={{
                             fontSize: 13,
@@ -353,7 +358,7 @@ class Registrar extends Component {
                         <Button
                             title={translate("register.signupButton")}
                             color="#348EAC"
-                            onPress={() => this.verifyInfos()}
+                            onPress={() => this.validateUserData()}
                         />
                     </View>
                 </View>
@@ -374,27 +379,28 @@ class Registrar extends Component {
         this.create()
     }
 
-    verifyInfos = async () => {
+    validateUserData = async () => {
+        let error = false
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
             Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
-        } else {
-            if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
-                Alert.alert("Estado e Cidade devem estar preenchidos")
-            } else {
-                if (this.state.userPwd.length < 8) {
-                    Alert.alert("A senha precisa ter no mínimo 8 caracteres")
-                } else {
-                    if (this.state.groupCheckbox == true && this.state.userGroup == null) {
-                        Alert.alert("Instituição deve estar preenchida (com sua identificação pessoal se necessário)")
-                    } else {
-                        if (this.state.userCountry == null) {
-                            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
-                        } else {
-                            this.avatarSelector()
-                        }
-                    }
-                }
-            }
+            error = true
+        } else if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
+            Alert.alert("Estado e Cidade devem estar preenchidos")
+            error = true
+        } else if (this.state.userPwd.length < 8) {
+            Alert.alert("A senha precisa ter no mínimo 8 caracteres")
+            error = true
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            error = true
+        } else if (this.state.userCountry == null) {
+                Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+                error = true
+        }
+        if (!error) {
+            this.avatarSelector()
         }
     }
 

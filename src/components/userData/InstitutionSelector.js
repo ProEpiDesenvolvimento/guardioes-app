@@ -22,7 +22,9 @@ class InstitutionSelector extends Component {
             userGroup: props.userGroup || null,
             userIdCode: props.userIdCode || null,
             selectedGroup: null,
+            currentError: '',
         }
+        this.props.setErrorCallback('')
         // User already has a group, then find his group
         if (props.userGroup != null && props.userGroup != undefined) {
             this.getRootGroup(false)
@@ -33,16 +35,53 @@ class InstitutionSelector extends Component {
     }
 
     isInputValid() {
+        if (this.state.groupCheckbox == false) {
+            return true
+        }
+        if (this.state.selectedGroup == null || this.state.selectedGroup == undefined) {
+            this.state.currentError = 'Você deve selecionar o grupo'
+            return false
+        }
         let isThereSelectedGroup = this.state.selectedGroup != null
+        if (!isThereSelectedGroup) {
+            this.state.currentError = 'Você deve selecionar o grupo'
+        }
         let doesTheSelectedGroupRequireID = this.state.selectedGroup.require_id
         let isIdPresentIfNeeded = doesTheSelectedGroupRequireID ? 
             (this.state.userIdCode != null && this.state.userIdCode.length > 0) : true
-        return isThereSelectedGroup && isIdPresentIfNeeded
+        if (!isIdPresentIfNeeded) {
+            this.state.currentError = 'Você deve colocar o codigo de identificação'
+        }
+        let isIdRightLength = true
+        if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
+            isIdRightLength = this.state.userIdCode.length == this.state.selectedGroup.id_code_length
+            console.log(this.state.userIdCode, this.state.userIdCode.length, this.state.selectedGroup.id_code_length)
+            if (!isIdRightLength) {
+                console.log('')
+                this.state.currentError = 'O código deve conter exatamente ' + this.state.selectedGroup.id_code_length.toString() + ' digitos'
+            }
+        }
+        let codeIsNumber = true
+        if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded && isIdRightLength) {
+            codeIsNumber = !isNaN(this.state.userIdCode)
+            if (!codeIsNumber) {
+                this.state.currentError = 'O código deve conter apenas digitos'
+            }
+        }
+        if (isThereSelectedGroup && isIdPresentIfNeeded && isIdRightLength && codeIsNumber) {
+            this.state.currentError = ''
+        }
+        return isThereSelectedGroup && isIdPresentIfNeeded && isIdRightLength && codeIsNumber
     }
     
     updateParent() {
-        if (this.isInputValid()) {
-            this.props.setUserInstitutionCallback(this.state.userIdCode, this.state.userGroup)
+        if (!this.state.groupCheckbox || this.isInputValid()) {
+            const idCode = this.state.groupCheckbox ? this.state.userIdCode : null
+            const group = this.state.groupCheckbox ? this.state.userGroup : null
+            this.props.setUserInstitutionCallback(idCode, group)
+            this.props.setErrorCallback('')
+        } else {
+            this.props.setErrorCallback(this.state.currentError)
         }
     }
 
@@ -98,6 +137,7 @@ class InstitutionSelector extends Component {
             })
             .then(() => {
                 this.props.setAlert(false)
+                this.updateParent()
             })
     }
 
@@ -125,6 +165,7 @@ class InstitutionSelector extends Component {
                 this.state.selectionIndexes.push({ label: "Selecionar", key: -1 })
                 this.state.groupList.push(responseJson)
                 if (setAlert) this.props.setAlert(false)
+                this.updateParent()
             })
     }
 
@@ -149,9 +190,9 @@ class InstitutionSelector extends Component {
                     this.setState({idCodeInputShow: true})
                 } else {
                     this.state.userIdCode = null
-                    this.updateParent()
                 }
                 if (setAlert) this.props.setAlert(false)
+                this.updateParent()
             })
     }
     
@@ -176,11 +217,17 @@ class InstitutionSelector extends Component {
                     }
                     initValue={this.state.selectionIndexes[index].label}
                     onChange={(option) => {
-                        this.state.groupList = this.state.groupList.slice(0, index + 1),
-                        this.state.selectionIndexes = this.state.selectionIndexes.slice(0, index + 1),
+                        this.state.groupList = this.state.groupList.slice(0, index + 1)
+                        this.state.selectionIndexes = this.state.selectionIndexes.slice(0, index + 1)
                         this.state.showIdentificationCodeInput = false
                         this.getChildren(option.key)
                         this.state.selectionIndexes[index] = option
+                        if (!group.is_child) {
+                            this.state.userGroup = null
+                            this.state.selectedGroup = null
+                            this.state.userIdCode = null
+                            this.updateParent()
+                        }
                     }}
                 />
             </View>
@@ -195,8 +242,10 @@ class InstitutionSelector extends Component {
                     returnKeyType='done'
                     keyboardType='number-pad'
                     value={this.state.userIdCode}
-                    onChangeText={(text) => {
-                        this.state.userIdCode = text
+                    onChangeText={async (text) => {
+                        await this.setState({
+                            userIdCode: text
+                        })
                         this.updateParent()
                     }}
                 />
@@ -249,14 +298,12 @@ class InstitutionSelector extends Component {
                     containerStyle={styles.CheckBoxStyle}
                     size={scale(16)}
                     checked={this.state.groupCheckbox}
-                    onPress={() => {
+                    onPress={async () => {
                         if (!this.state.groupCheckbox && this.state.rootGroup == null) {
                             this.getRootGroup()
-                        } else if (this.state.groupCheckbox) {
-                            this.state.userIdCode = null
-                            this.state.userGroup = null
                         }
-                        this.setState({ groupCheckbox: !this.state.groupCheckbox })
+                        await this.setState({ groupCheckbox: !this.state.groupCheckbox })
+                        this.updateParent()
                     }}
                 />
                 {this.state.groupCheckbox ?
