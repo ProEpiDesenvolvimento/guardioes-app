@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { ScrollViewStyled, User, AvatarWrapper, InfoContainer, InfoWrapper, Name, Relation, ButtonsWrapper } from './styles';
@@ -7,27 +7,14 @@ import { HouseholdWrapper, HouseholdTitle, Household, HouseholdName, HouseholdRe
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import * as Imagem from '../../../imgs/imageConst';
 import { Avatar } from 'react-native-elements';
-import ImagePicker from 'react-native-image-picker';
 import { getInitials } from '../../../utils/constUtils';
 import { scale } from '../../../utils/scallingUtils';
 import {API_URL} from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
-import { getGroupName } from '../../../utils/selectorUtils';
-import InstitutionSelector from '../../userData/InstitutionSelector' 
+import { getGroupName } from '../../../utils/selectorUtils'; 
 
 Feather.loadFont();
-
-const options = {
-    title: 'Selecione imagem de Perfil',
-    takePhotoButtonTitle: 'Tire uma foto',
-    chooseFromLibraryButtonTitle: 'Selecione da Galeria',
-    storageOptions: {
-      skipBackup: true,
-      path: 'gds',
-    },
-}; 
 
 class Perfis extends Component {
     static navigationOptions = {
@@ -35,12 +22,15 @@ class Perfis extends Component {
     }
     constructor(props) {
         super(props)
-        this.fetchData()
+        this.props.navigation.addListener('didFocus', payload => {
+            this.fetchData();
+        })
         this.state = {
             modalVisibleHousehold: false,
             modalVisibleUser: false,
             userData: {},
-            householdData: {}
+            householdData: {},
+            isLoading: true
         }
     }
 
@@ -52,6 +42,8 @@ class Perfis extends Component {
 
         this.setState({ userName, userID, userToken, userAvatar })
         await this.getAllUserInfos()
+
+        this.setState({ isLoading: false })
         this.getHouseholds()
     }
 
@@ -97,6 +89,7 @@ class Perfis extends Component {
                 userToken: this.state.userToken,
 
                 Name: responseJson.user.user_name,
+                Picture: responseJson.user.picture,
                 Birth: birthDate,
                 Country: responseJson.user.country,
                 Gender: responseJson.user.gender,
@@ -169,52 +162,25 @@ class Perfis extends Component {
             householdID: household.id,
 
             Name: household.description,
+            Picture: household.picture,
             Birth: birthDate,
             Country: household.country,
             Gender: household.gender,
             Race: household.race,
             Group: household.school_unit_id,
             IdCode: household.identification_code,
-            kinship: household.kinship,
+            Kinship: household.kinship,
             RiskGroup: household.risk_group,
             GroupName: householdGroupName,
             
-            // variaveis logicas
             groupCheckbox,
             NewInst,
-
-            // variaveis iniciais
             SchoolLocation,
             EducationLevel,
             Category,
         }
 
         this.setState({ householdData });
-    }
-
-    changeAvatar = () => {
-        ImagePicker.showImagePicker(options, (response) => {
-          //console.log('Response = ', response);
-        
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else {
-            let source = response.uri;
-    
-            if (Platform.OS === 'android') {
-              source = 'content://com.guardioesapp.provider/root' + response.path
-            }
-    
-            this.setState({
-              avatarSource: source,
-            });
-    
-            AsyncStorage.setItem('userAvatar', this.state.avatarSource);
-            this.fetchData()
-          }
-        });
     }
 
     confirmDelete = () => {
@@ -247,6 +213,14 @@ class Perfis extends Component {
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, padding: 20 }}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
+        
         const { navigate } = this.props.navigation
         const householdsData = this.state.dataSource
 
@@ -259,11 +233,7 @@ class Perfis extends Component {
                             size={scale(58)}
                             source={{uri: this.state.userAvatar}}
                             title={getInitials(this.state.userName)}
-                            activeOpacity={0.7}
-                            showEditButton
                             rounded
-                            editButton={{name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000'}}
-                            onEditPress={() => this.changeAvatar()}
                         />
                     </AvatarWrapper>
                     <InfoContainer>
@@ -294,7 +264,7 @@ class Perfis extends Component {
                                 <AvatarWrapper>
                                     <Avatar
                                         size={scale(58)}
-                                        source={Imagem[household.picture]}
+                                        source={{uri: household.picture}}
                                         title={getInitials(household.description)}
                                         rounded
                                     />

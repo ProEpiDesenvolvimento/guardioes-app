@@ -6,11 +6,15 @@ import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, M
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from '../Household/styles';
 import { FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles';
 
+import AsyncStorage from '@react-native-community/async-storage';
+import ImagePicker from 'react-native-image-picker';
+import { Avatar } from 'react-native-elements';
 import { scale } from '../../../utils/scallingUtils';
 import {API_URL} from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
 import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils';
 import { state, getCity } from '../../../utils/brasil';
+import { getInitials } from '../../../utils/constUtils';
 
 let data = new Date()
 let d = data.getDate()
@@ -27,9 +31,6 @@ class EditarPerfil extends Component {
     }
     constructor(props) {
         super(props)
-        this.props.navigation.addListener('didFocus', payload => {
-            //this.fetchData();
-        })
         this.state = {
             isUser: null,
             modalVisibleRiskGroup: false,
@@ -63,6 +64,30 @@ class EditarPerfil extends Component {
         }
     }
 
+    changeAvatar = () => {
+        ImagePicker.showImagePicker(options, (response) => {
+          //console.log('Response = ', response);
+        
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else {
+            let source = response.uri;
+    
+            if (Platform.OS === 'android') {
+              source = 'content://com.guardioesapp.provider/root' + response.path
+            }
+    
+            this.setState({
+              avatarSource: source,
+            });
+    
+            AsyncStorage.setItem('userAvatar', this.state.avatarSource);
+          }
+        });
+    }
+
     editUser = () => {
         return fetch(`${API_URL}/users/${this.state.userID}`, {
             method: 'PATCH',
@@ -74,6 +99,7 @@ class EditarPerfil extends Component {
             body: JSON.stringify(
                 {
                     user_name: this.state.Name,
+                    picture: this.state.Picture,
                     birthdate: this.state.Birth,
                     gender: this.state.Gender,
                     race: this.state.Race,
@@ -90,6 +116,7 @@ class EditarPerfil extends Component {
             .then((response) => {
                 if (response.status == 200) {
                     console.warn(response.status)
+                    this.props.navigation.goBack()
                 } else {
                     console.warn(response.status)
                 }
@@ -107,6 +134,7 @@ class EditarPerfil extends Component {
             body: JSON.stringify(
                 {
                     description: this.state.Name,
+                    picture: this.state.Picture,
                     birthdate: this.state.Birth,
                     gender: this.state.Gender,
                     race: this.state.Race,
@@ -114,14 +142,14 @@ class EditarPerfil extends Component {
                     identification_code: this.state.IdCode,
                     risk_group: this.state.RiskGroup,
                     country: this.state.Country,
-                    kinship: this.state.kinship,
-                    picture: this.state.picture
+                    kinship: this.state.Kinship
                 }
             )
         })
             .then((response) => {
                 if (response.status == 200) {
                     console.warn(response.status)
+                    this.props.navigation.goBack()
                 } else {
                     console.warn(response.status)
                 }
@@ -134,7 +162,7 @@ class EditarPerfil extends Component {
 
     render() {
         const { isUser } = this.state
-        console.log(this.state)
+        //console.log(this.state)
 
         return (
             <Container>
@@ -169,6 +197,17 @@ class EditarPerfil extends Component {
                     </ModalContainer>
                 </Modal>
                 <KeyboardScrollView>
+                    <Avatar
+                        size={scale(90)}
+                        source={{uri: this.state.Picture}}
+                        title={getInitials(this.state.Name)}
+                        activeOpacity={0.7}
+                        showEditButton
+                        rounded
+                        editButton={{name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000'}}
+                        onEditPress={() => this.changeAvatar()}
+                    />
+
                     { isUser ? 
                         <FormInline>
                             <FormLabel>Email:</FormLabel>
@@ -262,9 +301,9 @@ class EditarPerfil extends Component {
                             <FormLabel>Parentesco:</FormLabel>
                             <Selector
                                 data={household}
-                                initValue={this.state.kinship}
+                                initValue={this.state.Kinship}
                                 cancelText={translate("selector.cancelButton")}
-                                onChange={(option) => this.setState({ kinship: option.key })}
+                                onChange={(option) => this.setState({ Kinship: option.key })}
                             />
                         </FormInline>
                     : null}
@@ -422,5 +461,22 @@ class EditarPerfil extends Component {
         )
     }
 }
+
+const options = {
+    title: 'Selecione imagem de Perfil',
+    takePhotoButtonTitle: 'Tire uma foto',
+    chooseFromLibraryButtonTitle: 'Selecione da Galeria',
+    storageOptions: {
+      skipBackup: true,
+      path: 'gds',
+    },
+}; 
+
+const styles = StyleSheet.create({
+    Avatar: {
+        borderColor: '#ffffff',
+        borderWidth: 3
+    },
+})
 
 export default EditarPerfil

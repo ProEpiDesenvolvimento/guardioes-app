@@ -80,7 +80,7 @@ class Registrar extends Component {
         let validation = false
         this.state.householdName && this.state.householdDob ? validation = true : validation = false
         NetInfo.isConnected.fetch().then(isConnected => {
-            isConnected ? validation ? this.avatarSelector() : Alert.alert(translate("register.errorMessages.error"), translate("register.errorMessages.allFieldsAreFilled")) : Alert.alert(
+            isConnected ? validation ? this.create() : Alert.alert(translate("register.errorMessages.error"), translate("register.errorMessages.allFieldsAreFilled")) : Alert.alert(
                 translate("register.noInternet.noInternet"),
                 translate("register.noInternet.ohNo"),
                 [
@@ -236,7 +236,7 @@ class Registrar extends Component {
                         />
                     </FormInline>
 
-                    <Button onPress={() => this.avatarSelector()}>
+                    <Button onPress={() => this.create()}>
                         <SendContainer>
                             <SendText>Criar</SendText>
                         </SendContainer>
@@ -254,53 +254,6 @@ class Registrar extends Component {
                 <LoadingModal show={this.state.loadingAlert} />
             </Container>
         )
-    }
-
-    avatarSelector = async () => {
-        if (this.state.householdGender == "Masculino") {
-            switch (this.state.kinship) {
-                case "Pai":
-                    await this.setState({ picture: "Father" })
-                    break
-                case "Mãe":
-                    await this.setState({ picture: "Mother" })
-                    break
-                case "conjuge":
-                    await this.setState({ picture: "Father" })
-                    break
-                case "Avós":
-                    await this.setState({ picture: "Grandfather" })
-                    break
-                case "Filhos":
-                    await this.setState({ picture: "Son" })
-                    break
-                case "Irmãos":
-                    await this.setState({ picture: "Brother" })
-                    break
-            }
-        } else {
-            switch (this.state.kinship) {
-                case "Mãe":
-                    await this.setState({ picture: "Mother" })
-                    break
-                case "Pai":
-                    await this.setState({ picture: "Father" })
-                    break
-                case "conjuge":
-                    await this.setState({ picture: "Mother" })
-                    break
-                case "Avós":
-                    await this.setState({ picture: "Grandmother" })
-                    break
-                case "Filhos":
-                    await this.setState({ picture: "Daughter" })
-                    break
-                case "Irmãos":
-                    await this.setState({ picture: "Sister" })
-                    break
-            }
-        }
-        this.create()
     }
 
     create = () => {

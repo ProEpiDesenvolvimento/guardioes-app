@@ -97,7 +97,7 @@ export default class drawerContentComponents extends Component {
                                     key={household.id}
                                     containerStyle={[styles.Avatars, { zIndex: household.id }]}
                                     size={scale(60)}
-                                    source={Imagem[household.picture]}
+                                    source={{uri: household.picture}}
                                     title={getInitials(household.description)}
                                     rounded
                                 />

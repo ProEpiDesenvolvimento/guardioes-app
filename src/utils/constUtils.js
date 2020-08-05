@@ -3,7 +3,7 @@ import { Alert, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 export const getNameParts = (fullName, firstandLast = false) => {
-    if (fullName) {
+    if (typeof fullName === 'string') {
         let nameParts = fullName.split(" ");
         let length = nameParts.length;
 

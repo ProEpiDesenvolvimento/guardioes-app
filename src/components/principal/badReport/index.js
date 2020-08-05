@@ -42,7 +42,7 @@ class BadReport extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
-        this.getInfo();
+        this.fetchData();
         this.state = {
             cca2: 'BR',
             country: 'Brazil',
@@ -131,7 +131,7 @@ class BadReport extends Component {
             })
     }
 
-    getInfo = async () => { //Get user info
+    fetchData = async () => { //Get user info
         const userID = await AsyncStorage.getItem('userID');
         const userName = await AsyncStorage.getItem('userName');
         const userSelected = await AsyncStorage.getItem('userSelected');

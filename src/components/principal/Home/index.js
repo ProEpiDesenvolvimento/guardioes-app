@@ -393,7 +393,7 @@ class Home extends Component {
                                 <View style={styles.viewAvatar} key={key}>
                                   <Avatar
                                     size="large"
-                                    source={Imagem[household.picture]}
+                                    source={{uri: household.picture}}
                                     title={getInitials(household.description)}
                                     activeOpacity={0.6}
                                     rounded
