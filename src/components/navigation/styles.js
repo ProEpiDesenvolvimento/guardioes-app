@@ -29,7 +29,7 @@ export const ScreenTitle = styled.Text`
 `;
 
 export const Empty = styled.View`
-  width: ${scale(38)};
+  width: ${scale(38)}px;
 `;
 
 export const Container = styled.View`

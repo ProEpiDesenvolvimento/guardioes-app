@@ -154,6 +154,7 @@ class Login extends Component {
                 .then((response) => {
                     if (response.status == 200) {
                         this.setState({ userToken: response.headers.map.authorization });
+                        this.hideAlert();
                         return response.json()
                     }
                     else if (response.status == 401) {
@@ -168,6 +169,7 @@ class Login extends Component {
                 .then((responseJson) => {
                     AsyncStorage.setItem('userID', responseJson.user.id.toString());
                     AsyncStorage.setItem('userName', responseJson.user.user_name);
+                    AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
                     AsyncStorage.setItem('userAvatar', responseJson.user.picture);
                     AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 
@@ -175,7 +177,6 @@ class Login extends Component {
                     RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
-                    this.hideAlert();
                     this.props.navigation.navigate('Home');
                 })
         }

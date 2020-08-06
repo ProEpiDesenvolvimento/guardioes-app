@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Keyboard, Alert, Modal } from 'react-native'
+import { Keyboard, Alert, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView'
@@ -54,9 +54,10 @@ class Registrar extends Component {
             userState: null,
             userCity: null,
             userRace: null,
-            userDob: null,
+            userBirth: null,
             userGroup: null,
             userIdCode: null,
+            userPicture: 'default',
             riskGroup: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
@@ -114,6 +115,8 @@ class Registrar extends Component {
         const school_units = this.findFilm(query)
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
 
+        console.log(getCity(this.state.userState))
+
         return (
             <GradientBackgroundView>
                 <Modal //Modal View for Risk Group Message
@@ -165,6 +168,7 @@ class Registrar extends Component {
                             <Selector
                                 data={gender}
                                 initValue={translate("selector.label")}
+                                cancelText={translate("selector.cancelButton")}
                                 onChange={(option) => this.setState({ userGender: option.key })}
                             />
                         </FormGroupChild>
@@ -174,6 +178,7 @@ class Registrar extends Component {
                             <Selector
                                 data={race}
                                 initValue={translate("selector.label")}
+                                cancelText={translate("selector.cancelButton")}
                                 onChange={(option) => this.setState({ userRace: option.key })}
                             />
                         </FormGroupChild>
@@ -184,14 +189,14 @@ class Registrar extends Component {
                             <FormLabel>{translate("register.birth")}</FormLabel>
                             <DateSelector
                                 placeholder={translate("birthDetails.format")}
-                                date={this.state.userDob}
+                                date={this.state.userBirth}
                                 format="DD-MM-YYYY"
                                 minDate="01-01-1918"
                                 maxDate={minDate}
                                 locale={'pt-BR'}
                                 confirmBtnText={translate("birthDetails.confirmButton")}
                                 cancelBtnText={translate("birthDetails.cancelButton")}
-                                onDateChange={date => this.setState({ userDob: date })}
+                                onDateChange={date => this.setState({ userBirth: date })}
                             />
                         </FormGroupChild>
 
@@ -201,6 +206,7 @@ class Registrar extends Component {
                             <Selector
                                 data={country}
                                 initValue={translate("selector.label")}
+                                cancelText={translate("selector.cancelButton")}
                                 onChange={(option) => this.setState({ userCountry: option.key })}
                             />
                         </FormGroupChild>
@@ -212,7 +218,8 @@ class Registrar extends Component {
                                 <FormLabel>Estado:</FormLabel>
                                 <Selector
                                     data={state}
-                                    initValue={"Selecionar"}
+                                    initValue={translate("selector.label")}
+                                    cancelText={translate("selector.cancelButton")}
                                     onChange={(option) => this.setState({ userState: option.key })}
                                 />
                             </FormGroupChild>
@@ -221,8 +228,9 @@ class Registrar extends Component {
                                 <FormLabel>Município:</FormLabel>
                                 <Selector
                                     data={getCity(this.state.userState)}
-                                    initValue={translate("selector.label")}
-                                    onModalClose={(option) => this.setState({ userCity: option.key, initValueCity: option.key })}
+                                    initValue={this.state.userCity ? this.state.userCity : translate("selector.label")}
+                                    cancelText={translate("selector.cancelButton")}
+                                    onChange={(option) => this.setState({ userCity: option.key })}
                                 />
                             </FormGroupChild>
                         </FormGroup>
@@ -246,6 +254,7 @@ class Registrar extends Component {
                             <Selector
                                 data={country}
                                 initValue={translate("selector.label")}
+                                cancelText={translate("selector.cancelButton")}
                                 onChange={(option) => this.setState({ residence: option.key })}
                             />
                         </FormInline>
@@ -324,17 +333,6 @@ class Registrar extends Component {
 
     }
 
-    avatarSelector = async () => {
-        if (this.state.userGender == "Masculino") {
-            await this.setState({ picture: "Father" })
-        } else if (this.state.userGender == "Feminino") {
-            await this.setState({ picture: "Mother" })
-        } else if (this.state.userGender == null) {
-            await this.setState({ picture: "NullAvatar" })
-        }
-        this.create()
-    }
-
     verifyInfos = async () => {
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
             Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
@@ -354,7 +352,7 @@ class Registrar extends Component {
                             if (this.state.userCategory == "UNB" && this.state.userIdCode == null) {
                                 Alert.alert("Número de Identificação deve estar preenchido")
                             } else {
-                                this.avatarSelector()
+                                this.create()
                             }
                         }
                     }
@@ -384,8 +382,8 @@ class Registrar extends Component {
                     state: this.state.userState,
                     city: this.state.userCity,
                     race: this.state.userRace,
-                    birthdate: this.state.userDob,
-                    picture: this.state.picture,
+                    birthdate: this.state.userBirth,
+                    picture: this.state.userPicture,
                     identification_code: this.state.userIdCode,
                     school_unit_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
@@ -424,6 +422,7 @@ class Registrar extends Component {
             .then((response) => {
                 if (response.status == 200) {
                     this.setState({ userToken: response.headers.map.authorization })
+                    this.hideAlert()
                     return response.json()
                 } else {
                     alert("Algo deu errado")
@@ -433,6 +432,7 @@ class Registrar extends Component {
             .then((responseJson) => {
                 AsyncStorage.setItem('userID', responseJson.user.id.toString())
                 AsyncStorage.setItem('userName', responseJson.user.user_name)
+                AsyncStorage.setItem('userBirth', responseJson.user.birthdate)
                 AsyncStorage.setItem('userAvatar', responseJson.user.picture)
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString())
 
@@ -441,177 +441,9 @@ class Registrar extends Component {
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
                 this.props.navigation.navigate('Home')
-                this.hideAlert()
             })
     }
 }
-
-
-// define your styles
-const styles = StyleSheet.create({
-    viewRowCenter: {
-        width: '100%',
-        height: 65,
-        flexDirection: 'row',
-        justifyContent: "center"
-    },
-    viewChildPais: {
-        width: "50%",
-        height: 65,
-        justifyContent: 'center',
-        // alignItems: 'center'
-        // flexDirection: 'row',
-        // justifyContent: 'flex-start',
-        // alignItems: 'center',
-    },
-    viewChildData: {
-        width: "50%",
-        height: 65,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        paddingLeft: '5%',
-    },
-    selectSexoRaca: {
-        width: "80%",
-    },
-    formInput: {
-        width: "90%",
-        height: 35,
-        fontSize: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#348EAC',
-        paddingBottom: 0,
-        paddingTop: 2,
-    },
-    formInput50: {
-        width: "80%",
-        height: 35,
-        fontSize: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#348EAC',
-        paddingBottom: 0,
-        paddingTop: 2,
-    },
-    buttonView: {
-        width: "60%",
-        alignSelf: 'center',
-        marginTop: 20,
-        marginBottom: 10
-    },
-    textCountry: {
-        fontSize: 15,
-        fontFamily: 'roboto',
-    },
-    CheckBoxStyle: {
-        width: '90%',
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.11)',
-        backgroundColor: 'transparent',
-        //height: scale(32),
-        alignSelf: "center"
-    },
-    AutocompleteStyle: {
-        width: '80%',
-        height: 35,
-        fontSize: 14
-    },
-    AutocompleteContainer: {
-        width: "80%",
-        height: 35
-    },
-    AutocompleteList: {
-        borderTopWidth: 0,
-        borderLeftWidth: 0,
-        borderRightWidth: 0,
-        borderBottomWidth: 1,
-        borderBottomColor: '#348EAC'
-    },
-    AutoCompleteListStyles: {
-        borderRadius: 5,
-        backgroundColor: "rgba(218,218,218,0.90)",
-        maxHeight: 150
-    },
-    AutocompleteTouchableOpacity: {
-        position: "relative",
-        zIndex: 2,
-        width: '90%',
-        alignSelf: "center",
-        borderColor: 'rgba(198,198,198,1)',
-        borderBottomWidth: 1,
-    },
-    itemText: {
-        fontSize: 15,
-        marginVertical: 5,
-        fontFamily: 'roboto',
-        color: 'rgba(33,113,245,1)'
-    },
-    modalComponent: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: "center"
-    },
-    modalView: {
-        height: "35%",
-        alignSelf: "center",
-        justifyContent: "center",
-        width: "93%",
-        marginTop: "15%",
-        marginBottom: "15%",
-        borderRadius: 20,
-        backgroundColor: "white",
-        shadowColor: "gray",
-        shadowOffset: {
-            width: 0,
-            height: 3
-        },
-        shadowRadius: 5,
-        shadowOpacity: 1.0,
-        elevation: 15,
-    },
-    modalViewCommom: {
-        marginTop: "30%",
-        marginBottom: "5%",
-    },
-    modalTitle: {
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#465F6C',
-        alignSelf: 'flex-start',
-        textAlign: 'justify',
-        paddingLeft: "5%",
-        paddingRight: "5%",
-        fontWeight: "bold",
-        paddingBottom: 5
-    },
-    modalText: {
-        fontSize: 16,
-        fontFamily: 'roboto',
-        color: '#465F6C',
-        alignSelf: 'flex-start',
-        textAlign: 'justify',
-        paddingLeft: "5%",
-        paddingRight: "5%",
-    },
-    modalButton: {
-        width: "50%",
-        alignSelf: 'center',
-    },
-    riskGroupCheckBoxStyle: {
-        width: '80%',
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.11)',
-        backgroundColor: 'transparent',
-        alignSelf: "center",
-    },
-    riskGroupView: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-    }
-})
 
 //make this component available to the app
 export default Registrar

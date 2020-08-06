@@ -32,7 +32,6 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
-        this.requestFineLocationPermission();
         this.state = {
             modalVisible: false,
             userSelect: null,
@@ -114,6 +113,7 @@ class Home extends Component {
     }
 
     getLocation() {
+        this.requestFineLocationPermission();
         Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
@@ -130,11 +130,12 @@ class Home extends Component {
     fetchData = async () => { //Get user infos
         const userID = await AsyncStorage.getItem('userID');
         const userName = await AsyncStorage.getItem('userName');
+        const userBirth = await AsyncStorage.getItem('userBirth');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
         const isProfessional = await AsyncStorage.getItem('isProfessional');
         const userToken = await RNSecureStorage.get('userToken');
         
-        this.setState({ userID, userName, userAvatar, isProfessional, userToken });
+        this.setState({ userID, userName, userBirth, userAvatar, isProfessional, userToken });
         this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
 
         AsyncStorage.setItem('userSelected', this.state.userSelect);
@@ -155,10 +156,8 @@ class Home extends Component {
             .then((responseJson) => {
                 this.setState({
                     data: responseJson.households,
-                    userBirth: responseJson.households[0].user.birthdate
                 })
                 //console.warn(this.state.data)
-                AsyncStorage.setItem('userBirth', this.state.userBirth);
             })
     }
 
@@ -219,8 +218,7 @@ class Home extends Component {
               title: 'Guardiões da Saúde needs Location Permission',
               message:
                 'Guardiões da Saúde needs access to your location ' +
-                'so you can take locarion reports.',
-              buttonNeutral: 'Ask Me Later',
+                'so you can take location reports.',
               buttonNegative: 'Cancel',
               buttonPositive: 'OK',
             },
@@ -229,7 +227,6 @@ class Home extends Component {
             console.log('You can use the location');
           } else {
             console.log('Location permission denied');
-            this.props.navigation.navigate('Home')
           }
         } catch (err) {
           console.warn(err);

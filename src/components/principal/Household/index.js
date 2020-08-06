@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { View, NetInfo, Alert, Modal } from 'react-native'
-import Feather from 'react-native-vector-icons/Feather';
+import Feather from 'react-native-vector-icons/Feather'
 
-import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from './styles';
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from './styles';
-import { FormInlineCheck, CheckBoxStyled, Button, SendContainer, SendText } from './styles';
+import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from './styles'
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from './styles'
+import { FormInlineCheck, CheckBoxStyled, Button, SendContainer, SendText } from './styles'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
@@ -31,17 +31,16 @@ class Registrar extends Component {
     }
     constructor(props) {
         super(props)
-        this.getInfo()
+        this.fetchData()
         this.state = {
-            statusCode: null,
-            kinship: 'Pai',
             householdName: null,
-            householdGender: 'Masculino',
+            householdPicture: 'default',
+            householdGender: 'Homem Cis',
             householdCountry: 'Brazil',
-            householdRace: 'Blanco',
-            householdDob: null,
+            householdRace: 'Branco',
+            householdBirth: null,
+            kinship: 'Pai',
             userID: null,
-            cca2: 'BR',
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
             groupCheckbox: false,
@@ -78,7 +77,7 @@ class Registrar extends Component {
 
     _isconnected = () => {
         let validation = false
-        this.state.householdName && this.state.householdDob ? validation = true : validation = false
+        this.state.householdName && this.state.householdBirth ? validation = true : validation = false
         NetInfo.isConnected.fetch().then(isConnected => {
             isConnected ? validation ? this.create() : Alert.alert(translate("register.errorMessages.error"), translate("register.errorMessages.allFieldsAreFilled")) : Alert.alert(
                 translate("register.noInternet.noInternet"),
@@ -90,7 +89,7 @@ class Registrar extends Component {
         })
     }
 
-    getInfo = async () => {
+    fetchData = async () => {
         const userID = await AsyncStorage.getItem('userID')
         const userToken = await RNSecureStorage.get('userToken')
         this.setState({ userID, userToken })
@@ -182,14 +181,14 @@ class Registrar extends Component {
                             </FormLabel>
                             <DateSelector
                                 placeholder={translate("birthDetails.format")}
-                                date={this.state.householdDob}
+                                date={this.state.householdBirth}
                                 format="DD-MM-YYYY"
                                 minDate="01-01-1918"
                                 maxDate={today}
                                 locale={'pt-BR'}
                                 confirmBtnText={translate("birthDetails.confirmButton")}
                                 cancelBtnText={translate("birthDetails.cancelButton")}
-                                onDateChange={date => this.setState({ householdDob: date })}
+                                onDateChange={date => this.setState({ householdBirth: date })}
                             />
                         </FormGroupChild>
 
@@ -268,21 +267,20 @@ class Registrar extends Component {
             body: JSON.stringify(
                 {
                     description: this.state.householdName,
-                    birthdate: this.state.householdDob,
+                    birthdate: this.state.householdBirth,
                     country: this.state.householdCountry,
                     gender: this.state.householdGender,
                     race: this.state.householdRace,
                     risk_group: this.state.riskGroup,
                     kinship: this.state.kinship,
-                    picture: this.state.picture,
+                    picture: this.state.householdPicture,
                     identification_code: this.state.userIdCode,
                     school_unit_id: this.state.userGroup
                 }
             )
         })
             .then((response) => {
-                this.setState({ statusCode: response.status })
-                if (this.state.statusCode == 201) {
+                if (response.status == 201) {
                     console.warn("Criado")
                     this.hideAlert()
                     this.props.navigation.navigate('Home')

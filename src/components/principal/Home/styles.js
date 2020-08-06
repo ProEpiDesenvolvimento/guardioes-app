@@ -154,6 +154,7 @@ export const BairroContainer = styled(ShadowView).attrs({
 export const StatusBairro = styled.View`
   align-items: flex-start;
   margin-left: ${scale(14)}px;
+  flex-shrink: 1;
 `;
 
 export const StatusTitle = styled.Text`

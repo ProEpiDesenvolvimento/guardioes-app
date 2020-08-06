@@ -81,7 +81,7 @@ class AuthLoadingScreen extends Component {
             .then((response) => {
                 if (response.status == 200) {
                     RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    this.props.navigation.navigate('BottomMenu');
+                    return response.json();
                 }
                 else if (response.status == 401) {
                     this._logoutApp();
@@ -91,6 +91,10 @@ class AuthLoadingScreen extends Component {
                     this.props.navigation.navigate('Cadastro');
                 }
             })
+            .then((responseJson) => {
+                AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
+                this.props.navigation.navigate('BottomMenu');
+            }) 
     };
 
     // Render any loading content that you like here
