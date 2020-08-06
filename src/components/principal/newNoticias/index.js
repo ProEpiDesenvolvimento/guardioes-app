@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 import { useTwitter } from 'react-native-simple-twitter';
 import { 
   TWITTER_CONSUMERKEY1, 
@@ -39,27 +40,52 @@ export default function newNoticias() {
     TWITTER_ACCESS2,
   );
 
-
-  const wait = (timeout) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, timeout);
-    });
-  };
-
   async function Twitter(twitterOption) {
     const response = await twitter.api(
       'GET',
       '/statuses/user_timeline.json',
       {
         screen_name: twitterOption,
-        count: 10,
+        count: 2,
+        tweet_mode: 'extended',
+        include_rts: 1,
         exclude_replies: false,
       },
     );
 
-    console.log(response.length);
-    setTwitter(response)
+    var tweets = [];
+
+    response.map(response => {
+        let twitterImage = null
+        if(response.hasOwnProperty('extended_entities')){
+          twitterImage = response.extended_entities.media[0].media_url;
+        } 
+
+        data = {
+          id: response.id,
+          id_str: response.id_str,
+          name: response.user.name,
+          screen_name: response.user.screen_name,
+          created_at: response.created_at,
+          full_text: response.full_text,
+          image: twitterImage,
+        }
+        tweets.push(data)
+    })
+    setTwitter(tweets)
     setLoading(false);
+    AsyncStorage.setItem('twitter', JSON.stringify(tweets));
+    displayData();
+  }
+
+  displayData = async () => {
+    try {
+      let tweet = await AsyncStorage.getItem('twitter');
+      console.log('AsyncStorage =>', JSON.parse(tweet));
+    }
+    catch(error){
+      console.log(error)
+    }
   }
 
   useEffect(() => {

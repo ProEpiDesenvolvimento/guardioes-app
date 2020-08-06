@@ -16,29 +16,28 @@ import {
 } from './styles';
 
 function newNoticias({ data }){
-    let twitterImage = null
+    // let twitterImage = null
     const date = format(new Date(data.created_at), 'dd/MM/yy') 
-    console.log(date)
 
-    if(data.hasOwnProperty('extended_entities')){
+    /* if(data.hasOwnProperty('extended_entities')){
         twitterImage = data.extended_entities.media[0].media_url;
-    }
+    } */
 
   return (
     <Button
         onPress={() => Redirect(
             "Deseja abrir o Navegador?", "Você será redirecionado para twitter.com",
-            `https://twitter.com/${data.user.screen_name}/status/${data.id_str}`
+            `https://twitter.com/${data.screen_name}/status/${data.id_str}`
         )}
     >
         <NoticeContainer>
             <Header>
                 <TwitterInfo>
                     <TwitterName>
-                        {data.user.name}
+                        {data.name}
                     </TwitterName>
                     <TwitterArroba>
-                        @{data.user.screen_name}   
+                        @{data.screen_name}   
                     </TwitterArroba>
                 </TwitterInfo>
                 <Data>
@@ -46,12 +45,12 @@ function newNoticias({ data }){
                 </Data>
             </Header>
             <NoticiaText>
-                {data.text} 
+                {data.full_text} 
             </NoticiaText>
-            {twitterImage ? (
+            {data.image ? (
             <Imagem
                 source={{
-                uri: twitterImage,
+                uri: data.image,
                 }}
             />
             ) :
