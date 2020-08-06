@@ -31,7 +31,8 @@ export const Background = styled(LinearGradient).attrs({
 export const Button = styled(TouchableOpacity).attrs({
   activeOpacity: 0.5
 })`
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const UserView = styled.View`
@@ -78,7 +79,6 @@ export const StatusContainer = styled(ShadowView).attrs({
 export const TextStyle = styled.Text`
   margin-bottom: ${scale(20)}px;
   font-family: ArgentumSans-SemiBold;
-  font-weight: 500;
   font-size: ${scale(16)}px;
   color: #32323B;
 `;
@@ -88,6 +88,7 @@ export const StatusBemMal = styled.View`
   flex-direction: row;
 `;
 
+// In this case, shadow only shows on iOS
 const BemMal = `
   height: ${scale(50)}px;
   width: ${scale(114)}px;
@@ -136,7 +137,7 @@ export const Alertas = styled.Text`
   margin-left: ${scale(20)}px;
 `;
 
-export const BairroContainer = styled(ShadowView).attrs({
+export const AlertContainer = styled(ShadowView).attrs({
 })`
   width: 88%;
   align-items: center;
@@ -151,7 +152,7 @@ export const BairroContainer = styled(ShadowView).attrs({
   shadow-offset: 0px 4px;
 `;
 
-export const StatusBairro = styled.View`
+export const StatusAlert = styled.View`
   align-items: flex-start;
   margin-left: ${scale(14)}px;
   flex-shrink: 1;
@@ -160,12 +161,53 @@ export const StatusBairro = styled.View`
 export const StatusTitle = styled.Text`
   color: white;
   font-family: ArgentumSans-SemiBold;
-  font-size: ${scale(16)}px;
+  font-size: ${scale(15)}px;
 `;
 
-export const StatusBairroText = styled.Text`
+export const StatusAlertText = styled.Text`
   color: white;
   font-family: ArgentumSans;
-  font-size: ${scale(16)}px;
+  font-size: ${scale(15)}px;
   font-weight: 500;
+`;
+
+export const Users = styled.View`
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  align-items: center;
+  justify-content: center;
+`;
+
+export const UserSelector = styled(ShadowView).attrs({
+})`
+  width: 88%;
+  background-color: #ffffff;
+  border-radius: ${scale(20)}px;
+  shadow-color: #000000;
+  shadow-opacity: 0.2;
+  shadow-radius: 10px;
+  shadow-offset: 0px 0px;
+`;
+
+export const UserScroll = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingTop: scale(20),
+    paddingHorizontal: scale(20),
+  },
+})``;
+
+export const UserWrapper = styled.View`
+  width: 46%;
+  margin-bottom: ${percentage(6)}px;
+`;
+
+export const UserName = styled.Text`
+  font-family: ArgentumSans-Medium;
+  font-size: ${scale(14)}px;
+  color: #348eac;
+  text-align: center;
+  margin-top: ${scale(10)}px;
 `;
