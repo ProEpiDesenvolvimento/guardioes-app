@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, StatusBar, NetInfo, Alert, Modal } from 'react-native';
+import { SafeAreaView, StatusBar, Text, StyleSheet, NetInfo, Alert, Modal } from 'react-native';
 
 import { Container, ScrollViewStyle, Background, UserView, Button, NamesContainer, TextName, AppName } from './styles';
 import { StatusContainer, TextStyle, StatusBemMal, StatusText, Bem, Mal, Alertas, AlertContainer } from './styles';
@@ -15,7 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
-import { getNameParts, getInitials } from '../../../utils/constUtils';
+import { getNameParts, handleAvatar, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
 
@@ -295,10 +295,11 @@ class Home extends Component {
 
       const hasBadReports = this.state.userBadReports > 2
 
-      return (          
+      return (
+          <>
+          <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
+          <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
           <Container>
-            <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
-
             <ScrollViewStyle>
               <Background>
                 <UserView>  
@@ -309,9 +310,9 @@ class Home extends Component {
                   <Avatar
                     containerStyle={styles.Avatar}
                     size={scale(58)}
-                    source={{uri: this.state.avatarSelect}}
+                    source={handleAvatar(this.state.avatarSelect)}
                     title={getInitials(this.state.userSelect)}
-                    editButton={{name: null, style: styles.dotAvatar}}
+                    editButton={{name: null, type: 'feather', style: styles.dotAvatar}}
                     showEditButton
                     activeOpacity={0.5}
                     rounded
@@ -380,7 +381,7 @@ class Home extends Component {
                                     >
                                         <Avatar
                                             size={scale(60)}
-                                            source={{uri: this.state.userAvatar}}
+                                            source={handleAvatar(this.state.userAvatar)}
                                             title={getInitials(this.state.userName)}
                                             rounded
                                         />
@@ -404,7 +405,7 @@ class Home extends Component {
                                                 >
                                                     <Avatar
                                                         size={scale(60)}
-                                                        source={{uri: household.picture}}
+                                                        source={handleAvatar(household.picture)}
                                                         title={getInitials(household.description)}
                                                         rounded
                                                     />
@@ -461,6 +462,7 @@ class Home extends Component {
                 onDismiss={() => this.hideAlert()}
             />
           </Container>
+          </>
         );
     }
 }
@@ -497,6 +499,7 @@ const styles = StyleSheet.create({
         width: scale(14),
         backgroundColor: '#ffffff',
         left: 0,
+        shadowOpacity: 0
     }
 })
 

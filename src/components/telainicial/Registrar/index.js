@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Keyboard, Alert, Modal } from 'react-native'
+import { SafeAreaView, Keyboard, Alert, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView'
@@ -33,9 +33,6 @@ let minDate = d + "-" + m + "-" + (y - 13)
 // let tomorrow = y + "-" + m + "-" + (d + 1)
 
 class Registrar extends Component {
-    static navigationOptions = {
-        header: null,
-    }
     constructor(props) {
         super(props)
         this.state = {
@@ -118,6 +115,8 @@ class Registrar extends Component {
         console.log(getCity(this.state.userState))
 
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
             <GradientBackgroundView>
                 <Modal //Modal View for Risk Group Message
                     animationType="fade"
@@ -329,6 +328,7 @@ class Registrar extends Component {
                 </KeyboardScrollView>
                 <LoadingModal show={showAlert} />
             </GradientBackgroundView>
+            </>
         )
 
     }

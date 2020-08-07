@@ -1,4 +1,5 @@
 import React from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { HeaderNavigator, BackButton, ScreenTitle, Empty } from './styles';
@@ -36,17 +37,10 @@ export const Cadastro = createStackNavigator({
 },
     {
         navigationOptions: {
-            headerTintColor: '#ffffff',
-            headerStyle: {
-                backgroundColor: '#348EAC',
-                elevation: 10,
-            },
-            headerTitleStyle: {
-                fontFamily: 'roboto',
-            }
+            header: null
         },
-        cardStyle: { shadowColor: 'transparent' },
-    })
+    }
+)
 
 export const BottomMenu = createBottomTabNavigator({
     Home,
@@ -80,9 +74,8 @@ export const BottomMenu = createBottomTabNavigator({
         }),
         tabBarOptions: {
             style: {
-                minHeight: 60,
+                //minHeight: 60,
                 height: '10%',
-                //maxHeight: 70,
                 backgroundColor: '#ffffff',
                 borderTopWidth: 0,
                 borderTopLeftRadius: 20,
@@ -121,6 +114,8 @@ export const Stack = createStackNavigator({
         initialRouteName: 'BottomMenu',
         navigationOptions: ({ navigation }) => ({
             header: (props) => (
+                <>
+                <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
                 <HeaderNavigator>
                     <BackButton onPress={() => navigation.goBack()}>
                         <Feather name="chevron-left" size={scale(38)} color="#ffffff" />
@@ -130,6 +125,7 @@ export const Stack = createStackNavigator({
                     </ScreenTitle>
                     <Empty />
                 </HeaderNavigator>
+                </>
             ),
         }),
         cardStyle: { shadowColor: 'transparent', backgroundColor: '#F8F8F8' },

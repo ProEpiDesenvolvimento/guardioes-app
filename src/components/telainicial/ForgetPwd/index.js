@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, NetInfo, View } from 'react-native';
+import { SafeAreaView, Alert, NetInfo, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
@@ -19,9 +19,6 @@ import {API_URL} from 'react-native-dotenv';
 Feather.loadFont();
 
 class ForgetPwd extends Component {
-    static navigationOptions = {
-        header: null,
-    }
     constructor(props) {
         super(props);
         this.state = {
@@ -137,6 +134,8 @@ class ForgetPwd extends Component {
         const navigation  = this.props.navigation;
 
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
             <GradientBackgroundView>
                 <KeyboardScrollView>
                         <SwiperFlatList
@@ -263,6 +262,7 @@ class ForgetPwd extends Component {
                     confirmButtonColor="#DD6B55"
                 />
             </GradientBackgroundView>
+            </>
         );
     }
 }

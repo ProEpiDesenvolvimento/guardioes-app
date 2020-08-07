@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { ScrollViewStyled, User, AvatarWrapper, InfoContainer, InfoWrapper, Name, Relation, ButtonsWrapper } from './styles';
@@ -8,7 +8,7 @@ import { Button, HouseholdWrapper, HouseholdTitle, Household, HouseholdName, Hou
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import { Avatar } from 'react-native-elements';
-import { getInitials } from '../../../utils/constUtils';
+import { handleAvatar, getInitials } from '../../../utils/constUtils';
 import { scale } from '../../../utils/scallingUtils';
 import {API_URL} from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
@@ -193,7 +193,7 @@ class Perfis extends Component {
                         <Avatar
                             containerStyle={styles.Avatar}
                             size={scale(58)}
-                            source={{uri: this.state.userAvatar}}
+                            source={handleAvatar(this.state.userAvatar)}
                             title={getInitials(this.state.userName)}
                             rounded
                         />
@@ -206,7 +206,10 @@ class Perfis extends Component {
                         <ButtonsWrapper>
                             <Button
                                 onPress={() => {
-                                    navigate('EditarPerfil', { isUser: true, data: this.state.userData });
+                                    navigate('EditarPerfil', {
+                                        isUser: true,
+                                        data: this.state.userData
+                                    });
                                 }
                             }>
                                 <Feather name="edit" size={scale(25)} color='#ffffff' />
@@ -226,7 +229,7 @@ class Perfis extends Component {
                                 <AvatarWrapper>
                                     <Avatar
                                         size={scale(58)}
-                                        source={{uri: household.picture}}
+                                        source={handleAvatar(household.picture)}
                                         title={getInitials(household.description)}
                                         rounded
                                     />
@@ -240,7 +243,10 @@ class Perfis extends Component {
                                         <Button
                                             onPress={async () => {
                                                 await this.loadHouseholdInfo(household);
-                                                navigate('EditarPerfil', { isUser: false, data: this.state.householdData });
+                                                navigate('EditarPerfil', {
+                                                    isUser: false,
+                                                    data: this.state.householdData
+                                                });
                                             }
                                         }>
                                             <Feather name="edit" size={scale(25)} color='#348EAC' />

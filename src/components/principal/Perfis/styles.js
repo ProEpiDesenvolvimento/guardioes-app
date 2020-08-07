@@ -50,12 +50,15 @@ export const Name = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
     color: #ffffff;
+    include-font-padding: false;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const Relation = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #ffffff;
+    include-font-padding: false;
 `;
 
 export const ButtonsWrapper = styled.View`
@@ -87,10 +90,13 @@ export const HouseholdName = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
     color: #348EAC;
+    include-font-padding: false;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const HouseholdRelation = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #c4c4c4;
+    include-font-padding: false;
 `;

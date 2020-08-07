@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import StatusBarLight from '../../styled/StatusBarLight';
 import SnowSpinner from '../../styled/SnowSpinner';
 import { Container, Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './styles';
 
@@ -109,9 +109,10 @@ class AuthLoadingScreen extends Component {
         }
 
         return (
-            <GradientBackgroundView>
-                <StatusBarLight />
-                
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
+            <StatusBar backgroundColor='#5DD39E' barStyle="light-content"/>
+            <GradientBackgroundView> 
                 <Container>
                     <Logo source={LogoType} />
 
@@ -127,6 +128,7 @@ class AuthLoadingScreen extends Component {
                     <SnowSpinner />
                 </Container>
             </GradientBackgroundView>
+            </>
         );
     }
 }

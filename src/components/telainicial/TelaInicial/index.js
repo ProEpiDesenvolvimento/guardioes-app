@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { SafeAreaView, StatusBar, Alert } from 'react-native';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import StatusBarLight from '../../styled/StatusBarLight';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowButton from '../../styled/SnowButton';
 import { Container, Logo, WelcomeText, Label } from './styles';
@@ -27,11 +26,7 @@ class TelaInicial extends Component {
         super(props);
         //this._loadInitialState();
     }
-
-    static navigationOptions = {
-        header: null,
-    }
-
+    
     //Funcao responsavel por verificar se o usuario está logado e ser redirecionado automaticamente para Home
     _loadInitialState = async () => {
         let UserID = await AsyncStorage.getItem('userID');
@@ -50,9 +45,10 @@ class TelaInicial extends Component {
         }
 
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
+            <StatusBar backgroundColor='#5DD39E' barStyle="light-content"/>
             <GradientBackgroundView>
-                <StatusBarLight />
-
                 <Container>
                     <Logo source={LogoType} />
                     <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
@@ -70,6 +66,7 @@ class TelaInicial extends Component {
                     </SnowShadow>
                 </Container>
             </GradientBackgroundView>
+            </>
         );
     }
 }

@@ -15,7 +15,7 @@ import {API_URL} from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
 import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils';
 import { state, getCity } from '../../../utils/brasil';
-import { getInitials } from '../../../utils/constUtils';
+import { handleAvatar, getInitials } from '../../../utils/constUtils';
 
 let data = new Date()
 let d = data.getDate()
@@ -205,7 +205,7 @@ class EditarPerfil extends Component {
                     <FormInline>
                         <Avatar
                             size={scale(90)}
-                            source={{uri: this.state.Picture}}
+                            source={handleAvatar(this.state.Picture)}
                             title={getInitials(this.state.Name)}
                             activeOpacity={0.7}
                             showEditButton

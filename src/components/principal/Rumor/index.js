@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Text, View, Modal, Keyboard } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
-import { Text, View, Modal, Keyboard } from 'react-native';
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput } from '../Household/styles';
 import { FormGroup, FormGroupChild, Button, SendContainer, SendText } from '../Household/styles';
 import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles';

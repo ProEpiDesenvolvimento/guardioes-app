@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Image, TouchableOpacity } from 'react-native';
 
 import { ScrollViewStyled, Title, ImageContainer, BodyText } from './styles';
 
@@ -20,6 +20,8 @@ class Sobre extends Component {
 
     render() {
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
             <ScrollViewStyled>
                 <Title>
                     {translate("about.textoSobreTitulo")}
@@ -43,6 +45,7 @@ class Sobre extends Component {
                     {translate("about.textoSobre")}
                 </BodyText>
             </ScrollViewStyled>
+            </>
         );
     }
 }

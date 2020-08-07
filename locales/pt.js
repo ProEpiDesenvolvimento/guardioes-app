@@ -252,7 +252,7 @@ export default {
         "requestDenied": "Permissão negada"
     },
     "maps": {
-        "title": "Mapa da Saúde",
+        "title": "Mapa",
         "reportGood": "Bem",
         "reportBad": "Mal",
         "guide": `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`

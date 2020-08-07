@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { Container, ScrollViewStyled, TitleWrapper, Title, SubTitle, AdvicesView, AdviceShadow, Advice, AdviceTitle, AdviceIcon } from './styles';
@@ -96,6 +96,8 @@ class Conselho extends Component {
         }
 
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
             <Container>
                 <ScrollViewStyled>
                     <TitleWrapper>
@@ -142,31 +144,34 @@ class Conselho extends Component {
                         this.setModalVisible(!this.state.modalVisible) //Exit to modal view
                     }
                 >
-                    <Details>
-                        <DetailsIcon>
-                            <TouchableOpacity onPress={() => this.setModalVisible(!this.state.modalVisible)}>
-                                <Feather name="arrow-left-circle" size={scale(35)} color="#5DD39E" />
-                            </TouchableOpacity>
-                        </DetailsIcon>
+                    <SafeAreaView style={{flex: 1}}>
+                        <Details>
+                            <DetailsIcon>
+                                <TouchableOpacity onPress={() => this.setModalVisible(!this.state.modalVisible)}>
+                                    <Feather name="arrow-left-circle" size={scale(35)} color="#5DD39E" />
+                                </TouchableOpacity>
+                            </DetailsIcon>
 
-                        <DetailsTitleWrapper>
-                            <DetailsTitle>
-                                {this.state.contentTitle}
-                            </DetailsTitle>
-                        </DetailsTitleWrapper>
+                            <DetailsTitleWrapper>
+                                <DetailsTitle>
+                                    {this.state.contentTitle}
+                                </DetailsTitle>
+                            </DetailsTitleWrapper>
 
-                        <ScrollView>
-                            <DetailsBodyText>
-                                {this.state.contentBody}
-                            </DetailsBodyText>
-                        </ScrollView>
+                            <ScrollView>
+                                <DetailsBodyText>
+                                    {this.state.contentBody}
+                                </DetailsBodyText>
+                            </ScrollView>
 
-                        <DetailsButton onPress={() => Redirect("Mais Informações", "Deseja ser redirecionado para a fonte do conteúdo?", this.state.contentSource)}>
-                            <DetailsButtonLabel>Saiba Mais</DetailsButtonLabel>
-                        </DetailsButton>
-                    </Details>
+                            <DetailsButton onPress={() => Redirect("Mais Informações", "Deseja ser redirecionado para a fonte do conteúdo?", this.state.contentSource)}>
+                                <DetailsButtonLabel>Saiba Mais</DetailsButtonLabel>
+                            </DetailsButton>
+                        </Details>
+                    </SafeAreaView>
                 </Modal>
             </Container>
+            </>
         );
     }
 }

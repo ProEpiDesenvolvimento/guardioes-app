@@ -30,6 +30,17 @@ export const getInitials = (string) => {
     }
 };
 
+export const handleAvatar = (image) => {
+    const source = { uri: image }
+    
+    if (image) {
+        return source
+    }
+    else {
+        return null
+    }
+}
+
 export const Redirect = (titulo, message, url) => {
     Alert.alert(
         `${titulo}`,

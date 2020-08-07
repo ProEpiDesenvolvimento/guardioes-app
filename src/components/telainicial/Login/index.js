@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NetInfo } from 'react-native';
+import { SafeAreaView, Alert, Keyboard, NetInfo } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
@@ -21,9 +21,6 @@ import {API_URL} from 'react-native-dotenv';
 Feather.loadFont();
 
 class Login extends Component {
-    static navigationOptions = {
-        header: null,
-    }
     constructor(props) {
         super(props);
         this.state = {
@@ -75,6 +72,8 @@ class Login extends Component {
         }
 
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
             <GradientBackgroundView>
                 <KeyboardScrollView>
                     <Logo source={LogoType} />
@@ -127,6 +126,7 @@ class Login extends Component {
                     confirmButtonColor="#DD6B55"
                 />
             </GradientBackgroundView>
+            </>
         );
     }
 

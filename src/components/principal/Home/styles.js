@@ -52,14 +52,15 @@ export const TextName = styled.Text`
   font-family: ArgentumSans-SemiBold;
   font-size: ${scale(18)}px;
   color: white;
-  margin-bottom: ${scale(3)}px;
+  include-font-padding: false;
+  margin-bottom: ${scale(8)}px;
 `;
 
 export const AppName = styled.Text`
   font-size: ${scale(16)}px;
   font-family: ArgentumSans;
   color: white;
-  font-weight: 500;
+  include-font-padding: false;
 `;
 
 export const StatusContainer = styled(ShadowView).attrs({
@@ -162,6 +163,8 @@ export const StatusTitle = styled.Text`
   color: white;
   font-family: ArgentumSans-SemiBold;
   font-size: ${scale(15)}px;
+  include-font-padding: false;
+  margin-bottom: ${scale(5)}px;
 `;
 
 export const StatusAlertText = styled.Text`
@@ -169,6 +172,7 @@ export const StatusAlertText = styled.Text`
   font-family: ArgentumSans;
   font-size: ${scale(15)}px;
   font-weight: 500;
+  include-font-padding: false;
 `;
 
 export const Users = styled.View`

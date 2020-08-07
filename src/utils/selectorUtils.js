@@ -3,6 +3,7 @@ import {API_URL} from 'react-native-dotenv';
 import ShcoolsSheet from '../utils/shoolsSheet.json';
 
 export const localSymptom = [
+    { key: 'Casa', label: 'Em Casa' },
     { key: 'Instituição de Ensino', label: 'Instituição de Ensino' },
     { key: 'Supermercado ou Shopping', label: 'Supermercado ou Shopping' },
     { key: 'Local de Trabalho ou Repartição Pública', label: 'Local de Trabalho ou Repartição Pública' },

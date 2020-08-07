@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Linking } from 'react-native';
+import { StyleSheet, Linking, Platform } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -8,7 +8,7 @@ import { TextOption, Aplicativo, SocialContainer, RedeSocial } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import { getInitials } from '../../utils/constUtils';
+import { handleAvatar, getInitials } from '../../utils/constUtils';
 import { Avatar } from 'react-native-elements';
 import Share from "react-native-share";
 import { scale } from '../../utils/scallingUtils';
@@ -85,7 +85,7 @@ export default class drawerContentComponents extends Component {
                         <Avatar
                             containerStyle={[styles.Avatar, { zIndex: 999999999 }]}
                             size={scale(60)}
-                            source={{uri: this.state.userAvatar}}
+                            source={handleAvatar(this.state.userAvatar)}
                             title={getInitials(this.state.userName)}
                             rounded
                         />
@@ -96,7 +96,7 @@ export default class drawerContentComponents extends Component {
                                     key={household.id}
                                     containerStyle={[styles.Avatars, { zIndex: household.id }]}
                                     size={scale(60)}
-                                    source={{uri: household.picture}}
+                                    source={handleAvatar(household.picture)}
                                     title={getInitials(household.description)}
                                     rounded
                                 />
@@ -230,6 +230,6 @@ const styles = StyleSheet.create({
 		marginLeft: scale(5),
 	},
 	iconRedeSocial: {
-		alignSelf: 'center',
+		marginBottom: Platform.OS === 'ios' ? -3 : 0,
 	}
 });

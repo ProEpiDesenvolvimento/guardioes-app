@@ -22,19 +22,22 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
 })``;
 
 export const TitleWrapper = styled.View`
-    margin-bottom: ${percentage(5)}px;
+    margin-bottom: ${percentage(6)}px;
 `;
 
 export const Title = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(19)}px;
     color: #32323B;
+    include-font-padding: false;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const SubTitle = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #c4c4c4;
+    include-font-padding: false;
 `;
 
 export const AdvicesView = styled.View`

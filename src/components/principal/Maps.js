@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { SafeAreaView, View, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
 import ClusteredMapView from '../../utils/MarkerClustering'
@@ -190,6 +190,8 @@ class Maps extends Component {
     render() {
         const {showAlert} = this.state
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
             <View style={styles.container}>
                 <ClusteredMapView
                     key={this.state.mapKey}
@@ -222,6 +224,7 @@ class Maps extends Component {
                     <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
                 </TouchableOpacity>*/}
             </View>
+            </>
         )
     }
 }
@@ -250,7 +253,6 @@ const styles = StyleSheet.create({
     },
     textButton: {
         fontWeight: 'bold',
-        fontFamily: 'roboto',
         fontSize: 15,
         color: 'rgba(22, 107, 135, 1)'
     }

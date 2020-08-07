@@ -34,16 +34,11 @@ class Guardioes extends Component {
     console.log('Device info: ', device);
   }
 
-
   render() {
     return (
-      <>
-      <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-        <Navegar.Authentication />
-      </>
+      <Navegar.Authentication />
     );
   }
 }
-
 
 export default Guardioes;
