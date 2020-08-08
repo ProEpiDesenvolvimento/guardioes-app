@@ -18,6 +18,10 @@ export {default as TutorialIcon} from './icons/online-learning.svg';
 export {default as HappyIcon} from './icons/happy.svg';
 export {default as SadIcon} from './icons/sad.svg';
 
+// Map Marker
+export const greenMarker = require('./mapIcons/green-marker.png')
+export const redMarker = require('./mapIcons/red-marker.png')
+
 // Advices Icons
 export {default as HelplineIcon} from './advices/helpline.svg';
 export {default as HospitalIcon} from './advices/hospital.svg';

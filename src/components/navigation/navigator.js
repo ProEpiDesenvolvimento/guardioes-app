@@ -18,7 +18,7 @@ import Noticias from '../principal/Noticias';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
 import drawerContentComponents from './drawerContentComponent';
-import Maps from '../principal/Maps';
+import Mapa from '../principal/Mapa';
 import Perfis from '../principal/Perfis';
 import EditarPerfil from '../principal/EditarPerfil';
 import Ajuda from '../principal/Ajuda';
@@ -45,7 +45,7 @@ export const Cadastro = createStackNavigator({
 export const BottomMenu = createBottomTabNavigator({
     Home,
     Diario,
-    Mapa: { screen: Maps },
+    Mapa,
     Conselho,
     Noticias,
 },

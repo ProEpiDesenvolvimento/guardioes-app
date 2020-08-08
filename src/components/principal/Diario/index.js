@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, ActivityIndicator } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { LocaleConfig } from 'react-native-calendars';
 import { PieChart } from 'react-native-svg-charts'
 
-import { ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, SliderContainer, SwiperStyled } from './styles';
+import { Container, ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, SliderContainer, SwiperStyled } from './styles';
 import { ChartContainer, UserChart, LabelContainer, LabelWrapper, ChartLabelGreen, ChartLabelOrange, ChartLabelGray, ChartLabel, ChartTitle, CalendarStyled } from './styles';
 import { UserReports, ReportsTitleWrapper, ReportsTitle, ReportsSubtitle, ReportsAll, ReportsWell, ReportsIll, ReportData, ReportDataTitle, ReportDataInfo } from './styles';
 
@@ -15,7 +15,7 @@ import moment from 'moment';
 import { Avatar } from 'react-native-elements';
 import { HappyIcon, SadIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
-import { getNameParts, getInitials } from '../../../utils/constUtils';
+import { getNameParts, handleAvatar, getInitials } from '../../../utils/constUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
@@ -45,8 +45,7 @@ class Diario extends Component {
             this.fetchData();
         })
         this.state = {
-            data: [],
-            x: 0,
+            dataSource: null,
             datesMarked: {},
             BadData: [],
             BadPlot: [{ y: 0, x: 0, marked: "" }],
@@ -187,7 +186,7 @@ class Diario extends Component {
 
         for (let i = 0; i < surveyData.length; i++) {
             if (this.state.householdID) {
-                if (surveyData[i].household.id == this.state.householdID) {
+                if (surveyData[i].household && surveyData[i].household.id == this.state.householdID) {
                     firstSurvey = surveyData[i];
                     break
                 }
@@ -229,110 +228,115 @@ class Diario extends Component {
         ]
 
         return (
-            <ScrollViewStyled>
-                <UserData>
-                    <AvatarContainer>
-                        <Avatar
-                            containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
-                            size={scale(50)}
-                            source={{uri: this.state.avatarSelect}}
-                            title={getInitials(this.state.userSelected)}
-                            rounded
-                        />
-                    </AvatarContainer>
-                    <UserInfo>
-                        <UserName>{getNameParts(this.state.userSelected, true)}</UserName>
-                        <UserDetails>{this.state.userAge} anos</UserDetails>
-                    </UserInfo>
-                </UserData>
-                <UserDash>
-                    <SliderContainer>
-                        <SwiperStyled
-                            showPagination={true}
-                            disableGesture={false}
-                        >
-                            <ChartContainer>
-                                <UserChart>
-                                    <CalendarStyled
-                                        current={_today}
-                                        markedDates={this.state.datesMarked}
-                                        onDayPress={(day) => {
-                                            let symptomDate = this.state.markedDatesAll
-                                            symptomDate.map(symptomMarker => {
-                                                if (symptomMarker.bad_since == day.dateString) {
-                                                    console.warn(symptomMarker.symptom)
-                                                }
-                                            })
-                                        }}
-                                        renderArrow={(direction) => this.handleCalendarArrows(direction)}
-                                    />
-                                </UserChart>
-                            </ChartContainer>
-                            <ChartContainer>
-                                <UserChart>
-                                    <ChartTitle>Estatísticas</ChartTitle>
-                                    <PieChart
-                                        style={{ height: 170, marginBottom: scale(12) }}
-                                        outerRadius={'100%'}
-                                        innerRadius={'15%'}
-                                        data={chartData}
-                                    />
-                                    <LabelContainer>
-                                        <View>
-                                            <LabelWrapper>
-                                                <ChartLabelGreen />
-                                                <ChartLabel>{this.state.GoodAbsPercent}% - Bem</ChartLabel>
-                                            </LabelWrapper>
-                                            <LabelWrapper>
-                                                <ChartLabelOrange />
-                                                <ChartLabel>{this.state.BadAbsPercent}% - Mal</ChartLabel>
-                                            </LabelWrapper>
-                                            <LabelWrapper>
-                                                <ChartLabelGray />
-                                                <ChartLabel>{this.state.PartPercent}% - Não Informado</ChartLabel>
-                                            </LabelWrapper>
-                                        </View>
-                                    </LabelContainer>
-                                </UserChart>
-                            </ChartContainer>
-                        </SwiperStyled>
-                    </SliderContainer>
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
+            <Container>
+                <ScrollViewStyled>
+                    <UserData>
+                        <AvatarContainer>
+                            <Avatar
+                                containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
+                                size={scale(50)}
+                                source={handleAvatar(this.state.avatarSelect)}
+                                title={getInitials(this.state.userSelected)}
+                                rounded
+                            />
+                        </AvatarContainer>
+                        <UserInfo>
+                            <UserName>{getNameParts(this.state.userSelected, true)}</UserName>
+                            <UserDetails>{this.state.userAge} anos</UserDetails>
+                        </UserInfo>
+                    </UserData>
+                    <UserDash>
+                        <SliderContainer>
+                            <SwiperStyled
+                                showPagination={true}
+                                disableGesture={false}
+                            >
+                                <ChartContainer>
+                                    <UserChart>
+                                        <CalendarStyled
+                                            current={_today}
+                                            markedDates={this.state.datesMarked}
+                                            onDayPress={(day) => {
+                                                let symptomDate = this.state.markedDatesAll
+                                                symptomDate.map(symptomMarker => {
+                                                    if (symptomMarker.bad_since == day.dateString) {
+                                                        console.warn(symptomMarker.symptom)
+                                                    }
+                                                })
+                                            }}
+                                            renderArrow={(direction) => this.handleCalendarArrows(direction)}
+                                        />
+                                    </UserChart>
+                                </ChartContainer>
+                                <ChartContainer>
+                                    <UserChart>
+                                        <ChartTitle>Estatísticas</ChartTitle>
+                                        <PieChart
+                                            style={{ height: 170, marginBottom: scale(12) }}
+                                            outerRadius={'100%'}
+                                            innerRadius={'15%'}
+                                            data={chartData}
+                                        />
+                                        <LabelContainer>
+                                            <View>
+                                                <LabelWrapper>
+                                                    <ChartLabelGreen />
+                                                    <ChartLabel>{this.state.GoodAbsPercent}% - Bem</ChartLabel>
+                                                </LabelWrapper>
+                                                <LabelWrapper>
+                                                    <ChartLabelOrange />
+                                                    <ChartLabel>{this.state.BadAbsPercent}% - Mal</ChartLabel>
+                                                </LabelWrapper>
+                                                <LabelWrapper>
+                                                    <ChartLabelGray />
+                                                    <ChartLabel>{this.state.PartPercent}% - Não Informado</ChartLabel>
+                                                </LabelWrapper>
+                                            </View>
+                                        </LabelContainer>
+                                    </UserChart>
+                                </ChartContainer>
+                            </SwiperStyled>
+                        </SliderContainer>
 
-                    <UserReports>
-                        <ReportsTitleWrapper>
-                            <ReportsTitle>{translate("diary.participate")}</ReportsTitle>
-                            <ReportsSubtitle>Total: {this.state.totalReports}</ReportsSubtitle>
-                        </ReportsTitleWrapper>
+                        <UserReports>
+                            <ReportsTitleWrapper>
+                                <ReportsTitle>{translate("diary.participate")}</ReportsTitle>
+                                <ReportsSubtitle>Total: {this.state.totalReports}</ReportsSubtitle>
+                            </ReportsTitleWrapper>
 
-                        <ReportsAll>
-                            <ReportsWell>
-                                <HappyIcon height={scale(45)} width={scale(45)} fill="#ffffff" />
-                                <ReportData>
-                                    <ReportDataTitle>{translate("diary.good")}</ReportDataTitle>
-                                    <ReportDataInfo>
-                                        {this.state.markedGoodNum === 1 ? 
-                                        this.state.markedGoodNum + translate("diary.report") : 
-                                        this.state.markedGoodNum + translate("diary.reports")}
-                                    </ReportDataInfo>
-                                </ReportData>
-                            </ReportsWell>
+                            <ReportsAll>
+                                <ReportsWell>
+                                    <HappyIcon height={scale(45)} width={scale(45)} fill="#ffffff" />
+                                    <ReportData>
+                                        <ReportDataTitle>{translate("diary.good")}</ReportDataTitle>
+                                        <ReportDataInfo>
+                                            {this.state.markedGoodNum === 1 ? 
+                                            this.state.markedGoodNum + translate("diary.report") : 
+                                            this.state.markedGoodNum + translate("diary.reports")}
+                                        </ReportDataInfo>
+                                    </ReportData>
+                                </ReportsWell>
 
-                            <ReportsIll>
-                                <SadIcon height={scale(45)} width={scale(45)} fill="#ffffff" />
-                                <ReportData>
-                                    <ReportDataTitle>{translate("diary.bad")}</ReportDataTitle>
-                                    <ReportDataInfo>
-                                        {this.state.markedBadNum === 1 ? 
-                                        this.state.markedBadNum + translate("diary.report") : 
-                                        this.state.markedBadNum + translate("diary.reports")}
-                                    </ReportDataInfo>
-                                </ReportData>
-                            </ReportsIll>
-                        </ReportsAll>
-                    </UserReports>
+                                <ReportsIll>
+                                    <SadIcon height={scale(45)} width={scale(45)} fill="#ffffff" />
+                                    <ReportData>
+                                        <ReportDataTitle>{translate("diary.bad")}</ReportDataTitle>
+                                        <ReportDataInfo>
+                                            {this.state.markedBadNum === 1 ? 
+                                            this.state.markedBadNum + translate("diary.report") : 
+                                            this.state.markedBadNum + translate("diary.reports")}
+                                        </ReportDataInfo>
+                                    </ReportData>
+                                </ReportsIll>
+                            </ReportsAll>
+                        </UserReports>
 
-                </UserDash>
-            </ScrollViewStyled>
+                    </UserDash>
+                </ScrollViewStyled>
+            </Container>
+            </>
         )
     }
 }

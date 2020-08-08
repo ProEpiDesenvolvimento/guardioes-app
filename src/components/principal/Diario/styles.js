@@ -7,6 +7,11 @@ import { Calendar } from 'react-native-calendars';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
+export const Container = styled.View`
+  flex: 1;
+  background-color: #f8f8f8;
+`;
+
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#F8F8F8',
@@ -36,6 +41,7 @@ export const AvatarContainer = styled.View`
 
 export const UserInfo = styled.View`
     width: 80%;
+    justify-content: space-between;
 `;
 
 export const UserName = styled.Text`
@@ -77,6 +83,7 @@ export const UserChart = styled(ShadowView).attrs({
     border-radius: 20px;
     margin-bottom: ${percentage(10)}px;
     padding: ${scale(8)}px;
+    padding-bottom: ${scale(10)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
     shadow-radius: 10px;
@@ -201,12 +208,15 @@ export const ReportDataTitle = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(18)}px;
     color: #ffffff;
+    include-font-padding: false;
+    margin-bottom: ${scale(8)}px;
 `;
 
 export const ReportDataInfo = styled.Text`
     font-family: ArgentumSans;
     font-size: ${scale(15)}px;
     color: #ffffff;
+    include-font-padding: false;
 `;
 
 export const CalendarStyled = styled(Calendar).attrs({
