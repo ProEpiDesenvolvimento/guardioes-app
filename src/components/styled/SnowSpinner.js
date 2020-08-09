@@ -9,6 +9,5 @@ export default styled(Spinner).attrs({
     size: scale(72)
 })`
     position: absolute;
-    bottom: 0;
     bottom: 10%;
 `;

@@ -31,9 +31,12 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
+        this.props.navigation.addListener('didFocus', payload => {
+            this.getHouseholdAvatars();
+        })
         this.state = {
             modalVisible: false,
-            userSelect: null,
+            userSelect: '',
             userName: null,
             userID: null,
             userToken: null,
@@ -140,6 +143,7 @@ class Home extends Component {
         AsyncStorage.setItem('userSelected', this.state.userSelect);
         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
         this.getHouseholds();
+        this.getHouseholdAvatars();
         this.getUserLastSurveys();
     }
 
@@ -158,6 +162,16 @@ class Home extends Component {
                 })
                 //console.warn(this.state.data)
             })
+    }
+
+    getHouseholdAvatars = async () => {
+        let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
+        
+        if (!householdAvatars) {
+            householdAvatars = {}
+        }
+
+        this.setState({ householdAvatars })
     }
 
     getUserLastSurveys = async () => {
@@ -292,6 +306,7 @@ class Home extends Component {
 
       const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
       const householdsData = this.state.data;
+      const householdAvatars = this.state.householdAvatars;
 
       const hasBadReports = this.state.userBadReports > 2
 
@@ -394,7 +409,7 @@ class Home extends Component {
                                             <UserWrapper key={household.id}>
                                                 <Button
                                                     onPress={async () => {
-                                                        await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: household.picture });
+                                                        await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: householdAvatars[household.id] });
                                                         this.setModalVisible(!this.state.modalVisible);
                                                         AsyncStorage.setItem('userSelected', this.state.userSelect);
                                                         AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
@@ -405,7 +420,7 @@ class Home extends Component {
                                                 >
                                                     <Avatar
                                                         size={scale(60)}
-                                                        source={handleAvatar(household.picture)}
+                                                        source={handleAvatar(householdAvatars[household.id])}
                                                         title={getInitials(household.description)}
                                                         rounded
                                                     />

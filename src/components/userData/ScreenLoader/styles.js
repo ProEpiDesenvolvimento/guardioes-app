@@ -13,6 +13,6 @@ export const Screen = styled.View`
 
 export const Loading = styled(Spinner).attrs({
     type: "ThreeBounce",
-    color: "#F18F01",
+    color: "#5DD39E",
     size: scale(72)
 })``;

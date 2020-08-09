@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, View, Modal } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
+import ScreenLoader from '../../userData/ScreenLoader';
 import { Container, ScrollViewStyled, TitleWrapper, Title, SubTitle, AdvicesView, AdviceShadow, Advice, AdviceTitle, AdviceIcon } from './styles';
 import { Details, DetailsIcon, DetailsTitleWrapper, DetailsTitle, DetailsBodyText, DetailsButton, DetailsButtonLabel } from './styles';
 
@@ -88,11 +89,7 @@ class Conselho extends Component {
         const contentsData = this.state.dataSource;
 
         if (this.state.isLoading) {
-            return (
-                <View style={{ flex: 1, padding: 20 }}>
-                    <ActivityIndicator />
-                </View>
-            )
+            return <ScreenLoader />
         }
 
         return (

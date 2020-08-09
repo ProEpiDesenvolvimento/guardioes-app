@@ -33,8 +33,10 @@ export default class drawerContentComponents extends Component {
         const userAvatar = await AsyncStorage.getItem('userAvatar');
         const isProfessional = await AsyncStorage.getItem('isProfessional');
         const userToken = await RNSecureStorage.get('userToken');
+
         this.setState({ userID, userName, userAvatar, isProfessional, userToken })
         this.getHouseholds()
+        this.getHouseholdAvatars()
     }
 
     componentDidMount() {
@@ -56,6 +58,16 @@ export default class drawerContentComponents extends Component {
             })
     }
 
+    getHouseholdAvatars = async () => {
+        let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
+        
+        if (!householdAvatars) {
+            householdAvatars = {}
+        }
+
+        this.setState({ householdAvatars })
+    }
+
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
     _logoutApp = async () => {
         AsyncStorage.removeItem('userID');
@@ -75,8 +87,7 @@ export default class drawerContentComponents extends Component {
     render() {
         const { navigate } = this.props.navigation;
         const householdsData = this.state.householdsData;
-
-        //this.fetchData();
+        const householdAvatars = this.state.householdAvatars;
 
         return (
             <Container>
@@ -96,7 +107,7 @@ export default class drawerContentComponents extends Component {
                                     key={household.id}
                                     containerStyle={[styles.Avatars, { zIndex: household.id }]}
                                     size={scale(60)}
-                                    source={handleAvatar(household.picture)}
+                                    source={handleAvatar(householdAvatars[household.id])}
                                     title={getInitials(household.description)}
                                     rounded
                                 />

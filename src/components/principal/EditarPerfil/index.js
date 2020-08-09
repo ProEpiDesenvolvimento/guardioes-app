@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Alert, Modal, Platform } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { Component } from 'react'
+import { View, StyleSheet, Alert, Modal, Platform } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 
-import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../Household/styles';
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from '../Household/styles';
-import { ReadOnlyInput, FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles';
-import { Delete } from './styles';
+import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../Household/styles'
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild } from '../Household/styles'
+import { Selector, DateSelector, ReadOnlyInput, FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles'
+import { Delete } from './styles'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import ImagePicker from 'react-native-image-picker';
-import { Avatar } from 'react-native-elements';
-import { scale } from '../../../utils/scallingUtils';
-import {API_URL} from 'react-native-dotenv';
-import translate from '../../../../locales/i18n';
-import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils';
-import { state, getCity } from '../../../utils/brasil';
-import { handleAvatar, getInitials } from '../../../utils/constUtils';
+import AsyncStorage from '@react-native-community/async-storage'
+import ImagePicker from 'react-native-image-picker'
+import { Avatar } from 'react-native-elements'
+import { scale } from '../../../utils/scallingUtils'
+import {API_URL} from 'react-native-dotenv'
+import translate from '../../../../locales/i18n'
+import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils'
+import { state, getCity } from '../../../utils/brasil'
+import { handleAvatar, getInitials } from '../../../utils/constUtils'
 
 let data = new Date()
 let d = data.getDate()
@@ -34,7 +34,9 @@ class EditarPerfil extends Component {
         super(props)
         this.state = {
             isUser: null,
+            householdID: 0,
             modalVisibleRiskGroup: false,
+            Picture: 'default',
             CategoryLabel: translate("selector.label"),
             GroupLabel: translate("selector.label"),
             SchoolLocationLabel: translate("selector.label"),
@@ -51,6 +53,18 @@ class EditarPerfil extends Component {
 
         this.setState({ isUser: params.isUser })
         this.setState(params.data)
+
+        this.getHouseholdAvatars();
+    }
+
+    getHouseholdAvatars = async () => {
+        let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
+        
+        if (!householdAvatars) {
+            householdAvatars = {}
+        }
+
+        this.setState({ householdAvatars })
     }
 
     handleEdit = async () => {
@@ -70,6 +84,10 @@ class EditarPerfil extends Component {
     }
 
     changeAvatar = () => {
+        const isUser = this.state.isUser
+        const householdID = this.state.householdID
+        let householdAvatars = this.state.householdAvatars
+
         ImagePicker.showImagePicker(options, (response) => {
             //console.log('Response = ', response);
             
@@ -78,15 +96,31 @@ class EditarPerfil extends Component {
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
             } else if (response.customButton === 'remove') {
-                this.setState({ Picture: 'default' })
+                if (isUser) {
+                    AsyncStorage.removeItem('userAvatar')
+                }
+                else {
+                    householdAvatars[householdID] = null
+                    AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
+                }
+
+                this.setState({ Avatar: null })
             } else {
                 let source = response.uri;
         
                 if (Platform.OS === 'android') {
                     source = 'content://com.guardioesapp.provider/root' + response.path
                 }
-        
-                this.setState({ Picture: source })
+
+                if (isUser) {
+                    AsyncStorage.setItem('userAvatar', source)
+                }
+                else {
+                    householdAvatars[householdID] = source
+                    AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
+                }
+
+                this.setState({ Avatar: source })
             }
         });
     }
@@ -120,7 +154,6 @@ class EditarPerfil extends Component {
                 console.warn(response.status)
                 if (response.status == 200) {
                     AsyncStorage.setItem('userName', this.state.Name)
-                    AsyncStorage.setItem('userAvatar', this.state.Picture)
                     this.props.navigation.goBack()
                 } else {
                     Alert.alert("Ocorreu um erro, tente novamente depois.")
@@ -204,8 +237,8 @@ class EditarPerfil extends Component {
                 <KeyboardScrollView>
                     <FormInline>
                         <Avatar
-                            size={scale(90)}
-                            source={handleAvatar(this.state.Picture)}
+                            size={scale(110)}
+                            source={handleAvatar(this.state.Avatar)}
                             title={getInitials(this.state.Name)}
                             activeOpacity={0.7}
                             showEditButton

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
+import ScreenLoader from '../../userData/ScreenLoader';
 import { ScrollViewStyled, User, AvatarWrapper, InfoContainer, InfoWrapper, Name, Relation, ButtonsWrapper } from './styles';
 import { Button, HouseholdWrapper, HouseholdTitle, Household, HouseholdName, HouseholdRelation } from './styles';
 
@@ -22,7 +23,7 @@ class Perfis extends Component {
     }
     constructor(props) {
         super(props)
-        this.props.navigation.addListener('didFocus', payload => {
+        this.props.navigation.addListener('willFocus', payload => {
             this.fetchData();
         })
         this.state = {
@@ -43,6 +44,7 @@ class Perfis extends Component {
 
         this.setState({ isLoading: false })
         this.getHouseholds()
+        this.getHouseholdAvatars()
     }
 
     getAllUserInfos = async () => {
@@ -61,6 +63,8 @@ class Perfis extends Component {
             }
         })
         .then(async (responseJson) => {
+            const userAvatar = this.state.userAvatar
+
             // Trata userBirth no formato correto
             responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).toString()
             
@@ -87,7 +91,7 @@ class Perfis extends Component {
                 userToken: this.state.userToken,
 
                 Name: responseJson.user.user_name,
-                Picture: responseJson.user.picture,
+                Avatar: userAvatar,
                 Birth: birthDate,
                 Country: responseJson.user.country,
                 Gender: responseJson.user.gender,
@@ -128,7 +132,19 @@ class Perfis extends Component {
             })
     }
 
+    getHouseholdAvatars = async () => {
+        let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
+        
+        if (!householdAvatars) {
+            householdAvatars = {}
+        }
+
+        this.setState({ householdAvatars })
+    }
+
     loadHouseholdInfo = async (household) => {
+        const householdAvatar = this.state.householdAvatars[household.id]
+
         // Trata a data de nascimento do household para o formato apropriado
         let birthDate = household.birthdate.split('-')
         birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
@@ -153,7 +169,7 @@ class Perfis extends Component {
             householdID: household.id,
 
             Name: household.description,
-            Picture: household.picture,
+            Avatar: householdAvatar,
             Birth: birthDate,
             Country: household.country,
             Gender: household.gender,
@@ -176,15 +192,12 @@ class Perfis extends Component {
 
     render() {
         if (this.state.isLoading) {
-            return (
-                <View style={{ flex: 1, padding: 20 }}>
-                    <ActivityIndicator />
-                </View>
-            )
+            return <ScreenLoader />
         }
         
         const { navigate } = this.props.navigation
         const householdsData = this.state.dataSource
+        const householdAvatars = this.state.householdAvatars
 
         return (
             <ScrollViewStyled>
@@ -229,7 +242,7 @@ class Perfis extends Component {
                                 <AvatarWrapper>
                                     <Avatar
                                         size={scale(58)}
-                                        source={handleAvatar(household.picture)}
+                                        source={handleAvatar(householdAvatars[household.id])}
                                         title={getInitials(household.description)}
                                         rounded
                                     />

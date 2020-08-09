@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, NetInfo, Alert, Platform, ActivityIndicator } from 'react-native';
+import { Text, View, NetInfo, Alert, Platform } from 'react-native';
 
+import ScreenLoader from '../../userData/ScreenLoader';
 import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
 import { Container, FormInline, FormLabel, Selector, SendContainer, SendText } from '../Household/styles';
@@ -289,11 +290,7 @@ class BadReport extends Component {
         const symptomsData = this.state.dataSource;
 
         if (this.state.isLoading) {
-            return (
-                <View style={{ flex: 1, padding: 20 }}>
-                    <ActivityIndicator />
-                </View>
-            )
+            return <ScreenLoader />
         }
 
         const traveled = (
