@@ -191,6 +191,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-spinkit')
     implementation project(':react-native-simple-shadow-view')
     implementation project(':react-native-image-picker')
     implementation project(':rn-secure-storage')

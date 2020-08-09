@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import { SafeAreaView, View, StyleSheet } from 'react-native'
+
+import { Container } from './styles'
+import mapStyle from '../../../utils/MarkerClustering/mapStyle'
+
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
-import ClusteredMapView from '../../utils/MarkerClustering'
-import mapStyle from '../../utils/MarkerClustering/mapStyle'
+import ClusteredMapView from '../../../utils/MarkerClustering'
 import { API_URL } from 'react-native-dotenv'
-import translate from '../../../locales/i18n'
+import translate from '../../../../locales/i18n'
 import Geolocation from 'react-native-geolocation-service'
-import poligonoBR from '../../utils/DF.json'
+import poligonoBR from '../../../utils/DF.json'
 import AwesomeAlert from 'react-native-awesome-alerts'
 import { Marker } from 'react-native-maps'
+import { greenMarker, redMarker } from '../../../imgs/imageConst'
 
-const greenMarker = require('../../imgs/mapIcons/green-marker.png')
-const redMarker = require('../../imgs/mapIcons/red-marker.png')
 const CLUSTER_SIZE_DIVIDER = 4
 
 class Maps extends Component {
@@ -27,7 +29,6 @@ class Maps extends Component {
             //this.fetchData()
         })
         this.state = {
-            isLoading: true,
             dataSource: [],
             dataFilterd: [],
             polygonState: "Federal District",
@@ -192,7 +193,7 @@ class Maps extends Component {
         return (
             <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-            <View style={styles.container}>
+            <Container>
                 <ClusteredMapView
                     key={this.state.mapKey}
                     showsUserLocation={this.state.showUserLocation}
@@ -223,7 +224,7 @@ class Maps extends Component {
                     onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
                     <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
                 </TouchableOpacity>*/}
-            </View>
+            </Container>
             </>
         )
     }
@@ -231,7 +232,6 @@ class Maps extends Component {
 
 // define your styles
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'flex-end' },
     map: {
         flex: 1,
         position: 'absolute',
