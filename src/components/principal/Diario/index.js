@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { SafeAreaView, View, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { LocaleConfig } from 'react-native-calendars';
 import { PieChart } from 'react-native-svg-charts'
 
+import ScreenLoader from '../../userData/ScreenLoader';
 import { Container, ScrollViewStyled, UserData, AvatarContainer, UserInfo, UserName, UserDetails, UserDash, SliderContainer, SwiperStyled } from './styles';
 import { ChartContainer, UserChart, LabelContainer, LabelWrapper, ChartLabelGreen, ChartLabelOrange, ChartLabelGray, ChartLabel, ChartTitle, CalendarStyled } from './styles';
 import { UserReports, ReportsTitleWrapper, ReportsTitle, ReportsSubtitle, ReportsAll, ReportsWell, ReportsIll, ReportData, ReportDataTitle, ReportDataInfo } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-
 import moment from 'moment';
 import { Avatar } from 'react-native-elements';
 import { HappyIcon, SadIcon } from '../../../imgs/imageConst';
@@ -41,7 +41,7 @@ class Diario extends Component {
     }
     constructor(props) {
         super(props)
-        this.props.navigation.addListener('didFocus', payload => {
+        this.props.navigation.addListener('willFocus', payload => {
             this.fetchData();
         })
         this.state = {
@@ -155,14 +155,14 @@ class Diario extends Component {
             }
         })
 
-        let totalReports = (markedDatesGood.length + markedDatesBad.length)
-        let GoodPercent = ((markedDatesGood.length / totalReports) * 100).toFixed(0)
-        let BadPercent = ((markedDatesBad.length / totalReports) * 100).toFixed(0)
+        const totalReports = (markedDatesGood.length + markedDatesBad.length)
+        const GoodPercent = ((markedDatesGood.length / totalReports) * 100).toFixed(0)
+        const BadPercent = ((markedDatesBad.length / totalReports) * 100).toFixed(0)
 
         this.setState({
-            GoodPercent: GoodPercent,
-            BadPercent: BadPercent,
-            totalReports: totalReports,
+            GoodPercent,
+            BadPercent,
+            totalReports,
             markedGoodNum: markedDatesGood.length,
             markedBadNum: markedDatesBad.length,
             markedDatesGood: markedDatesGood,
@@ -170,19 +170,29 @@ class Diario extends Component {
             markedDatesAll: markedDatesAll,
         })
 
-        let BadReport = markedDatesBad.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {})
-        let GoodReport = markedDatesGood.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {})
+        let BadReports = markedDatesBad.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#F18F01' } }), {})
+        let GoodReports = markedDatesGood.reduce((c, v) => Object.assign(c, { [v]: { selected: true, selectedColor: '#5DD39E' } }), {})
 
-        Object.assign(GoodReport, BadReport)
+        Object.assign(GoodReports, BadReports)
 
-        this.setState({ datesMarked: GoodReport })
+        const daysMarked = Object.keys(GoodReports).length
+        const daysBad = Object.keys(BadReports).length
+        const daysGood = daysMarked - daysBad
+
+        this.setState({
+            datesMarked: GoodReports,
+            daysMarked,
+            daysGood,
+            daysBad
+        })
     }
 
     getUserParticipation = () => {
         const surveyData = this.state.dataSource.reverse();
-        const GoodReports = this.state.markedGoodNum
-        const BadReports = this.state.markedBadNum
-        let firstSurvey;
+        const daysMarked = this.state.daysMarked
+        const daysGood = this.state.daysGood
+        const daysBad = this.state.daysBad
+        let firstSurvey = {}
 
         for (let i = 0; i < surveyData.length; i++) {
             if (this.state.householdID) {
@@ -199,32 +209,35 @@ class Diario extends Component {
             }
         }
 
-        const firstSurveyDate = new Date(firstSurvey.created_at)
-        const difference = todayDate.getTime() - firstSurveyDate.getTime()
+        let daysMissing = 1
+        let GoodAbsPercent = 0
+        let BadAbsPercent = 0
+        let MissAbsPercent = 100
 
-        const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24))
-        const totalParticipation = totalDays - this.state.totalReports
+        if (firstSurvey.created_at) {
+            const firstSurveyDate = new Date(firstSurvey.created_at)
+            const difference = todayDate.getTime() - firstSurveyDate.getTime()
 
-        const GoodAbsPercent = ((GoodReports / totalDays) * 100).toFixed(0)
-        const BadAbsPercent = ((BadReports / totalDays) * 100).toFixed(0)
-        const PartPercent = ((totalParticipation / totalDays) * 100).toFixed(0)
+            const daysTotal = Math.ceil(difference / (1000 * 60 * 60 * 24))
+            daysMissing = daysTotal - daysMarked
 
-        this.setState({ GoodAbsPercent, BadAbsPercent, PartPercent, totalParticipation })
+            GoodAbsPercent = ((daysGood / daysTotal) * 100).toFixed(0)
+            BadAbsPercent = ((daysBad / daysTotal) * 100).toFixed(0)
+            MissAbsPercent = ((daysMissing / daysTotal) * 100).toFixed(0)
+        }
+
+        this.setState({ GoodAbsPercent, BadAbsPercent, MissAbsPercent, daysMissing })
     }
 
     render() {
         if (this.state.isLoading) {
-            return (
-                <View style={{ flex: 1, padding: 20 }}>
-                    <ActivityIndicator />
-                </View>
-            )
+            return <ScreenLoader />
         }
 
         const chartData = [
-            { key: 1, value: this.state.markedGoodNum, svg: { fill: '#5DD39E' }, arc: { cornerRadius: 8, } },
-            { key: 2, value: this.state.markedBadNum, svg: { fill: '#F18F01' }, arc: { cornerRadius: 8 } },
-            { key: 3, value: this.state.totalParticipation, svg: { fill: '#c4c4c4' }, arc: { cornerRadius: 8 } }
+            { key: 1, value: this.state.daysGood, svg: { fill: '#5DD39E' }, arc: { cornerRadius: 8, } },
+            { key: 2, value: this.state.daysBad, svg: { fill: '#F18F01' }, arc: { cornerRadius: 8 } },
+            { key: 3, value: this.state.daysMissing, svg: { fill: '#c4c4c4' }, arc: { cornerRadius: 8 } }
         ]
 
         return (
@@ -283,15 +296,15 @@ class Diario extends Component {
                                             <View>
                                                 <LabelWrapper>
                                                     <ChartLabelGreen />
-                                                    <ChartLabel>{this.state.GoodAbsPercent}% - Bem</ChartLabel>
+                                                    <ChartLabel>{this.state.GoodAbsPercent}% dias - Bem</ChartLabel>
                                                 </LabelWrapper>
                                                 <LabelWrapper>
                                                     <ChartLabelOrange />
-                                                    <ChartLabel>{this.state.BadAbsPercent}% - Mal</ChartLabel>
+                                                    <ChartLabel>{this.state.BadAbsPercent}% dias - Mal</ChartLabel>
                                                 </LabelWrapper>
                                                 <LabelWrapper>
                                                     <ChartLabelGray />
-                                                    <ChartLabel>{this.state.PartPercent}% - Não Informado</ChartLabel>
+                                                    <ChartLabel>{this.state.MissAbsPercent}% dias - Não Informado</ChartLabel>
                                                 </LabelWrapper>
                                             </View>
                                         </LabelContainer>
