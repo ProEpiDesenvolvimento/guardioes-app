@@ -82,6 +82,13 @@ export const BottomMenu = createBottomTabNavigator({
                 borderTopRightRadius: 20,
                 justifyContent: 'flex-start',
                 paddingTop: 5,
+                shadowColor: "#000000",
+                shadowOffset: {
+                    width: 0,
+                    height: 10,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 12,
                 elevation: 20,
             },
             activeTintColor: '#348EAC',

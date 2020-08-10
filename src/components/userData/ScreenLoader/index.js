@@ -9,7 +9,7 @@ class ScreenLoader extends PureComponent {
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: '#348EAC'}}>
                 <Screen>
                     <Loading />
                 </Screen>

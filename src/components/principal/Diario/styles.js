@@ -62,7 +62,7 @@ export const UserDash = styled.View`
 `;
 
 export const SliderContainer = styled.View`
-    flex: 1;
+    flex: 0;
 `;
 
 export const SwiperStyled = styled(SwiperFlatList).attrs({
