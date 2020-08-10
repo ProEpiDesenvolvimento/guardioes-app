@@ -11,11 +11,13 @@ import AsyncStorage from '@react-native-community/async-storage'
 import ImagePicker from 'react-native-image-picker'
 import { Avatar } from 'react-native-elements'
 import { scale } from '../../../utils/scallingUtils'
-import {API_URL} from 'react-native-dotenv'
+import { API_URL } from 'react-native-dotenv'
 import translate from '../../../../locales/i18n'
 import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import { handleAvatar, getInitials } from '../../../utils/constUtils'
+import InstitutionSelector from '../../userData/InstitutionSelector'
+import LoadingModal from '../../modals/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -41,25 +43,30 @@ class EditarPerfil extends Component {
             GroupLabel: translate("selector.label"),
             SchoolLocationLabel: translate("selector.label"),
             EducationLevelLabel: translate("selector.label"),
+            paramsLoaded: false,
+            showAlert: false,
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.fetchData()
     }
 
-    fetchData = () => {
+    fetchData = async () => {
         const { params } = this.props.navigation.state
 
-        this.setState({ isUser: params.isUser })
-        this.setState(params.data)
+        await this.setState({ isUser: params.isUser })
+        await this.setState(params.data)
 
-        this.getHouseholdAvatars();
+        await this.getHouseholdAvatars()
+        this.setState({
+            paramsLoaded: true
+        })
     }
 
     getHouseholdAvatars = async () => {
         let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
-        
+
         if (!householdAvatars) {
             householdAvatars = {}
         }
@@ -89,8 +96,7 @@ class EditarPerfil extends Component {
         let householdAvatars = this.state.householdAvatars
 
         ImagePicker.showImagePicker(options, (response) => {
-            //console.log('Response = ', response);
-            
+
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
@@ -107,7 +113,7 @@ class EditarPerfil extends Component {
                 this.setState({ Avatar: null })
             } else {
                 let source = response.uri;
-        
+
                 if (Platform.OS === 'android') {
                     source = 'content://com.guardioesapp.provider/root' + response.path
                 }
@@ -125,7 +131,30 @@ class EditarPerfil extends Component {
         });
     }
 
+    isUserDataValid = () => {
+        if (this.state.Name == null || this.state.Name == '') {
+            Alert.alert("Nome não pode ficar em branco")
+            return false
+        } else if (this.state.Country == "Brazil" && (this.state.State == null || this.state.City == null)) {
+            Alert.alert("Estado e Cidade devem estar preenchidos")
+            return false
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            return false
+        } else if (this.state.Country == null) {
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+            return false
+        }
+        return true
+    }
+
     editUser = () => {
+        if (!this.isUserDataValid()) {
+            return
+        }
+        this.setAlert(true)
         return fetch(`${API_URL}/users/${this.state.userID}`, {
             method: 'PATCH',
             headers: {
@@ -140,7 +169,7 @@ class EditarPerfil extends Component {
                     birthdate: this.state.Birth,
                     gender: this.state.Gender,
                     race: this.state.Race,
-                    school_unit_id: this.state.Group,
+                    group_id: this.state.Group,
                     identification_code: this.state.IdCode,
                     risk_group: this.state.RiskGroup,
                     country: this.state.Country,
@@ -152,6 +181,7 @@ class EditarPerfil extends Component {
         })
             .then((response) => {
                 console.warn(response.status)
+                this.setAlert(false)
                 if (response.status == 200) {
                     AsyncStorage.setItem('userName', this.state.Name)
                     this.props.navigation.goBack()
@@ -161,7 +191,33 @@ class EditarPerfil extends Component {
             })
     }
 
+    isHouseholdDataValid = () => {
+        if (this.state.Name == null || this.state.Name == '' || this.state.Birth == null) {
+            Alert.alert("O nome e data de nascimento devem estar preenchidos\n")
+            return false
+        } else if (this.state.Gender == null || this.state.Race == null) {
+            Alert.alert("A raça e genero devem estar preenchidos")
+            return false
+        } else if (this.state.Kinship == null) {
+            Alert.alert("O parentesco deve estar preenchido")
+            return false
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            return false
+        } else if (this.state.Country == null) {
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+            return false
+        }
+        return true
+    }
+
     editHousehold = () => {
+        if (!this.isHouseholdDataValid()) {
+            return
+        }
+        this.setAlert(true)
         return fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
             method: 'PATCH',
             headers: {
@@ -176,7 +232,7 @@ class EditarPerfil extends Component {
                     birthdate: this.state.Birth,
                     gender: this.state.Gender,
                     race: this.state.Race,
-                    school_unit_id: this.state.Group,
+                    group_id: this.state.Group,
                     identification_code: this.state.IdCode,
                     risk_group: this.state.RiskGroup,
                     country: this.state.Country,
@@ -186,6 +242,7 @@ class EditarPerfil extends Component {
         })
             .then((response) => {
                 console.warn(response.status)
+                this.setAlert(false)
                 if (response.status == 200) {
                     this.props.navigation.goBack()
                 } else {
@@ -196,6 +253,23 @@ class EditarPerfil extends Component {
 
     setRiskGroupModalVisible(visible) {
         this.setState({ modalVisibleRiskGroup: visible })
+    }
+
+    setAlert = (val) => {
+        this.setState({
+            showAlert: val
+        })
+    }
+
+    setInstitutionCallback = (IdCode, Group) => {
+        this.setState({
+            IdCode: IdCode,
+            Group: Group,
+        })
+    }
+
+    setInstituitionComponentError = (error) => {
+        this.state.instituitionComponentError = error
     }
 
     render() {
@@ -211,7 +285,7 @@ class EditarPerfil extends Component {
                     onRequestClose={() => {
                         this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
                     }
-                }>
+                    }>
                     <ModalContainer>
                         <ModalBox>
                             <ModalTitle>
@@ -222,8 +296,8 @@ class EditarPerfil extends Component {
                             </ModalText>
 
                             <Button onPress={() => {
-                                    this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
-                                }
+                                this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
+                            }
                             }>
                                 <ModalButton>
                                     <ModalButtonText>
@@ -243,7 +317,7 @@ class EditarPerfil extends Component {
                             activeOpacity={0.7}
                             showEditButton
                             rounded
-                            editButton={{name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000'}}
+                            editButton={{ name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000' }}
                             onEditPress={() => this.changeAvatar()}
                         />
                         {!isUser &&
@@ -253,12 +327,12 @@ class EditarPerfil extends Component {
                         }
                     </FormInline>
 
-                    {isUser ? 
+                    {isUser ?
                         <FormInline>
                             <FormLabel>{translate("register.email")}</FormLabel>
                             <ReadOnlyInput>{this.state.Email}</ReadOnlyInput>
                         </FormInline>
-                    : null}
+                        : null}
 
                     <FormInline>
                         <FormLabel>{translate("register.name")}</FormLabel>
@@ -339,7 +413,7 @@ class EditarPerfil extends Component {
                                 />
                             </FormGroupChild>
                         </FormGroup>
-                    : null}
+                        : null}
 
                     {!isUser ?
                         <FormInline>
@@ -351,7 +425,7 @@ class EditarPerfil extends Component {
                                 onChange={(option) => this.setState({ Kinship: option.key })}
                             />
                         </FormInline>
-                    : null}
+                        : null}
 
                     <FormInlineCheck>
                         <CheckBoxStyled
@@ -363,145 +437,34 @@ class EditarPerfil extends Component {
                         />
                         <Button onPress={async () => {
                             this.setRiskGroupModalVisible(true)
-                            }
+                        }
                         }>
                             <Feather name="help-circle" size={scale(25)} color="#348EAC" />
                         </Button>
                     </FormInlineCheck>
 
-                    <FormInlineCheck>
-                        <CheckBoxStyled
-                            title={"É integrante de alguma instituição de Ensino?"}
-                            checked={this.state.groupCheckbox}
-                            onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-                        />
-                    </FormInlineCheck>
-                    {this.state.groupCheckbox && this.state.NewInst ?
-                        <View>
-                            <FormGroup>
-                                <FormGroupChild>
-                                    <FormLabel>Categoria:</FormLabel>
-                                    <Selector
-                                        data={schoolCategory}
-                                        initValue={this.state.CategoryLabel}
-                                        cancelText={translate("selector.cancelButton")}
-                                        onChange={(option) => this.setState({ Category: option.key, CategoryLabel: option.label, EducationLevel: null })}
-                                    />
-                                </FormGroupChild>
-                                {this.state.Category == "UNB" ?
-                                    <FormGroupChild>
-                                        <FormLabel>Faculdade:</FormLabel>
-                                        <Selector
-                                            data={getGroups("UNB", "", "")}
-                                            initValue={this.state.GroupLabel}
-                                            cancelText={translate("selector.cancelButton")}
-                                            onChange={async (option) => {
-                                                await this.setState({ Group: option.key, GroupLabel: option.label })
-                                            }}
-                                        />
-                                    </FormGroupChild>
-                                : this.state.Category == "SES-DF" ?
-                                    <FormGroupChild>
-                                        <FormLabel>Nivel de Ensino:</FormLabel>
-                                        <Selector
-                                            data={educationLevel}
-                                            initValue={this.state.EducationLevelLabel}
-                                            cancelText={translate("selector.cancelButton")}
-                                            onChange={(option) => this.setState({ EducationLevel: option.key, EducationLevelLabel: option.label })}
-                                        />
-                                    </FormGroupChild>
-                                : null}
-                            </FormGroup>
-                            {this.state.EducationLevel != null ?
-                                <FormGroup>
-                                    <FormGroupChild>
-                                        <FormLabel>Região:</FormLabel>
-                                            <Selector
-                                                data={schoolLocation}
-                                                initValue={this.state.SchoolLocationLabel}
-                                                cancelText={translate("selector.cancelButton")}
-                                                onChange={(option) => this.setState({ SchoolLocation: option.key, SchoolLocationLabel: option.label })}
-                                            />
-                                    </FormGroupChild>
-                                    {this.state.SchoolLocation != null ?
-                                        <FormGroupChild>
-                                            <FormLabel>Unidade:</FormLabel>
-                                                <Selector
-                                                    data={getGroups("SES-DF", this.state.EducationLevel, this.state.SchoolLocation)}
-                                                    initValue={this.state.GroupName}
-                                                    cancelText={translate("selector.cancelButton")}
-                                                    onChange={async (option) => {
-                                                        await this.setState({ Group: option.key, GroupName: option.label })
-                                                    }}
-                                                />
-                                        </FormGroupChild>
-                                    : null}
-                                </FormGroup>
-                            : this.state.Group != null && this.state.Category == "UNB" ?
-                                <FormGroup>
-                                    <FormGroupChild>
-                                        <FormLabel>Nº de Identificação:</FormLabel>
-                                        <NormalInput
-                                            returnKeyType='done'
-                                            keyboardType='number-pad'
-                                            value={this.state.IdCode}
-                                            onChangeText={async (text) => {
-                                                await this.setState({ IdCode: text })
-                                            }}
-                                        />
-                                    </FormGroupChild>
-                                </FormGroup>
-                            : null}
-                        </View>
-                    : null}
-                    {this.state.groupCheckbox && !this.state.NewInst ?
-                        <FormGroup>
-                            <FormGroupChild>
-                                <FormLabel>Instituição:</FormLabel>
-                                <Selector
-                                    data={[{ key: this.state.Group, label: this.state.GroupName }]}
-                                    initValue={this.state.GroupName}
-                                    cancelText={translate("selector.cancelButton")}
-                                    onChange={(option) => this.setState({ Group: option.key, GroupName: option.label })}
-                                />
-                            </FormGroupChild>
-                            {this.state.IdCode ?
-                                <FormGroupChild>
-                                    <FormLabel>Nº de Identificação:</FormLabel>
-                                    <NormalInput
-                                        returnKeyType='done'
-                                        keyboardType='number-pad'
-                                        value={this.state.IdCode}
-                                        onChangeText={text => this.setState({ IdCode: text })}
-                                    />
-                                </FormGroupChild>
-                            : null}
-                        </FormGroup>
-                    : null}
-
+                    <FormGroup>
+                        {this.state.paramsLoaded ? (
+                            <InstitutionSelector
+                                setUserInstitutionCallback={this.setInstitutionCallback}
+                                setAlert={this.setAlert}
+                                userGroup={this.state.Group}
+                                userIdCode={this.state.IdCode}
+                                setErrorCallback={this.setInstituitionComponentError} 
+                            />
+                        ) : null}
+                    </FormGroup>
+                        
                     <Button onPress={async () => {
-                            await this.handleEdit()
-                        }
+                        await this.handleEdit()
+                    }
                     }>
                         <SendContainer>
                             <SendText>Salvar</SendText>
                         </SendContainer>
                     </Button>
-
-                    {this.state.groupCheckbox && !this.state.NewInst ?
-                        <Button onPress={() => {
-                                this.setState({
-                                    NewInst: true,
-                                    IdCode: null
-                                })
-                            }
-                        }>
-                            <SendContainer>
-                                <SendText>Editar instituição</SendText>
-                            </SendContainer>
-                        </Button>
-                    : null}
                 </KeyboardScrollView>
+                <LoadingModal show={this.state.showAlert}/>
             </Container>
         )
     }
@@ -521,7 +484,7 @@ class EditarPerfil extends Component {
             { cancelable: false },
         )
     }
-    
+
     deleteHousehold = () => {
         return fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
             method: 'DELETE',
@@ -548,10 +511,10 @@ const options = {
     noData: true,
     quality: 0.5,
     storageOptions: {
-      skipBackup: true,
-      path: 'gds',
+        skipBackup: true,
+        path: 'gds',
     },
-}; 
+};
 
 const styles = StyleSheet.create({
     Avatar: {

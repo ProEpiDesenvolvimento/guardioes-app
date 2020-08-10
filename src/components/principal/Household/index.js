@@ -35,11 +35,11 @@ class Registrar extends Component {
         this.state = {
             householdName: null,
             householdPicture: 'default',
-            householdGender: 'Homem Cis',
-            householdCountry: 'Brazil',
-            householdRace: 'Branco',
+            householdGender: null,
+            householdCountry: null,
+            householdRace: null,
             householdBirth: null,
-            kinship: 'Pai',
+            kinship: null,
             userID: null,
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
@@ -102,6 +102,10 @@ class Registrar extends Component {
         })
     }
 
+    setInstituitionComponentError = (error) => {
+        this.state.instituitionComponentError = error
+    }
+    
     render() {
         const { showAlert } = this.state
 
@@ -217,10 +221,10 @@ class Registrar extends Component {
                             <Feather name="help-circle" size={scale(25)} color="#348EAC" />
                         </Button>
                     </FormInlineCheck>
-
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
                         setAlert={this.setLoadingAlert}
+                        setErrorCallback={this.setInstituitionComponentError}
                     />
 
                     <FormInline>
@@ -255,7 +259,33 @@ class Registrar extends Component {
         )
     }
 
+    isHouseholdDataValid = () => {
+        let error = false
+        if (this.state.householdName == null || this.state.householdName == '' || this.state.householdDob == null) {
+            Alert.alert("O nome e data de nascimento devem estar preenchidos\n")
+            error = true
+        } else if (this.state.householdGender == null || this.state.householdRace == null) {
+            Alert.alert("A raça e genero devem estar preenchidos")
+            error = true
+        } else if (this.state.kinship == null) {
+            Alert.alert("O parentesco deve estar preenchido")
+            error = true
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            error = true
+        } else if (this.state.householdCountry == null) {
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+            error = true
+        }
+        return !error
+    }
+
     create = () => {
+        if (!this.isHouseholdDataValid()) {
+            return
+        }
         this.showAlert()
         fetch(`${API_URL}/users/${this.state.userID}/households`, {
             method: 'POST',
@@ -275,11 +305,12 @@ class Registrar extends Component {
                     kinship: this.state.kinship,
                     picture: this.state.householdPicture,
                     identification_code: this.state.userIdCode,
-                    school_unit_id: this.state.userGroup
+                    group_id: this.state.userGroup
                 }
             )
         })
             .then((response) => {
+                this.setState({ statusCode: response.status })
                 if (response.status == 201) {
                     console.warn("Criado")
                     this.hideAlert()

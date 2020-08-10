@@ -71,21 +71,6 @@ class Perfis extends Component {
             let birthDate = responseJson.user.birthdate.split('-')
             birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
 
-            // Trata userGroupName no formato correto
-            const groupName = await getGroupName(responseJson.user.school_unit_id)
-
-            // Definindo variaveis logicas
-            let groupCheckbox = false
-            let NewInst = true
-            let SchoolLocation = null
-            let EducationLevel = null
-            let Category = null
-
-            if (responseJson.user.school_unit_id) {
-                groupCheckbox = true
-                NewInst = false
-            }
-
             const userData = {
                 userID: this.state.userID,
                 userToken: this.state.userToken,
@@ -96,20 +81,13 @@ class Perfis extends Component {
                 Country: responseJson.user.country,
                 Gender: responseJson.user.gender,
                 Race: responseJson.user.race,
-                Group: responseJson.user.school_unit_id,
+                Group: responseJson.user.group_id,
                 IdCode: responseJson.user.identification_code,
                 Email: responseJson.user.email,
                 isProfessional: responseJson.user.is_professional,
                 RiskGroup: responseJson.user.risk_group,
                 State: responseJson.user.state,
                 City: responseJson.user.city,
-                GroupName: groupName,
-
-                groupCheckbox,
-                NewInst,
-                SchoolLocation,
-                EducationLevel,
-                Category,
             }
 
             this.setState({ userData });
@@ -149,20 +127,7 @@ class Perfis extends Component {
         let birthDate = household.birthdate.split('-')
         birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
 
-        const groupName = await getGroupName(household.school_unit_id)
-
         // Definindo variaveis logicas
-        let groupCheckbox = false
-        let NewInst = true
-        let SchoolLocation = null
-        let EducationLevel = null
-        let Category = null
-
-        if (household.school_unit_id) {
-            groupCheckbox = true
-            NewInst = false
-        }
-        
         const householdData = {
             userID: this.state.userID,
             userToken: this.state.userToken,
@@ -174,17 +139,10 @@ class Perfis extends Component {
             Country: household.country,
             Gender: household.gender,
             Race: household.race,
-            Group: household.school_unit_id,
+            Group: household.group_id,
             IdCode: household.identification_code,
             Kinship: household.kinship,
             RiskGroup: household.risk_group,
-            GroupName: groupName,
-            
-            groupCheckbox,
-            NewInst,
-            SchoolLocation,
-            EducationLevel,
-            Category,
         }
 
         this.setState({ householdData });

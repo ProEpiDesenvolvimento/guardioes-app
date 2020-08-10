@@ -85,10 +85,6 @@ class Registrar extends Component {
         })
     }
 
-    componentDidMount() {
-        //this.setState({ school_units: ShcoolsSheet.school_units }) //Usado para o autocomplete
-    }
-
     findFilm(query) {
         if (query === '') {
             return []
@@ -106,13 +102,15 @@ class Registrar extends Component {
         })
     }
 
+    setInstituitionComponentError = (error) => {
+        this.state.instituitionComponentError = error
+    }
+
     render() {
         const { showAlert } = this.state
         const { query } = this.state
         const school_units = this.findFilm(query)
         const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
-
-        console.log(getCity(this.state.userState))
 
         return (
             <>
@@ -285,7 +283,7 @@ class Registrar extends Component {
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
                         setAlert={this.setAlert}
-                    />
+                        setErrorCallback={this.setInstituitionComponentError} />
 
                     <FormInline>
                         <FormLabel>{translate("register.email")}</FormLabel>
@@ -333,31 +331,28 @@ class Registrar extends Component {
 
     }
 
-    verifyInfos = async () => {
+    validateUserData = async () => {
+        let error = false
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
             Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
-        } else {
-            if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
-                Alert.alert("Estado e Cidade devem estar preenchidos")
-            } else {
-                if (this.state.userPwd.length < 8) {
-                    Alert.alert("A senha precisa ter no mínimo 8 caracteres")
-                } else {
-                    if (this.state.groupCheckbox == true && this.state.userGroup == null) {
-                        Alert.alert("Instituição deve estar preenchida")
-                    } else {
-                        if (this.state.userCountry == null) {
-                            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
-                        } else {
-                            if (this.state.userCategory == "UNB" && this.state.userIdCode == null) {
-                                Alert.alert("Número de Identificação deve estar preenchido")
-                            } else {
-                                this.create()
-                            }
-                        }
-                    }
-                }
-            }
+            error = true
+        } else if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
+            Alert.alert("Estado e Cidade devem estar preenchidos")
+            error = true
+        } else if (this.state.userPwd.length < 8) {
+            Alert.alert("A senha precisa ter no mínimo 8 caracteres")
+            error = true
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            error = true
+        } else if (this.state.userCountry == null) {
+                Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+                error = true
+        }
+        if (!error) {
+            this.create()
         }
     }
 
@@ -385,7 +380,7 @@ class Registrar extends Component {
                     birthdate: this.state.userBirth,
                     picture: this.state.userPicture,
                     identification_code: this.state.userIdCode,
-                    school_unit_id: this.state.userGroup,
+                    group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
                     risk_group: this.state.riskGroup
                 }
@@ -422,7 +417,6 @@ class Registrar extends Component {
             .then((response) => {
                 if (response.status == 200) {
                     this.setState({ userToken: response.headers.map.authorization })
-                    this.hideAlert()
                     return response.json()
                 } else {
                     alert("Algo deu errado")
@@ -440,6 +434,7 @@ class Registrar extends Component {
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
                 this.props.navigation.navigate('Home')
+                this.hideAlert()
             })
     }
 }
