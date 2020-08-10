@@ -1,12 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
+import { View, ActivityIndicator, AsyncStorage } from 'react-native';
 import { useTwitter } from 'react-native-simple-twitter';
 import { 
-  TWITTER_CONSUMERKEY1, 
-  TWITTER_CONSUMERKEY2, 
-  TWITTER_ACCESS1, 
-  TWITTER_ACCESS2, 
+  ENV_URL
 } from 'react-native-dotenv'
 
 import Noticias from './Noticias';
@@ -26,73 +22,27 @@ import {
 
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
+    const [perPage, setPerPage] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [twitterOption, setTwitterOption] = useState('@Proepi_')
+    const [twitterOption, setTwitterOption] = useState('Proepi_')
 
-  const { twitter } = useTwitter();
-
-  twitter.setConsumerKey(
-    TWITTER_CONSUMERKEY1,
-    TWITTER_CONSUMERKEY2,
-  );
-  twitter.setAccessToken(
-    TWITTER_ACCESS1,
-    TWITTER_ACCESS2,
-  );
-
-  async function Twitter(twitterOption) {
-    const response = await twitter.api(
-      'GET',
-      '/statuses/user_timeline.json',
-      {
-        screen_name: twitterOption,
-        count: 2,
-        tweet_mode: 'extended',
-        include_rts: 1,
-        exclude_replies: false,
-      },
-    );
-
-    var tweets = [];
-
-    response.map(response => {
-        let twitterImage = null
-        if(response.hasOwnProperty('extended_entities')){
-          twitterImage = response.extended_entities.media[0].media_url;
-        } 
-
-        data = {
-          id: response.id,
-          id_str: response.id_str,
-          name: response.user.name,
-          screen_name: response.user.screen_name,
-          created_at: response.created_at,
-          full_text: response.full_text,
-          image: twitterImage,
-        }
-        tweets.push(data)
+  async function fetchTweets(twitterOption) {
+    await fetch(`${ENV_URL}/twitter_apis/${twitterOption}`, {})
+      .then((response) => {
+        return response.json()
     })
-    setTwitter(tweets)
-    setLoading(false);
-    AsyncStorage.setItem('twitter', JSON.stringify(tweets));
-    displayData();
-  }
-
-  displayData = async () => {
-    try {
-      let tweet = await AsyncStorage.getItem('twitter');
-      console.log('AsyncStorage =>', JSON.parse(tweet));
-    }
-    catch(error){
-      console.log(error)
-    }
+    .then((responseJson) => {
+        setTwitter(responseJson.twitter_api.tweets.slice(perPage, perPage + 10)) // SALVA OS 200 AQUI twitters
+        setLoading(false) 
+    })
   }
 
   useEffect(() => {
-    setLoading(true)
-    Twitter(twitterOption);
+    fetchTweets(twitterOption);
+    setPerPage(0);
+    setLoading(true);
   }, [twitterOption]);
-    
+
   function loadingTwitters(loading){
     if (loading) {
       return (
@@ -123,7 +73,7 @@ export default function newNoticias() {
                 </TwitterOptionContainer>
                 {loadingTwitters(loading)}
                 <List 
-                    data={twitters}
+                    data={twitters.slice(0,15)}
                     keyExtractor={twitters => String(twitters.id)}
                     renderItem={({item}) => <Noticias data={item}/>}
                 />

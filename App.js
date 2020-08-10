@@ -3,6 +3,8 @@ import { SafeAreaView } from 'react-native';
 import * as Navegar from './src/components/navigation/navigator';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
 
+import './src/config/ReactotronConfig';
+
 class Guardioes extends Component {
   constructor(properties) {
     super(properties);
