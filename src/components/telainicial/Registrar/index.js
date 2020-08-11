@@ -122,7 +122,8 @@ class Registrar extends Component {
                     visible={this.state.modalVisibleRiskGroup}
                     onRequestClose={() => {
                         this.setModalVisible(!this.state.modalVisibleRiskGroup)
-                }}>
+                    }
+                }>
                     <ModalContainer>
                         <ModalBox>
                             <ModalTitle>
@@ -134,7 +135,7 @@ class Registrar extends Component {
                             </ModalText>
 
                             <Button onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                                this.setModalVisible(!this.state.modalVisibleRiskGroup)
                                 }
                             }>
                                 <ModalButton>
@@ -283,7 +284,8 @@ class Registrar extends Component {
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
                         setAlert={this.setAlert}
-                        setErrorCallback={this.setInstituitionComponentError} />
+                        setErrorCallback={this.setInstituitionComponentError}
+                    />
 
                     <FormInline>
                         <FormLabel>{translate("register.email")}</FormLabel>
@@ -417,6 +419,7 @@ class Registrar extends Component {
             .then((response) => {
                 if (response.status == 200) {
                     this.setState({ userToken: response.headers.map.authorization })
+                    this.hideAlert()
                     return response.json()
                 } else {
                     alert("Algo deu errado")
@@ -434,7 +437,6 @@ class Registrar extends Component {
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
                 this.props.navigation.navigate('Home')
-                this.hideAlert()
             })
     }
 }

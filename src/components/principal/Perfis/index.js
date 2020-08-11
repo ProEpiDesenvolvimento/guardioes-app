@@ -13,7 +13,6 @@ import { handleAvatar, getInitials } from '../../../utils/constUtils';
 import { scale } from '../../../utils/scallingUtils';
 import {API_URL} from 'react-native-dotenv';
 import translate from '../../../../locales/i18n';
-import { getGroupName } from '../../../utils/selectorUtils'; 
 
 Feather.loadFont();
 
@@ -127,7 +126,6 @@ class Perfis extends Component {
         let birthDate = household.birthdate.split('-')
         birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
 
-        // Definindo variaveis logicas
         const householdData = {
             userID: this.state.userID,
             userToken: this.state.userToken,

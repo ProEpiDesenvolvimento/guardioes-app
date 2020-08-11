@@ -282,17 +282,19 @@ class InstitutionSelector extends Component {
     render() {
         return (
             <View>
-                <CheckBoxStyled
-                    title={"É integrante de alguma instituição de Ensino?"}
-                    checked={this.state.groupCheckbox}
-                    onPress={async () => {
-                        if (!this.state.groupCheckbox && this.state.rootGroup == null) {
-                            this.getRootGroup()
-                        }
-                        await this.setState({ groupCheckbox: !this.state.groupCheckbox })
-                        this.updateParent()
-                    }}
-                />
+                <FormInlineCheck>
+                    <CheckBoxStyled
+                        title={"É integrante de alguma instituição de Ensino?"}
+                        checked={this.state.groupCheckbox}
+                        onPress={async () => {
+                            if (!this.state.groupCheckbox && this.state.rootGroup == null) {
+                                this.getRootGroup()
+                            }
+                            await this.setState({ groupCheckbox: !this.state.groupCheckbox })
+                            this.updateParent()
+                        }}
+                    />
+                </FormInlineCheck>
                 {this.state.groupCheckbox ?
                     <View>
                         {this.groupItemsManager()}

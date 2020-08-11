@@ -285,7 +285,7 @@ class EditarPerfil extends Component {
                     onRequestClose={() => {
                         this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
                     }
-                    }>
+                }>
                     <ModalContainer>
                         <ModalBox>
                             <ModalTitle>
@@ -297,7 +297,7 @@ class EditarPerfil extends Component {
 
                             <Button onPress={() => {
                                 this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
-                            }
+                                }
                             }>
                                 <ModalButton>
                                     <ModalButtonText>
@@ -332,7 +332,7 @@ class EditarPerfil extends Component {
                             <FormLabel>{translate("register.email")}</FormLabel>
                             <ReadOnlyInput>{this.state.Email}</ReadOnlyInput>
                         </FormInline>
-                        : null}
+                    : null}
 
                     <FormInline>
                         <FormLabel>{translate("register.name")}</FormLabel>
@@ -413,7 +413,7 @@ class EditarPerfil extends Component {
                                 />
                             </FormGroupChild>
                         </FormGroup>
-                        : null}
+                    : null}
 
                     {!isUser ?
                         <FormInline>
@@ -425,7 +425,7 @@ class EditarPerfil extends Component {
                                 onChange={(option) => this.setState({ Kinship: option.key })}
                             />
                         </FormInline>
-                        : null}
+                    : null}
 
                     <FormInlineCheck>
                         <CheckBoxStyled
@@ -435,30 +435,22 @@ class EditarPerfil extends Component {
                                 this.setState({ RiskGroup: !this.state.RiskGroup })
                             }}
                         />
-                        <Button onPress={async () => {
-                            this.setRiskGroupModalVisible(true)
-                        }
-                        }>
+                        <Button onPress={() => { this.setRiskGroupModalVisible(true) }}>
                             <Feather name="help-circle" size={scale(25)} color="#348EAC" />
                         </Button>
                     </FormInlineCheck>
 
-                    <FormGroup>
-                        {this.state.paramsLoaded ? (
-                            <InstitutionSelector
-                                setUserInstitutionCallback={this.setInstitutionCallback}
-                                setAlert={this.setAlert}
-                                userGroup={this.state.Group}
-                                userIdCode={this.state.IdCode}
-                                setErrorCallback={this.setInstituitionComponentError} 
-                            />
-                        ) : null}
-                    </FormGroup>
+                    {this.state.paramsLoaded ?
+                        <InstitutionSelector
+                            setUserInstitutionCallback={this.setInstitutionCallback}
+                            setAlert={this.setAlert}
+                            userGroup={this.state.Group}
+                            userIdCode={this.state.IdCode}
+                            setErrorCallback={this.setInstituitionComponentError} 
+                        />
+                    : null}
                         
-                    <Button onPress={async () => {
-                        await this.handleEdit()
-                    }
-                    }>
+                    <Button onPress={async () => await this.handleEdit()}>
                         <SendContainer>
                             <SendText>Salvar</SendText>
                         </SendContainer>

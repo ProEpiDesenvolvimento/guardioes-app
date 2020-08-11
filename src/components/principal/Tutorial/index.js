@@ -24,30 +24,6 @@ class Tutorial extends Component {
                 {/* Continuacao de como usar */}
                 <BodyText>{translate("tutorial.howToUse2")}</BodyText>
 
-                {/* Mudando para Noticias, titulo */}
-                <TouchableOpacity onPress={() => navigate('Noticias')}>
-                    <Subtitle>
-                        {translate("tutorial.news")}
-                    </Subtitle>
-                </TouchableOpacity>
-                <BodyText>
-                    {translate("tutorial.newsCont")}
-                </BodyText>
-                
-                <BodyText style={{ fontWeight: 'bold' }}>
-                    {translate("tutorial.newsPs")}
-                </BodyText>
-
-                {/* Conselhos de Saude */}
-                <TouchableOpacity onPress={() => navigate('Conselho')}>
-                    <Subtitle>
-                        {translate("tutorial.advices")}
-                    </Subtitle>
-                </TouchableOpacity>
-                <BodyText>
-                    {translate("tutorial.advicesCont")}
-                </BodyText>
-
                 {/* Diario */}
                 <TouchableOpacity onPress={() => navigate('Diario')}>
                     <Subtitle>
@@ -66,6 +42,30 @@ class Tutorial extends Component {
                 </TouchableOpacity>
                 <BodyText>
                     {translate("tutorial.healthMapCont")}
+                </BodyText>
+
+                {/* Conselhos de Saude */}
+                <TouchableOpacity onPress={() => navigate('Conselho')}>
+                    <Subtitle>
+                        {translate("tutorial.advices")}
+                    </Subtitle>
+                </TouchableOpacity>
+                <BodyText>
+                    {translate("tutorial.advicesCont")}
+                </BodyText>
+
+                {/* Mudando para Noticias, titulo */}
+                <TouchableOpacity onPress={() => navigate('Noticias')}>
+                    <Subtitle>
+                        {translate("tutorial.news")}
+                    </Subtitle>
+                </TouchableOpacity>
+                <BodyText>
+                    {translate("tutorial.newsCont")}
+                </BodyText>
+                
+                <BodyText>
+                    {translate("tutorial.newsPs")}
                 </BodyText>
             </ScrollViewStyled>
         )

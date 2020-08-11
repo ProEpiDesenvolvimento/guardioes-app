@@ -310,7 +310,6 @@ class Registrar extends Component {
             )
         })
             .then((response) => {
-                this.setState({ statusCode: response.status })
                 if (response.status == 201) {
                     console.warn("Criado")
                     this.hideAlert()
