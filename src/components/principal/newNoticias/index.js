@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, SafeAreaView } from 'react-native';
 import { 
   ENV_URL
 } from 'react-native-dotenv'
@@ -52,6 +52,8 @@ export default function newNoticias() {
     }
   }
     return (
+      <>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
         <Container>
             <ScrollNoticias>
                 <NoticiasTitle>
@@ -78,5 +80,6 @@ export default function newNoticias() {
                 />
             </ScrollNoticias>
         </Container>
+      </>
   );
 }
