@@ -8,7 +8,8 @@ import { Details, DetailsIcon, DetailsTitleWrapper, DetailsTitle, DetailsBodyTex
 
 import RNSecureStorage from 'rn-secure-storage';
 import { Redirect } from '../../../utils/constUtils';
-import { HelplineIcon, HospitalIcon, InsectIcon, SickIcon, TentIcon, VaccineIcon, WashIcon } from '../../../imgs/imageConst';
+import { BedIcon, DoctorIcon, GermIcon, HelplineIcon, HomeworkIcon, HospitalIcon, InsectIcon, MaskIcon } from '../../../imgs/imageConst';
+import { NoFlightIcon, ProtectionIcon, SickIcon, TentIcon, ThermometerIcon, VaccineIcon, VirusIcon, WashIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL, APP_ID} from 'react-native-dotenv';
@@ -66,18 +67,36 @@ class Conselho extends Component {
         const size = scale(50);
 
         switch (icon) {
+            case "bed":
+                return <BedIcon height={size} width={size} />
+            case "doctor":
+                return <DoctorIcon height={size} width={size} />
+            case "germ":
+                return <GermIcon height={size} width={size} />
             case "helpline":
                 return <HelplineIcon height={size} width={size} />
+            case "homework":
+                return <HomeworkIcon height={size} width={size} />
             case "hospital":
                 return <HospitalIcon height={size} width={size} />
             case "insect":
                 return <InsectIcon height={size} width={size} />
+            case "mask":
+                return <MaskIcon height={size} width={size} />
+            case "no-flight":
+                return <NoFlightIcon height={size} width={size} />
+            case "protection":
+                return <ProtectionIcon height={size} width={size} />
             case "sick":
                 return <SickIcon height={size} width={size} />
             case "tent":
                 return <TentIcon height={size} width={size} />
+            case "thermometer":
+                return <ThermometerIcon height={size} width={size} />
             case "vaccine":
                 return <VaccineIcon height={size} width={size} />
+            case "virus":
+                return <VirusIcon height={size} width={size} />
             case "wash":
                 return <WashIcon height={size} width={size} />     
         }

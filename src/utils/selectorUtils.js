@@ -132,26 +132,6 @@ export function getGroups(cat, lev, cyt){
     return groups
 }
 
-export async function getGroupName(ID) {
-    let groupName = []
-    await fetch(`${API_URL}/school_units/`, {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/json',
-        },
-    })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            //console.warn(responseJson)
-            responseJson.school_units.map(group => {
-                if (group.id === ID) {
-                    groupName.push(group.description)
-                }
-            })
-        })
-    return groupName;
-}
-
 export const schoolCategory = [
     { key: 'UNB', label: "Universidade de Brasília" },
     { key: 'SES-DF', label: "Secretaria de Educação do Distrito Federal" },
@@ -210,61 +190,3 @@ export function getGroups(){
     return groups
 }
 */
-
-/*export function getGroups() {
-    const groups = []
-    ShcoolsSheet.school_units.map(group => {
-        groups.push({ key: group.id, label: group.description })
-    })
-    return groups
-}*/
-
-/*export function getGroups(){
-    const groups = []
-    fetch(`${API_URL}/groups/`, {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/json',
-        },
-    })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            responseJson.groups.map(group => {
-                groups.push({ key: group.id, label: group.description })
-            })
-        })
-    return groups
-}*/
-
-
-/*
-//////USO EM TESTES
-const Data = [
-    {
-      "id": 1,
-      "description": "Turma UnB",
-      "kind": "Universidade",
-      "details": "Esse é o grupo da turma 1 UnB"
-    },
-    {
-        "id": 2,
-        "description": "Secretaria de Saude",
-        "kind": "Secretaria",
-        "details": "Esse é o grupo da turma 2 da Secretaria de Saude"
-    },
-    {
-        "id": 3,
-        "description": "Turma Samambaia",
-        "kind": "Municipio",
-        "details": "Esse é o grupo da turma 3 de Samambaia"
-    }
-]
-
-
-export function getGroups() {
-    const groups = []
-    Data.map(group => {
-        groups.push({ key: group.description, label: group.description })
-    })
-    return groups
-}//////////*/
