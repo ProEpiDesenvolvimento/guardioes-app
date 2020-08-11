@@ -19,28 +19,28 @@ import {
 
 export default function newNoticias() {
     const [twitters, setTwitter] = useState([]);
-    const [perPage, setPerPage] = useState(0);
+    // const [perPage, setPerPage] = useState(0);
     const [loading, setLoading] = useState(true);
-    const [twitterOption, setTwitterOption] = useState('Proepi_')
+    const [twitterOption, setTwitterOption] = useState('appguardioes')
 
-  async function fetchTweets(twitterOption) {
+  async function fetchTweets() {
+    // const twitterOption = await fetch(`${API_URL}/groups/${id}/get_twitter`)
     await fetch(`${API_URL}/twitter_apis/${twitterOption}`, {})
       .then((response) => {
         return response.json()
     })
     .then((responseJson) => {
-        setTwitter(responseJson.twitter_api.tweets.slice(perPage, perPage + 10)) // SALVA OS 200 AQUI twitters
+        setTwitter(responseJson.twitter_api.tweets.slice(0, 10))
         setLoading(false) 
     })
   }
 
   useEffect(() => {
     fetchTweets(twitterOption);
-    setPerPage(0);
     setLoading(true);
-  }, [twitterOption]);
+  }, []);
 
-  function loadingTwitters(loading){
+  function loadingTwitters(){
     if (loading) {
       return (
           <View style={{ flex: 1, padding: 20 }}>
@@ -60,7 +60,7 @@ export default function newNoticias() {
                 <FeedTitle>
                     Feed RSS do Guardiões
                 </FeedTitle>
-                <TwitterOptionContainer>
+                {/* <TwitterOptionContainer>
                   <TwitterOption>
                     <OptionLeft onPress={() => {setTwitterOption('unb_oficial')}} >
                       <OptionText>@unb_oficial</OptionText>
@@ -69,7 +69,7 @@ export default function newNoticias() {
                       <OptionText>@guardioesunb</OptionText>
                     </OptionRight>
                   </TwitterOption>
-                </TwitterOptionContainer>
+                </TwitterOptionContainer> */}
                 {loadingTwitters(loading)}
                 <List 
                     data={twitters.slice(0,15)}
