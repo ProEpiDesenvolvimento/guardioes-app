@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import StatusBarLight from '../../styled/StatusBarLight';
 import SnowSpinner from '../../styled/SnowSpinner';
-import { Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './styles';
+import { Container, Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import { imagemLogo, imagemLogoBR, logoProEpi, logoUnB } from '../../../imgs/imageConst';
+import { GDSLogoES, GDSLogoBR, ProEpiLogo2, UnBLogo2 } from '../../../imgs/imageConst';
+import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
@@ -80,7 +81,7 @@ class AuthLoadingScreen extends Component {
             .then((response) => {
                 if (response.status == 200) {
                     RNSecureStorage.set('userToken', response.headers.map.authorization, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    this.props.navigation.navigate('BottomMenu');
+                    return response.json();
                 }
                 else if (response.status == 401) {
                     this._logoutApp();
@@ -90,6 +91,10 @@ class AuthLoadingScreen extends Component {
                     this.props.navigation.navigate('Cadastro');
                 }
             })
+            .then((responseJson) => {
+                AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
+                this.props.navigation.navigate('BottomMenu');
+            }) 
     };
 
     // Render any loading content that you like here
@@ -97,28 +102,33 @@ class AuthLoadingScreen extends Component {
 
         let LogoType;
         if (translate("lang.code") === "es") {
-            LogoType = imagemLogo
+            LogoType = GDSLogoES
         }
         else {
-            LogoType = imagemLogoBR
+            LogoType = GDSLogoBR
         }
 
         return (
-            <GradientBackgroundView>
-                <StatusBarLight />
-                <Logo source={LogoType} />
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
+            <StatusBar backgroundColor='#5DD39E' barStyle="light-content"/>
+            <GradientBackgroundView> 
+                <Container>
+                    <Logo source={LogoType} />
 
-                <LogoContainer>
-                    <LogoWrapper>
-                        <LogoUnbProEpi source={logoProEpi} />
-                    </LogoWrapper>
-                    <LogoWrapper>
-                        <LogoUnbProEpi source={logoUnB} />
-                    </LogoWrapper>
-                </LogoContainer>
+                    <LogoContainer>
+                        <LogoWrapper>
+                            <LogoUnbProEpi source={ProEpiLogo2} />
+                        </LogoWrapper>
+                        <LogoWrapper>
+                            <LogoUnbProEpi source={UnBLogo2} />
+                        </LogoWrapper>
+                    </LogoContainer>
 
-                <SnowSpinner />
+                    <SnowSpinner />
+                </Container>
             </GradientBackgroundView>
+            </>
         );
     }
 }

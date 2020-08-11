@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
-import { ActivityIndicator } from 'react-native';
+import Spinner from 'react-native-spinkit';
 import { scale } from '../../utils/scallingUtils';
 
-export default styled(ActivityIndicator).attrs({
+export default styled(Spinner).attrs({
+    type: "ThreeBounce",
     color: "#ffffff",
-    size: scale(35),
+    size: scale(72)
 })`
     position: absolute;
     bottom: 10%;

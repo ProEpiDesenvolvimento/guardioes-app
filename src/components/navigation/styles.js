@@ -1,4 +1,8 @@
 import styled from 'styled-components/native';
+
+import ShadowView from 'react-native-simple-shadow-view';
+import { TouchableOpacity } from 'react-native';
+
 import { scale, percentage } from '../../utils/scallingUtils';
 
 export const HeaderNavigator = styled.View`
@@ -7,17 +11,16 @@ export const HeaderNavigator = styled.View`
     border-bottom-left-radius: ${scale(18)}px;
     border-bottom-right-radius: ${scale(18)}px;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
     padding-top: ${percentage(10)}px;
     padding-horizontal: ${percentage(4)}px;
     padding-bottom: ${percentage(4)}px;
 `;
 
-export const BackButton = styled.TouchableOpacity`
-    position: absolute;
-    left: 15px;
-    bottom: 10px;
-`;
+export const BackButton = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.2
+})``;
 
 export const ScreenTitle = styled.Text`
     font-family: ArgentumSans-Medium;
@@ -25,37 +28,36 @@ export const ScreenTitle = styled.Text`
     color: #ffffff;
 `;
 
+export const Empty = styled.View`
+  width: ${scale(38)}px;
+`;
+
 export const Container = styled.View`
+  background-color: #ffffff;
+  border-top-right-radius: ${scale(25)}px;
+  border-bottom-right-radius: ${scale(25)}px;
   flex: 1;
 `;
 
-export const Button = styled.TouchableOpacity`
-`;
+export const ScrollViewStyled = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    flexGrow: 1,
+  }
+})``;
 
-export const TextName = styled.Text`
-  color: black;
-  font-weight: 500;
-  margin-top: ${scale(10)}px; 
-  font-size: ${scale(14)}px;
-`;
-
-export const Avatar = styled.Image`
-  border-radius: 50;
-  border-color: #ffffff;
-  border-width: 3px;
-  height: ${scale(90)}px;
-  width: ${scale(90)}px;
-`;
+export const Button = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.5
+})``;
 
 export const AvatarContainer = styled.View`
-  margin-bottom: ${scale(35)}px;
   align-items: center;
-  margin-top: ${scale(30)}px;
+  flex-direction: row;
+  justify-content: center;
+  margin-vertical: ${percentage(10)}px;
 `;
 
-export const UserOption = styled.View`
-  margin-top: ${scale(15)};
-  background: #348eac;
+const option = `
+  margin-bottom: ${scale(15)}px;
   flex-wrap: wrap;
   flex-direction: row;
   align-content: center;
@@ -64,25 +66,42 @@ export const UserOption = styled.View`
   margin-right: ${scale(16)}px;
   margin-left: ${scale(16)}px;
   padding: ${scale(10)}px;
+  shadow-opacity: 0.2;
+  shadow-radius: 10px;
+  shadow-offset: 0px 0px;
+`;
+
+export const UserOptionGreen = styled(ShadowView).attrs({
+})`
+  ${option}
+  background-color: #348eac;
+  shadow-color: #348eac;
+`;
+
+export const UserOptionBlue = styled(ShadowView).attrs({
+})`
+  ${option}
+  background-color: #5DD39E;
+  shadow-color: #5DD39E;
 `;
 
 export const TextOption = styled.Text`
+  font-family: ArgentumSans;
+  font-size: ${scale(14)}px;
   margin-left: ${scale(16)}px;
-  font-size: ${scale(16)}px;
   color: white;
-  font-weight: 500;
 `;
 
 export const Aplicativo = styled.Text`
-  margin-top:${scale(30)}px;
-  font-size: ${scale(18)}px;
-  font-weight: 500;
+  font-family: ArgentumSans-Medium;
+  font-size: ${scale(16)}px;
+  margin-top: ${percentage(5)}px;
+  margin-bottom: ${scale(15)}px;
   margin-left: ${scale(8)}%;
 `;
 
 export const SocialContainer = styled.View`
-  margin-top: ${(scale(-70))}px;
-  flex: 1;
+  margin-vertical: ${percentage(7)}px;
   flex-direction: row;
   margin-left: ${(scale(75))}px;
   margin-right: ${(scale(75))}px;
@@ -92,8 +111,13 @@ export const SocialContainer = styled.View`
   flex-wrap: wrap;
 `;
 
-export const RedeSocial = styled.View`
-  border-radius: 50px;
+export const RedeSocial = styled(ShadowView).attrs({
+})`
+  border-radius: 100px;
   background-color: #348eac;
   padding: ${scale(10)}px;
+  shadow-color: #348eac;
+  shadow-opacity: 0.2;
+  shadow-radius: 10px;
+  shadow-offset: 0px 0px;
 `;

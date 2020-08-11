@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import ShadowView from 'react-native-simple-shadow-view';
+import { TouchableOpacity } from 'react-native';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
@@ -21,19 +22,22 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
 })``;
 
 export const TitleWrapper = styled.View`
-    margin-bottom: ${percentage(5)}px;
+    margin-bottom: ${percentage(6)}px;
 `;
 
 export const Title = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(19)}px;
     color: #32323B;
+    include-font-padding: false;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const SubTitle = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #c4c4c4;
+    include-font-padding: false;
 `;
 
 export const AdvicesView = styled.View`
@@ -50,13 +54,15 @@ export const AdviceShadow = styled(ShadowView).attrs({
     background-color: #ffffff;
     border-radius: ${scale(18)}px;
     margin-bottom: ${percentage(7)}px;
-    shadow-color: #000000;
-    shadow-opacity: 0.2;
+    shadow-color: #5DD39E;
+    shadow-opacity: 0.4;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
 `;
 
-export const Advice = styled.TouchableOpacity`
+export const Advice = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5
+})`
     background-color: #5DD39E;
     padding: ${scale(14)}px;
     border-radius: ${scale(18)}px;

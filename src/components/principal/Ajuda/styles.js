@@ -5,6 +5,7 @@ import ShadowView from 'react-native-simple-shadow-view';
 import { scale, percentage } from '../../../utils/scallingUtils';
 
 export const Help = styled.View`
+    background-color: #f8f8f8;
     flex: 1;
     padding-top: ${percentage(8)}px;
     padding-horizontal: ${percentage(7)}px;
@@ -17,7 +18,7 @@ export const Box = styled(ShadowView).attrs({
     border-radius: ${scale(18)}px;
     margin-bottom: ${percentage(7)}px;
     shadow-color: #000000;
-    shadow-opacity: 0.2;
+    shadow-opacity: 0.1;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
 `;

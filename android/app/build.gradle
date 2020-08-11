@@ -134,7 +134,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 24
         versionName "2.2.2"
-        renderscriptTargetApi 28
+        renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
     }
     splits {
@@ -191,7 +191,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-spinkit')
     implementation project(':react-native-simple-shadow-view')
+    implementation project(':react-native-image-picker')
     implementation project(':rn-secure-storage')
     implementation project(':react-native-webview')
     implementation project(':@react-native-community_async-storage')

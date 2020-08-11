@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Alert, Keyboard, NetInfo } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import { SafeAreaView, Alert, Keyboard, NetInfo } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
+import KeyboardScrollView from '../../styled/KeyboardScrollView';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowInput from '../../styled/SnowInput';
 import SnowButton from '../../styled/SnowButton';
@@ -13,7 +13,7 @@ import { ButtonBack, Logo, PageTitle, FormSeparator, Label, LabelVisible } from 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import { imagemLogo, imagemLogoBR } from '../../../imgs/imageConst';
+import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
@@ -21,9 +21,6 @@ import {API_URL} from 'react-native-dotenv';
 Feather.loadFont();
 
 class Login extends Component {
-    static navigationOptions = {
-        header: null,
-    }
     constructor(props) {
         super(props);
         this.state = {
@@ -68,19 +65,17 @@ class Login extends Component {
 
         let LogoType;
         if (translate("lang.code") === "es") {
-            LogoType = imagemLogo
+            LogoType = GDSLogoES
         }
         else {
-            LogoType = imagemLogoBR
+            LogoType = GDSLogoBR
         }
 
         return (
-            <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
-                <GradientBackgroundView>
-                    <ButtonBack onPress={() => navigate('TelaInicial')}>
-                        <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
-                    </ButtonBack>
-
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
+            <GradientBackgroundView>
+                <KeyboardScrollView>
                     <Logo source={LogoType} />
                     <PageTitle>{translate("login.title")}</PageTitle>
 
@@ -115,18 +110,23 @@ class Login extends Component {
                         <LabelVisible>{translate("login.forgetbutton")}</LabelVisible>
                     </TransparentButton>
 
-                    <AwesomeAlert
-                        show={showAlert}
-                        showProgress={this.state.showProgressBar ? true : false}
-                        title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
-                        closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                        closeOnHardwareBackPress={false}
-                        showCancelButton={false}
-                        showConfirmButton={this.state.showProgressBar ? false : true}
-                        confirmButtonColor="#DD6B55"
-                    />
-                </GradientBackgroundView>
-            </KeyboardAwareScrollView>
+                    <ButtonBack onPress={() => this.props.navigation.goBack()}>
+                        <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
+                    </ButtonBack>
+                </KeyboardScrollView>
+
+                <AwesomeAlert
+                    show={showAlert}
+                    showProgress={this.state.showProgressBar ? true : false}
+                    title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
+                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={false}
+                    showConfirmButton={this.state.showProgressBar ? false : true}
+                    confirmButtonColor="#DD6B55"
+                />
+            </GradientBackgroundView>
+            </>
         );
     }
 
@@ -154,6 +154,7 @@ class Login extends Component {
                 .then((response) => {
                     if (response.status == 200) {
                         this.setState({ userToken: response.headers.map.authorization });
+                        this.hideAlert();
                         return response.json()
                     }
                     else if (response.status == 401) {
@@ -168,7 +169,7 @@ class Login extends Component {
                 .then((responseJson) => {
                     AsyncStorage.setItem('userID', responseJson.user.id.toString());
                     AsyncStorage.setItem('userName', responseJson.user.user_name);
-                    AsyncStorage.setItem('userAvatar', responseJson.user.picture);
+                    AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
                     AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 
                     RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
@@ -176,7 +177,6 @@ class Login extends Component {
                     RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
                     this.props.navigation.navigate('Home');
-                    this.hideAlert();
                 })
         }
     }

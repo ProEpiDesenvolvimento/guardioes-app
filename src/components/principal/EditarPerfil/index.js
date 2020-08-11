@@ -1,18 +1,23 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Alert, Modal, Button, TextInput } from 'react-native';
+import React, { Component } from 'react'
+import { View, StyleSheet, Alert, Modal, Platform } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import * as Imagem from '../../../imgs/imageConst';
-import { Avatar, CheckBox } from 'react-native-elements';
-import Feather from 'react-native-vector-icons/Feather';
-import { scale, percentage } from '../../../utils/scallingUtils';
-import DatePicker from 'react-native-datepicker';
-import {API_URL} from 'react-native-dotenv';
-import translate from '../../../../locales/i18n';
-import ModalSelector from 'react-native-modal-selector';
-import { gender, country, race, household, getGroups, getGroupName, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils';
-import { state, getCity } from '../../../utils/brasil';
+import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../Household/styles'
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild } from '../Household/styles'
+import { Selector, DateSelector, ReadOnlyInput, FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles'
+import { Delete } from './styles'
+
+import AsyncStorage from '@react-native-community/async-storage'
+import ImagePicker from 'react-native-image-picker'
+import { Avatar } from 'react-native-elements'
+import { scale } from '../../../utils/scallingUtils'
+import { API_URL } from 'react-native-dotenv'
+import translate from '../../../../locales/i18n'
+import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils'
+import { state, getCity } from '../../../utils/brasil'
+import { handleAvatar, getInitials } from '../../../utils/constUtils'
+import InstitutionSelector from '../../userData/InstitutionSelector'
+import LoadingModal from '../../modals/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -21,6 +26,8 @@ let y = data.getFullYear()
 
 let today = d + "-" + m + "-" + y
 
+Feather.loadFont();
+
 class EditarPerfil extends Component {
     static navigationOptions = {
         title: "Editar Perfil"
@@ -28,20 +35,435 @@ class EditarPerfil extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalVisibleHousehold: false,
-            modalVisibleUser: false,
+            isUser: null,
+            householdID: 0,
+            modalVisibleRiskGroup: false,
+            Picture: 'default',
+            CategoryLabel: translate("selector.label"),
+            GroupLabel: translate("selector.label"),
+            SchoolLocationLabel: translate("selector.label"),
+            EducationLevelLabel: translate("selector.label"),
+            paramsLoaded: false,
+            showAlert: false,
         }
+    }
+
+    componentDidMount() {
         this.fetchData()
     }
 
-    fetchData = () => {
-        const { params } = this.props.navigation.state;
-        console.log(params)
+    fetchData = async () => {
+        const { params } = this.props.navigation.state
+
+        await this.setState({ isUser: params.isUser })
+        await this.setState(params.data)
+
+        await this.getHouseholdAvatars()
+        this.setState({
+            paramsLoaded: true
+        })
+    }
+
+    getHouseholdAvatars = async () => {
+        let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
+
+        if (!householdAvatars) {
+            householdAvatars = {}
+        }
+
+        this.setState({ householdAvatars })
+    }
+
+    handleEdit = async () => {
+        if (!this.state.groupCheckbox) {
+            this.setState({ Group: null, IdCode: null, GroupName: null })
+        }
+        if (this.state.Country !== "Brazil") {
+            this.setState({ City: null, State: null })
+        }
+
+        if (this.state.isUser) {
+            await this.editUser()
+        }
+        else {
+            await this.editHousehold()
+        }
+    }
+
+    changeAvatar = () => {
+        const isUser = this.state.isUser
+        const householdID = this.state.householdID
+        let householdAvatars = this.state.householdAvatars
+
+        ImagePicker.showImagePicker(options, (response) => {
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton === 'remove') {
+                if (isUser) {
+                    AsyncStorage.removeItem('userAvatar')
+                }
+                else {
+                    householdAvatars[householdID] = null
+                    AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
+                }
+
+                this.setState({ Avatar: null })
+            } else {
+                let source = response.uri;
+
+                if (Platform.OS === 'android') {
+                    source = 'content://com.guardioesapp.provider/root' + response.path
+                }
+
+                if (isUser) {
+                    AsyncStorage.setItem('userAvatar', source)
+                }
+                else {
+                    householdAvatars[householdID] = source
+                    AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
+                }
+
+                this.setState({ Avatar: source })
+            }
+        });
+    }
+
+    isUserDataValid = () => {
+        if (this.state.Name == null || this.state.Name == '') {
+            Alert.alert("Nome não pode ficar em branco")
+            return false
+        } else if (this.state.Country == "Brazil" && (this.state.State == null || this.state.City == null)) {
+            Alert.alert("Estado e Cidade devem estar preenchidos")
+            return false
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            return false
+        } else if (this.state.Country == null) {
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+            return false
+        }
+        return true
+    }
+
+    editUser = () => {
+        if (!this.isUserDataValid()) {
+            return
+        }
+        this.setAlert(true)
+        return fetch(`${API_URL}/users/${this.state.userID}`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+            body: JSON.stringify(
+                {
+                    user_name: this.state.Name,
+                    picture: this.state.Picture,
+                    birthdate: this.state.Birth,
+                    gender: this.state.Gender,
+                    race: this.state.Race,
+                    group_id: this.state.Group,
+                    identification_code: this.state.IdCode,
+                    risk_group: this.state.RiskGroup,
+                    country: this.state.Country,
+                    state: this.state.State,
+                    city: this.state.City,
+                    is_professional: this.state.isProfessional
+                }
+            )
+        })
+            .then((response) => {
+                console.warn(response.status)
+                this.setAlert(false)
+                if (response.status == 200) {
+                    AsyncStorage.setItem('userName', this.state.Name)
+                    this.props.navigation.goBack()
+                } else {
+                    Alert.alert("Ocorreu um erro, tente novamente depois.")
+                }
+            })
+    }
+
+    isHouseholdDataValid = () => {
+        if (this.state.Name == null || this.state.Name == '' || this.state.Birth == null) {
+            Alert.alert("O nome e data de nascimento devem estar preenchidos\n")
+            return false
+        } else if (this.state.Gender == null || this.state.Race == null) {
+            Alert.alert("A raça e genero devem estar preenchidos")
+            return false
+        } else if (this.state.Kinship == null) {
+            Alert.alert("O parentesco deve estar preenchido")
+            return false
+        } else if (this.state.instituitionComponentError != null &&
+            this.state.instituitionComponentError != undefined &&
+            this.state.instituitionComponentError.length > 0) {
+            Alert.alert(this.state.instituitionComponentError)
+            return false
+        } else if (this.state.Country == null) {
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
+            return false
+        }
+        return true
+    }
+
+    editHousehold = () => {
+        if (!this.isHouseholdDataValid()) {
+            return
+        }
+        this.setAlert(true)
+        return fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+            body: JSON.stringify(
+                {
+                    description: this.state.Name,
+                    picture: this.state.Picture,
+                    birthdate: this.state.Birth,
+                    gender: this.state.Gender,
+                    race: this.state.Race,
+                    group_id: this.state.Group,
+                    identification_code: this.state.IdCode,
+                    risk_group: this.state.RiskGroup,
+                    country: this.state.Country,
+                    kinship: this.state.Kinship
+                }
+            )
+        })
+            .then((response) => {
+                console.warn(response.status)
+                this.setAlert(false)
+                if (response.status == 200) {
+                    this.props.navigation.goBack()
+                } else {
+                    Alert.alert("Ocorreu um erro, tente novamente depois.")
+                }
+            })
+    }
+
+    setRiskGroupModalVisible(visible) {
+        this.setState({ modalVisibleRiskGroup: visible })
+    }
+
+    setAlert = (val) => {
+        this.setState({
+            showAlert: val
+        })
+    }
+
+    setInstitutionCallback = (IdCode, Group) => {
+        this.setState({
+            IdCode: IdCode,
+            Group: Group,
+        })
+    }
+
+    setInstituitionComponentError = (error) => {
+        this.state.instituitionComponentError = error
+    }
+
+    render() {
+        const { isUser } = this.state
+        //console.log(this.state)
+
+        return (
+            <Container>
+                <Modal //Modal View for Risk Group Message
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.modalVisibleRiskGroup}
+                    onRequestClose={() => {
+                        this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
+                    }
+                }>
+                    <ModalContainer>
+                        <ModalBox>
+                            <ModalTitle>
+                                {translate("register.riskGroupTitle")}
+                            </ModalTitle>
+                            <ModalText>
+                                {translate("register.riskGroupMessage")}
+                            </ModalText>
+
+                            <Button onPress={() => {
+                                this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
+                                }
+                            }>
+                                <ModalButton>
+                                    <ModalButtonText>
+                                        {translate("register.riskGroupButton")}
+                                    </ModalButtonText>
+                                </ModalButton>
+                            </Button>
+                        </ModalBox>
+                    </ModalContainer>
+                </Modal>
+                <KeyboardScrollView>
+                    <FormInline>
+                        <Avatar
+                            size={scale(110)}
+                            source={handleAvatar(this.state.Avatar)}
+                            title={getInitials(this.state.Name)}
+                            activeOpacity={0.7}
+                            showEditButton
+                            rounded
+                            editButton={{ name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000' }}
+                            onEditPress={() => this.changeAvatar()}
+                        />
+                        {!isUser &&
+                            <Delete onPress={() => this.confirmDelete()}>
+                                <Feather name="trash-2" size={scale(25)} color='#ffffff' />
+                            </Delete>
+                        }
+                    </FormInline>
+
+                    {isUser ?
+                        <FormInline>
+                            <FormLabel>{translate("register.email")}</FormLabel>
+                            <ReadOnlyInput>{this.state.Email}</ReadOnlyInput>
+                        </FormInline>
+                    : null}
+
+                    <FormInline>
+                        <FormLabel>{translate("register.name")}</FormLabel>
+                        <NormalInput
+                            value={this.state.Name}
+                            onChangeText={text => this.setState({ Name: text })}
+                        />
+                    </FormInline>
+
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.gender")}</FormLabel>
+                            <Selector
+                                data={gender}
+                                initValue={this.state.Gender}
+                                cancelText={translate("selector.cancelButton")}
+                                onChange={(option) => this.setState({ Gender: option.key })}
+                            />
+                        </FormGroupChild>
+
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.race")}</FormLabel>
+                            <Selector
+                                data={race}
+                                initValue={this.state.Race}
+                                cancelText={translate("selector.cancelButton")}
+                                onChange={(option) => this.setState({ Race: option.key })}
+                            />
+                        </FormGroupChild>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.birth")}</FormLabel>
+                            <DateSelector
+                                placeholder={translate("birthDetails.format")}
+                                date={this.state.Birth}
+                                format="DD-MM-YYYY"
+                                minDate="01-01-1918"
+                                maxDate={today}
+                                locale={'pt-BR'}
+                                confirmBtnText={translate("birthDetails.confirmButton")}
+                                cancelBtnText={translate("birthDetails.cancelButton")}
+                                onDateChange={date => this.setState({ Birth: date })}
+                            />
+                        </FormGroupChild>
+
+                        <FormGroupChild>
+                            <FormLabel>{translate("register.country")}</FormLabel>
+                            <Selector
+                                data={country}
+                                initValue={this.state.Country}
+                                cancelText={translate("selector.cancelButton")}
+                                onChange={(option) => this.setState({ Country: option.key })}
+                            />
+                        </FormGroupChild>
+                    </FormGroup>
+
+                    {this.state.Country == "Brazil" && isUser ?
+                        <FormGroup>
+                            <FormGroupChild>
+                                <FormLabel>Estado:</FormLabel>
+                                <Selector
+                                    data={state}
+                                    initValue={this.state.State}
+                                    cancelText={translate("selector.cancelButton")}
+                                    onChange={(option) => this.setState({ State: option.key })}
+                                />
+                            </FormGroupChild>
+
+                            <FormGroupChild>
+                                <FormLabel>Cidade:</FormLabel>
+                                <Selector
+                                    data={getCity(this.state.State)}
+                                    initValue={this.state.City}
+                                    cancelText={translate("selector.cancelButton")}
+                                    onModalClose={(option) => this.setState({ City: option.key })}
+                                />
+                            </FormGroupChild>
+                        </FormGroup>
+                    : null}
+
+                    {!isUser ?
+                        <FormInline>
+                            <FormLabel>Parentesco:</FormLabel>
+                            <Selector
+                                data={household}
+                                initValue={this.state.Kinship}
+                                cancelText={translate("selector.cancelButton")}
+                                onChange={(option) => this.setState({ Kinship: option.key })}
+                            />
+                        </FormInline>
+                    : null}
+
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={"Faz parte do Grupo de Risco?"}
+                            checked={this.state.RiskGroup}
+                            onPress={() => {
+                                this.setState({ RiskGroup: !this.state.RiskGroup })
+                            }}
+                        />
+                        <Button onPress={() => { this.setRiskGroupModalVisible(true) }}>
+                            <Feather name="help-circle" size={scale(25)} color="#348EAC" />
+                        </Button>
+                    </FormInlineCheck>
+
+                    {this.state.paramsLoaded ?
+                        <InstitutionSelector
+                            setUserInstitutionCallback={this.setInstitutionCallback}
+                            setAlert={this.setAlert}
+                            userGroup={this.state.Group}
+                            userIdCode={this.state.IdCode}
+                            setErrorCallback={this.setInstituitionComponentError} 
+                        />
+                    : null}
+                        
+                    <Button onPress={async () => await this.handleEdit()}>
+                        <SendContainer>
+                            <SendText>Salvar</SendText>
+                        </SendContainer>
+                    </Button>
+                </KeyboardScrollView>
+                <LoadingModal show={this.state.showAlert}/>
+            </Container>
+        )
     }
 
     confirmDelete = () => {
         Alert.alert(
-            "Deletar Usuário",
+            "Deletar usuário",
             "Deseja deletar esse usuário?",
             [
                 {
@@ -64,452 +486,33 @@ class EditarPerfil extends Component {
             },
         }).then((response) => {
             console.warn(response.status)
-            this.getHouseholds()
+            if (response.status == 204) {
+                this.props.navigation.goBack()
+            } else {
+                Alert.alert("Ocorreu um erro, tente novamente depois.")
+            }
         })
-    }
-
-    editHousehold = () => {
-        if (!this.state.groupCheckbox) {
-            this.setState({
-                householdIdCode: null,
-                householdGroup: null
-            })
-        }
-        fetch(`${API_URL}/users/${this.state.userID}/households/${this.state.householdID}`, {
-            method: 'PATCH',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-                Authorization: `${this.state.userToken}`
-            },
-            body: JSON.stringify(
-                {
-                    description: this.state.householdName,
-                    birthdate: this.state.householdDob,
-                    country: this.state.householdCountry,
-                    gender: this.state.householdGender,
-                    race: this.state.householdRace,
-                    kinship: this.state.kinship,
-                    picture: this.state.picture,
-                    school_unit_id: this.state.householdGroup,
-                    identification_code: this.state.householdIdCode
-                }
-            )
-        })
-            .then((response) => {
-                if (response.status == 200) {
-                    console.warn(response.status)
-                    this.getHouseholds()
-                } else {
-                    console.warn(response.status)
-                }
-            })
-    }
-
-    editUser = () => {
-        fetch(`${API_URL}/users/${this.state.userID}`, {
-            method: 'PATCH',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-                Authorization: `${this.state.userToken}`
-            },
-            body: JSON.stringify(
-                {
-                    user_name: this.state.userName,
-                    birthdate: this.state.userDob,
-                    gender: this.state.userGender,
-                    race: this.state.userRace,
-                    school_unit_id: this.state.userGroup,
-                    identification_code: this.state.userIdCode,
-                    is_professional: this.state.isProfessional,
-                    risk_group: this.state.riskGroup,
-                    state: this.state.userState,
-                    city: this.state.userCity
-                }
-            )
-        })
-            .then((response) => {
-                if (response.status == 200) {
-                    console.warn(response.status)
-                    //this.getHouseholds()
-                } else {
-                    console.warn(response.status)
-                }
-            })
-    }
-
-    render() {
-        return (
-            <ScrollView>
-                <Modal //Modal View for household
-                    animationType="fade"
-                    transparent={true}
-                    visible={this.state.modalVisibleHousehold}
-                    onRequestClose={() => {
-                        this.setModalVisible(!this.state.modalVisibleHousehold) //Exit to modal view
-                    }}>
-                    <View style={styles.modalView}>
-                        <View style={{ paddingTop: 10 }}></View>
-                        <View style={styles.viewCommom}>
-                            <Text style={styles.commomText}>{translate("register.name")}</Text>
-                            <TextInput style={styles.formInput}
-                                value={this.state.householdName}
-                                onChangeText={text => this.setState({ householdName: text })}
-                            />
-                        </View>
-
-                        <View style={styles.viewRow}>
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>{translate("register.gender")}</Text>
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
-                                    style={{ width: '80%', height: '70%' }}
-                                    data={gender}
-                                    initValue={this.state.householdGender}
-                                    onChange={(option) => this.setState({ householdGender: option.key })}
-                                />
-                            </View>
-
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>{translate("register.race")}</Text>
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
-                                    style={{ width: '80%', height: '70%' }}
-                                    data={race}
-                                    initValue={this.state.householdRace}
-                                    onChange={(option) => this.setState({ householdRace: option.key })}
-                                />
-                            </View>
-
-                        </View>
-
-                        <View style={styles.viewRow}>
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>Nascimento:</Text>
-                                <DatePicker
-                                    style={{ width: '80%', height: scale(32), borderRadius: 5, borderWidth: 1, borderColor: 'rgba(0,0,0,0.11)' }}
-                                    showIcon={false}
-                                    date={this.state.householdDob}
-                                    androidMode='spinner'
-                                    locale={'pt-BR'}
-                                    mode="date"
-                                    placeholder={translate("birthDetails.format")}
-                                    format="DD-MM-YYYY"
-                                    minDate="01-01-1918"
-                                    maxDate={today}
-                                    confirmBtnText={translate("birthDetails.confirmButton")}
-                                    cancelBtnText={translate("birthDetails.cancelButton")}
-                                    customStyles={{
-                                        dateInput: {
-                                            borderWidth: 0
-                                        },
-                                        dateText: {
-                                            justifyContent: "center",
-                                            fontFamily: 'roboto',
-                                            fontSize: 17
-                                        },
-                                        placeholderText: {
-                                            justifyContent: "center",
-                                            fontFamily: 'roboto',
-                                            fontSize: 15,
-                                            color: 'black'
-                                        }
-                                    }}
-                                    onDateChange={date => this.setState({ householdDob: date })}
-                                />
-                            </View>
-
-                            <View style={styles.viewChildSexoRaca}>
-                                <Text style={styles.commomTextView}>{translate("register.country")}</Text>
-                                <ModalSelector
-                                    initValueTextStyle={{ color: 'black' }}
-                                    style={{ width: '80%', height: '70%' }}
-                                    data={country}
-                                    initValue={this.state.householdCountry}
-                                    onChange={(option) => this.setState({ householdCountry: option.key })}
-                                />
-                            </View>
-                        </View>
-
-                        <View style={styles.viewCommom}>
-                            <Text style={styles.commomText}>Parentesco:</Text>
-                            <ModalSelector
-                                initValueTextStyle={{ color: 'black' }}
-                                style={{ width: '90%', height: '70%' }}
-                                data={household}
-                                initValue={this.state.kinship}
-                                onChange={(option) => this.setState({ kinship: option.key })}
-                            />
-                        </View>
-
-                        <View style={{ paddingTop: 15 }}>
-                            <CheckBox
-                                title={"É integrante de alguma instituição de Ensino?"}
-                                containerStyle={styles.CheckBoxStyle}
-                                size={scale(16)}
-                                checked={this.state.groupCheckbox}
-                                onPress={() => { this.setState({ groupCheckbox: !this.state.groupCheckbox }) }}
-                            />
-                        </View>
-                        {this.state.groupCheckbox && this.state.householdNewInst?
-                            <View>
-                                <View style={styles.viewRow}>
-                                        <View style={styles.viewChildSexoRaca}>
-                                                <Text style={styles.commomTextView}>Categoria:</Text>
-                                                <ModalSelector
-                                                        initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                                        style={{ width: '80%', height: '70%' }}
-                                                        data={schoolCategory}
-                                                        initValue={this.state.initValueCategory}
-                                                        onChange={(option) => this.setState({ householdCategory: option.key, initValueCategory: option.label, householdEducationLevel: null })}
-                                                        />
-                                        </View>
-                                        {this.state.householdCategory == "UNB" ?
-                                                <View style={styles.viewChildSexoRaca}>
-                                                        <Text style={styles.commomTextView}>Faculdade:</Text>
-                                                        <ModalSelector
-                                                                initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                                                style={{ width: '80%', height: '70%' }}
-                                                                data={getGroups("UNB", "", "")}
-                                                                initValue={this.state.initValueGroup}
-                                                                onChange={async (option) => {
-                                                                        await this.setState({ householdGroup: option.key, initValueGroup: option.label })
-                                                                }}
-                                                                />
-                                                </View>
-                                                : this.state.householdCategory == "SES-DF" ?
-                                                <View style={styles.viewChildSexoRaca}>
-                                                    <Text style={styles.commomTextView}>Nivel de Ensino:</Text>
-                                                    <ModalSelector
-                                                            initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                                            style={{ width: '80%', height: '70%' }}
-                                                            data={educationLevel}
-                                                            initValue={this.state.initValueEducationLevel}
-                                                            onChange={(option) => this.setState({ householdEducationLevel: option.key, initValueEducationLevel: option.label })}
-                                                            />
-                                                </View>
-                                                : null}
-                                </View>
-                                {this.state.householdEducationLevel != null ?
-                                    <View style={styles.viewRow}>
-                                        <View style={styles.viewChildSexoRaca}>
-                                            <Text style={styles.commomTextView}>Região:</Text>
-                                                <ModalSelector
-                                                    initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                                    style={{ width: '80%', height: '70%' }}
-                                                    data={schoolLocation}
-                                                    initValue={this.state.initValueSchoolLocation}
-                                                    onChange={(option) => this.setState({ householdSchoolLocation: option.key, initValueSchoolLocation: option.label })}
-                                                />
-                                        </View>
-                                        {this.state.householdSchoolLocation != null ?
-                                            <View style={styles.viewChildSexoRaca}>
-                                                <Text style={styles.commomTextView}>Unidade:</Text>
-                                                    <ModalSelector
-                                                        initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                                        style={{ width: '80%', height: '70%' }}
-                                                        data={getGroups("SES-DF", this.state.householdEducationLevel, this.state.householdSchoolLocation)}
-                                                        initValue={this.state.initValueGroup}
-                                                        onChange={async (option) => {
-                                                            await this.setState({ householdGroup: option.key, initValueGroup: option.label })
-                                                        }}
-                                                    />
-                                            </View>
-                                            : null}
-                                    </View>
-                                    : this.state.householdGroup != null && this.state.householdCategory == "UNB"?
-                                    <View style={styles.viewRow}>
-                                        <View style={styles.viewChildSexoRaca}>
-                                            <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                                            <TextInput style={styles.formInput50}
-                                                returnKeyType='done'
-                                                keyboardType='number-pad'
-                                                value={this.state.householdIdCode}
-                                                onChangeText={async (text) => {
-                                                    await this.setState({ householdIdCode: text })
-                                                }}
-                                            />
-                                        </View>
-                                    </View>
-                                    : null}
-                            </View>
-                        : null}
-                            {this.state.groupCheckbox && !this.state.householdNewInst ?
-                                <View style={styles.viewRow}>
-                                    <View style={styles.viewChildSexoRaca}>
-                                        <Text style={styles.commomTextView}>Instituição:</Text>
-                                        <ModalSelector
-                                            initValueTextStyle={{ color: 'black', fontSize: 10 }}
-                                            style={{ width: '80%', height: '70%' }}
-                                            data={[{key: this.state.householdGroup, label: this.state.householdGroupName}]}
-                                            initValue={this.state.householdGroupName}
-                                            onChange={(option) => this.setState({ householdGroup: option.key, householdGroupName: option.label })}
-                                        />
-                                    </View>
-                                    {this.state.householdIdCode ?
-                                    <View style={styles.viewChildSexoRaca}>
-                                        <Text style={styles.commomTextView}>Nº de Identificação:</Text>
-                                        <TextInput style={styles.formInput50}
-                                            returnKeyType='done'
-                                            keyboardType='number-pad'
-                                            value={this.state.householdIdCode}
-                                            onChangeText={text => this.setState({ householdIdCode: text })}
-                                        />
-                                    </View>
-                                    : null}
-                                </View>
-                            : null}
-
-                        <View style={styles.buttonView}>
-                            <Button
-                                title="Salvar"
-                                color="#348EAC"
-                                onPress={() => {
-                                    this.avatarHouseholdSelector()
-                                    this.setModalVisible(!this.state.modalVisibleHousehold)
-                                }} />
-                            <View style={{ margin: 5 }}></View>
-                            <Button
-                                title="Cancelar"
-                                color="#348EAC"
-                                onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisibleHousehold)
-                                }} />
-                            {this.state.groupCheckbox && !this.state.householdNewInst ?
-                            <View>
-                            <View style={{ margin: 5 }}></View>
-                            <Button
-                                title="Editar instituição"
-                                color="#348EAC"
-                                onPress={() => {
-                                    this.setState({
-                                        householdNewInst: true,
-                                        householdIdCode: null
-                                    })
-                                }}
-                            />
-                            </View>
-                            : null}
-                        </View>
-                    </View>
-                </Modal>
-            </ScrollView>
-        )
     }
 }
+
+const options = {
+    title: 'Selecione imagem de Perfil',
+    takePhotoButtonTitle: 'Tire uma foto',
+    chooseFromLibraryButtonTitle: 'Selecione da Galeria',
+    customButtons: [{ name: 'remove', title: 'Remover foto' }],
+    noData: true,
+    quality: 0.5,
+    storageOptions: {
+        skipBackup: true,
+        path: 'gds',
+    },
+};
 
 const styles = StyleSheet.create({
     Avatar: {
         borderColor: '#ffffff',
         borderWidth: 3
     },
-    modalView: {
-        paddingTop: 30,
-        paddingBottom: 30,
-        alignSelf: 'center',
-        width: '93%',
-        //height: '60%',
-        //padding: 15,
-        marginTop: '15%',
-        marginBottom: '15%',
-        borderRadius: 20,
-        backgroundColor: 'white',
-        shadowColor: 'gray',
-        shadowOffset: {
-            width: 0,
-            height: 3
-        },
-        shadowRadius: 5,
-        shadowOpacity: 1.0,
-        elevation: 15,
-    },
-    viewCommom: {
-        width: '100%',
-        height: 65,
-        alignItems: 'center',
-    },
-    viewRow: {
-        width: '100%',
-        height: 65,
-        flexDirection: 'row',
-    },
-    viewChildSexoRaca: {
-        width: "50%",
-        height: 65,
-        alignItems: 'center',
-    },
-    viewChildPais: {
-        width: "50%",
-        height: 65,
-        //flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    viewChildData: {
-        width: "50%",
-        height: 65,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        paddingLeft: '5%',
-    },
-    selectSexoRaca: {
-        width: "80%",
-    },
-    formInput: {
-        width: "90%",
-        height: 35,
-        fontSize: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#348EAC',
-        paddingBottom: 0,
-        paddingTop: 2,
-    },
-    formInput50: {
-        width: "80%",
-        height: 35,
-        fontSize: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#348EAC',
-        paddingBottom: 0,
-        paddingTop: 2,
-    },
-    commomText: {
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#465F6C',
-        alignSelf: 'flex-start',
-        textAlign: 'left',
-        paddingLeft: "5%",
-    },
-    commomTextView: {
-        fontSize: 17,
-        fontFamily: 'roboto',
-        color: '#465F6C',
-        alignSelf: 'flex-start',
-        textAlign: 'left',
-        paddingLeft: '10%',
-    },
-    buttonView: {
-        width: "60%",
-        alignSelf: 'center',
-        marginTop: 20,
-        marginBottom: 10
-    },
-    textCountry: {
-        fontSize: 15,
-        fontFamily: 'roboto',
-    },
-    textBornCountry: {
-        width: '80%',
-        height: '60%',
-        textAlignVertical: 'center',
-        textAlign: 'center',
-        fontSize: 17,
-        color: 'gray'
-    }
 })
-
 
 export default EditarPerfil

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { SafeAreaView, StatusBar, Alert } from 'react-native';
 
 import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import StatusBarLight from '../../styled/StatusBarLight';
 import SnowShadow from '../../styled/SnowShadow';
 import SnowButton from '../../styled/SnowButton';
-import { Logo, WelcomeText, Label } from './styles';
+import { Container, Logo, WelcomeText, Label } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { imagemLogo, imagemLogoBR } from '../../../imgs/imageConst';
+import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import translate from '../../../../locales/i18n';
 
 const Redirect = (titulo, message, navigation) => {
@@ -27,11 +26,7 @@ class TelaInicial extends Component {
         super(props);
         //this._loadInitialState();
     }
-
-    static navigationOptions = {
-        header: null,
-    }
-
+    
     //Funcao responsavel por verificar se o usuario está logado e ser redirecionado automaticamente para Home
     _loadInitialState = async () => {
         let UserID = await AsyncStorage.getItem('userID');
@@ -43,31 +38,35 @@ class TelaInicial extends Component {
     
         let LogoType;
         if (translate("lang.code") === "es") {
-            LogoType = imagemLogo
+            LogoType = GDSLogoES
         }
         else {
-            LogoType = imagemLogoBR
+            LogoType = GDSLogoBR
         }
 
         return (
+            <>
+            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
+            <StatusBar backgroundColor='#5DD39E' barStyle="light-content"/>
             <GradientBackgroundView>
-                <StatusBarLight />
+                <Container>
+                    <Logo source={LogoType} />
+                    <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
 
-                <Logo source={LogoType} />
-                <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
+                    <SnowShadow>
+                        <SnowButton onPress={() => navigate('Login')}>
+                            <Label>{translate("initialscreen.login")}</Label>
+                        </SnowButton>
+                    </SnowShadow>
 
-                <SnowShadow>
-                    <SnowButton onPress={() => navigate('Login')}>
-                        <Label>{translate("initialscreen.login")}</Label>
-                    </SnowButton>
-                </SnowShadow>
-
-                <SnowShadow>
-                    <SnowButton onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
-                        <Label>{translate("initialscreen.signup")}</Label>
-                    </SnowButton>
-                </SnowShadow>
+                    <SnowShadow>
+                        <SnowButton onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
+                            <Label>{translate("initialscreen.signup")}</Label>
+                        </SnowButton>
+                    </SnowShadow>
+                </Container>
             </GradientBackgroundView>
+            </>
         );
     }
 }

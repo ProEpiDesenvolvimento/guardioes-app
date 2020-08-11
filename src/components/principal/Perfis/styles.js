@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import ShadowView from 'react-native-simple-shadow-view';
+import { TouchableOpacity } from 'react-native';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
@@ -19,7 +20,7 @@ const Profile = `
     margin-bottom: ${percentage(7)}px;
     padding: ${scale(15)}px;
     shadow-color: #000000;
-    shadow-opacity: 0.2;
+    shadow-opacity: 0.1;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
 `;
@@ -49,17 +50,24 @@ export const Name = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
     color: #ffffff;
+    include-font-padding: false;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const Relation = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #ffffff;
+    include-font-padding: false;
 `;
 
 export const ButtonsWrapper = styled.View`
     justify-content: center;
 `;
+
+export const Button = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.2
+})``;
 
 export const HouseholdWrapper = styled.View`
     padding-horizontal: ${scale(9)}px;
@@ -82,10 +90,13 @@ export const HouseholdName = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
     color: #348EAC;
+    include-font-padding: false;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const HouseholdRelation = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #c4c4c4;
+    include-font-padding: false;
 `;
