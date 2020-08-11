@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
-import { scale } from '../../../utils/scallingUtils';
+
+import ShadowView from 'react-native-simple-shadow-view';
+
+import { scale, percentage } from '../../../utils/scallingUtils';
 
 export const Container = styled.View`
   background-color: #348eac;
@@ -53,47 +56,45 @@ export const OptionText = styled.Text`
 `;
 
 
-export const ScrollNoticias = styled.ScrollView`
-    background-color: white;
-    border-top-right-radius: 35px;
-    border-top-left-radius: 35px;
-    padding-left: ${scale(15)}px;
-    padding-right: ${scale(15)}px;
-    padding-bottom: ${scale(55)}px;
-    padding-top: ${scale(20)}px;
-`;
+export const ScrollNoticias = styled.ScrollView.attrs({
+    contentContainerStyle: {
+        backgroundColor: '#ffffff',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        flexGrow: 1,
+        paddingTop: percentage(6),
+        paddingHorizontal: percentage(7),
+    }
+})``;
 
 export const NoticiasTitle = styled.Text`
-    font-size: ${scale(20)}px;
-    color: black;
-    font-family: ArgentumSans-Medium;
+    font-size: ${scale(19)}px;
+    color: #32323B;
+    font-family: ArgentumSans-SemiBold;
+    include-font-padding: false;
     margin-bottom: ${scale(5)}px;
 `;
 
 export const FeedTitle = styled.Text`
-    font-size: ${scale(16)}px;
+    font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #a8a8a7;
-    margin-bottom: ${scale(22)}px;
+    color: #c4c4c4;
+    include-font-padding: false;
+    margin-bottom: ${percentage(6)}px;
 `;
 
-export const NoticeContainer = styled.View.attrs({
-    shadowColor: "#000",
-    shadowOffset: {
-        width: 0,
-        height: 2,
-    },
-    shadowOpacity: 0.20,
-    shadowRadius: 4.65,
-
-    elevation: 6,
+export const NoticeContainer = styled(ShadowView).attrs({
 })`
     flex: 1;
     background-color: white;
-    border-radius: 20px;
+    border-radius: ${scale(18)}px;
     padding: ${scale(16)}px;
     max-width: 100%; 
-    margin-bottom: ${scale(25)}px;
+    margin-bottom: ${percentage(7)}px;
+    shadow-color: #000000;
+    shadow-opacity: 0.2;
+    shadow-radius: 4px;
+    shadow-offset: 0px 2px;
 `;
 
 export const Header = styled.View`
@@ -113,13 +114,13 @@ export const TwitterName = styled.Text`
 export const TwitterArroba = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #a8a8a7;
+    color: #c4c4c4;
 `;
 
 export const Data = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #a8a8a7;
+    color: #c4c4c4;
 `;
 
 export const NoticiaText = styled.Text` 
