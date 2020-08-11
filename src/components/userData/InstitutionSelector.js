@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+
 import { FormInlineCheck, FormGroup, FormGroupChild, FormLabel, NormalInput, Selector, CheckBoxStyled } from '../principal/Household/styles'
-import { View } from 'react-native'
-import { API_URL } from 'react-native-dotenv';
+
+import { API_URL } from 'react-native-dotenv'
+import translate from '../../../locales/i18n'
 
 class InstitutionSelector extends Component {
     constructor(props) {
@@ -16,6 +18,7 @@ class InstitutionSelector extends Component {
             userIdCode: props.userIdCode || null,
             selectedGroup: null,
             currentError: '',
+            lightTheme: props.lightTheme || false,
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
@@ -153,7 +156,7 @@ class InstitutionSelector extends Component {
                     this.getGroup(id, setAlert)
                     return
                 }
-                this.state.selectionIndexes.push({ label: "Selecionar", key: -1 })
+                this.state.selectionIndexes.push({ label: translate("selector.label"), key: -1 })
                 this.state.groupList.push(responseJson)
                 if (setAlert) this.props.setAlert(false)
                 this.updateParent()
@@ -194,7 +197,7 @@ class InstitutionSelector extends Component {
     groupComponent(group, index) {
         return (
             <FormGroupChild>
-                <FormLabel>
+                <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
                 </FormLabel>
                 <Selector
@@ -207,6 +210,7 @@ class InstitutionSelector extends Component {
                         })
                     }
                     initValue={this.state.selectionIndexes[index].label}
+                    cancelText={translate("selector.cancelButton")}
                     onChange={(option) => {
                         this.state.groupList = this.state.groupList.slice(0, index + 1)
                         this.state.selectionIndexes = this.state.selectionIndexes.slice(0, index + 1)
@@ -228,7 +232,7 @@ class InstitutionSelector extends Component {
     identificationCodeInput() {
         return (
             <FormGroupChild>
-                <FormLabel>
+                <FormLabel light={this.state.lightTheme}>
                     Nº de Identificação:
                 </FormLabel>
                 <NormalInput
@@ -281,7 +285,7 @@ class InstitutionSelector extends Component {
 
     render() {
         return (
-            <View>
+            <>
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={"É integrante de alguma instituição de Ensino?"}
@@ -296,11 +300,9 @@ class InstitutionSelector extends Component {
                     />
                 </FormInlineCheck>
                 {this.state.groupCheckbox ?
-                    <View>
-                        {this.groupItemsManager()}
-                    </View>
+                    this.groupItemsManager()
                 : null}
-            </View>
+            </>
         )
     }
 }

@@ -4,7 +4,7 @@ import Feather from 'react-native-vector-icons/Feather'
 
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from './styles'
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from './styles'
-import { FormInlineCheck, CheckBoxStyled, Button, SendContainer, SendText } from './styles'
+import { FormInlineCheck, CheckBoxStyled, CheckLabel, Button, SendContainer, SendText } from './styles'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
@@ -52,7 +52,7 @@ class Registrar extends Component {
         }
     }
 
-    setModalVisible(visible) {
+    setRiskGroupModalVisible(visible) {
         this.setState({ modalVisibleRiskGroup: visible })
     }
 
@@ -116,7 +116,7 @@ class Registrar extends Component {
                     transparent={true}
                     visible={this.state.modalVisibleRiskGroup}
                     onRequestClose={() => {
-                        this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                        this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
                     }
                 }>
                     <ModalContainer>
@@ -130,7 +130,7 @@ class Registrar extends Component {
                             </ModalText>
 
                             <Button onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                                this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
                                 }
                             }>
                                 <ModalButton>
@@ -217,10 +217,11 @@ class Registrar extends Component {
                                 this.setState({ riskGroup: !this.state.riskGroup })
                             }}
                         />
-                        <Button onPress={() => { this.setModalVisible(true) }}>
+                        <CheckLabel onPress={() => { this.setRiskGroupModalVisible(true) }}>
                             <Feather name="help-circle" size={scale(25)} color="#348EAC" />
-                        </Button>
+                        </CheckLabel>
                     </FormInlineCheck>
+
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
                         setAlert={this.setLoadingAlert}
@@ -261,7 +262,7 @@ class Registrar extends Component {
 
     isHouseholdDataValid = () => {
         let error = false
-        if (this.state.householdName == null || this.state.householdName == '' || this.state.householdDob == null) {
+        if (this.state.householdName == null || this.state.householdName == '' || this.state.householdBirth == null) {
             Alert.alert("O nome e data de nascimento devem estar preenchidos\n")
             error = true
         } else if (this.state.householdGender == null || this.state.householdRace == null) {

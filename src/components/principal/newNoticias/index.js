@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, ActivityIndicator, SafeAreaView } from 'react-native';
-import { 
-  ENV_URL
-} from 'react-native-dotenv'
+import { API_URL } from 'react-native-dotenv';
 
 import Noticias from './Noticias';
 
@@ -26,7 +24,7 @@ export default function newNoticias() {
     const [twitterOption, setTwitterOption] = useState('Proepi_')
 
   async function fetchTweets(twitterOption) {
-    await fetch(`${ENV_URL}/twitter_apis/${twitterOption}`, {})
+    await fetch(`${API_URL}/twitter_apis/${twitterOption}`, {})
       .then((response) => {
         return response.json()
     })

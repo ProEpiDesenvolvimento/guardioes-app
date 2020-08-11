@@ -4,7 +4,7 @@ import Feather from 'react-native-vector-icons/Feather'
 
 import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../Household/styles'
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild } from '../Household/styles'
-import { Selector, DateSelector, ReadOnlyInput, FormInlineCheck, CheckBoxStyled, SendContainer, SendText } from '../Household/styles'
+import { Selector, DateSelector, ReadOnlyInput, FormInlineCheck, CheckBoxStyled, CheckLabel, SendContainer, SendText } from '../Household/styles'
 import { Delete } from './styles'
 
 import AsyncStorage from '@react-native-community/async-storage'
@@ -13,7 +13,7 @@ import { Avatar } from 'react-native-elements'
 import { scale } from '../../../utils/scallingUtils'
 import { API_URL } from 'react-native-dotenv'
 import translate from '../../../../locales/i18n'
-import { gender, country, race, household, getGroups, schoolCategory, educationLevel, schoolLocation } from '../../../utils/selectorUtils'
+import { gender, country, race, household } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import { handleAvatar, getInitials } from '../../../utils/constUtils'
 import InstitutionSelector from '../../userData/InstitutionSelector'
@@ -291,6 +291,7 @@ class EditarPerfil extends Component {
                             <ModalTitle>
                                 {translate("register.riskGroupTitle")}
                             </ModalTitle>
+
                             <ModalText>
                                 {translate("register.riskGroupMessage")}
                             </ModalText>
@@ -435,9 +436,9 @@ class EditarPerfil extends Component {
                                 this.setState({ RiskGroup: !this.state.RiskGroup })
                             }}
                         />
-                        <Button onPress={() => { this.setRiskGroupModalVisible(true) }}>
+                        <CheckLabel onPress={() => { this.setRiskGroupModalVisible(true) }}>
                             <Feather name="help-circle" size={scale(25)} color="#348EAC" />
-                        </Button>
+                        </CheckLabel>
                     </FormInlineCheck>
 
                     {this.state.paramsLoaded ?

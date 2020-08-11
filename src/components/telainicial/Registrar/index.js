@@ -6,7 +6,7 @@ import GradientBackgroundView from '../../styled/GradientBackgroundView'
 import SnowButton from '../../styled/SnowButton'
 import SnowShadow from '../../styled/SnowShadow'
 import { KeyboardScrollView, FormInline, NormalInput, FormGroup, FormGroupChild } from '../../principal/Household/styles'
-import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button } from '../../principal/Household/styles'
+import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckLabel } from '../../principal/Household/styles'
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../principal/Household/styles'
 import { ButtonBack, PageTitle, FormLabel, FormTip, FormSeparator, Label } from './styles'
 
@@ -62,7 +62,7 @@ class Registrar extends Component {
         }
     }
 
-    setModalVisible(visible) {
+    setRiskGroupModalVisible(visible) {
         this.setState({ modalVisibleRiskGroup: visible })
     }
 
@@ -121,7 +121,7 @@ class Registrar extends Component {
                     transparent={true}
                     visible={this.state.modalVisibleRiskGroup}
                     onRequestClose={() => {
-                        this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                        this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
                     }
                 }>
                     <ModalContainer>
@@ -135,7 +135,7 @@ class Registrar extends Component {
                             </ModalText>
 
                             <Button onPress={() => {
-                                this.setModalVisible(!this.state.modalVisibleRiskGroup)
+                                this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup)
                                 }
                             }>
                                 <ModalButton>
@@ -276,15 +276,16 @@ class Registrar extends Component {
                                 this.setState({ riskGroup: !this.state.riskGroup })
                             }}
                         />
-                        <Button onPress={() => { this.setModalVisible(true) }}>
+                        <CheckLabel onPress={() => { this.setRiskGroupModalVisible(true) }}>
                             <Feather name="help-circle" size={scale(25)} color="#ffffff" />
-                        </Button>
+                        </CheckLabel>
                     </FormInlineCheck>
 
                     <InstitutionSelector
                         setUserInstitutionCallback={this.setUserInstitutionCallback}
                         setAlert={this.setAlert}
                         setErrorCallback={this.setInstituitionComponentError}
+                        lightTheme={true}
                     />
 
                     <FormInline>

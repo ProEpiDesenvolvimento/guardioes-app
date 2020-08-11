@@ -33,7 +33,7 @@ export const FormLabel = styled.Text`
     align-self: flex-start;
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
-    color: #32323B;
+    color: ${props => (props.light ? '#ffffff' : '#32323B')};
     text-align: left;
     margin-bottom: ${scale(12)}px;
 `;
@@ -68,6 +68,7 @@ export const FormGroupChild = styled.View`
     width: 48%;
     align-items: center;
     justify-content: space-between;
+    margin: 0;
 `;
 
 export const FormInlineCheck = styled.View`
@@ -161,7 +162,8 @@ export const CheckBoxStyled = styled(CheckBox).attrs({
         backgroundColor: '#ffffff',
         borderRadius: scale(15),
         borderWidth: 0,
-        marginLeft: 0
+        marginLeft: 0,
+        marginRight: 0
     },
     textStyle:{
         fontFamily: 'ArgentumSans',
@@ -175,6 +177,12 @@ export const CheckBoxStyled = styled(CheckBox).attrs({
     uncheckedColor: '#c4c4c4',
     size: scale(25),
 })``;
+
+export const CheckLabel = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5
+})`
+    margin-left: ${scale(10)}px;
+`;
 
 export const Button = styled(TouchableOpacity).attrs({
     activeOpacity: 0.5
