@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, ActivityIndicator, AsyncStorage } from 'react-native';
-import { useTwitter } from 'react-native-simple-twitter';
+import { View, ActivityIndicator } from 'react-native';
 import { 
   ENV_URL
 } from 'react-native-dotenv'
