@@ -310,14 +310,13 @@ class Registrar extends Component {
                             secureTextEntry={true}
                             ref={(input) => this.passwordInput = input}
                             onChangeText={text => this.setState({ userPwd: text })}
-                            onSubmitEditing={() => this.verifyInfos()}
                         />
                         <FormTip>{translate("register.passwordCondition")}</FormTip>
                     </FormInline>
 
                     <FormSeparator>
                         <SnowShadow>
-                            <SnowButton onPress={() => this.verifyInfos()}>
+                            <SnowButton onPress={() => this.create()}>
                                 <Label>{translate("register.signupButton")}</Label>
                             </SnowButton>
                         </SnowShadow>
@@ -334,7 +333,7 @@ class Registrar extends Component {
 
     }
 
-    validateUserData = async () => {
+    isUserDataValid = () => {
         let error = false
         if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
             Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
@@ -354,12 +353,13 @@ class Registrar extends Component {
                 Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
                 error = true
         }
-        if (!error) {
-            this.create()
-        }
+        return !error
     }
 
     create = () => {
+        if (!this.isUserDataValid()) {
+            return
+        }
         Keyboard.dismiss()
         this.showAlert()
         fetch(API_URL + '/user/signup', {
