@@ -239,7 +239,9 @@ PODS:
     - React
   - RNSecureStorage (1.0.82):
     - React
-  - RNShare (3.7.0):
+  - RNShare (3.6.0):
+    - React
+  - RNSVG (12.1.0):
     - React
   - RNVectorIcons (6.6.0):
     - React
@@ -285,6 +287,7 @@ DEPENDENCIES:
   - RNI18n (from `../node_modules/react-native-i18n`)
   - RNSecureStorage (from `../node_modules/rn-secure-storage/ios`)
   - RNShare (from `../node_modules/react-native-share`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -364,6 +367,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-secure-storage/ios"
   RNShare:
     :path: "../node_modules/react-native-share"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -387,11 +392,11 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
-  react-native-geolocation: a7b94614afbd5fd8350e0233a2025c8228fc8041
-  react-native-image-picker: 97bd3430fc91c7d1b82a51cf03a2a4e99e91c0b8
+  react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
+  react-native-image-picker: 21dfd898395b663680e987496f6c3431eea49fdb
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
-  react-native-onesignal: f6e1f20292cba72076ddb97e52290b0d5cc0a51c
-  react-native-webview: 40bbeb6d011226f34cb83f845aeb0fdf515cfc5f
+  react-native-onesignal: b77c201ba78bee36fd5e7725c6eb80a1180d351a
+  react-native-webview: 938d49de66f0d5c95134f19682243cbe53294f51
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -402,14 +407,15 @@ SPEC CHECKSUMS:
   React-RCTText: 9ccc88273e9a3aacff5094d2175a605efa854dbe
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
-  RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
+  RNCAsyncStorage: b16697280b08bab4b5f2f67f752d93d13a52e9ed
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
-  RNShare: a1d5064df7a0ebe778d001869b3f0a124bf0a491
+  RNShare: 953e60d1a179b214ae50b22a1b1f2e50ec549e6d
+  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: b544d6581d63eaec54381199d028a0151976ea31
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3

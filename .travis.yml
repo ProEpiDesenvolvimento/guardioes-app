@@ -11,13 +11,14 @@ install:
 - echo "APP_ID=1" >> .env
 android:
   components:
-  - build-tools-29.0.1
+  - build-tools-29.0.3
   - android-29
   - extra-android-m2repository
   - extra-google-google_play_services
   - extra-google-m2repository
   - addon-google_apis-google-16
 script:
+- npx jetify
 - cd android && ./gradlew assembleRelease
 - cp app/build/outputs/apk/release/app-release.apk ..
 - cd ..

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { SafeAreaView } from 'react-native';
 import * as Navegar from './src/components/navigation/navigator';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
+
+import './src/config/ReactotronConfig';
 
 class Guardioes extends Component {
   constructor(properties) {
@@ -34,16 +35,11 @@ class Guardioes extends Component {
     console.log('Device info: ', device);
   }
 
-
   render() {
     return (
-      <>
-      <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-        <Navegar.Authentication />
-      </>
+      <Navegar.Authentication />
     );
   }
 }
-
 
 export default Guardioes;

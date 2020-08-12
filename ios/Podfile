@@ -47,6 +47,8 @@ target 'guardioesapp' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
+
   target 'guardioesappTests' do
     inherit! :search_paths
     # Pods for testing

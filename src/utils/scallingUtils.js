@@ -9,4 +9,7 @@ const scale = size => width / guidelineBaseWidth * size;
 const verticalScale = size => height / guidelineBaseHeight * size;
 const moderateScale = (size, factor = 0.5) => size + ( scale(size) - size ) * factor;
 
-export {scale, verticalScale, moderateScale};
+const percentage = percent => (percent / 100) * width;
+const vPercentage = percent => (percent / 100) * height;
+
+export {scale, verticalScale, moderateScale, percentage, vPercentage};
