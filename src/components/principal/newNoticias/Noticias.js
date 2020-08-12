@@ -40,7 +40,7 @@ function newNoticias({ data }){
                     </Data>
                 </Header>
                 <NoticiaText>
-                    {data.text} 
+                    {`${data.text.substring(0, 90)}...`} 
                 </NoticiaText>
                 {data.image ? (
                 <Imagem

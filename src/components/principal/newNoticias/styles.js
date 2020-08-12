@@ -86,13 +86,13 @@ export const FeedTitle = styled.Text`
 export const NoticeContainer = styled(ShadowView).attrs({
 })`
     flex: 1;
-    background-color: white;
+    background-color: #5DD39E;
     border-radius: ${scale(18)}px;
     padding: ${scale(16)}px;
     max-width: 100%; 
     margin-bottom: ${percentage(7)}px;
-    shadow-color: #000000;
-    shadow-opacity: 0.2;
+    shadow-color: #5DD39E;
+    shadow-opacity: 0.4;
     shadow-radius: 4px;
     shadow-offset: 0px 2px;
 `;
@@ -108,24 +108,24 @@ export const TwitterInfo = styled.View`
 export const TwitterName = styled.Text`
     font-size: ${scale(16)}px;
     font-family: ArgentumSans-Medium;
-    color: #348eac;
+    color: #ffffff;
 `;
 
 export const TwitterArroba = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #c4c4c4;
+    color: #ffffff;
 `;
 
 export const Data = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #c4c4c4;
+    color: #ffffff;
 `;
 
 export const NoticiaText = styled.Text` 
     font-size: ${scale(14)}px;
-    color: #32323B;
+    color: #ffffff;
     font-family: ArgentumSans;
     margin-top: ${scale(10)}px;
 `;
