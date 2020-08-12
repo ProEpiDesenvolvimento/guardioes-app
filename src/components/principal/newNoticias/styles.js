@@ -107,7 +107,7 @@ export const TwitterInfo = styled.View`
 
 export const TwitterName = styled.Text`
     font-size: ${scale(16)}px;
-    font-family: ArgentumSans-Medium;
+    font-family: ArgentumSans-SemiBold;
     color: #ffffff;
 `;
 
