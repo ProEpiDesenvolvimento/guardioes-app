@@ -46,7 +46,6 @@ class BadReport extends Component {
             this.fetchData();
         })
         this.state = {
-            avatarSelect: null,
             isLoading: true,
             country: 'Brazil',
             contactWithSymptomCheckbox: false,
@@ -323,7 +322,7 @@ class BadReport extends Component {
                             <Avatar
                                 size={scale(58)}
                                 source={handleAvatar(this.state.avatarSelect)}
-                                title={getInitials(this.state.userSelect)}
+                                title={getInitials(this.state.userSelected)}
                                 rounded
                             />
                         </IconWrapper>

@@ -66,7 +66,7 @@ class Conselho extends Component {
             })
     }
 
-    sortContents = (contents={}) => {
+    sortContents = (contents=[]) => {
         contents.sort((a, b) => {
             return (parseInt(a.title.length) > parseInt(b.title.length)) ? 1 : 
                 (parseInt(b.title.length) > parseInt(a.title.length)) ? -1 : 0
