@@ -28,7 +28,7 @@ class Conselho extends Component {
         this.state = {
             modalVisible: false,
             isLoading: true,
-            contentData: null
+            dataSource: []
         }
     }
 
@@ -56,11 +56,23 @@ class Conselho extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    dataSource: responseJson.contents,
-                    isLoading: false,
-                })
+                const sortedContents = this.sortContents(responseJson.contents)
+
+                if (sortedContents) {
+                    this.setState({ dataSource: sortedContents })
+                }
+
+                this.setState({ isLoading: false })
             })
+    }
+
+    sortContents = (contents={}) => {
+        contents.sort((a, b) => {
+            return (parseInt(a.title.length) > parseInt(b.title.length)) ? 1 : 
+                (parseInt(b.title.length) > parseInt(a.title.length)) ? -1 : 0
+        })
+
+        return contents
     }
 
     getContentIcon = (icon) => {

@@ -33,11 +33,22 @@ export const getInitials = (string) => {
 export const handleAvatar = (image) => {
     const source = { uri: image }
     
-    if (image) {
+    if (image && image !== 'default') {
         return source
     }
     else {
         return null
+    }
+}
+
+export const handleAsyncAvatar = (image) => {
+    const source = 'default'
+
+    if (image) {
+        return image
+    }
+    else {
+        return source
     }
 }
 

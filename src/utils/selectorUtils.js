@@ -14,8 +14,7 @@ export const gender = [
     { key: 'Homem Cis', label: translate("genderChoices.cisMan") },
     { key: 'Mulher Trans', label: translate("genderChoices.transWoman") },
     { key: 'Homem Trans', label: translate("genderChoices.transMan") },
-    { key: 'Não-binárie', label: translate("genderChoices.nonBinary") },
-    { key: 'Intersexo', label: translate("genderChoices.intersex") }
+    { key: 'Não-binárie', label: translate("genderChoices.nonBinary") }
 ];
 
 export const race = [

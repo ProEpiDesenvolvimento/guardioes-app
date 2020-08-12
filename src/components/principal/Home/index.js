@@ -15,7 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
-import { getNameParts, handleAvatar, getInitials } from '../../../utils/constUtils';
+import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
 
@@ -388,7 +388,7 @@ class Home extends Component {
                                             await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
                                             this.setModalVisible(!this.state.modalVisible);
                                             AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                            AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelect));
                                             AsyncStorage.setItem('userBirth', this.state.userBirth);
                                             AsyncStorage.removeItem('householdID');
                                             this.getUserHealth();
@@ -412,7 +412,7 @@ class Home extends Component {
                                                         await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: householdAvatars[household.id] });
                                                         this.setModalVisible(!this.state.modalVisible);
                                                         AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                        AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+                                                        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelect));
                                                         AsyncStorage.setItem('userBirth', household.birthdate);
                                                         AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                         this.getUserHealth();

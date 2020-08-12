@@ -42,8 +42,11 @@ class BadReport extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
-        this.fetchData();
+        this.props.navigation.addListener('willFocus', payload => {
+            this.fetchData();
+        })
         this.state = {
+            avatarSelect: null,
             isLoading: true,
             country: 'Brazil',
             contactWithSymptomCheckbox: false,
