@@ -3,7 +3,7 @@ import { View, ActivityIndicator, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 
-import { API_URL, ENV_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 
 import Noticias from './Noticias';
 
@@ -48,8 +48,7 @@ export default function newNoticias() {
 
         // Check if the user has an group_id, and get group twitter
         if(group !== null) {
-            //await fetch(`${API_URL}/groups/${group}/get_twitter`,{
-            await fetch(`${ENV_URL}/groups/2/get_twitter`)
+            await fetch(`${API_URL}/groups/${group}/get_twitter`,)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     twitterHandle = responseJson.twitter
@@ -57,7 +56,7 @@ export default function newNoticias() {
         } 
 
         // Get twitters to show
-        await fetch(`${ENV_URL}/twitter_apis/${twitterHandle}`, {})
+        await fetch(`${API_URL}/twitter_apis/${twitterHandle}`, {})
             .then((response) => response.json())
             .then((responseJson) => {
                 setTwitter(responseJson.twitter_api.tweets.slice(0, 10))
