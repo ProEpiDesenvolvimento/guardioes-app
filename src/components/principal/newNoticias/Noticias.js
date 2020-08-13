@@ -39,10 +39,9 @@ function newNoticias({ data }){
                     </Data>
                 </Header>
                 <NoticiaText>
-                    {`${data.text.substring(0, 90)}...`} 
+                    {`${data.text.substring(0, 70)}...`} 
                 </NoticiaText>
                 {data.images[0] ? (
-                console.log(data.images[0]),
                 <Imagem
                     source={{
                         uri: data.images[0],

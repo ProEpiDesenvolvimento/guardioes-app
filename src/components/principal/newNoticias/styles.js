@@ -114,7 +114,7 @@ export const TwitterName = styled.Text`
 export const TwitterArroba = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #ffffff;
+    color: #348eac;
 `;
 
 export const Data = styled.Text`
@@ -133,7 +133,7 @@ export const NoticiaText = styled.Text`
 export const Imagem = styled.Image`
     margin-top: ${scale(8)}px;
     width: ${scale(260)}px;
-    height: ${scale(80)}px;
+    height: ${scale(100)}px;
     border-radius: 10px;
 `;
 
