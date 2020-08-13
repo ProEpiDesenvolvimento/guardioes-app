@@ -202,9 +202,11 @@ export default {
     },
     "diary": {
         "title": "Diary",
+        "year": " year",
+        "years": " years",
         "participate": "Participants",
         "good": "Good",
-        "bad": "Ill",
+        "bad": "Bad",
         "report": " time",
         "reports": " times",
         "calendar": "Calendar",
@@ -212,7 +214,7 @@ export default {
         "charts": {
             "label": {
                 "good": "Good",
-                "bad": "Ill"
+                "bad": "Bad"
             },
             "chartDescription": "How many reports per month"
         }
@@ -251,7 +253,7 @@ export default {
     "maps": {
         "title": "Health Map",
         "reportGood": "Good",
-        "reportBad": "Ill",
+        "reportBad": "Bad",
         "guide": `Each point in the map represents a person or group of people.\n\nThe color represents the percentage of 'bads' and the size, the number of people.\n\nYou can tap the points to know more.`
     },
     "news": {
@@ -261,8 +263,8 @@ export default {
         "title": "New report",
         "howHealth": "How are you feeling?",
         "goodChoice": "Good",
-        "badChoice": "Ill",
-        "else": "If you've selected 'Ill' you can select the symptoms in the next screen."
+        "badChoice": "Bad",
+        "else": "If you've selected 'Bad' you can select the symptoms in the next screen."
     },
     "about": {
         "title": "About",
