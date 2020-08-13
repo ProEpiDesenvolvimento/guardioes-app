@@ -17,7 +17,7 @@ import {
 
 function newNoticias({ data }){
     const date = format(new Date(data.created_at), 'dd/MM/yy') 
-
+    console.log(data.images)
     return (
         <Button
             onPress={() => Redirect(
@@ -42,10 +42,11 @@ function newNoticias({ data }){
                 <NoticiaText>
                     {`${data.text.substring(0, 90)}...`} 
                 </NoticiaText>
-                {data.image ? (
+                {data.images[0] ? (
+                console.log(data.images[0]),
                 <Imagem
                     source={{
-                    uri: data.image,
+                        uri: data.images[0],
                     }}
                 />
                 ) :
