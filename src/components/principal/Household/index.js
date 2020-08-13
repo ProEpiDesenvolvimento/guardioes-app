@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { View, NetInfo, Alert, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
-import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from './styles'
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from './styles'
-import { FormInlineCheck, CheckBoxStyled, CheckLabel, Button, SendContainer, SendText } from './styles'
+import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from '../../styled/NormalForms'
+import { FormInlineCheck, CheckBoxStyled, CheckLabel, Button, SendContainer, SendText } from '../../styled/NormalForms'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'

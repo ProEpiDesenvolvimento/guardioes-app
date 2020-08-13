@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 
-import { scale, percentage } from '../../../utils/scallingUtils';
-
-export const ButtonBack = styled.TouchableOpacity`
-    position: absolute;
-    top: 2%;
-    left: 2%;
-`;
+import { scale } from '../../../utils/scallingUtils';
 
 export const PageTitle = styled.Text`
     font-family: 'ArgentumSans-SemiBold';
@@ -31,17 +25,4 @@ export const FormTip = styled.Text`
     font-size: ${scale(12)}px;
     color: #ffffff;
     margin-left: ${scale(12)}px;
-`;
-
-export const FormSeparator = styled.View`
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
-`;
-
-export const Label = styled.Text`
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(15)}px;
-    color: #32323b;
 `;

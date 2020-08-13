@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Alert, Modal, Platform } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
-import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../Household/styles'
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild } from '../Household/styles'
-import { Selector, DateSelector, ReadOnlyInput, FormInlineCheck, CheckBoxStyled, CheckLabel, SendContainer, SendText } from '../Household/styles'
 import { Delete } from './styles'
+import { ModalContainer, ModalBox, ModalTitle, ModalText, Button, ModalButton, ModalButtonText } from '../../styled/NormalForms'
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild } from '../../styled/NormalForms'
+import { Selector, DateSelector, ReadOnlyInput, FormInlineCheck, CheckBoxStyled, CheckLabel, SendContainer, SendText } from '../../styled/NormalForms'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import ImagePicker from 'react-native-image-picker'
@@ -315,7 +315,7 @@ class EditarPerfil extends Component {
                             size={scale(110)}
                             source={handleAvatar(this.state.Avatar)}
                             title={getInitials(this.state.Name)}
-                            activeOpacity={0.7}
+                            activeOpacity={0.5}
                             showEditButton
                             rounded
                             editButton={{ name: 'camera', type: 'feather', color: '#ffffff', underlayColor: '#000000' }}

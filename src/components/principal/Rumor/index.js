@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, Modal, Keyboard } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput } from '../Household/styles';
-import { FormGroup, FormGroupChild, Button, SendContainer, SendText } from '../Household/styles';
 import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles';
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput } from '../../styled/NormalForms';
+import { FormGroup, FormGroupChild, Button, SendContainer, SendText } from '../../styled/NormalForms';
 
 import RNSecureStorage from 'rn-secure-storage';
 import MapView, { Marker } from 'react-native-maps';

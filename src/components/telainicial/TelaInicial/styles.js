@@ -20,9 +20,3 @@ export const WelcomeText = styled.Text`
     margin-top: 2%;
     margin-bottom: 20%;
 `;
-
-export const Label = styled.Text`
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(15)}px;
-    color: #32323b;
-`;

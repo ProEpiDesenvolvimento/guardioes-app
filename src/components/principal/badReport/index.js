@@ -4,7 +4,7 @@ import { Text, View, NetInfo, Alert, Platform } from 'react-native';
 import ScreenLoader from '../../userData/ScreenLoader';
 import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
-import { Container, FormInline, FormLabel, Selector, SendContainer, SendText } from '../Household/styles';
+import { Container, FormInline, FormLabel, Selector, SendContainer, SendText } from '../../styled/NormalForms';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';

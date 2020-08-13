@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import { SafeAreaView, Keyboard, Alert, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
-import GradientBackgroundView from '../../styled/GradientBackgroundView'
-import SnowButton from '../../styled/SnowButton'
-import SnowShadow from '../../styled/SnowShadow'
-import { KeyboardScrollView, FormInline, NormalInput, FormGroup, FormGroupChild } from '../../principal/Household/styles'
-import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckLabel } from '../../principal/Household/styles'
-import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../principal/Household/styles'
-import { ButtonBack, PageTitle, FormLabel, FormTip, FormSeparator, Label } from './styles'
+import { GradientBackground, ButtonBack, FormSeparator, Touch, SnowButton, Label } from '../../styled/SnowForms'
+import { KeyboardScrollView, FormInline, NormalInput, FormGroup, FormGroupChild } from '../../styled/NormalForms'
+import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckLabel } from '../../styled/NormalForms'
+import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
+import { PageTitle, FormLabel, FormTip } from './styles'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
@@ -115,7 +113,7 @@ class Registrar extends Component {
         return (
             <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-            <GradientBackgroundView>
+            <GradientBackground>
                 <Modal //Modal View for Risk Group Message
                     animationType="fade"
                     transparent={true}
@@ -315,11 +313,11 @@ class Registrar extends Component {
                     </FormInline>
 
                     <FormSeparator>
-                        <SnowShadow>
-                            <SnowButton onPress={() => this.create()}>
+                        <Touch onPress={() => this.create()}>
+                            <SnowButton>
                                 <Label>{translate("register.signupButton")}</Label>
                             </SnowButton>
-                        </SnowShadow>
+                        </Touch>
                     </FormSeparator>
 
                     <ButtonBack onPress={() => this.props.navigation.goBack()}>
@@ -327,7 +325,7 @@ class Registrar extends Component {
                     </ButtonBack>
                 </KeyboardScrollView>
                 <LoadingModal show={showAlert} />
-            </GradientBackgroundView>
+            </GradientBackground>
             </>
         )
 

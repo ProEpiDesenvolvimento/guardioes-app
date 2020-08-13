@@ -52,7 +52,8 @@ export const CheckBoxStyled = styled(CheckBox).attrs({
         backgroundColor: '#ffffff',
         borderRadius: scale(15),
         borderWidth: 0,
-        marginLeft: 0
+        marginLeft: 0,
+        marginRight: 0
     },
     textStyle:{
         fontFamily: 'ArgentumSans',
@@ -91,6 +92,8 @@ export const DateSelector = styled(DatePicker).attrs({
         },
         dateText: {
             fontSize: scale(16),
+            fontFamily: 'ArgentumSans',
+            fontSize: scale(13),
             color: '#ffffff'
         },
     }

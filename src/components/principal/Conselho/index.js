@@ -3,7 +3,7 @@ import { SafeAreaView, TouchableOpacity, ScrollView, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather';
 
 import ScreenLoader from '../../userData/ScreenLoader';
-import { Container, ScrollViewStyled, TitleWrapper, Title, SubTitle, AdvicesView, AdviceShadow, Advice, AdviceTitle, AdviceIcon } from './styles';
+import { Container, ScrollViewStyled, TitleWrapper, Title, SubTitle, AdvicesView, Touch, Advice, AdviceTitle, AdviceIcon } from './styles';
 import { Details, DetailsIcon, DetailsTitleWrapper, DetailsTitle, DetailsBodyText, DetailsButton, DetailsButtonLabel } from './styles';
 
 import RNSecureStorage from 'rn-secure-storage';
@@ -138,17 +138,18 @@ class Conselho extends Component {
                             contentsData.map((content) => {
                                 if (content.app.id == APP_ID) {
                                     return (
-                                        <AdviceShadow key={content.id}>
-                                            <Advice
-                                                onPress={() => {
-                                                    if (content.content_type === "redirect") {
-                                                        Redirect(advicesText.redirect.title, advicesText.redirect.text, content.source_link)
-                                                    } else {
-                                                        this.setModalVisible(true)
-                                                        this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
-                                                    }
-                                                }}
-                                            >
+                                        <Touch 
+                                            key={content.id}
+                                            onPress={() => {
+                                                if (content.content_type === "redirect") {
+                                                    Redirect(advicesText.redirect.title, advicesText.redirect.text, content.source_link)
+                                                } else {
+                                                    this.setModalVisible(true)
+                                                    this.setState({ contentTitle: content.title, contentBody: content.body, contentSource: content.source_link })
+                                                }
+                                            }
+                                        }>
+                                            <Advice>
                                                     <AdviceTitle>
                                                         {content.title}
                                                     </AdviceTitle>
@@ -156,7 +157,7 @@ class Conselho extends Component {
                                                         {this.getContentIcon(content.icon)}
                                                     </AdviceIcon>
                                             </Advice>
-                                        </AdviceShadow>
+                                        </Touch>
                                     )
                                 }
                             })

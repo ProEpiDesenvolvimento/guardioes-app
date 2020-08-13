@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { FormInlineCheck, FormGroup, FormGroupChild, FormLabel, NormalInput, Selector, CheckBoxStyled } from '../principal/Household/styles'
+import { FormInlineCheck, FormGroup, FormGroupChild, FormLabel, NormalInput, Selector, CheckBoxStyled } from '../styled/NormalForms'
 
 import { API_URL } from 'react-native-dotenv'
 import translate from '../../../locales/i18n'
