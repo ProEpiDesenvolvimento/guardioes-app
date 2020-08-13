@@ -49,12 +49,16 @@ class InstitutionSelector extends Component {
             this.state.currentError = 'Você deve colocar o codigo de identificação'
         }
         let isIdRightLength = true
-        if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
-            isIdRightLength = this.state.userIdCode.length == this.state.selectedGroup.id_code_length
-            if (!isIdRightLength) {
-                this.state.currentError = 'O código deve conter exatamente ' + this.state.selectedGroup.id_code_length.toString() + ' digitos'
-            }
-        }
+        
+        // This checks if the id length of code is correct, as of know, this will not be implemented
+
+        // if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
+        //     isIdRightLength = this.state.userIdCode.length == this.state.selectedGroup.id_code_length
+        //     if (!isIdRightLength) {
+        //         this.state.currentError = 'O código deve conter exatamente ' + this.state.selectedGroup.id_code_length.toString() + ' digitos'
+        //     }
+        // }
+        
         let codeIsNumber = true
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded && isIdRightLength) {
             codeIsNumber = !isNaN(this.state.userIdCode)
