@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, ActivityIndicator, SafeAreaView } from 'react-native';
-import { ENV_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 
 import Noticias from './Noticias';
 
@@ -24,8 +24,8 @@ export default function newNoticias() {
     const [twitterOption, setTwitterOption] = useState('appguardioes')
 
   async function fetchTweets() {
-    // const twitterOption = await fetch(`${ENV_URL}/groups/${id}/get_twitter`)
-    await fetch(`${ENV_URL}/twitter_apis/${twitterOption}`, {})
+    // const twitterOption = await fetch(`${API_URL}/groups/${id}/get_twitter`)
+    await fetch(`${API_URL}/twitter_apis/${twitterOption}`, {})
       .then((response) => {
         return response.json()
     })
