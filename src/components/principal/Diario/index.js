@@ -259,7 +259,11 @@ class Diario extends Component {
                         </AvatarContainer>
                         <UserInfo>
                             <UserName>{getNameParts(this.state.userSelected, true)}</UserName>
-                            <UserDetails>{this.state.userAge} anos</UserDetails>
+                            <UserDetails>
+                                {this.state.userAge === 1 ?
+                                this.state.userAge + translate("diary.year") :
+                                this.state.userAge + translate("diary.years")}
+                            </UserDetails>
                         </UserInfo>
                     </UserData>
                     <UserDash>

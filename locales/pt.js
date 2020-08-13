@@ -205,6 +205,8 @@ export default {
     },
     "diary": {
         "title": "Diário",
+        "year": " ano",
+        "years": " anos",
         "participate": "Participações",
         "good": "Bem",
         "bad": "Mal",
