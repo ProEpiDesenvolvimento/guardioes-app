@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StatusBar, Alert } from 'react-native';
 
-import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import SnowShadow from '../../styled/SnowShadow';
-import SnowButton from '../../styled/SnowButton';
-import { Container, Logo, WelcomeText, Label } from './styles';
+import { GradientBackground, Touch, SnowButton, Label } from '../../styled/SnowForms';
+import { Container, Logo, WelcomeText } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
@@ -48,24 +46,24 @@ class TelaInicial extends Component {
             <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
             <StatusBar backgroundColor='#5DD39E' barStyle="light-content"/>
-            <GradientBackgroundView>
+            <GradientBackground>
                 <Container>
                     <Logo source={LogoType} />
                     <WelcomeText>{translate("initialscreen.welcome")}</WelcomeText>
 
-                    <SnowShadow>
-                        <SnowButton onPress={() => navigate('Login')}>
+                    <Touch onPress={() => navigate('Login')}>
+                        <SnowButton>
                             <Label>{translate("initialscreen.login")}</Label>
                         </SnowButton>
-                    </SnowShadow>
+                    </Touch>
 
-                    <SnowShadow>
-                        <SnowButton onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
+                    <Touch onPress={() => Redirect(textos.tituloTermosDeUso, textos.mensagem, navigation = this.props.navigation)}>
+                        <SnowButton>
                             <Label>{translate("initialscreen.signup")}</Label>
                         </SnowButton>
-                    </SnowShadow>
+                    </Touch>
                 </Container>
-            </GradientBackgroundView>
+            </GradientBackground>
             </>
         );
     }

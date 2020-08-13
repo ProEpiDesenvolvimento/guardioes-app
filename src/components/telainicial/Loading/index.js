@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 
-import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import SnowSpinner from '../../styled/SnowSpinner';
+import { GradientBackground, SnowSpinner } from '../../styled/SnowForms';
 import { Container, Logo, LogoContainer, LogoWrapper, LogoUnbProEpi } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import { GDSLogoES, GDSLogoBR, ProEpiLogo2, UnBLogo2 } from '../../../imgs/imageConst';
-import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 
@@ -112,7 +110,7 @@ class AuthLoadingScreen extends Component {
             <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
             <StatusBar backgroundColor='#5DD39E' barStyle="light-content"/>
-            <GradientBackgroundView> 
+            <GradientBackground> 
                 <Container>
                     <Logo source={LogoType} />
 
@@ -127,7 +125,7 @@ class AuthLoadingScreen extends Component {
 
                     <SnowSpinner />
                 </Container>
-            </GradientBackgroundView>
+            </GradientBackground>
             </>
         );
     }

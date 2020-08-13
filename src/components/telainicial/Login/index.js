@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import { SafeAreaView, Alert, Keyboard, NetInfo } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
-import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import KeyboardScrollView from '../../styled/KeyboardScrollView';
-import SnowShadow from '../../styled/SnowShadow';
-import SnowInput from '../../styled/SnowInput';
-import SnowButton from '../../styled/SnowButton';
-import TransparentButton from '../../styled/TransparentButton';
-import { ButtonBack, Logo, PageTitle, FormSeparator, Label, LabelVisible } from './styles';
+import { GradientBackground, KeyboardScrollView } from '../../styled/SnowForms';
+import { ButtonBack, FormSeparator, SnowInput, Touch, SnowButton, Label, TransparentButton } from '../../styled/SnowForms';
+import { Logo, PageTitle, LabelVisible } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
@@ -74,7 +70,7 @@ class Login extends Component {
         return (
             <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-            <GradientBackgroundView>
+            <GradientBackground>
                 <KeyboardScrollView>
                     <Logo source={LogoType} />
                     <PageTitle>{translate("login.title")}</PageTitle>
@@ -99,11 +95,11 @@ class Login extends Component {
                     </FormSeparator>
 
                     <FormSeparator>
-                        <SnowShadow>
-                            <SnowButton onPress={() => this.login()}>
+                        <Touch onPress={() => this.login()}>
+                            <SnowButton>
                                 <Label>{translate("login.loginbutton")}</Label>
                             </SnowButton>
-                        </SnowShadow>
+                        </Touch>
                     </FormSeparator>
 
                     <TransparentButton onPress={() => navigate('ForgetPwd')}>
@@ -125,7 +121,7 @@ class Login extends Component {
                     showConfirmButton={this.state.showProgressBar ? false : true}
                     confirmButtonColor="#DD6B55"
                 />
-            </GradientBackgroundView>
+            </GradientBackground>
             </>
         );
     }

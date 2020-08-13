@@ -7,31 +7,12 @@ export const Logo = styled.Image`
     resize-mode: contain;
 `;
 
-export const ButtonBack = styled.TouchableOpacity`
-    position: absolute;
-    top: 2%;
-    left: 2%;
-`;
-
 export const PageTitle = styled.Text`
     font-family: 'ArgentumSans-SemiBold';
     font-size: ${scale(21)}px;
     color: #ffffff;
     margin-top: 15%;
     margin-bottom: 5%;
-`;
-
-export const FormSeparator = styled.View`
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
-`;
-
-export const Label = styled.Text`
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(15)}px;
-    color: #32323b;
 `;
 
 export const LabelVisible = styled.Text`

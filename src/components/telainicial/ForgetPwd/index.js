@@ -3,12 +3,8 @@ import { SafeAreaView, Alert, NetInfo, View } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
-import GradientBackgroundView from '../../styled/GradientBackgroundView';
-import KeyboardScrollView from '../../styled/KeyboardScrollView';
-import SnowShadow from '../../styled/SnowShadow';
-import SnowInput from '../../styled/SnowInput';
-import SnowButton from '../../styled/SnowButton';
-import { ButtonBack, ScreenView, PageTitle, LabelWrapper, TextLabel, Label } from './styles';
+import { GradientBackground, KeyboardScrollView, ButtonBack, SnowInput, Touch, SnowButton, Label } from '../../styled/SnowForms';
+import { ScreenView, PageTitle, LabelWrapper, TextLabel } from './styles';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import { PasswordIcon } from '../../../imgs/imageConst';
@@ -136,7 +132,7 @@ class ForgetPwd extends Component {
         return (
             <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-            <GradientBackgroundView>
+            <GradientBackground>
                 <KeyboardScrollView>
                         <SwiperFlatList
                             showPagination={false}
@@ -160,17 +156,16 @@ class ForgetPwd extends Component {
                                     onChangeText={async (text) => await this.setState({ userEmail: text })}
                                 />
 
-                                <SnowShadow>
-                                    <SnowButton
-                                        onPress={() =>
-                                            //console.warn(this.state.userEmail)
-                                            //this.goToNextScreen()
-                                            this.sendToken()
-                                        }
-                                    >
+                                <Touch 
+                                    onPress={() =>
+                                        //console.warn(this.state.userEmail)
+                                        //this.goToNextScreen()
+                                        this.sendToken()
+                                }>
+                                    <SnowButton>
                                         <Label>{translate("forgetPwd.sendButton")}</Label>
                                     </SnowButton>
-                                </SnowShadow>
+                                </Touch>
                             </ScreenView>
                             <ScreenView>
                                 <PageTitle>{translate("getToken.title")}</PageTitle>
@@ -190,21 +185,21 @@ class ForgetPwd extends Component {
                                     onChangeText={async (text) => await this.setState({ verificationToken: text })}
                                 />
 
-                                <SnowShadow>
-                                    <SnowButton
-                                        onPress={() => {
-                                            if (!this.state.verificationToken) {
-                                                Alert.alert(translate("getToken.errorMessages.verificationCodeBlank"))
-                                            }
-                                            else {
-                                                this.confirmVerificationCode()
-                                            }
-                                            //this.goToNextScreen()
-                                        }}
-                                    >
+                                <Touch
+                                    onPress={() => {
+                                        if (!this.state.verificationToken) {
+                                            Alert.alert(translate("getToken.errorMessages.verificationCodeBlank"))
+                                        }
+                                        else {
+                                            this.confirmVerificationCode()
+                                        }
+                                        //this.goToNextScreen()
+                                    }
+                                }>
+                                    <SnowButton>
                                         <Label>{translate("getToken.confirm")}</Label>
                                     </SnowButton>
-                                </SnowShadow>
+                                </Touch>
                             </ScreenView>
                             <ScreenView>
                                 <PageTitle>{translate("changePwd.title")}</PageTitle>
@@ -230,19 +225,19 @@ class ForgetPwd extends Component {
                                     onSubmitEditing={() => this.resetPassword()}
                                 />
 
-                                <SnowShadow>
-                                    <SnowButton
-                                        onPress={() => {
-                                            if (this.state.userPwd.length < 8 || this.state.userPwdConfirm.length < 8) {
-                                                Alert.alert(translate("changePwd.errorMessages.shortPwd"))
-                                            } else {
-                                                this.resetPassword()
-                                            }
-                                        }}
-                                    >
+                                <Touch
+                                    onPress={() => {
+                                        if (this.state.userPwd.length < 8 || this.state.userPwdConfirm.length < 8) {
+                                            Alert.alert(translate("changePwd.errorMessages.shortPwd"))
+                                        } else {
+                                            this.resetPassword()
+                                        }
+                                    }
+                                }>
+                                    <SnowButton>
                                         <Label>{translate("changePwd.changeButton")}</Label>
                                     </SnowButton>
-                                </SnowShadow>
+                                </Touch>
                             </ScreenView>
                         </SwiperFlatList>
 
@@ -261,7 +256,7 @@ class ForgetPwd extends Component {
                     showConfirmButton={this.state.showProgressBar ? false : true}
                     confirmButtonColor="#DD6B55"
                 />
-            </GradientBackgroundView>
+            </GradientBackground>
             </>
         );
     }

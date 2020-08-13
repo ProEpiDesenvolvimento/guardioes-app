@@ -2,12 +2,6 @@ import styled from 'styled-components';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
-export const ButtonBack = styled.TouchableOpacity`
-    position: absolute;
-    top: 2%;
-    left: 2%;
-`;
-
 export const ScreenView = styled.View`
     width: ${percentage(100)}px;
     justify-content: center;
@@ -31,10 +25,4 @@ export const TextLabel = styled.Text`
     font-family: 'ArgentumSans-Medium';
     font-size: ${scale(15)}px;
     color: #ffffff;
-`;
-
-export const Label = styled.Text`
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(15)}px;
-    color: #32323b;
 `;
