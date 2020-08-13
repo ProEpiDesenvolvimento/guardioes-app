@@ -5,9 +5,8 @@ import ModalSelector from 'react-native-modal-selector';
 import DatePicker from 'react-native-datepicker';
 import { CheckBox } from 'react-native-elements';
 import ShadowView from 'react-native-simple-shadow-view';
-import { TouchableOpacity } from 'react-native';
 
-import { scale, percentage } from '../../../utils/scallingUtils';
+import { scale, percentage } from '../../utils/scallingUtils';
 
 export const Container = styled.View`
     flex: 1;
@@ -178,13 +177,13 @@ export const CheckBoxStyled = styled(CheckBox).attrs({
     size: scale(25),
 })``;
 
-export const CheckLabel = styled(TouchableOpacity).attrs({
+export const CheckLabel = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5
 })`
     margin-left: ${scale(10)}px;
 `;
 
-export const Button = styled(TouchableOpacity).attrs({
+export const Button = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5
 })``;
 

@@ -57,6 +57,7 @@ export const Touch = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
 })`
     width: 80%;
+    margin-top: ${scale(21)}px;
 `;
 
 export const SnowButton = styled(ShadowView).attrs({
@@ -66,7 +67,6 @@ export const SnowButton = styled(ShadowView).attrs({
     border-radius: ${scale(14)}px;
     align-items: center;
     justify-content: center;
-    margin-top: ${scale(21)}px;
     shadow-color: #ffffff;
     shadow-opacity: 0.4;
     shadow-radius: 10px;

@@ -48,24 +48,22 @@ export const AdvicesView = styled.View`
     align-items: flex-start;
 `;
 
-export const AdviceShadow = styled(ShadowView).attrs({
+export const Touch = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5
 })`
     width: 46%;
-    background-color: #ffffff;
-    border-radius: ${scale(18)}px;
     margin-bottom: ${percentage(7)}px;
+`;
+
+export const Advice = styled(ShadowView).attrs({
+})`
+    background-color: #5DD39E;
+    border-radius: ${scale(18)}px;
+    padding: ${scale(14)}px;
     shadow-color: #5DD39E;
     shadow-opacity: 0.4;
     shadow-radius: 10px;
     shadow-offset: 0px 4px;
-`;
-
-export const Advice = styled(TouchableOpacity).attrs({
-    activeOpacity: 0.5
-})`
-    background-color: #5DD39E;
-    padding: ${scale(14)}px;
-    border-radius: ${scale(18)}px;
 `;
 
 export const AdviceTitle = styled.Text`

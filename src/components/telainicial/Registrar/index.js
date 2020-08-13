@@ -3,9 +3,9 @@ import { SafeAreaView, Keyboard, Alert, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
 import { GradientBackground, ButtonBack, FormSeparator, Touch, SnowButton, Label } from '../../styled/SnowForms'
-import { KeyboardScrollView, FormInline, NormalInput, FormGroup, FormGroupChild } from '../../principal/Household/styles'
-import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckLabel } from '../../principal/Household/styles'
-import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../principal/Household/styles'
+import { KeyboardScrollView, FormInline, NormalInput, FormGroup, FormGroupChild } from '../../styled/NormalForms'
+import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckLabel } from '../../styled/NormalForms'
+import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
 import AsyncStorage from '@react-native-community/async-storage'
