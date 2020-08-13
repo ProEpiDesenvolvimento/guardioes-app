@@ -30,11 +30,6 @@ LocaleConfig.locales['pt'] = {
 
 LocaleConfig.defaultLocale = 'pt';
 
-const todayDate = new Date()
-
-const _format = 'YYYY-MM-DD'
-const _today = moment().format(_format)
-
 class Diario extends Component {
     static navigationOptions = {
         title: translate("diary.title")
@@ -79,9 +74,9 @@ class Diario extends Component {
         const userName = await AsyncStorage.getItem('userName')
         const userBirth = await AsyncStorage.getItem('userBirth')
         const userSelected = await AsyncStorage.getItem('userSelected')
-        const avatarSelect = await AsyncStorage.getItem('avatarSelected')
+        const avatarSelected = await AsyncStorage.getItem('avatarSelected')
         const userToken = await RNSecureStorage.get('userToken')
-        this.setState({ userID, userName, userBirth, userSelected, avatarSelect, userToken })
+        this.setState({ userID, userName, userBirth, userSelected, avatarSelected, userToken })
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected == this.state.userName) {
@@ -90,6 +85,10 @@ class Diario extends Component {
             const householdID = await AsyncStorage.getItem('householdID')
             this.setState({ householdID })
         }
+
+        const todayDate = new Date()
+        const todayFormatted = moment().format('YYYY-MM-DD')
+        this.setState({ todayDate, todayFormatted })
 
         this.getSurvey()
         this.getUserAge()
@@ -110,11 +109,11 @@ class Diario extends Component {
                     isLoading: false
                 })
                 this.defineMarkedDates()
-                this.getUserParticipation()
             })
     }
 
     getUserAge = () => {
+        const todayDate = this.state.todayDate
         const userBirthDate = new Date(this.state.userBirth)
         const difference = todayDate.getTime() - userBirthDate.getTime()
         const userAge = Math.floor(difference / (1000 * 60 * 60 * 24 * 365))
@@ -185,9 +184,12 @@ class Diario extends Component {
             daysGood,
             daysBad
         })
+
+        this.getUserParticipation()
     }
 
     getUserParticipation = () => {
+        const todayDate = this.state.todayDate
         const surveyData = this.state.dataSource.reverse();
         const daysMarked = this.state.daysMarked
         const daysGood = this.state.daysGood
@@ -250,7 +252,7 @@ class Diario extends Component {
                             <Avatar
                                 containerStyle={{ borderColor: '#ffffff', borderWidth: 3 }}
                                 size={scale(50)}
-                                source={handleAvatar(this.state.avatarSelect)}
+                                source={handleAvatar(this.state.avatarSelected)}
                                 title={getInitials(this.state.userSelected)}
                                 rounded
                             />
@@ -269,7 +271,7 @@ class Diario extends Component {
                                 <ChartContainer>
                                     <UserChart>
                                         <CalendarStyled
-                                            current={_today}
+                                            current={this.state.todayFormatted}
                                             markedDates={this.state.datesMarked}
                                             onDayPress={(day) => {
                                                 let symptomDate = this.state.markedDatesAll

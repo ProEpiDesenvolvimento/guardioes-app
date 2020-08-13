@@ -138,9 +138,9 @@ class BadReport extends Component {
         const userID = await AsyncStorage.getItem('userID');
         const userName = await AsyncStorage.getItem('userName');
         const userSelected = await AsyncStorage.getItem('userSelected');
-        const avatarSelect = await AsyncStorage.getItem('avatarSelected');
+        const avatarSelected = await AsyncStorage.getItem('avatarSelected');
         const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userName, userSelected, avatarSelect, userID, userToken });
+        this.setState({ userName, userSelected, avatarSelected, userID, userToken });
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected === this.state.userName) {
@@ -321,7 +321,7 @@ class BadReport extends Component {
                         <IconWrapper>
                             <Avatar
                                 size={scale(58)}
-                                source={handleAvatar(this.state.avatarSelect)}
+                                source={handleAvatar(this.state.avatarSelected)}
                                 title={getInitials(this.state.userSelected)}
                                 rounded
                             />

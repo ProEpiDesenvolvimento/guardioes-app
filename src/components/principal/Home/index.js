@@ -36,7 +36,7 @@ class Home extends Component {
         })
         this.state = {
             modalVisible: false,
-            userSelect: '',
+            userSelected: '',
             userName: null,
             userID: null,
             userToken: null,
@@ -138,10 +138,10 @@ class Home extends Component {
         const userToken = await RNSecureStorage.get('userToken');
         
         this.setState({ userID, userName, userBirth, userAvatar, isProfessional, userToken });
-        this.setState({ userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+        this.setState({ userSelected: this.state.userName, avatarSelected: this.state.userAvatar });
 
-        AsyncStorage.setItem('userSelected', this.state.userSelect);
-        AsyncStorage.setItem('avatarSelected', this.state.avatarSelect);
+        AsyncStorage.setItem('userSelected', this.state.userSelected);
+        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
         this.getHouseholds();
         this.getHouseholdAvatars();
         this.getUserLastSurveys();
@@ -304,7 +304,7 @@ class Home extends Component {
       const { showAlert } = this.state;
       const { navigate } = this.props.navigation;
 
-      const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelect);
+      const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
       const householdsData = this.state.data;
       const householdAvatars = this.state.householdAvatars;
 
@@ -325,8 +325,8 @@ class Home extends Component {
                   <Avatar
                     containerStyle={styles.Avatar}
                     size={scale(58)}
-                    source={handleAvatar(this.state.avatarSelect)}
-                    title={getInitials(this.state.userSelect)}
+                    source={handleAvatar(this.state.avatarSelected)}
+                    title={getInitials(this.state.userSelected)}
                     editButton={{name: null, type: 'feather', style: styles.dotAvatar}}
                     showEditButton
                     activeOpacity={0.5}
@@ -385,10 +385,10 @@ class Home extends Component {
                                 <UserWrapper>
                                     <Button
                                         onPress={async () => {
-                                            await this.setState({ householdID: null, userSelect: this.state.userName, avatarSelect: this.state.userAvatar });
+                                            await this.setState({ householdID: null, userSelected: this.state.userName, avatarSelected: this.state.userAvatar });
                                             this.setModalVisible(!this.state.modalVisible);
-                                            AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelect));
+                                            AsyncStorage.setItem('userSelected', this.state.userSelected);
+                                            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
                                             AsyncStorage.setItem('userBirth', this.state.userBirth);
                                             AsyncStorage.removeItem('householdID');
                                             this.getUserHealth();
@@ -409,10 +409,10 @@ class Home extends Component {
                                             <UserWrapper key={household.id}>
                                                 <Button
                                                     onPress={async () => {
-                                                        await this.setState({ householdID: household.id, householdName: household.description, userSelect: household.description, avatarSelect: householdAvatars[household.id] });
+                                                        await this.setState({ householdID: household.id, householdName: household.description, userSelected: household.description, avatarSelected: householdAvatars[household.id] });
                                                         this.setModalVisible(!this.state.modalVisible);
-                                                        AsyncStorage.setItem('userSelected', this.state.userSelect);
-                                                        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelect));
+                                                        AsyncStorage.setItem('userSelected', this.state.userSelected);
+                                                        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
                                                         AsyncStorage.setItem('userBirth', household.birthdate);
                                                         AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                         this.getUserHealth();

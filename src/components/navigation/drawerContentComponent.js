@@ -23,7 +23,8 @@ export default class drawerContentComponents extends Component {
         super(props);
         this.state = {
             userName: null,
-            householdsData: null
+            householdsData: null,
+            householdsSize: 0
         }
     }
 
@@ -54,6 +55,7 @@ export default class drawerContentComponents extends Component {
             .then((responseJson) => {
                 this.setState({
                     householdsData: responseJson.households,
+                    householdsSize: responseJson.households.length
                 })
             })
     }
@@ -89,12 +91,14 @@ export default class drawerContentComponents extends Component {
         const householdsData = this.state.householdsData;
         const householdAvatars = this.state.householdAvatars;
 
+        let index = this.state.householdsSize + 1
+
         return (
             <Container>
                 <ScrollViewStyled>
                     <AvatarContainer>
                         <Avatar
-                            containerStyle={[styles.Avatar, { zIndex: 999999999 }]}
+                            containerStyle={[styles.Avatar, { zIndex: index-- }]}
                             size={scale(60)}
                             source={handleAvatar(this.state.userAvatar)}
                             title={getInitials(this.state.userName)}
@@ -105,7 +109,7 @@ export default class drawerContentComponents extends Component {
                               return (
                                 <Avatar
                                     key={household.id}
-                                    containerStyle={[styles.Avatars, { zIndex: household.id }]}
+                                    containerStyle={[styles.Avatars, { zIndex: index-- }]}
                                     size={scale(60)}
                                     source={handleAvatar(householdAvatars[household.id])}
                                     title={getInitials(household.description)}
