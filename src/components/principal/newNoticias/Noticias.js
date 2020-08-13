@@ -17,7 +17,6 @@ import {
 
 function newNoticias({ data }){
     const date = format(new Date(data.created_at), 'dd/MM/yy') 
-    console.log(data.images)
     return (
         <Button
             onPress={() => Redirect(
