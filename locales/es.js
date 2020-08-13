@@ -205,6 +205,8 @@ export default {
     },
     "diary": {
         "title": "Diario de la Salud",
+        "year": " año",
+        "years": " años",
         "participate": "Participaciones",
         "good": "Bien",
         "bad": "Apenas",

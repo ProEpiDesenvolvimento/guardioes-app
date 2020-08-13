@@ -114,7 +114,7 @@ export const TwitterName = styled.Text`
 export const TwitterArroba = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;
-    color: #348eac;
+    color: #348EAC;
 `;
 
 export const Data = styled.Text`
@@ -137,5 +137,6 @@ export const Imagem = styled.Image`
     border-radius: 10px;
 `;
 
-export const Button = styled.TouchableOpacity`
-`;
+export const Button = styled.TouchableOpacity.attrs({
+    activeOpacity: 0.5
+})``;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { format } from 'date-fns'
+import moment from 'moment';
 
 import { Redirect } from '../../../utils/constUtils';
 
@@ -16,7 +16,7 @@ import {
 } from './styles';
 
 function newNoticias({ data }){
-    const date = format(new Date(data.created_at), 'dd/MM/yy') 
+    const date = moment(new Date(data.created_at)).format('DD/MM/YY') 
     return (
         <Button
             onPress={() => Redirect(
