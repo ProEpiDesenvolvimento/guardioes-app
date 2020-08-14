@@ -133,7 +133,7 @@ export const NoticiaText = styled.Text`
 export const Imagem = styled.Image`
     margin-top: ${scale(8)}px;
     width: ${scale(260)}px;
-    height: ${scale(80)}px;
+    height: ${scale(100)}px;
     border-radius: 10px;
 `;
 
