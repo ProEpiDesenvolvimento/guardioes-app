@@ -39,10 +39,8 @@ class EditarPerfil extends Component {
             householdID: 0,
             modalVisibleRiskGroup: false,
             Picture: 'default',
-            CategoryLabel: translate("selector.label"),
-            GroupLabel: translate("selector.label"),
-            SchoolLocationLabel: translate("selector.label"),
-            EducationLevelLabel: translate("selector.label"),
+            IdCode: null,
+            Group: null,
             paramsLoaded: false,
             showAlert: false,
         }
@@ -57,8 +55,8 @@ class EditarPerfil extends Component {
 
         await this.setState({ isUser: params.isUser })
         await this.setState(params.data)
-
         await this.getHouseholdAvatars()
+
         this.setState({
             paramsLoaded: true
         })
@@ -75,9 +73,6 @@ class EditarPerfil extends Component {
     }
 
     handleEdit = async () => {
-        if (!this.state.groupCheckbox) {
-            this.setState({ Group: null, IdCode: null, GroupName: null })
-        }
         if (this.state.Country !== "Brazil") {
             this.setState({ City: null, State: null })
         }

@@ -316,7 +316,8 @@ class Registrar extends Component {
                     this.hideAlert()
                     this.props.navigation.navigate('Home')
                 } else {
-                    console.warn("Algo deu errado, response:", response)
+                    console.warn(response)
+                    Alert.alert("Ocorreu um erro, tente novamente depois.")
                     this.hideAlert()
                 }
             })

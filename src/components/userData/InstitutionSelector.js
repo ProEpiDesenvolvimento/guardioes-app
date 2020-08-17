@@ -25,8 +25,6 @@ class InstitutionSelector extends Component {
         if (props.userGroup != null && props.userGroup != undefined) {
             this.getRootGroup(false)
             this.buildPath(props.userGroup)
-        } else {
-            this.getRootGroup()
         }
     }
 
@@ -99,8 +97,8 @@ class InstitutionSelector extends Component {
             })
             .then((responseJson) => {
                 this.setState({ rootGroup: responseJson.group })
-                this.getChildren(responseJson.group.id)
                 if (setAlert) this.props.setAlert(false)
+                this.getChildren(responseJson.group.id)
             })
     }
 
@@ -134,8 +132,8 @@ class InstitutionSelector extends Component {
                 
             })
             .then(() => {
-                this.props.setAlert(false)
                 this.updateParent()
+                this.props.setAlert(false)
             })
     }
 
@@ -162,8 +160,8 @@ class InstitutionSelector extends Component {
                 }
                 this.state.selectionIndexes.push({ label: translate("selector.label"), key: -1 })
                 this.state.groupList.push(responseJson)
-                if (setAlert) this.props.setAlert(false)
                 this.updateParent()
+                if (setAlert) this.props.setAlert(false)
             })
     }
 
@@ -189,8 +187,8 @@ class InstitutionSelector extends Component {
                 } else {
                     this.state.userIdCode = null
                 }
-                if (setAlert) this.props.setAlert(false)
                 this.updateParent()
+                if (setAlert) this.props.setAlert(false)
             })
     }
     

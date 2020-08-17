@@ -25,8 +25,7 @@ class Maps extends Component {
     constructor(props) {
         super(props)
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            //this.fetchData()
+            this.fetchData()
         })
         this.state = {
             dataSource: [],
