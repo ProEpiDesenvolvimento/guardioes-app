@@ -15,7 +15,8 @@ export const Container = styled.View`
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#F8F8F8',
-        flexGrow: 1
+        flexGrow: 1,
+        paddingBottom: 20
     }
 })``;
 
