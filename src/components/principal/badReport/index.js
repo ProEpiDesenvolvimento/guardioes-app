@@ -203,7 +203,7 @@ class BadReport extends Component {
         let data = []
         if (responseJson.messages.top_3[0].name === "Síndrome Gripal") {
             data = [
-                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
+                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/sobre-a-doenca#se-eu-ficar-doente") } },
                 { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) }
             ]
         } else {
@@ -225,7 +225,8 @@ class BadReport extends Component {
             'Deseja compartilhar um comunicado para pessoas com que teve contato?',
             [
                 { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
-                { text: 'Sim', onPress: () =>  {
+                {
+                    text: 'Sim', onPress: () => {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })
                             .catch((err) => { err && console.log(err); });
@@ -381,7 +382,7 @@ class BadReport extends Component {
                                 />
                             )
                         })
-                    : null}
+                        : null}
 
                     <FormTitleWrapper>
                         <FormTitle>
@@ -411,7 +412,7 @@ class BadReport extends Component {
                                 onChange={(option) => this.setState({ contactWithSymptom: option.key })}
                             />
                         </FormInline>
-                    : null}
+                        : null}
                     <CheckBoxStyled
                         title={translate("badReport.checkboxes.second")}
                         checked={this.state.lookedForHospital}
