@@ -160,6 +160,8 @@ class InstitutionSelector extends Component {
                 }
                 this.state.selectionIndexes.push({ label: translate("selector.label"), key: -1 })
                 this.state.groupList.push(responseJson)
+            })
+            .then(() => {
                 this.updateParent()
                 if (setAlert) this.props.setAlert(false)
             })
