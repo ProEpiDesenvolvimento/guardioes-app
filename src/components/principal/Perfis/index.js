@@ -64,6 +64,7 @@ class Perfis extends Component {
             }
         })
         .then(async (responseJson) => {
+            const userName = responseJson.user.user_name
             const userAvatar = this.state.userAvatar
 
             // Trata data de nascimento do user no formato correto
@@ -94,7 +95,7 @@ class Perfis extends Component {
                 City: responseJson.user.city,
             }
 
-            this.setState({ userData });
+            this.setState({ userName, userData })
         })
     }
 
@@ -153,7 +154,7 @@ class Perfis extends Component {
             RiskGroup: household.risk_group,
         }
 
-        this.setState({ householdData });
+        this.setState({ householdData })
     }
 
     render() {

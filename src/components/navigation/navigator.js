@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { HeaderNavigator, BackButton, ScreenTitle, Empty } from './styles';
@@ -14,7 +14,6 @@ import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
 import Conselho from '../principal/Conselho';
-// import Noticias from '../principal/Noticias';
 import Noticias from '../principal/newNoticias/';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
@@ -113,7 +112,6 @@ export const Stack = createStackNavigator({
     Perfis,
     EditarPerfil,
     Ajuda,
-    Household,
     TermosPoliticas,
     Rumor,
     Tutorial,
