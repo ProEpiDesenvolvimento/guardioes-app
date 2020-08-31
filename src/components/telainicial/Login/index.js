@@ -13,6 +13,7 @@ import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 
@@ -171,6 +172,8 @@ class Login extends Component {
                     RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    //Send User ID to Push Notification API
+                    OneSignal.setExternalUserId(responseJson.user.id.toString())
 
                     this.props.navigation.navigate('Home');
                 })
