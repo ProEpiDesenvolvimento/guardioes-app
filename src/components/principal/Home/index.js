@@ -132,9 +132,9 @@ class Home extends Component {
 
     initUserSelected = async () => {
         const userSelected = await AsyncStorage.getItem('userSelected');
+        const birthSelected = await AsyncStorage.getItem('birthSelected');
 
-        if (userSelected) {
-            const birthSelected = await AsyncStorage.getItem('birthSelected');
+        if (userSelected && birthSelected) {
             const avatarSelected = await AsyncStorage.getItem('avatarSelected');
 
             this.setState({ userSelected, birthSelected, avatarSelected });
@@ -258,7 +258,7 @@ class Home extends Component {
             },
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('You can use the location');
+            console.log('You can use the location on Android');
           } else {
             console.log('Location permission denied');
           }
@@ -406,10 +406,15 @@ class Home extends Component {
                                 <UserWrapper>
                                     <Button
                                         onPress={async () => {
-                                            await this.setState({ householdID: null, userSelected: this.state.userName, avatarSelected: this.state.userAvatar });
+                                            await this.setState({
+                                                householdID: null,
+                                                userSelected: this.state.userName,
+                                                birthSelected: this.state.userBirth,
+                                                avatarSelected: this.state.userAvatar
+                                            });
                                             this.setModalVisible(!this.state.modalVisible);
                                             AsyncStorage.setItem('userSelected', this.state.userSelected);
-                                            AsyncStorage.setItem('birthSelected', this.state.userBirth);
+                                            AsyncStorage.setItem('birthSelected', this.state.birthSelected);
                                             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
                                             AsyncStorage.removeItem('householdID');
                                             this.getUserHealth();
@@ -430,10 +435,16 @@ class Home extends Component {
                                             <UserWrapper key={household.id}>
                                                 <Button
                                                     onPress={async () => {
-                                                        await this.setState({ householdID: household.id, householdName: household.description, userSelected: household.description, avatarSelected: householdAvatars[household.id] });
+                                                        await this.setState({
+                                                            householdID: household.id,
+                                                            householdName: household.description,
+                                                            userSelected: household.description,
+                                                            birthSelected: household.birthdate,
+                                                            avatarSelected: householdAvatars[household.id]
+                                                        });
                                                         this.setModalVisible(!this.state.modalVisible);
                                                         AsyncStorage.setItem('userSelected', this.state.userSelected);
-                                                        AsyncStorage.setItem('birthSelected', household.birthdate);
+                                                        AsyncStorage.setItem('birthSelected', this.state.birthSelected);
                                                         AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
                                                         AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                         this.getUserHealth();
