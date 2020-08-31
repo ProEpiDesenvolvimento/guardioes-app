@@ -194,7 +194,9 @@ PODS:
   - react-native-onesignal (3.6.5):
     - OneSignal (= 2.12.6)
     - React (< 1.0.0, >= 0.13.0)
-  - react-native-webview (10.3.1):
+  - react-native-spinkit (1.4.1):
+    - React
+  - react-native-webview (10.3.2):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -270,6 +272,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
+  - react-native-spinkit (from `../node_modules/react-native-spinkit`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -335,6 +338,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-onesignal:
     :path: "../node_modules/react-native-onesignal"
+  react-native-spinkit:
+    :path: "../node_modules/react-native-spinkit"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -396,7 +401,8 @@ SPEC CHECKSUMS:
   react-native-image-picker: 21dfd898395b663680e987496f6c3431eea49fdb
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
   react-native-onesignal: b77c201ba78bee36fd5e7725c6eb80a1180d351a
-  react-native-webview: 938d49de66f0d5c95134f19682243cbe53294f51
+  react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
+  react-native-webview: e2c0bce9a1a7c7edd4eb30f0c3016fce216245ce
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
@@ -416,6 +422,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: b544d6581d63eaec54381199d028a0151976ea31
+PODFILE CHECKSUM: 094864a88c5fe8ebfcd15de616b80d4c8af54e82
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.9.1
