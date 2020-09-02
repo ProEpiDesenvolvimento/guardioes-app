@@ -71,7 +71,7 @@ export default class drawerContentComponents extends Component {
     }
 
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
-    _logoutApp = async () => {
+    _logoutApp = () => {
         AsyncStorage.removeItem('userID');
         AsyncStorage.removeItem('userName');
         AsyncStorage.removeItem('userBirth');
