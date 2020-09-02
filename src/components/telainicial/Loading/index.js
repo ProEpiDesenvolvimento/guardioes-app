@@ -91,7 +91,7 @@ class AuthLoadingScreen extends Component {
             })
             .then((responseJson) => {
                 AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
-                this.props.navigation.navigate('BottomMenu');
+                this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version });
             }) 
     };
 

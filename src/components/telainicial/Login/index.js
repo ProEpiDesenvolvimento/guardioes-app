@@ -172,7 +172,7 @@ class Login extends Component {
                     RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
 
-                    this.props.navigation.navigate('Home');
+                    this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version });
                 })
         }
     }
