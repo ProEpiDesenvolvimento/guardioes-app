@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StatusBar, Text, StyleSheet, NetInfo, Alert, Modal } from 'react-native';
 
-import { Container, ScrollViewStyle, Background, UserView, Button, NamesContainer, TextName, AppName } from './styles';
+import { Container, ScrollViewStyle, Background, MenuBars, UserView, Button, NamesContainer, TextName, AppName } from './styles';
 import { StatusContainer, TextStyle, StatusBemMal, StatusText, Bem, Mal, Alertas, AlertContainer } from './styles';
 import { StatusAlert, StatusTitle, StatusAlertText, Users, UserSelector, UserScroll, UserWrapper, UserName } from './styles';
 import { CoolAlert } from '../../styled/CoolAlert';
@@ -490,7 +490,7 @@ class Home extends Component {
                                     <Button 
                                         onPress={() => {
                                             this.setModalVisible(!this.state.modalVisible)
-                                            navigate('Household')
+                                            navigate('NovoPerfil')
                                         }}
                                     >
                                         <Feather
@@ -507,28 +507,24 @@ class Home extends Component {
                 </Modal>
             </ScrollViewStyle>
 
-            <Button
-                style={styles.menuBars}
-                onPress={() => this.props.navigation.openDrawer()}
-            >
+            <MenuBars onPress={() => this.props.navigation.openDrawer()}>
                 <SimpleLineIcons name="menu" size={26} color='#ffffff' />
-            </Button>
+            </MenuBars>
 
             <CoolAlert
                 show={showTermsConsent}
                 title={"Nossos termos e políticas de privacidade mudaram"}
                 message={`Para continuar utilizando o Guardiões da Saúde, você deve aceitar os novos termos. Nós levamos sua privacidade a sério.`}
-                closeOnTouchOutside={true}
+                closeOnTouchOutside={false}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={true}
                 confirmText={"Ler termos"}
                 onConfirmPressed={() => this.newTermsPolicy()}
-                onDismiss={() => this.hideAlert()}
             />
 
             <CoolAlert
                 show={showAlert}
-                showProgress={this.state.showProgressBar ? true : false}
+                showProgress={this.state.showProgressBar}
                 title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
                 message={this.state.alertMessage}
                 closeOnTouchOutside={this.state.showProgressBar ? false : true}
@@ -561,12 +557,6 @@ const emojis = [
 ]
 
 const styles = StyleSheet.create({
-    menuBars: {
-        position: 'absolute',
-        left: '4%',
-        top: '1%',
-        padding: '2%'
-    },
     Avatar: {
         marginRight: `${scale(8)}%`,
         borderColor: '#ffffff',

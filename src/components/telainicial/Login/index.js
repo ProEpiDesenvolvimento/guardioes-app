@@ -5,10 +5,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import { GradientBackground, KeyboardScrollView } from '../../styled/SnowForms';
 import { ButtonBack, FormSeparator, SnowInput, Touch, SnowButton, Label, TransparentButton } from '../../styled/SnowForms';
 import { Logo, PageTitle, LabelVisible } from './styles';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
@@ -111,15 +111,13 @@ class Login extends Component {
                     </ButtonBack>
                 </KeyboardScrollView>
 
-                <AwesomeAlert
+                <CoolAlert
                     show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
+                    showProgress={this.state.showProgressBar}
                     title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
                     closeOnTouchOutside={this.state.showProgressBar ? false : true}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
-                    confirmButtonColor="#DD6B55"
                 />
             </GradientBackground>
             </>

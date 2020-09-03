@@ -5,16 +5,16 @@ import Feather from 'react-native-vector-icons/Feather'
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, FormGroup, FormGroupChild, Selector, DateSelector } from '../../styled/NormalForms'
 import { FormInlineCheck, CheckBoxStyled, CheckLabel, Button, SendContainer, SendText } from '../../styled/NormalForms'
+import { CoolAlert } from '../../styled/CoolAlert'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage from 'rn-secure-storage'
-import AwesomeAlert from 'react-native-awesome-alerts'
 import { scale } from '../../../utils/scallingUtils'
 import translate from '../../../../locales/i18n'
 import { API_URL } from 'react-native-dotenv'
 import { gender, country, race, household } from '../../../utils/selectorUtils'
 import InstitutionSelector from '../../userData/InstitutionSelector'
-import LoadingModal from '../../modals/LoadingModal'
+import LoadingModal from '../../userData/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -25,7 +25,7 @@ let today = d + "-" + m + "-" + y
 
 Feather.loadFont();
 
-class Registrar extends Component {
+class NovoPerfil extends Component {
     static navigationOptions = {
         title: translate("home.addProfile")
     }
@@ -246,13 +246,13 @@ class Registrar extends Component {
                         </SendContainer>
                     </Button>
                 </KeyboardScrollView>
-                <AwesomeAlert
+
+                <CoolAlert
                     show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
+                    showProgress={this.state.showProgressBar}
                     title={this.state.showProgressBar ? translate("register.awesomeAlert.registeringMessage") : null}
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
                 />
                 <LoadingModal show={this.state.loadingAlert} />
@@ -324,4 +324,4 @@ class Registrar extends Component {
     }
 }
 
-export default Registrar
+export default NovoPerfil

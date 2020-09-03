@@ -2,12 +2,13 @@ import styled from 'styled-components';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import { scale, percentage } from '../../utils/scallingUtils';
+import { scale } from '../../utils/scallingUtils';
 
-export const CoolAlert = styled(AwesomeAlert).attrs({
+export const CoolAlert = styled(AwesomeAlert).attrs(props => ({
     overlayStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.4)'
     },
+    progressColor: '#348EAC',
     contentContainerStyle: {
         borderRadius: scale(18),
         padding: scale(16)
@@ -18,7 +19,7 @@ export const CoolAlert = styled(AwesomeAlert).attrs({
         color: '#32323B',
         paddingVertical: 0,
         paddingHorizontal: 0,
-        paddingBottom: scale(16),
+        paddingBottom: props.showProgress ? 0 : scale(16),
     },
     messageStyle: {
         fontFamily: 'ArgentumSans',
@@ -45,4 +46,4 @@ export const CoolAlert = styled(AwesomeAlert).attrs({
         fontFamily: 'ArgentumSans-Medium',
         fontSize: scale(14)
     }
-})``;
+}))``;

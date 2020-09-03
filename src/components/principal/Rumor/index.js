@@ -5,11 +5,11 @@ import Feather from 'react-native-vector-icons/Feather';
 import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles';
 import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput } from '../../styled/NormalForms';
 import { FormGroup, FormGroupChild, Button, SendContainer, SendText } from '../../styled/NormalForms';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import RNSecureStorage from 'rn-secure-storage';
 import MapView, { Marker } from 'react-native-maps';
 import {API_URL} from 'react-native-dotenv';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import translate from "../../../../locales/i18n";
 import Emoji from 'react-native-emoji';
 import { scale } from '../../../utils/scallingUtils';
@@ -140,6 +140,8 @@ export class Rumor extends Component {
   }
 
   render() {
+    const { showAlert } = this.state
+
     const marker = (
       <Marker
         coordinate={{
@@ -267,22 +269,17 @@ export class Rumor extends Component {
           </Button>
         </KeyboardScrollView>
 
-        <AwesomeAlert
-          show={this.state.showAlert}
-          showProgress={this.state.showProgressBar ? true : false}
+        <CoolAlert
+          show={showAlert}
+          showProgress={this.state.showProgressBar}
           title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-          message={this.state.showProgressBar ? null : <Text style={{ alignSelf: 'center' }}>{translate("rumor.rumorSent")} {emojis[0]}{emojis[0]}{emojis[0]}</Text>}
+          message={this.state.showProgressBar ? null : <Text>{translate("rumor.rumorSent")} {emojis[0]}{emojis[0]}{emojis[0]}</Text>}
           closeOnTouchOutside={this.state.showProgressBar ? false : true}
           closeOnHardwareBackPress={false}
           showConfirmButton={this.state.showProgressBar ? false : true}
           confirmText={translate("badReport.alertMessages.confirmText")}
-          confirmButtonColor='green'
-          onCancelPressed={() => {
-            this.hideAlert();
-          }}
-          onConfirmPressed={() => {
-            this.hideAlert();
-          }}
+          onCancelPressed={() => this.hideAlert()}
+          onConfirmPressed={() => this.hideAlert()}
           onDismiss={() => this.hideAlert()}
         />
       </Container>

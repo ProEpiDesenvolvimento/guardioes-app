@@ -111,7 +111,7 @@ export default {
         "news": "Tela de Notícias",
         "newsCont": "A tela de notícias é uma das funções que você acha na tela inicial, ela fica ligada no perfil do Guardiões e lá você pode ver muitas informações pois essa página está sempre atualizada.\n Já que você está por aqui dê uma passadinha lá.",
         "newsPs": "Ps: você não precisa ter conta no Twitter e você não recebe nenhum tipo de notificação/email.",
-        "advices": "Conselhos de Saúde",
+        "advices": "Dicas de Saúde",
         "advicesCont": "Aqui você encontra algumas informações importantes pra dar uma olhada, como Dengue Chicungunya e Zika, telefones úteis e também, com auxílio do Google Maps você tem acesso à hospitais e farmácias perto de você.",
         "diary": "Diário da Saúde",
         "diaryCont": "Essa é uma das telas mais importantes, aqui você consegue visualizar todos os envios que você tenha feito e também tem um calendário caso você precise desses dados para esclarecer algo em um consulta médica, por exemplo.",

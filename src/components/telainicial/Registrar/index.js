@@ -17,7 +17,7 @@ import { API_URL } from 'react-native-dotenv'
 import { gender, country, race } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import InstitutionSelector from '../../userData/InstitutionSelector'
-import LoadingModal from '../../modals/LoadingModal'
+import LoadingModal from '../../userData/LoadingModal'
 
 Feather.loadFont();
 
