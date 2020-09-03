@@ -1,6 +1,8 @@
 import { Alert, Linking } from 'react-native';
 
 import Geolocation from 'react-native-geolocation-service';
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 
 export const getNameParts = (fullName, firstandLast = false) => {
     if (typeof fullName === 'string') {
@@ -75,4 +77,19 @@ export const userLocation = () => {
         (error) => this.setState({ error: error.message }),
         { enableHighAccuracy: true, timeout: 50000 },
     );
+}
+
+export const logoutApp = (navigation) => {
+    AsyncStorage.removeItem('userID');
+    AsyncStorage.removeItem('userName');
+    AsyncStorage.removeItem('userBirth');
+    AsyncStorage.removeItem('userAvatar');
+    AsyncStorage.removeItem('userSelected');
+    AsyncStorage.removeItem('householdID');
+
+    RNSecureStorage.remove('userToken');
+    RNSecureStorage.remove('userEmail');
+    RNSecureStorage.remove('userPwd');
+    
+    navigation.navigate('TelaInicial');
 }

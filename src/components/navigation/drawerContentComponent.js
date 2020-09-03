@@ -8,7 +8,7 @@ import { TextOption, Aplicativo, SocialContainer, RedeSocial } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import { handleAvatar, getInitials } from '../../utils/constUtils';
+import { handleAvatar, getInitials, logoutApp } from '../../utils/constUtils';
 import { Avatar } from 'react-native-elements';
 import Share from "react-native-share";
 import { scale } from '../../utils/scallingUtils';
@@ -70,22 +70,6 @@ export default class drawerContentComponents extends Component {
         this.setState({ householdAvatars })
     }
 
-    //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
-    _logoutApp = async () => {
-        AsyncStorage.removeItem('userID');
-        AsyncStorage.removeItem('userName');
-        AsyncStorage.removeItem('userBirth');
-        AsyncStorage.removeItem('userAvatar');
-        AsyncStorage.removeItem('userSelected');
-        AsyncStorage.removeItem('householdID');
-
-        RNSecureStorage.remove('userToken');
-        RNSecureStorage.remove('userEmail');
-        RNSecureStorage.remove('userPwd');
-        
-        this.props.navigation.navigate('TelaInicial');
-    }
-
     render() {
         const { navigate } = this.props.navigation;
         const householdsData = this.state.householdsData;
@@ -145,7 +129,7 @@ export default class drawerContentComponents extends Component {
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
-                    <Button onPress={this._logoutApp}>
+                    <Button onPress={() => logoutApp(this.props.navigation)}>
                         <UserOptionGreen>
                             <Feather name='log-out'
                                 size={scale(26)} 

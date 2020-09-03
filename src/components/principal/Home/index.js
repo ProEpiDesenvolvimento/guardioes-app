@@ -15,7 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
-import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials } from '../../../utils/constUtils';
+import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials, logoutApp } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
 
@@ -35,7 +35,6 @@ class Home extends Component {
             if (!this.state.isLoading) this.fetchData()
         })
         this.state = {
-            currentPolicyTerms: 2,
             userSelected: '',
             userName: null,
             userID: null,
@@ -103,11 +102,10 @@ class Home extends Component {
         this.setState({ showTermsConsent: false })
 
         Alert.alert(
-            'Novos termos e política de privacidade',
-            'Termos aqui',
+            Terms.title, Terms.text,
             [
-                { text: 'Não concordo', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'Concordo', onPress: () => this.updateUserTermsConsent() }
+                { text: Terms.disagree, onPress: () => logoutApp(this.props.navigation), style: 'cancel' },
+                { text: Terms.agree, onPress: () => this.updateUserTermsConsent() }
             ],
             { cancelable: false }
         );
@@ -149,7 +147,7 @@ class Home extends Component {
 
     verifyUserTermsConsent = () => {
         const { params } = this.props.navigation.state
-        const { currentPolicyTerms } = this.state
+        const currentPolicyTerms = Terms.version
         const userPolicyTerms = params.userTermsVersion
 
         if (userPolicyTerms && userPolicyTerms < currentPolicyTerms) {
@@ -158,7 +156,22 @@ class Home extends Component {
     }
 
     updateUserTermsConsent = async () => {
-        return console.log("Mudou")
+        return fetch(`${API_URL}/users/${this.state.userID}`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+            body: JSON.stringify(
+                {
+                    policy_version: Terms.version,
+                }
+            )
+        })
+            .then((response) => {
+                console.warn(response.status)
+            })
     }
 
     initUserSelected = async () => {
@@ -354,14 +367,14 @@ class Home extends Component {
 
     render() {
         const { showTermsConsent } = this.state;
-      const { showAlert } = this.state;
-      const { navigate } = this.props.navigation;
+        const { showAlert } = this.state;
+        const { navigate } = this.props.navigation;
 
-      const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
-      const householdsData = this.state.data;
-      const householdAvatars = this.state.householdAvatars;
+        const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
+        const householdsData = this.state.data;
+        const householdAvatars = this.state.householdAvatars;
 
-      const hasBadReports = this.state.userBadReports > 2
+        const hasBadReports = this.state.userBadReports > 2
 
       return (
           <>
@@ -541,21 +554,6 @@ class Home extends Component {
     }
 }
 
-const emojis = [
-    (
-        <Emoji //Emoji heart up
-            name='heart'
-            style={{ fontSize: scale(15) }}
-        />
-    ),
-    (
-        <Emoji //Emoji tada up
-            name='tada'
-            style={{ fontSize: scale(15) }}
-        />
-    )
-]
-
 const styles = StyleSheet.create({
     Avatar: {
         marginRight: `${scale(8)}%`,
@@ -570,6 +568,42 @@ const styles = StyleSheet.create({
         shadowOpacity: 0
     }
 })
+
+const Terms = {
+    title: translate("useTerms.title"),
+    text: `${translate("useTerms.terms.textoTermosTitulo")}\n
+        ${translate("useTerms.terms.textoTermos_1")}\n
+        ${translate("useTerms.terms.textoTermos_2")}\n
+        ${translate("useTerms.terms.textoTermos_3")}\n
+        ${translate("useTerms.terms.textoTermos_4")}\n
+        ${translate("useTerms.terms.textoTermos_5")}\n
+        ${translate("useTerms.terms.textoTermos_6")}\n
+        ${translate("useTerms.terms.textoTermos_7")}\n
+        ${translate("useTerms.terms.textoTermos_8")}\n
+        ${translate("useTerms.terms.textoTermos_9")}\n
+        ${translate("useTerms.terms.textoTermos_10")}\n
+        ${translate("useTerms.terms.textoTermos_11")}\n
+        ${translate("useTerms.terms.textoTermos_12")}\n
+        ${translate("useTerms.terms.textoTermos_13")}`,
+    version: parseInt(translate("useTerms.compilation")),
+    disagree: 'Não concordo',
+    agree: 'Concordo'
+}
+
+const emojis = [
+    (
+        <Emoji //Emoji heart up
+            name='heart'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    (
+        <Emoji //Emoji tada up
+            name='tada'
+            style={{ fontSize: scale(15) }}
+        />
+    )
+]
 
 //make this component available to the app
 export default Home;
