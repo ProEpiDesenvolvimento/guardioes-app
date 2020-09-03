@@ -526,12 +526,12 @@ class Home extends Component {
 
             <CoolAlert
                 show={showTermsConsent}
-                title={"Nossos termos e políticas de privacidade mudaram"}
-                message={`Para continuar utilizando o Guardiões da Saúde, você deve aceitar os novos termos. Nós levamos sua privacidade a sério.`}
+                title={translate("useTerms.consentTitle")}
+                message={translate("useTerms.consentMessage")}
                 closeOnTouchOutside={false}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={true}
-                confirmText={"Ler termos"}
+                confirmText={translate("useTerms.seeTerms")}
                 onConfirmPressed={() => this.newTermsPolicy()}
             />
 
@@ -585,9 +585,9 @@ const Terms = {
         ${translate("useTerms.terms.textoTermos_11")}\n
         ${translate("useTerms.terms.textoTermos_12")}\n
         ${translate("useTerms.terms.textoTermos_13")}`,
-    version: parseInt(translate("useTerms.compilation")),
-    disagree: 'Não concordo',
-    agree: 'Concordo'
+    version: translate("useTerms.compilation"),
+    disagree: translate("useTerms.disagree"),
+    agree: translate("useTerms.agree")
 }
 
 const emojis = [
