@@ -72,11 +72,11 @@ class Diario extends Component {
     fetchData = async () => { //Get user infos
         const userID = await AsyncStorage.getItem('userID')
         const userName = await AsyncStorage.getItem('userName')
-        const userBirth = await AsyncStorage.getItem('userBirth')
         const userSelected = await AsyncStorage.getItem('userSelected')
+        const birthSelected = await AsyncStorage.getItem('birthSelected')
         const avatarSelected = await AsyncStorage.getItem('avatarSelected')
         const userToken = await RNSecureStorage.get('userToken')
-        this.setState({ userID, userName, userBirth, userSelected, avatarSelected, userToken })
+        this.setState({ userID, userName, userSelected, birthSelected, avatarSelected, userToken })
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected == this.state.userName) {
@@ -114,7 +114,7 @@ class Diario extends Component {
 
     getUserAge = () => {
         const todayDate = this.state.todayDate
-        const userBirthDate = new Date(this.state.userBirth)
+        const userBirthDate = new Date(this.state.birthSelected)
         const difference = todayDate.getTime() - userBirthDate.getTime()
         const userAge = Math.floor(difference / (1000 * 60 * 60 * 24 * 365))
 

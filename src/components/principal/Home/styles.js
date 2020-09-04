@@ -16,7 +16,8 @@ export const ScrollViewStyle = styled.ScrollView.attrs({
     flexGrow: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
+    paddingBottom: 20
+  }
 })``;
 
 export const Background = styled(LinearGradient).attrs({
@@ -171,7 +172,6 @@ export const StatusAlertText = styled.Text`
   color: white;
   font-family: ArgentumSans;
   font-size: ${scale(15)}px;
-  font-weight: 500;
   include-font-padding: false;
 `;
 

@@ -74,9 +74,9 @@ export default class drawerContentComponents extends Component {
     _logoutApp = async () => {
         AsyncStorage.removeItem('userID');
         AsyncStorage.removeItem('userName');
+        AsyncStorage.removeItem('userBirth');
         AsyncStorage.removeItem('userAvatar');
         AsyncStorage.removeItem('userSelected');
-        AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
 
         RNSecureStorage.remove('userToken');
