@@ -121,7 +121,7 @@ export default class drawerContentComponents extends Component {
                     </AvatarContainer>
                     {this.state.isProfessional == "true" &&
                     <Button onPress={() => navigate("Rumor")}>
-                        <UserOptionGreen>
+                        <UserOptionBlue>
                             <Feather name='info'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -130,11 +130,11 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 {translate("home.reportRumor")}
                             </TextOption>
-                        </UserOptionGreen>
+                        </UserOptionBlue>
                     </Button>
                     }
                     <Button onPress={() => navigate('Perfis')}>
-                        <UserOptionGreen>
+                        <UserOptionBlue>
                             <Feather name='settings'
                                 size={scale(26)} 
                                 color={'#fff'} 
@@ -143,10 +143,10 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 Editar perfis
                             </TextOption>
-                        </UserOptionGreen>
+                        </UserOptionBlue>
                     </Button>
                     <Button onPress={this._logoutApp}>
-                        <UserOptionGreen>
+                        <UserOptionBlue>
                             <Feather name='log-out'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -155,18 +155,30 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 {translate("drawer.logOut")}
                             </TextOption>
-                        </UserOptionGreen>
+                        </UserOptionBlue>
                     </Button>
                     <Aplicativo>
                         Aplicativo
                     </Aplicativo>
+                    <Button onPress={() => navigate('Vigilancia')}>
+                        <UserOptionGreen>
+                            <Feather name='shield'
+                                size={scale(26)} 
+                                color='#ffffff' 
+                                style={styles.iconStyle}
+                            />
+                            <TextOption>
+                                Vigilância Ativa
+                            </TextOption>
+                        </UserOptionGreen>
+                    </Button>
                     <Button onPress={() =>  {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })
                             .catch((err) => { err && console.log(err); });
                         }
                     }>
-                        <UserOptionBlue>
+                        <UserOptionGreen>
                             <Feather name='share-2'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -175,10 +187,10 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 Compartilhar
                             </TextOption>
-                        </UserOptionBlue>
+                        </UserOptionGreen>
                     </Button>
                     <Button onPress={() => navigate('Ajuda')}>
-                        <UserOptionBlue>
+                        <UserOptionGreen>
                             <Feather name='help-circle'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -187,10 +199,10 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 {translate("drawer.toHelp")}
                             </TextOption>
-                        </UserOptionBlue>
+                        </UserOptionGreen>
                     </Button>
                     <Button onPress={() => navigate('Sobre')}>
-                        <UserOptionBlue>
+                        <UserOptionGreen>
                             <Feather name='info'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -199,7 +211,7 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 {translate("drawer.toAbout")}
                             </TextOption>
-                        </UserOptionBlue>
+                        </UserOptionGreen>
                     </Button>
                     <SocialContainer>
                         <Button onPress={() => Linking.openURL('https://twitter.com/guardioesunb')}>

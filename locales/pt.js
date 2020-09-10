@@ -281,7 +281,8 @@ export default {
         "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nProjeto Guardiões da Saúde\n',
-        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.'
+        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.',
+        "textoVigilancia": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially "
     },
     "useTerms": {
         "title": "Termos e Políticas",
