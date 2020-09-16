@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { SafeAreaView } from 'react-native';
+import { API_URL } from 'react-native-dotenv'
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 
 import { ScrollViewStyled, Title, BodyText } from './styles';
-import { 
+import {
     FormGroup,
     FormGroupChild,
     FormLabel,
@@ -14,75 +17,119 @@ import {
 } from '../../styled/NormalForms'
 import translate from "../../../../locales/i18n";
 
-function Vigilancia() {    
-    const [vigilance, setVigilance] = useState('Não')
-    const [phone, setPhone] = useState('')
-    const [showPhone, setShowPhone] = useState(false)
-
-    async function submitVigilance(value){
-        if(value){
-            setVigilance('Sim')
-            setShowPhone(true)
-        } else {
-            setVigilance('Não')
-            setShowPhone(false)
+class Vigilancia extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            vigilance: false,
+            phone: null,
+            userID: null,
+            userToken: null,
+            loading: true
         }
     }
 
-    return(
-        <SafeAreaView style={{flex: 0, backgroundColor: '#F8F8F8'}}>
-            <ScrollViewStyled>
-                <Title>
-                    O que é?
-                </Title>
-                <BodyText>
-                    {translate("about.textoVigilancia")}
-                </BodyText>
-                <Title>
-                    Seu status de participação
-                </Title>
-                <FormGroup>
-                    <FormGroupChild>
-                        <FormLabel>Participando?</FormLabel>
-                        <Selector
-                            data={[
-                                { key: true, label: 'Sim' },
-                                { key: false, label: 'Não' }
-                            ]}
-                            initValue={vigilance}
-                            cancelText={translate("selector.cancelButton")}
-                            onChange={async (option) => {
-                                await submitVigilance(option.key)
+    componentDidMount() {
+        this.fetchData()
+    }
 
-                            }}
-                        />
-                    </FormGroupChild>
-                    {showPhone ? 
-                        <FormGroupChild>
-                            <FormLabel>
-                                Telefone:
-                            </FormLabel>
-                            <NormalInput
-                                returnKeyType='done'
-                                keyboardType='number-pad'
-                                onChangeText={async (text) => {
-                                    await setPhone(text)
-                                }}
-                            />
-                        </FormGroupChild>
-                    : null
-                    }
-                    
-                </FormGroup>
+    fetchData = async () => {
+        const id = await AsyncStorage.getItem('userID')
+        const userToken = await RNSecureStorage.get('userToken');
+        this.setState({
+            userID: id,
+            userToken: userToken
+        })
+        return fetch(`${API_URL}/users/${this.state.userID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            }
+        })
+            .then((response) => {
+                console.warn(response.status)
+                return response.status == 200 ? response.json() : null
+            })
+            .then(async (response) => {
+                this.setState({
+                    vigilance: response.user.is_vigilance,
+                    phone: response.user.phone,
+                    loading: false
+                })
+            })
+    }
 
-                <Button onPress={async () => await this.handleEdit()}>
-                    <SendContainer>
-                        <SendText>Salvar</SendText>
-                    </SendContainer>
-                </Button>
-            </ScrollViewStyled>
-        </SafeAreaView>
-    )
+    handleEdit = () => {
+        return fetch(`${API_URL}/users/${this.state.userID}`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+            body: JSON.stringify(
+                {
+                    is_vigilance: !this.state.vigilance,
+                    phone: !this.state.vigilance ? this.state.phone : null
+                }
+            )
+        })
+            .then((response) => {
+                console.warn(response.status)
+                if (response.status == 200) {
+                    this.props.navigation.goBack()
+                } else {
+                    Alert.alert("Ocorreu um erro, tente novamente depois.")
+                }
+            })
+    }
+
+    render() {
+        return (
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#F8F8F8' }}>
+                <ScrollViewStyled>
+                    <Title>
+                        O que é?
+                        </Title>
+                    <BodyText>
+                        {translate("about.textoVigilancia")}
+                    </BodyText>
+                    {!this.state.loading ?
+                        <>
+                            <Title>
+                                {this.state.vigilance ? "Você já está participando!" : "Deseja participar?"}
+                            </Title>
+                            {!this.state.vigilance ? (
+                                <FormGroup>
+                                    <FormGroupChild style={{ width: 100 + '%' }}>
+                                        <FormLabel>Qual seu telefone?</FormLabel>
+                                        <FormLabel>País+DDD+Numero (5561988888888)</FormLabel>
+                                        <NormalInput
+                                            maxLength={13}
+                                            returnKeyType='done'
+                                            keyboardType='number-pad'
+                                            value={this.state.phone}
+                                            onChangeText={(text) => {
+                                                this.setState({ phone: text })
+                                            }}
+                                        />
+                                    </FormGroupChild>
+                                </FormGroup>
+                            ) : null}
+
+                            <Button onPress={this.handleEdit}>
+                                <SendContainer>
+                                    <SendText>{this.state.vigilance ? "Cancelar Participação" : "Participar"}</SendText>
+                                </SendContainer>
+                            </Button>
+                        </> : null}
+                </ScrollViewStyled>
+            </SafeAreaView >
+        )
+    }
+
 }
 
 Vigilancia.navigationOptions = {
