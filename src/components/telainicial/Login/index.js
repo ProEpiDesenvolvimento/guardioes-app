@@ -174,6 +174,10 @@ class Login extends Component {
                     RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
                     //Send User ID to Push Notification API
                     OneSignal.setExternalUserId(responseJson.user.id.toString())
+                    
+                    //Send user group
+                    OneSignal.sendTags({group: responseJson.user.group});
+                    console.log(responseJson.user.group_id.toString())
 
                     this.props.navigation.navigate('Home');
                 })
