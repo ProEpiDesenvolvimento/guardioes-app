@@ -136,18 +136,21 @@ class Home extends Component {
 
         if (userSelected && birthSelected) {
             const avatarSelected = await AsyncStorage.getItem('avatarSelected');
+            const createdSelected = await AsyncStorage.getItem('createdSelected');
 
-            this.setState({ userSelected, birthSelected, avatarSelected });
+            this.setState({ userSelected, birthSelected, avatarSelected, createdSelected });
         }
         else {
             AsyncStorage.setItem('userSelected', this.state.userName);
             AsyncStorage.setItem('birthSelected', this.state.userBirth);
             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.userAvatar));
+            AsyncStorage.setItem('createdSelected', this.state.userCreatedAt);
 
             this.setState({
                 userSelected: this.state.userName,
                 birthSelected: this.state.userBirth,
-                avatarSelected: this.state.userAvatar
+                avatarSelected: this.state.userAvatar,
+                createdSelected: this.state.userCreatedAt
             });
         }
     }
@@ -157,9 +160,9 @@ class Home extends Component {
         const userName = await AsyncStorage.getItem('userName');
         const userBirth = await AsyncStorage.getItem('userBirth');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
-        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userCreatedAt = await AsyncStorage.getItem('userCreatedAt');
         const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userID, userName, userBirth, userAvatar, isProfessional, userToken });
+        this.setState({ userID, userName, userBirth, userAvatar, userCreatedAt, userToken });
 
         this.initUserSelected();
         this.getHouseholds();
@@ -381,135 +384,138 @@ class Home extends Component {
                   <StatusAlertText>Maioria sentindo-se bem</StatusAlertText>
                 </StatusAlert>
               </AlertContainer>*/}
+              <AlertContainer alert={hasBadReports}>
+                <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
+                <StatusAlert>
+                  <StatusTitle>{translate("home.statusLast7Days")}</StatusTitle>
+                  <StatusAlertText>
+                      {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
+                  </StatusAlertText>
+                </StatusAlert>
+              </AlertContainer>
 
-                        <AlertContainer alert={hasBadReports}>
-                            <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' />
-                            <StatusAlert>
-                                <StatusTitle>{translate("home.statusLast7Days")}</StatusTitle>
-                                <StatusAlertText>
-                                    {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
-                                </StatusAlertText>
-                            </StatusAlert>
-                        </AlertContainer>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        this.setModalVisible(!this.state.modalVisible); //Exit to modal view
+                    }
+                }>
+                    <Users>
+                        <UserSelector>
+                            <UserScroll>
+                                <UserWrapper>
+                                    <Button
+                                        onPress={async () => {
+                                            await this.setState({
+                                                householdID: null,
+                                                userSelected: this.state.userName,
+                                                birthSelected: this.state.userBirth,
+                                                avatarSelected: this.state.userAvatar,
+                                                createdSelected: this.state.userCreatedAt
+                                            });
+                                            this.setModalVisible(!this.state.modalVisible);
+                                            AsyncStorage.setItem('userSelected', this.state.userSelected);
+                                            AsyncStorage.setItem('birthSelected', this.state.birthSelected);
+                                            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                            AsyncStorage.setItem('createdSelected', this.state.createdSelected);
+                                            AsyncStorage.removeItem('householdID');
+                                            this.getUserHealth();
+                                        }}
+                                    >
+                                        <Avatar
+                                            size={scale(60)}
+                                            source={handleAvatar(this.state.userAvatar)}
+                                            title={getInitials(this.state.userName)}
+                                            rounded
+                                        />
+                                        <UserName>{getNameParts(this.state.userName, true)}</UserName>
+                                    </Button>
+                                </UserWrapper>
+                                {householdsData != null ?
+                                    householdsData.map((household) => {
+                                        return (
+                                            <UserWrapper key={household.id}>
+                                                <Button
+                                                    onPress={async () => {
+                                                        await this.setState({
+                                                            householdID: household.id,
+                                                            householdName: household.description,
+                                                            userSelected: household.description,
+                                                            birthSelected: household.birthdate,
+                                                            avatarSelected: householdAvatars[household.id],
+                                                            createdSelected: household.created_at
+                                                        });
+                                                        this.setModalVisible(!this.state.modalVisible);
+                                                        AsyncStorage.setItem('userSelected', this.state.userSelected);
+                                                        AsyncStorage.setItem('birthSelected', this.state.birthSelected);
+                                                        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                                        AsyncStorage.setItem('createdSelected', this.state.createdSelected);
+                                                        AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                                        this.getUserHealth();
+                                                    }}
+                                                >
+                                                    <Avatar
+                                                        size={scale(60)}
+                                                        source={handleAvatar(householdAvatars[household.id])}
+                                                        title={getInitials(household.description)}
+                                                        rounded
+                                                    />
+                                                    <UserName>{getNameParts(household.description, true)}</UserName>
+                                                </Button>
+                                            </UserWrapper>
+                                        )
+                                    })
+                                : null}
+                                <UserWrapper>
+                                    <Button 
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible)
+                                            navigate('Household')
+                                        }}
+                                    >
+                                        <Feather
+                                            name="plus"
+                                            size={scale(60)}
+                                            color="#c4c4c4"
+                                        />
+                                        <UserName>{translate("home.addProfile")}</UserName>
+                                    </Button>
+                                </UserWrapper>
+                            </UserScroll>
+                        </UserSelector>
+                    </Users>
+                </Modal>
+            </ScrollViewStyle>
 
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={this.state.modalVisible}
-                            onRequestClose={() => {
-                                this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                            }
-                            }>
-                            <Users>
-                                <UserSelector>
-                                    <UserScroll>
-                                        <UserWrapper>
-                                            <Button
-                                                onPress={async () => {
-                                                    await this.setState({
-                                                        householdID: null,
-                                                        userSelected: this.state.userName,
-                                                        birthSelected: this.state.userBirth,
-                                                        avatarSelected: this.state.userAvatar
-                                                    });
-                                                    this.setModalVisible(!this.state.modalVisible);
-                                                    AsyncStorage.setItem('userSelected', this.state.userSelected);
-                                                    AsyncStorage.setItem('birthSelected', this.state.birthSelected);
-                                                    AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
-                                                    AsyncStorage.removeItem('householdID');
-                                                    this.getUserHealth();
-                                                }}
-                                            >
-                                                <Avatar
-                                                    size={scale(60)}
-                                                    source={handleAvatar(this.state.userAvatar)}
-                                                    title={getInitials(this.state.userName)}
-                                                    rounded
-                                                />
-                                                <UserName>{getNameParts(this.state.userName, true)}</UserName>
-                                            </Button>
-                                        </UserWrapper>
-                                        {householdsData != null ?
-                                            householdsData.map((household) => {
-                                                return (
-                                                    <UserWrapper key={household.id}>
-                                                        <Button
-                                                            onPress={async () => {
-                                                                await this.setState({
-                                                                    householdID: household.id,
-                                                                    householdName: household.description,
-                                                                    userSelected: household.description,
-                                                                    birthSelected: household.birthdate,
-                                                                    avatarSelected: householdAvatars[household.id]
-                                                                });
-                                                                this.setModalVisible(!this.state.modalVisible);
-                                                                AsyncStorage.setItem('userSelected', this.state.userSelected);
-                                                                AsyncStorage.setItem('birthSelected', this.state.birthSelected);
-                                                                AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
-                                                                AsyncStorage.setItem('householdID', this.state.householdID.toString());
-                                                                this.getUserHealth();
-                                                            }}
-                                                        >
-                                                            <Avatar
-                                                                size={scale(60)}
-                                                                source={handleAvatar(householdAvatars[household.id])}
-                                                                title={getInitials(household.description)}
-                                                                rounded
-                                                            />
-                                                            <UserName>{getNameParts(household.description, true)}</UserName>
-                                                        </Button>
-                                                    </UserWrapper>
-                                                )
-                                            })
-                                            : null}
-                                        <UserWrapper>
-                                            <Button
-                                                onPress={() => {
-                                                    this.setModalVisible(!this.state.modalVisible)
-                                                    navigate('Household')
-                                                }}
-                                            >
-                                                <Feather
-                                                    name="plus"
-                                                    size={scale(60)}
-                                                    color="#c4c4c4"
-                                                />
-                                                <UserName>{translate("home.addProfile")}</UserName>
-                                            </Button>
-                                        </UserWrapper>
-                                    </UserScroll>
-                                </UserSelector>
-                            </Users>
-                        </Modal>
-                    </ScrollViewStyle>
+            <Button
+                style={styles.menuBars}
+                onPress={() => this.props.navigation.openDrawer()}
+            >
+                <SimpleLineIcons name="menu" size={26} color='#ffffff' />
+            </Button>
 
-                    <Button
-                        style={styles.menuBars}
-                        onPress={() => this.props.navigation.openDrawer()}
-                    >
-                        <SimpleLineIcons name="menu" size={26} color='#ffffff' />
-                    </Button>
-
-                    <AwesomeAlert
-                        show={showAlert}
-                        showProgress={this.state.showProgressBar ? true : false}
-                        title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-                        message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
-                        closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                        closeOnHardwareBackPress={false}
-                        showConfirmButton={this.state.showProgressBar ? false : true}
-                        confirmText={translate("badReport.alertMessages.confirmText")}
-                        confirmButtonColor='green'
-                        onCancelPressed={() => {
-                            this.hideAlert();
-                        }}
-                        onConfirmPressed={() => {
-                            this.hideAlert();
-                        }}
-                        onDismiss={() => this.hideAlert()}
-                    />
-                </Container>
-            </>
+            <AwesomeAlert
+                show={showAlert}
+                showProgress={this.state.showProgressBar ? true : false}
+                title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
+                message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
+                closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={this.state.showProgressBar ? false : true}
+                confirmText={translate("badReport.alertMessages.confirmText")}
+                confirmButtonColor='green'
+                onCancelPressed={() => {
+                    this.hideAlert();
+                }}
+                onConfirmPressed={() => {
+                    this.hideAlert();
+                }}
+                onDismiss={() => this.hideAlert()}
+            />
+          </Container>
+          </>
         );
     }
 }

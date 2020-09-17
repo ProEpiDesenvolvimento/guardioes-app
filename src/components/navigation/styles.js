@@ -71,14 +71,14 @@ const option = `
   shadow-offset: 0px 0px;
 `;
 
-export const UserOptionGreen = styled(ShadowView).attrs({
+export const UserOptionBlue = styled(ShadowView).attrs({
 })`
   ${option}
   background-color: #348eac;
   shadow-color: #348eac;
 `;
 
-export const UserOptionBlue = styled(ShadowView).attrs({
+export const UserOptionGreen = styled(ShadowView).attrs({
 })`
   ${option}
   background-color: #5DD39E;

@@ -281,7 +281,8 @@ export default {
         "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nProjeto Guardiões da Saúde\n',
-        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.'
+        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.',
+        "textoVigilancia": "A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone."
     },
     "useTerms": {
         "title": "Termos e Políticas",
