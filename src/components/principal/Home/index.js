@@ -136,18 +136,21 @@ class Home extends Component {
 
         if (userSelected && birthSelected) {
             const avatarSelected = await AsyncStorage.getItem('avatarSelected');
+            const createdSelected = await AsyncStorage.getItem('createdSelected');
 
-            this.setState({ userSelected, birthSelected, avatarSelected });
+            this.setState({ userSelected, birthSelected, avatarSelected, createdSelected });
         }
         else {
             AsyncStorage.setItem('userSelected', this.state.userName);
             AsyncStorage.setItem('birthSelected', this.state.userBirth);
             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.userAvatar));
+            AsyncStorage.setItem('createdSelected', this.state.userCreatedAt);
 
             this.setState({ 
                 userSelected: this.state.userName,
                 birthSelected: this.state.userBirth,
-                avatarSelected: this.state.userAvatar
+                avatarSelected: this.state.userAvatar,
+                createdSelected: this.state.userCreatedAt
             });
         }
     }
@@ -157,9 +160,9 @@ class Home extends Component {
         const userName = await AsyncStorage.getItem('userName');
         const userBirth = await AsyncStorage.getItem('userBirth');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
-        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userCreatedAt = await AsyncStorage.getItem('userCreatedAt');
         const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userID, userName, userBirth, userAvatar, isProfessional, userToken });
+        this.setState({ userID, userName, userBirth, userAvatar, userCreatedAt, userToken });
 
         this.initUserSelected();
         this.getHouseholds();
@@ -410,12 +413,14 @@ class Home extends Component {
                                                 householdID: null,
                                                 userSelected: this.state.userName,
                                                 birthSelected: this.state.userBirth,
-                                                avatarSelected: this.state.userAvatar
+                                                avatarSelected: this.state.userAvatar,
+                                                createdSelected: this.state.userCreatedAt
                                             });
                                             this.setModalVisible(!this.state.modalVisible);
                                             AsyncStorage.setItem('userSelected', this.state.userSelected);
                                             AsyncStorage.setItem('birthSelected', this.state.birthSelected);
                                             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                            AsyncStorage.setItem('createdSelected', this.state.createdSelected);
                                             AsyncStorage.removeItem('householdID');
                                             this.getUserHealth();
                                         }}
@@ -440,12 +445,14 @@ class Home extends Component {
                                                             householdName: household.description,
                                                             userSelected: household.description,
                                                             birthSelected: household.birthdate,
-                                                            avatarSelected: householdAvatars[household.id]
+                                                            avatarSelected: householdAvatars[household.id],
+                                                            createdSelected: household.created_at
                                                         });
                                                         this.setModalVisible(!this.state.modalVisible);
                                                         AsyncStorage.setItem('userSelected', this.state.userSelected);
                                                         AsyncStorage.setItem('birthSelected', this.state.birthSelected);
                                                         AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                                        AsyncStorage.setItem('createdSelected', this.state.createdSelected);
                                                         AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                         this.getUserHealth();
                                                     }}
