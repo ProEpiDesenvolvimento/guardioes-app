@@ -18,6 +18,7 @@ import { Avatar } from 'react-native-elements';
 import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 SimpleLineIcons.loadFont();
@@ -103,6 +104,7 @@ class Home extends Component {
 
     componentDidMount() {
         this.fetchData()
+        this.updateUserInfosToOneSignal()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -298,6 +300,43 @@ class Home extends Component {
                 this.showAlert(responseJson)
             })
 
+    }
+
+    updateUserInfosToOneSignal = async () => {
+        const teste = await AsyncStorage.getItem('userSchoolID')
+        console.log(teste)
+        return fetch(`${API_URL}/user/login`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user:
+                {
+                    email: await RNSecureStorage.get('userEmail'),
+                    password: await RNSecureStorage.get('userPwd')
+                }
+            })
+        })
+            .then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+            })
+            .then((responseJson) => {
+                //Send User ID to Push Notification API
+                OneSignal.setExternalUserId(responseJson.user.id.toString())
+
+                // Variables to OneSignal API
+                AsyncStorage.setItem('userGroup', responseJson.user.group.split("/")[3]);
+                AsyncStorage.setItem('userCity', responseJson.user.city);
+                AsyncStorage.setItem('userSchoolID', responseJson.user.school_unit_id.toString());
+                
+
+                //Send user TAGs
+                OneSignal.sendTags({ group: responseJson.user.group.split("/")[3], city: responseJson.user.city, school_unit_id: responseJson.user.school_unit_id.toString()});
+            })
     }
 
     render() {

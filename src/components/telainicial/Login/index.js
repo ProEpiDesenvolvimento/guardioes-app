@@ -12,7 +12,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
@@ -70,59 +70,59 @@ class Login extends Component {
 
         return (
             <>
-            <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-            <GradientBackground>
-                <KeyboardScrollView>
-                    <Logo source={LogoType} />
-                    <PageTitle>{translate("login.title")}</PageTitle>
+                <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+                <GradientBackground>
+                    <KeyboardScrollView>
+                        <Logo source={LogoType} />
+                        <PageTitle>{translate("login.title")}</PageTitle>
 
-                    <FormSeparator>
-                        <SnowInput
-                            placeholder={translate('login.email')}
-                            returnKeyType='next'
-                            keyboardType='email-address'
-                            maxLength={100}
-                            onChangeText={(text) => this.setState({ userEmail: text })}
-                            onSubmitEditing={() => this.passwordInput.focus()}
-                        />
-                        <SnowInput
-                            placeholder={translate("login.password")}
-                            secureTextEntry={true}
-                            maxLength={100}
-                            ref={(input) => this.passwordInput = input}
-                            onChangeText={(text) => this.setState({ userPwd: text })}
-                            onSubmitEditing={() => this.login()}
-                        />
-                    </FormSeparator>
+                        <FormSeparator>
+                            <SnowInput
+                                placeholder={translate('login.email')}
+                                returnKeyType='next'
+                                keyboardType='email-address'
+                                maxLength={100}
+                                onChangeText={(text) => this.setState({ userEmail: text })}
+                                onSubmitEditing={() => this.passwordInput.focus()}
+                            />
+                            <SnowInput
+                                placeholder={translate("login.password")}
+                                secureTextEntry={true}
+                                maxLength={100}
+                                ref={(input) => this.passwordInput = input}
+                                onChangeText={(text) => this.setState({ userPwd: text })}
+                                onSubmitEditing={() => this.login()}
+                            />
+                        </FormSeparator>
 
-                    <FormSeparator>
-                        <Touch onPress={() => this.login()}>
-                            <SnowButton>
-                                <Label>{translate("login.loginbutton")}</Label>
-                            </SnowButton>
-                        </Touch>
-                    </FormSeparator>
+                        <FormSeparator>
+                            <Touch onPress={() => this.login()}>
+                                <SnowButton>
+                                    <Label>{translate("login.loginbutton")}</Label>
+                                </SnowButton>
+                            </Touch>
+                        </FormSeparator>
 
-                    <TransparentButton onPress={() => navigate('ForgetPwd')}>
-                        <LabelVisible>{translate("login.forgetbutton")}</LabelVisible>
-                    </TransparentButton>
+                        <TransparentButton onPress={() => navigate('ForgetPwd')}>
+                            <LabelVisible>{translate("login.forgetbutton")}</LabelVisible>
+                        </TransparentButton>
 
-                    <ButtonBack onPress={() => this.props.navigation.goBack()}>
-                        <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
-                    </ButtonBack>
-                </KeyboardScrollView>
+                        <ButtonBack onPress={() => this.props.navigation.goBack()}>
+                            <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
+                        </ButtonBack>
+                    </KeyboardScrollView>
 
-                <AwesomeAlert
-                    show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
-                    title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
-                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                    closeOnHardwareBackPress={false}
-                    showCancelButton={false}
-                    showConfirmButton={this.state.showProgressBar ? false : true}
-                    confirmButtonColor="#DD6B55"
-                />
-            </GradientBackground>
+                    <AwesomeAlert
+                        show={showAlert}
+                        showProgress={this.state.showProgressBar ? true : false}
+                        title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
+                        closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                        closeOnHardwareBackPress={false}
+                        showCancelButton={false}
+                        showConfirmButton={this.state.showProgressBar ? false : true}
+                        confirmButtonColor="#DD6B55"
+                    />
+                </GradientBackground>
             </>
         );
     }
@@ -168,18 +168,16 @@ class Login extends Component {
                     AsyncStorage.setItem('userName', responseJson.user.user_name);
                     AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
                     AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
+                    AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 
-                    RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    //Send User ID to Push Notification API
-                    OneSignal.setExternalUserId(responseJson.user.id.toString())
-                    
-                    //Send user group
-                    OneSignal.sendTags({group: responseJson.user.group});
-                    console.log(responseJson.user.group_id.toString())
+                    RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                    RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                    RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
 
                     this.props.navigation.navigate('Home');
+
+                    //Send User ID to Push Notification API
+                    OneSignal.setExternalUserId(responseJson.user.id.toString())
                 })
         }
     }

@@ -85,6 +85,9 @@ export default class drawerContentComponents extends Component {
         RNSecureStorage.remove('userPwd');
 
         OneSignal.removeExternalUserId()
+        OneSignal.deleteTag("group")
+        OneSignal.deleteTag("city")
+        OneSignal.deleteTag("school_unit_id")
         
         this.props.navigation.navigate('TelaInicial');
     }
