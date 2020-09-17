@@ -26,6 +26,7 @@ import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
+import Vigilancia from '../principal/Vigilancia'
 
 Feather.loadFont();
 
@@ -112,6 +113,7 @@ export const Stack = createStackNavigator({
     Perfis,
     EditarPerfil,
     Ajuda,
+    Vigilancia,
     TermosPoliticas,
     Rumor,
     Tutorial,
@@ -128,6 +130,7 @@ export const Stack = createStackNavigator({
                         <Feather name="chevron-left" size={scale(38)} color="#ffffff" />
                     </BackButton>
                     <ScreenTitle>
+                        {console.tron.log(props)}
                         {props.scene.descriptor.options.title}
                     </ScreenTitle>
                     <Empty />
