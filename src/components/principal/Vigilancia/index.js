@@ -40,7 +40,7 @@ class Vigilancia extends Component {
             userID: id,
             userToken: userToken
         })
-        return fetch(`${API_URL}/users/${this.state.userID}`, {
+        let response = await fetch(`${API_URL}/users/${this.state.userID}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -48,17 +48,13 @@ class Vigilancia extends Component {
                 Authorization: `${this.state.userToken}`
             }
         })
-            .then((response) => {
-                console.warn(response.status)
-                return response.status == 200 ? response.json() : null
-            })
-            .then(async (response) => {
-                this.setState({
-                    vigilance: response.user.is_vigilance,
-                    phone: response.user.phone,
-                    loading: false
-                })
-            })
+        response = response.status == 200 ? await response.json() : response
+        this.setState({
+            vigilance: response.user.is_vigilance,
+            phone: response.user.phone,
+            loading: false,
+            userSchoolUnit: response.user.school_unit_id
+        })
     }
 
     handleEdit = () => {
@@ -96,8 +92,9 @@ class Vigilancia extends Component {
                     <BodyText>
                         {translate("about.textoVigilancia")}
                     </BodyText>
-                    {!this.state.loading ?
+                    {!this.state.loading && this.state.userSchoolUnit !== null ?
                         <>
+                            {/* {console.warn(this.state.userSchoolUnit)} */}
                             <Title>
                                 {this.state.vigilance ? "Você já está participando!" : "Deseja participar?"}
                             </Title>
