@@ -21,6 +21,7 @@ import { country, localSymptom } from '../../../utils/selectorUtils';
 import { Redirect } from '../../../utils/constUtils';
 import Share from "react-native-share";
 import { cardWhatsapp } from '../../../imgs/cardWhatsapp/cardWhatsapp_base64';
+import OneSignal from 'react-native-onesignal';
 
 let data = new Date();
 let d = data.getDate();
@@ -238,7 +239,43 @@ class BadReport extends Component {
         )
     }
 
+    countScore = async () => {
+        const lastReport = await AsyncStorage.getItem('lastReport')
+        const userScore = parseInt(await AsyncStorage.getItem('userScore'))
+
+        this.setState({lastReport, userScore})
+
+        let dt1 = new Date(this.state.lastReport)
+        let dt2 = new Date() // Today
+
+        let auxCount = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+
+        switch (auxCount) {
+            case 1:
+                // Acrescenta um dia na contagem e atualiza o lastReport
+                console.warn("reportou no dia anterior")
+                this.setState({userScore: this.state.userScore + 1})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+            case 0:
+                // Nada acontece
+                console.warn("Já reportou hoje")
+                break;
+            default:
+                // Zera a contagem e atualiza o lastReport
+                console.warn("Não reportou no dia anterior")
+                this.setState({userScore: 0})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+        }
+        console.warn("User Score: " + this.state.userScore)
+        OneSignal.sendTags({score: this.state.userScore});
+    }
+
     sendSurvey = async () => {
+        this.countScore()
         this.showLoadingAlert();
         try {
             let currentPin = {

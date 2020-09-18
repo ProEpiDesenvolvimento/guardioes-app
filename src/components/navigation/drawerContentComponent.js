@@ -80,6 +80,12 @@ export default class drawerContentComponents extends Component {
         AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
 
+        AsyncStorage.removeItem('userGroup');
+        AsyncStorage.removeItem('userCity');
+        AsyncStorage.removeItem('userSchoolID');
+        AsyncStorage.removeItem('lastReport');
+        AsyncStorage.removeItem('userScore');
+
         RNSecureStorage.remove('userToken');
         RNSecureStorage.remove('userEmail');
         RNSecureStorage.remove('userPwd');
@@ -88,6 +94,7 @@ export default class drawerContentComponents extends Component {
         OneSignal.deleteTag("group")
         OneSignal.deleteTag("city")
         OneSignal.deleteTag("school_unit_id")
+        OneSignal.deleteTag("userScore")
         
         this.props.navigation.navigate('TelaInicial');
     }

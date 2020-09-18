@@ -174,6 +174,8 @@ class Login extends Component {
                     RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
                     RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
 
+                    AsyncStorage.setItem('userScore', "0")
+
                     this.props.navigation.navigate('Home');
 
                     //Send User ID to Push Notification API

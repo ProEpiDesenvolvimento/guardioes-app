@@ -265,6 +265,7 @@ class Home extends Component {
     }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
+        this.countScore()
         this.showLoadingAlert();
         try {
             let currentPin = {
@@ -303,8 +304,8 @@ class Home extends Component {
     }
 
     countScore = async () => {
-        const lastReport = await AsyncStorage.getItem('lastReport');
-        const userScore = await AsyncStorage.getItem('userScore');
+        const lastReport = await AsyncStorage.getItem('lastReport')
+        const userScore = parseInt(await AsyncStorage.getItem('userScore'))
 
         this.setState({lastReport, userScore})
 
@@ -317,8 +318,9 @@ class Home extends Component {
             case 1:
                 // Acrescenta um dia na contagem e atualiza o lastReport
                 console.warn("reportou no dia anterior")
-                this.setState({userScore: this.state.userScore.toInt() + 1})
-                console.warn(this.state.userScore)
+                this.setState({userScore: this.state.userScore + 1})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
                 break;
             case 0:
                 // Nada acontece
@@ -327,21 +329,18 @@ class Home extends Component {
             default:
                 // Zera a contagem e atualiza o lastReport
                 console.warn("Não reportou no dia anterior")
+                this.setState({userScore: 0})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
                 break;
         }
-    }
-
-    calculateDate(date1, date2) {
-        let dt1 = new Date(date1)
-        let dt2 = new Date(date2)
-        return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+        console.warn("User Score: " + this.state.userScore)
+        OneSignal.sendTags({score: this.state.userScore});
     }
 
     updateUserInfosToOneSignal = async () => {
         //const teste = await AsyncStorage.getItem('userSchoolID')
         //console.log(teste)
-        
-
         return fetch(`${API_URL}/user/login`, {
             method: 'POST',
             headers: {
@@ -369,12 +368,6 @@ class Home extends Component {
                 AsyncStorage.setItem('userGroup', responseJson.user.group.split("/")[3]);
                 AsyncStorage.setItem('userCity', responseJson.user.city);
                 AsyncStorage.setItem('userSchoolID', responseJson.user.school_unit_id.toString());
-
-                AsyncStorage.setItem('userScore', "0");
-                AsyncStorage.setItem('lastReport', "2020-09-17T18:26:07.617Z");
-
-                this.countScore()
-
 
                 //Send user TAGs
                 OneSignal.sendTags({ group: responseJson.user.group.split("/")[3], city: responseJson.user.city, school_unit_id: responseJson.user.school_unit_id.toString() });
