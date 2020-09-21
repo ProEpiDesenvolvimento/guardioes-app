@@ -21,6 +21,7 @@ import drawerContentComponents from './drawerContentComponent';
 import Mapa from '../principal/Mapa';
 import Perfis from '../principal/Perfis';
 import EditarPerfil from '../principal/EditarPerfil';
+import FAQ from '../principal/FAQ';
 import Ajuda from '../principal/Ajuda';
 import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
@@ -114,6 +115,7 @@ export const Stack = createStackNavigator({
     EditarPerfil,
     Ajuda,
     Vigilancia,
+    FAQ,
     TermosPoliticas,
     Rumor,
     Tutorial,

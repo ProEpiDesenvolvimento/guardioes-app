@@ -128,7 +128,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                {translate("home.reportRumor")}
+                                {translate("drawer.reportRumor")}
                             </TextOption>
                         </UserOptionBlue>
                     </Button>
@@ -141,7 +141,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Editar perfis
+                                {translate("drawer.toEdit")}
                             </TextOption>
                         </UserOptionBlue>
                     </Button>
@@ -158,7 +158,7 @@ export default class drawerContentComponents extends Component {
                         </UserOptionBlue>
                     </Button>
                     <Aplicativo>
-                        Aplicativo
+                        {translate("drawer.app")}
                     </Aplicativo>
                     <Button onPress={() => navigate('Vigilancia')}>
                         <UserOptionGreen>
@@ -168,7 +168,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Vigilância Ativa
+                                {translate("drawer.toSurveillance")}
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
@@ -185,7 +185,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Compartilhar
+                                {translate("drawer.share")}
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
@@ -201,15 +201,15 @@ export default class drawerContentComponents extends Component {
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
-                    <Button onPress={() => navigate('Sobre')}>
+                    <Button onPress={() => navigate('FAQ')}>
                         <UserOptionGreen>
-                            <Feather name='info'
+                            <Feather name='message-circle'
                                 size={scale(26)} 
                                 color='#ffffff' 
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                {translate("drawer.toAbout")}
+                                {translate("drawer.toFAQ")}
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
@@ -223,7 +223,7 @@ export default class drawerContentComponents extends Component {
                                 />
                             </RedeSocial>
                         </Button>
-                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb/')}>
+                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb')}>
                             <RedeSocial>
                                 <SimpleLineIcons name='social-instagram'
                                     size={scale(28)} 
@@ -240,7 +240,7 @@ export default class drawerContentComponents extends Component {
 }
 
 const shareOptions = {
-    message: translate("drawer.share")
+    message: translate("drawer.shareLink")
 }
 
 const styles = StyleSheet.create({
