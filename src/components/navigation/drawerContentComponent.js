@@ -71,12 +71,12 @@ export default class drawerContentComponents extends Component {
     }
 
     //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
-    _logoutApp = async () => {
+    _logoutApp = () => {
         AsyncStorage.removeItem('userID');
         AsyncStorage.removeItem('userName');
+        AsyncStorage.removeItem('userBirth');
         AsyncStorage.removeItem('userAvatar');
         AsyncStorage.removeItem('userSelected');
-        AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
 
         RNSecureStorage.remove('userToken');
@@ -121,32 +121,32 @@ export default class drawerContentComponents extends Component {
                     </AvatarContainer>
                     {this.state.isProfessional == "true" &&
                     <Button onPress={() => navigate("Rumor")}>
-                        <UserOptionGreen>
+                        <UserOptionBlue>
                             <Feather name='info'
                                 size={scale(26)} 
                                 color='#ffffff' 
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                {translate("home.reportRumor")}
+                                {translate("drawer.reportRumor")}
                             </TextOption>
-                        </UserOptionGreen>
+                        </UserOptionBlue>
                     </Button>
                     }
                     <Button onPress={() => navigate('Perfis')}>
-                        <UserOptionGreen>
+                        <UserOptionBlue>
                             <Feather name='settings'
                                 size={scale(26)} 
                                 color={'#fff'} 
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Editar perfis
+                                {translate("drawer.toEdit")}
                             </TextOption>
-                        </UserOptionGreen>
+                        </UserOptionBlue>
                     </Button>
                     <Button onPress={this._logoutApp}>
-                        <UserOptionGreen>
+                        <UserOptionBlue>
                             <Feather name='log-out'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -155,30 +155,42 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 {translate("drawer.logOut")}
                             </TextOption>
-                        </UserOptionGreen>
+                        </UserOptionBlue>
                     </Button>
                     <Aplicativo>
-                        Aplicativo
+                        {translate("drawer.app")}
                     </Aplicativo>
+                    <Button onPress={() => navigate('Vigilancia')}>
+                        <UserOptionGreen>
+                            <Feather name='shield'
+                                size={scale(26)} 
+                                color='#ffffff' 
+                                style={styles.iconStyle}
+                            />
+                            <TextOption>
+                                {translate("drawer.toSurveillance")}
+                            </TextOption>
+                        </UserOptionGreen>
+                    </Button>
                     <Button onPress={() =>  {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })
                             .catch((err) => { err && console.log(err); });
                         }
                     }>
-                        <UserOptionBlue>
+                        <UserOptionGreen>
                             <Feather name='share-2'
                                 size={scale(26)} 
                                 color='#ffffff' 
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Compartilhar
+                                {translate("drawer.share")}
                             </TextOption>
-                        </UserOptionBlue>
+                        </UserOptionGreen>
                     </Button>
                     <Button onPress={() => navigate('Ajuda')}>
-                        <UserOptionBlue>
+                        <UserOptionGreen>
                             <Feather name='help-circle'
                                 size={scale(26)} 
                                 color='#ffffff' 
@@ -187,19 +199,19 @@ export default class drawerContentComponents extends Component {
                             <TextOption>
                                 {translate("drawer.toHelp")}
                             </TextOption>
-                        </UserOptionBlue>
+                        </UserOptionGreen>
                     </Button>
-                    <Button onPress={() => navigate('Sobre')}>
-                        <UserOptionBlue>
-                            <Feather name='info'
+                    <Button onPress={() => navigate('FAQ')}>
+                        <UserOptionGreen>
+                            <Feather name='message-circle'
                                 size={scale(26)} 
                                 color='#ffffff' 
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                {translate("drawer.toAbout")}
+                                {translate("drawer.toFAQ")}
                             </TextOption>
-                        </UserOptionBlue>
+                        </UserOptionGreen>
                     </Button>
                     <SocialContainer>
                         <Button onPress={() => Linking.openURL('https://twitter.com/guardioesunb')}>
@@ -211,7 +223,7 @@ export default class drawerContentComponents extends Component {
                                 />
                             </RedeSocial>
                         </Button>
-                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb/')}>
+                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb')}>
                             <RedeSocial>
                                 <SimpleLineIcons name='social-instagram'
                                     size={scale(28)} 
@@ -228,7 +240,7 @@ export default class drawerContentComponents extends Component {
 }
 
 const shareOptions = {
-    message: translate("drawer.share")
+    message: translate("drawer.shareLink")
 }
 
 const styles = StyleSheet.create({

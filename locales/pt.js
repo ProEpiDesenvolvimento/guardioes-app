@@ -100,8 +100,9 @@ export default {
     },
     "ajuda": {
         "title": "Ajuda",
+        "tutorialBtn": "Tutorial",
         "useTermsBtn": "Termos e Políticas",
-        "tutorialBtn": "Tutorial"
+        "aboutBtn": "Sobre"
     },
     "tutorial": {
         "title": "Tutorial",
@@ -232,8 +233,6 @@ export default {
         "statusLast7Days": "Status nos últimos 7 dias:",
         "statusLast7DaysGood": "Você tem se sentido bem.",
         "statusLast7DaysBad": "Você não esteve bem.",
-        "reportRumor": "Relatar Rumor",
-        "reportRumorMessage": "Por aqui você pode enviar um relato em baseado em informações recebidas de várias pessoas e também relatar a ocorrência de doenças ou agravos não corriqueiros.",
         "userHowYouFelling": "Como está se sentindo hoje?",
         "householdHowYouFelling_part_1": "Como ",
         "householdHowYouFelling_part_2": " se sente hoje?",
@@ -269,6 +268,9 @@ export default {
         "badChoice": "MAL",
         "else": "Se a opção escolhida for 'MAL' poderá selecionar os sintomas na seguinte tela."
     },
+    "faq": {
+        "title": "FAQ"
+    },
     "about": {
         "title": "Sobre",
 
@@ -281,7 +283,8 @@ export default {
         "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nProjeto Guardiões da Saúde\n',
-        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.'
+        "textoSobre": 'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.',
+        "textoVigilancia": "A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone."
     },
     "useTerms": {
         "title": "Termos e Políticas",
@@ -303,15 +306,15 @@ export default {
         }
     },
     "drawer": {
+        "reportRumor": "Reportar Rumor",
+        "toEdit": "Editar perfis",
         "logOut": "Sair",
-        "toHome": "Início",
-        "toFacebook": "Facebook",
+        "app": "Aplicativo",
+        "toSurveillance": "Vigilância Ativa",
+        "share": "Compartilhar",
+        "shareLink": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n",
         "toHelp": "Ajuda",
-        "toAbout": "Sobre",
-        "moreComing": "Temos mais vindo aí!",
-        "healthDiary": "Diário",
-        "healthMap": "Mapa da Saúde",
-        "share": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n"
+        "toFAQ": "FAQ",
     },
     "rumor": {
         "rumorSent": "Rumor registrado! "
