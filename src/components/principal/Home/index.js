@@ -6,7 +6,7 @@ import { StatusContainer, TextStyle, StatusBemMal, StatusText, Bem, Mal, Alertas
 import { StatusAlert, StatusTitle, StatusAlertText, Users, UserSelector, UserScroll, UserWrapper, UserName } from './styles';
 
 import { PermissionsAndroid } from 'react-native';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import RNSecureStorage from 'rn-secure-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -56,7 +56,7 @@ class Home extends Component {
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
@@ -146,7 +146,7 @@ class Home extends Component {
             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.userAvatar));
             AsyncStorage.setItem('createdSelected', this.state.userCreatedAt);
 
-            this.setState({ 
+            this.setState({
                 userSelected: this.state.userName,
                 birthSelected: this.state.userBirth,
                 avatarSelected: this.state.userAvatar,
@@ -190,7 +190,7 @@ class Home extends Component {
 
     getHouseholdAvatars = async () => {
         let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
-        
+
         if (!householdAvatars) {
             householdAvatars = {}
         }
@@ -212,7 +212,7 @@ class Home extends Component {
                 lastWeek.setDate(d - 7);
                 lastWeek.setHours(0, 0, 0, 0);
 
-                const userLastSurveys = responseJson.surveys.filter(survey => 
+                const userLastSurveys = responseJson.surveys.filter(survey =>
                     new Date(survey.created_at).getTime() >= lastWeek.getTime()
                 );
 
@@ -249,42 +249,42 @@ class Home extends Component {
 
     async requestFineLocationPermission() {
         try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-              title: 'Guardiões da Saúde needs Location Permission',
-              message:
-                'Guardiões da Saúde needs access to your location ' +
-                'so you can take location reports.',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('You can use the location on Android');
-          } else {
-            console.log('Location permission denied');
-          }
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Guardiões da Saúde needs Location Permission',
+                    message:
+                        'Guardiões da Saúde needs access to your location ' +
+                        'so you can take location reports.',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the location on Android');
+            } else {
+                console.log('Location permission denied');
+            }
         } catch (err) {
-          console.warn(err);
+            console.warn(err);
         }
-      }
+    }
 
     requestLocalization = () => {
         Alert.alert(
-          "Erro Na Localização",
-          "Permita a localização para prosseguir",
-          [
-            {
-              text: 'Cancelar',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
-          ],
-          { cancelable: false },
+            "Erro Na Localização",
+            "Permita a localização para prosseguir",
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
+            ],
+            { cancelable: false },
         );
-      }
+    }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
         this.showLoadingAlert();
@@ -325,66 +325,65 @@ class Home extends Component {
     }
 
     render() {
-      const { showAlert } = this.state;
-      const { navigate } = this.props.navigation;
+        const { showAlert } = this.state;
+        const { navigate } = this.props.navigation;
 
-      const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
-      const householdsData = this.state.data;
-      const householdAvatars = this.state.householdAvatars;
+        const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
+        const householdsData = this.state.data;
+        const householdAvatars = this.state.householdAvatars;
 
-      const hasBadReports = this.state.userBadReports > 2
+        const hasBadReports = this.state.userBadReports > 2
 
-      return (
-          <>
-          <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-          <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
-          <Container>
-            <ScrollViewStyle>
-              <Background>
-                <UserView>  
-                  <NamesContainer>
-                    <TextName>{welcomeMessage}</TextName>
-                    <AppName>{translate("home.nowAGuardian")}</AppName>
-                  </NamesContainer>
-                  <Avatar
-                    containerStyle={styles.Avatar}
-                    size={scale(58)}
-                    source={handleAvatar(this.state.avatarSelected)}
-                    title={getInitials(this.state.userSelected)}
-                    editButton={{name: null, type: 'feather', style: styles.dotAvatar}}
-                    showEditButton
-                    activeOpacity={0.5}
-                    rounded
-                    onPress={() => {
-                        this.getHouseholds();
-                        this.setModalVisible(true);
-                    }}
-                  />
-                </UserView>
-              </Background>
+        return (
+            <>
+                <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+                <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
+                <Container>
+                    <ScrollViewStyle>
+                        <Background>
+                            <UserView>
+                                <NamesContainer>
+                                    <TextName>{welcomeMessage}</TextName>
+                                    <AppName>{translate("home.nowAGuardian")}</AppName>
+                                </NamesContainer>
+                                <Avatar
+                                    containerStyle={styles.Avatar}
+                                    size={scale(58)}
+                                    source={handleAvatar(this.state.avatarSelected)}
+                                    title={getInitials(this.state.userSelected)}
+                                    editButton={{ name: null, type: 'feather', style: styles.dotAvatar }}
+                                    showEditButton
+                                    activeOpacity={0.5}
+                                    rounded
+                                    onPress={() => {
+                                        this.getHouseholds();
+                                        this.setModalVisible(true);
+                                    }}
+                                />
+                            </UserView>
+                        </Background>
 
-              <StatusContainer>
-                <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
-                <StatusBemMal>
-                  <Bem onPress={() => this.verifyLocalization()}>
-                    <StatusText>{translate("report.goodChoice")}</StatusText>
-                  </Bem>
-                  <Mal onPress={() => navigate('BadReport')}>
-                    <StatusText>{translate("report.badChoice")}</StatusText>
-                  </Mal>
-                </StatusBemMal>
-              </StatusContainer>
-              
-              <Alertas>Alertas</Alertas>
+                        <StatusContainer>
+                            <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
+                            <StatusBemMal>
+                                <Bem onPress={() => this.verifyLocalization()}>
+                                    <StatusText>{translate("report.goodChoice")}</StatusText>
+                                </Bem>
+                                <Mal onPress={() => navigate('BadReport')}>
+                                    <StatusText>{translate("report.badChoice")}</StatusText>
+                                </Mal>
+                            </StatusBemMal>
+                        </StatusContainer>
 
-              {/*<AlertContainer>
+                        <Alertas>Alertas</Alertas>
+
+                        {/*<AlertContainer>
                 <SimpleLineIcons name='exclamation' size={48} color='#ffffff' />  
                 <StatusAlert>
                   <StatusTitle>Status do seu bairro:</StatusTitle>
                   <StatusAlertText>Maioria sentindo-se bem</StatusAlertText>
                 </StatusAlert>
               </AlertContainer>*/}
-
               <AlertContainer alert={hasBadReports}>
                 <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
                 <StatusAlert>
