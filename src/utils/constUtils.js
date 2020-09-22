@@ -3,6 +3,7 @@ import { Alert, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
+import OneSignal from 'react-native-onesignal';
 
 export const getNameParts = (fullName, firstandLast = false) => {
     if (typeof fullName === 'string') {
@@ -87,9 +88,21 @@ export const logoutApp = (navigation) => {
     AsyncStorage.removeItem('userSelected');
     AsyncStorage.removeItem('householdID');
 
+    AsyncStorage.removeItem('userGroup');
+    AsyncStorage.removeItem('userCity');
+    AsyncStorage.removeItem('userSchoolID');
+    AsyncStorage.removeItem('lastReport');
+    AsyncStorage.removeItem('userScore');
+
     RNSecureStorage.remove('userToken');
     RNSecureStorage.remove('userEmail');
     RNSecureStorage.remove('userPwd');
-    
+
+    OneSignal.removeExternalUserId()
+    OneSignal.deleteTag("group")
+    OneSignal.deleteTag("city")
+    OneSignal.deleteTag("school_unit_id")
+    OneSignal.deleteTag("score")
+
     navigation.navigate('TelaInicial');
 }

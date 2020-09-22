@@ -9,6 +9,7 @@ import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import { GDSLogoES, GDSLogoBR, ProEpiLogo2, UnBLogo2 } from '../../../imgs/imageConst';
 import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
+import OneSignal from 'react-native-onesignal';
 
 class AuthLoadingScreen extends Component {
     constructor(props) {
@@ -32,6 +33,8 @@ class AuthLoadingScreen extends Component {
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('avatarSelected');
         AsyncStorage.removeItem('householdID');
+
+        OneSignal.removeExternalUserId()
 
         RNSecureStorage.exists('userToken').then((res) => {
             (res) ? RNSecureStorage.remove('userToken') : false;
