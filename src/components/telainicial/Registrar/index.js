@@ -18,6 +18,7 @@ import { gender, country, race } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import InstitutionSelector from '../../userData/InstitutionSelector'
 import LoadingModal from '../../modals/LoadingModal'
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 
@@ -421,6 +422,9 @@ class Registrar extends Component {
                 RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
+
+                //Send User ID to Push Notification API
+                OneSignal.setExternalUserId(responseJson.user.id.toString())
 
                 this.props.navigation.navigate('Home')
             })

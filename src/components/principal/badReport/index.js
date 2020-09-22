@@ -21,6 +21,7 @@ import { country, localSymptom } from '../../../utils/selectorUtils';
 import { Redirect } from '../../../utils/constUtils';
 import Share from "react-native-share";
 import { cardWhatsapp } from '../../../imgs/cardWhatsapp/cardWhatsapp_base64';
+import OneSignal from 'react-native-onesignal';
 
 let data = new Date();
 let d = data.getDate();
@@ -63,7 +64,7 @@ class BadReport extends Component {
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
@@ -71,6 +72,7 @@ class BadReport extends Component {
             alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
+        console.warn(alertMessage)
     }
 
     showLoadingAlert = () => {
@@ -238,7 +240,43 @@ class BadReport extends Component {
         )
     }
 
+    countScore = async () => {
+        const lastReport = await AsyncStorage.getItem('lastReport')
+        const userScore = parseInt(await AsyncStorage.getItem('userScore'))
+
+        this.setState({lastReport, userScore})
+
+        let dt1 = new Date(this.state.lastReport)
+        let dt2 = new Date() // Today
+
+        let auxCount = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+
+        switch (auxCount) {
+            case 1:
+                // Acrescenta um dia na contagem e atualiza o lastReport
+                console.warn("reportou no dia anterior")
+                this.setState({userScore: this.state.userScore + 1})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+            case 0:
+                // Nada acontece
+                console.warn("Já reportou hoje")
+                break;
+            default:
+                // Zera a contagem e atualiza o lastReport
+                console.warn("Não reportou no dia anterior")
+                this.setState({userScore: 0})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+        }
+        console.warn("User Score: " + this.state.userScore)
+        OneSignal.sendTags({score: this.state.userScore});
+    }
+
     sendSurvey = async () => {
+        this.countScore()
         this.showLoadingAlert();
         try {
             let currentPin = {
@@ -278,8 +316,9 @@ class BadReport extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
-                    if (responseJson.messages.top_3[0])
+                    if (responseJson.messages.top_3[0]) {
                         this.showSyndromeAlert(responseJson)
+                    }
                     else
                         this.showAlert(responseJson)
                 } else {
