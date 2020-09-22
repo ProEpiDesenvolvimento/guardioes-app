@@ -63,7 +63,7 @@ class BadReport extends Component {
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
@@ -71,6 +71,7 @@ class BadReport extends Component {
             alertMessage: <Text>{alertMessage} {emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
+        console.warn(alertMessage)
     }
 
     showLoadingAlert = () => {
@@ -203,7 +204,7 @@ class BadReport extends Component {
         let data = []
         if (responseJson.messages.top_3[0].name === "Síndrome Gripal") {
             data = [
-                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/")} },
+                { text: 'Mais informações', onPress: () => { Redirect("Ministerio da Saúde", "Deseja ser redirecionado para o website do Ministério da Saúde?", "https://coronavirus.saude.gov.br/sobre-a-doenca#se-eu-ficar-doente") } },
                 { text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson) }
             ]
         } else {
@@ -225,7 +226,8 @@ class BadReport extends Component {
             'Deseja compartilhar um comunicado para pessoas com que teve contato?',
             [
                 { text: 'Não, irei avisá-los mais tarde', onPress: () => this.showAlert(responseJson) },
-                { text: 'Sim', onPress: () =>  {
+                {
+                    text: 'Sim', onPress: () => {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })
                             .catch((err) => { err && console.log(err); });
@@ -277,8 +279,9 @@ class BadReport extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
-                    if (responseJson.messages.top_3[0])
+                    if (responseJson.messages.top_3[0]) {
                         this.showSyndromeAlert(responseJson)
+                    }
                     else
                         this.showAlert(responseJson)
                 } else {
@@ -381,7 +384,7 @@ class BadReport extends Component {
                                 />
                             )
                         })
-                    : null}
+                        : null}
 
                     <FormTitleWrapper>
                         <FormTitle>
@@ -411,7 +414,7 @@ class BadReport extends Component {
                                 onChange={(option) => this.setState({ contactWithSymptom: option.key })}
                             />
                         </FormInline>
-                    : null}
+                        : null}
                     <CheckBoxStyled
                         title={translate("badReport.checkboxes.second")}
                         checked={this.state.lookedForHospital}

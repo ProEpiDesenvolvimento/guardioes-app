@@ -100,8 +100,9 @@ export default {
     },
     "ajuda": {
         "title": "Ayuda",
+        "tutorialBtn": "Tutorial",
         "useTermsBtn": "Condiciones y Políticas",
-        "tutorialBtn": "Tutorial"
+        "aboutBtn": "Acerca de"
     },
     "tutorial": {
         "title": "Tutorial",
@@ -232,8 +233,6 @@ export default {
         "statusLast7Days": "Estado en los últimos 7 días:",
         "statusLast7DaysGood": "Te has sentido bien.",
         "statusLast7DaysBad": "Usted no estaba bien.",
-        "reportRumor": "Reportar Rumor",
-        "reportRumorMessage": "Relatar um rumor de alguma coisa bla bla ",
         "userHowYouFelling": "¿Cómo se siente hoy?",
         "householdHowYouFelling_part_1": "¿Cómo se siente ",
         "householdHowYouFelling_part_2": " hoy?",
@@ -268,6 +267,9 @@ export default {
         "goodChoice": "Bien",
         "badChoice": "Malo",
         "else": "Si la opción elegida es 'MAL', puede seleccionar los síntomas en la siguiente pantalla."
+    },
+    "faq": {
+        "title": "FAQ"
     },
     "about": {
         "title": "Acerca de",
@@ -309,15 +311,15 @@ export default {
         "compilation": 2
     },
     "drawer": {
+        "reportRumor": "Informar Rumor",
+        "toEdit": "Editar perfiles",
         "logOut": "Dejar",
-        "toHome": "Primero",
-        "toFacebook": "Facebook",
+        "app": "Aplicación",
+        "toSurveillance": "Vigilancia activa",
+        "share": "Compartir",
+        "shareLink": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n",
         "toHelp": "Ayuda",
-        "toAbout": "Acerca de",
-        "moreComing": "¡Tenemos más funciones en el futuro¡",
-        "healthDiary": "Diario de Salud",
-        "healthMap": "Mapa de la Salud",
-        "share": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n"
+        "toFAQ": "FAQ"
     },
     "getToken": {
         "title": "Código de Verificación",

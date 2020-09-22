@@ -100,8 +100,9 @@ export default {
     },
     "ajuda": {
         "title": "Help",
+        "tutorialBtn": "Tutorial",
         "useTermsBtn": "Terms and policies",
-        "tutorialBtn": "Tutorial"
+        "aboutBtn": "About"
     },
     "tutorial": {
         "title": "Tutorial",
@@ -229,8 +230,6 @@ export default {
         "statusLast7Days": "Status in the last 7 days:",
         "statusLast7DaysGood": "You have been feeling well.",
         "statusLast7DaysBad": "You were not feeling well.",
-        "reportRumor": "Report Rumor",
-        "reportRumorMessage": "Report a rumor",
         "userHowYouFelling": "How are you feeling today?",
         "householdHowYouFelling_part_1": "How ",
         "householdHowYouFelling_part_2": " are you feeling today?",
@@ -265,6 +264,9 @@ export default {
         "goodChoice": "Good",
         "badChoice": "Bad",
         "else": "If you've selected 'Bad' you can select the symptoms in the next screen."
+    },
+    "faq": {
+        "title": "FAQ"
     },
     "about": {
         "title": "About",
@@ -306,15 +308,15 @@ export default {
         "compilation": 2
     },
     "drawer": {
+        "reportRumor": "Report Rumor",
+        "toEdit": "Edit profiles",
         "logOut": "Logout",
-        "toHome": "Home",
-        "toFacebook": "Facebook",
+        "app": "App",
+        "toSurveillance": "Active Surveillance",
+        "share": "Share",
+        "shareLink": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n",
         "toHelp": "Help",
-        "toAbout": "About",
-        "moreComing": "We have more comming",
-        "healthDiary": "Health Diary",
-        "healthMap": "Health Map",
-        "share": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n"
+        "toFAQ": "FAQ"
     },
     "rumor": {
         "rumorSent": "Rumor registered! "

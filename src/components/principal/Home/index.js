@@ -7,7 +7,7 @@ import { StatusAlert, StatusTitle, StatusAlertText, Users, UserSelector, UserScr
 import { CoolAlert } from '../../styled/CoolAlert';
 
 import { PermissionsAndroid } from 'react-native';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import RNSecureStorage from 'rn-secure-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
@@ -57,7 +57,7 @@ class Home extends Component {
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
@@ -180,18 +180,21 @@ class Home extends Component {
 
         if (userSelected && birthSelected) {
             const avatarSelected = await AsyncStorage.getItem('avatarSelected');
+            const createdSelected = await AsyncStorage.getItem('createdSelected');
 
-            this.setState({ userSelected, birthSelected, avatarSelected });
+            this.setState({ userSelected, birthSelected, avatarSelected, createdSelected });
         }
         else {
             AsyncStorage.setItem('userSelected', this.state.userName);
             AsyncStorage.setItem('birthSelected', this.state.userBirth);
             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.userAvatar));
+            AsyncStorage.setItem('createdSelected', this.state.userCreatedAt);
 
-            this.setState({ 
+            this.setState({
                 userSelected: this.state.userName,
                 birthSelected: this.state.userBirth,
-                avatarSelected: this.state.userAvatar
+                avatarSelected: this.state.userAvatar,
+                createdSelected: this.state.userCreatedAt
             });
         }
     }
@@ -201,9 +204,9 @@ class Home extends Component {
         const userName = await AsyncStorage.getItem('userName');
         const userBirth = await AsyncStorage.getItem('userBirth');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
-        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userCreatedAt = await AsyncStorage.getItem('userCreatedAt');
         const userToken = await RNSecureStorage.get('userToken');
-        this.setState({ userID, userName, userBirth, userAvatar, isProfessional, userToken });
+        this.setState({ userID, userName, userBirth, userAvatar, userCreatedAt, userToken });
 
         this.initUserSelected();
         this.getHouseholds();
@@ -231,7 +234,7 @@ class Home extends Component {
 
     getHouseholdAvatars = async () => {
         let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
-        
+
         if (!householdAvatars) {
             householdAvatars = {}
         }
@@ -253,7 +256,7 @@ class Home extends Component {
                 lastWeek.setDate(d - 7);
                 lastWeek.setHours(0, 0, 0, 0);
 
-                const userLastSurveys = responseJson.surveys.filter(survey => 
+                const userLastSurveys = responseJson.surveys.filter(survey =>
                     new Date(survey.created_at).getTime() >= lastWeek.getTime()
                 );
 
@@ -290,42 +293,42 @@ class Home extends Component {
 
     async requestFineLocationPermission() {
         try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-              title: 'Guardiões da Saúde needs Location Permission',
-              message:
-                'Guardiões da Saúde needs access to your location ' +
-                'so you can take location reports.',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('You can use the location on Android');
-          } else {
-            console.log('Location permission denied on Android');
-          }
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Guardiões da Saúde needs Location Permission',
+                    message:
+                        'Guardiões da Saúde needs access to your location ' +
+                        'so you can take location reports.',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the location on Android');
+            } else {
+                console.log('Location permission denied on Android');
+            }
         } catch (err) {
-          console.warn(err);
+            console.warn(err);
         }
-      }
+    }
 
     requestLocalization = () => {
         Alert.alert(
-          "Erro Na Localização",
-          "Permita a localização para prosseguir",
-          [
-            {
-              text: 'Cancelar',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
-          ],
-          { cancelable: false },
+            "Erro Na Localização",
+            "Permita a localização para prosseguir",
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
+            ],
+            { cancelable: false },
         );
-      }
+    }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
         this.showLoadingAlert();
@@ -376,48 +379,56 @@ class Home extends Component {
 
         const hasBadReports = this.state.userBadReports > 2
 
-      return (
-          <>
-          <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-          <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
-          <Container>
-            <ScrollViewStyle>
-              <Background>
-                <UserView>  
-                  <NamesContainer>
-                    <TextName>{welcomeMessage}</TextName>
-                    <AppName>{translate("home.nowAGuardian")}</AppName>
-                  </NamesContainer>
-                  <Avatar
-                    containerStyle={styles.Avatar}
-                    size={scale(58)}
-                    source={handleAvatar(this.state.avatarSelected)}
-                    title={getInitials(this.state.userSelected)}
-                    editButton={{name: null, type: 'feather', style: styles.dotAvatar}}
-                    showEditButton
-                    activeOpacity={0.5}
-                    rounded
-                    onPress={() => {
-                        this.getHouseholds();
-                        this.setModalVisible(true);
-                    }}
-                  />
-                </UserView>
-              </Background>
+        return (
+            <>
+                <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+                <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
+                <Container>
+                    <ScrollViewStyle>
+                        <Background>
+                            <UserView>
+                                <NamesContainer>
+                                    <TextName>{welcomeMessage}</TextName>
+                                    <AppName>{translate("home.nowAGuardian")}</AppName>
+                                </NamesContainer>
+                                <Avatar
+                                    containerStyle={styles.Avatar}
+                                    size={scale(58)}
+                                    source={handleAvatar(this.state.avatarSelected)}
+                                    title={getInitials(this.state.userSelected)}
+                                    editButton={{ name: null, type: 'feather', style: styles.dotAvatar }}
+                                    showEditButton
+                                    activeOpacity={0.5}
+                                    rounded
+                                    onPress={() => {
+                                        this.getHouseholds();
+                                        this.setModalVisible(true);
+                                    }}
+                                />
+                            </UserView>
+                        </Background>
 
-              <StatusContainer>
-                <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
-                <StatusBemMal>
-                  <Bem onPress={() => this.verifyLocalization()}>
-                    <StatusText>{translate("report.goodChoice")}</StatusText>
-                  </Bem>
-                  <Mal onPress={() => navigate('BadReport')}>
-                    <StatusText>{translate("report.badChoice")}</StatusText>
-                  </Mal>
-                </StatusBemMal>
-              </StatusContainer>
-              
-              <Alertas>Alertas</Alertas>
+                        <StatusContainer>
+                            <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
+                            <StatusBemMal>
+                                <Bem onPress={() => this.verifyLocalization()}>
+                                    <StatusText>{translate("report.goodChoice")}</StatusText>
+                                </Bem>
+                                <Mal onPress={() => navigate('BadReport')}>
+                                    <StatusText>{translate("report.badChoice")}</StatusText>
+                                </Mal>
+                            </StatusBemMal>
+                        </StatusContainer>
+
+                        <Alertas>Alertas</Alertas>
+
+                        {/*<AlertContainer>
+                <SimpleLineIcons name='exclamation' size={48} color='#ffffff' />  
+                <StatusAlert>
+                  <StatusTitle>Status do seu bairro:</StatusTitle>
+                  <StatusAlertText>Maioria sentindo-se bem</StatusAlertText>
+                </StatusAlert>
+              </AlertContainer>*/}
 
               <AlertContainer alert={hasBadReports}>
                 <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
@@ -447,12 +458,14 @@ class Home extends Component {
                                                 householdID: null,
                                                 userSelected: this.state.userName,
                                                 birthSelected: this.state.userBirth,
-                                                avatarSelected: this.state.userAvatar
+                                                avatarSelected: this.state.userAvatar,
+                                                createdSelected: this.state.userCreatedAt
                                             });
                                             this.setModalVisible(!this.state.modalVisible);
                                             AsyncStorage.setItem('userSelected', this.state.userSelected);
                                             AsyncStorage.setItem('birthSelected', this.state.birthSelected);
                                             AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                            AsyncStorage.setItem('createdSelected', this.state.createdSelected);
                                             AsyncStorage.removeItem('householdID');
                                             this.getUserHealth();
                                         }}
@@ -477,12 +490,14 @@ class Home extends Component {
                                                             householdName: household.description,
                                                             userSelected: household.description,
                                                             birthSelected: household.birthdate,
-                                                            avatarSelected: householdAvatars[household.id]
+                                                            avatarSelected: householdAvatars[household.id],
+                                                            createdSelected: household.created_at
                                                         });
                                                         this.setModalVisible(!this.state.modalVisible);
                                                         AsyncStorage.setItem('userSelected', this.state.userSelected);
                                                         AsyncStorage.setItem('birthSelected', this.state.birthSelected);
                                                         AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                                        AsyncStorage.setItem('createdSelected', this.state.createdSelected);
                                                         AsyncStorage.setItem('householdID', this.state.householdID.toString());
                                                         this.getUserHealth();
                                                     }}

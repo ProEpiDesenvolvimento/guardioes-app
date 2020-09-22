@@ -21,11 +21,13 @@ import drawerContentComponents from './drawerContentComponent';
 import Mapa from '../principal/Mapa';
 import Perfis from '../principal/Perfis';
 import EditarPerfil from '../principal/EditarPerfil';
+import FAQ from '../principal/FAQ';
 import Ajuda from '../principal/Ajuda';
 import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
+import Vigilancia from '../principal/Vigilancia'
 
 Feather.loadFont();
 
@@ -112,6 +114,8 @@ export const Stack = createStackNavigator({
     Perfis,
     EditarPerfil,
     Ajuda,
+    Vigilancia,
+    FAQ,
     TermosPoliticas,
     Rumor,
     Tutorial,
@@ -128,6 +132,7 @@ export const Stack = createStackNavigator({
                         <Feather name="chevron-left" size={scale(38)} color="#ffffff" />
                     </BackButton>
                     <ScreenTitle>
+                        {console.tron.log(props)}
                         {props.scene.descriptor.options.title}
                     </ScreenTitle>
                     <Empty />
