@@ -369,7 +369,8 @@ class Registrar extends Component {
                     identification_code: this.state.userIdCode,
                     group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
-                    risk_group: this.state.riskGroup
+                    risk_group: this.state.riskGroup,
+                    policy_version: Terms.version
                 }
             })
         })
@@ -422,9 +423,13 @@ class Registrar extends Component {
                 RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version })
             })
     }
+}
+
+const Terms = {
+    version: translate("useTerms.compilation")
 }
 
 //make this component available to the app
