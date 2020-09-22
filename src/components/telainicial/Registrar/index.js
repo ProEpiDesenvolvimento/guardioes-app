@@ -369,7 +369,8 @@ class Registrar extends Component {
                     identification_code: this.state.userIdCode,
                     group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
-                    risk_group: this.state.riskGroup
+                    risk_group: this.state.riskGroup,
+                    policy_version: Terms.version
                 }
             })
         })
@@ -425,6 +426,10 @@ class Registrar extends Component {
                 this.props.navigation.navigate('Home')
             })
     }
+}
+
+const Terms = {
+    version: translate("useTerms.compilation")
 }
 
 //make this component available to the app
