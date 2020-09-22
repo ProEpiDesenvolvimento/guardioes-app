@@ -94,7 +94,7 @@ export default class drawerContentComponents extends Component {
         OneSignal.deleteTag("group")
         OneSignal.deleteTag("city")
         OneSignal.deleteTag("school_unit_id")
-        OneSignal.deleteTag("userScore")
+        OneSignal.deleteTag("score")
         
         this.props.navigation.navigate('TelaInicial');
     }
