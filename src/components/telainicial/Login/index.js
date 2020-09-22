@@ -167,6 +167,7 @@ class Login extends Component {
                     AsyncStorage.setItem('userID', responseJson.user.id.toString());
                     AsyncStorage.setItem('userName', responseJson.user.user_name);
                     AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
+                    AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at);
                     AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
                     AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
 

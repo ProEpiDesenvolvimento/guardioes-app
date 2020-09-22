@@ -53,13 +53,17 @@ class EditarPerfil extends Component {
     fetchData = async () => {
         const { params } = this.props.navigation.state
 
-        await this.setState({ isUser: params.isUser })
-        await this.setState(params.data)
-        await this.getHouseholdAvatars()
-
-        this.setState({
-            paramsLoaded: true
+        await this.setState({ 
+            isUser: params.isUser,
+            originalName: params.data.Name,
         })
+
+        await this.setState(params.data)
+        this.setState({ paramsLoaded: true })
+
+        await this.getHouseholdAvatars()
+        const userSelected = await AsyncStorage.getItem('userSelected')
+        this.setState({ userSelected })
     }
 
     getHouseholdAvatars = async () => {
@@ -91,7 +95,6 @@ class EditarPerfil extends Component {
         let householdAvatars = this.state.householdAvatars
 
         ImagePicker.showImagePicker(options, (response) => {
-
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
@@ -124,6 +127,12 @@ class EditarPerfil extends Component {
                 this.setState({ Avatar: source })
             }
         });
+    }
+
+    formatBirthAgain = (birthDate) => {
+        let newDate = birthDate.split('-')
+        newDate = newDate[2] + '-' + newDate[1] + '-' + newDate[0]
+        return newDate
     }
 
     isUserDataValid = () => {
@@ -179,6 +188,12 @@ class EditarPerfil extends Component {
                 this.setAlert(false)
                 if (response.status == 200) {
                     AsyncStorage.setItem('userName', this.state.Name)
+                    AsyncStorage.setItem('userBirth', this.formatBirthAgain(this.state.Birth))
+
+                    if (this.state.originalName === this.state.userSelected) {
+                        AsyncStorage.setItem('userSelected', this.state.Name)
+                        AsyncStorage.setItem('birthSelected', this.formatBirthAgain(this.state.Birth))
+                    }
                     this.props.navigation.goBack()
                 } else {
                     Alert.alert("Ocorreu um erro, tente novamente depois.")
@@ -239,6 +254,10 @@ class EditarPerfil extends Component {
                 console.warn(response.status)
                 this.setAlert(false)
                 if (response.status == 200) {
+                    if (this.state.originalName === this.state.userSelected) {
+                        AsyncStorage.setItem('userSelected', this.state.Name)
+                        AsyncStorage.setItem('birthSelected', this.formatBirthAgain(this.state.Birth))
+                    }
                     this.props.navigation.goBack()
                 } else {
                     Alert.alert("Ocorreu um erro, tente novamente depois.")

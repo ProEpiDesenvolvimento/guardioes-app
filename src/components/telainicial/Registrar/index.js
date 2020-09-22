@@ -35,13 +35,9 @@ class Registrar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            school_units: [],
-            query: '',
             isProfessional: false,
             residence: null,
             residenceCountryCheckbox: true,
-            groupCheckbox: false,
-            statusCode: null,
             userName: null,
             userEmail: null,
             userPwd: null,
@@ -84,16 +80,6 @@ class Registrar extends Component {
         })
     }
 
-    findFilm(query) {
-        if (query === '') {
-            return []
-        }
-
-        const { school_units } = this.state
-        const regex = new RegExp(`${query.trim()}`, 'i')
-        return school_units.filter(school => school.description.search(regex) >= 0)
-    }
-
     setUserInstitutionCallback = (userIdCode, userGroup) => {
         this.setState({
             userIdCode: userIdCode,
@@ -107,9 +93,6 @@ class Registrar extends Component {
 
     render() {
         const { showAlert } = this.state
-        const { query } = this.state
-        const school_units = this.findFilm(query)
-        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
 
         return (
             <>
@@ -334,8 +317,11 @@ class Registrar extends Component {
 
     isUserDataValid = () => {
         let error = false
-        if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
-            Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
+        if (this.state.userName == null || this.state.userName == '' || this.state.userEmail == null || this.state.userPwd == null) {
+            Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro")
+            error = true
+        } else if (this.state.userBirth == null) {
+            Alert.alert("A data de nascimento deve estar preenchida")
             error = true
         } else if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
             Alert.alert("Estado e Cidade devem estar preenchidos")
@@ -349,8 +335,8 @@ class Registrar extends Component {
             Alert.alert(this.state.instituitionComponentError)
             error = true
         } else if (this.state.userCountry == null) {
-                Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
-                error = true
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostrar as informações referentes ao seu país")
+            error = true
         }
         return !error
     }
@@ -430,6 +416,7 @@ class Registrar extends Component {
                 AsyncStorage.setItem('userID', responseJson.user.id.toString())
                 AsyncStorage.setItem('userName', responseJson.user.user_name)
                 AsyncStorage.setItem('userBirth', responseJson.user.birthdate)
+                AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at)
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString())
 
                 RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED })

@@ -64,7 +64,7 @@ class BadReport extends Component {
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
@@ -72,6 +72,7 @@ class BadReport extends Component {
             alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
+        console.warn(alertMessage)
     }
 
     showLoadingAlert = () => {
@@ -315,8 +316,9 @@ class BadReport extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
-                    if (responseJson.messages.top_3[0])
+                    if (responseJson.messages.top_3[0]) {
                         this.showSyndromeAlert(responseJson)
+                    }
                     else
                         this.showAlert(responseJson)
                 } else {
