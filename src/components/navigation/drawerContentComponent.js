@@ -14,6 +14,7 @@ import Share from "react-native-share";
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 SimpleLineIcons.loadFont();
@@ -79,9 +80,21 @@ export default class drawerContentComponents extends Component {
         AsyncStorage.removeItem('userSelected');
         AsyncStorage.removeItem('householdID');
 
+        AsyncStorage.removeItem('userGroup');
+        AsyncStorage.removeItem('userCity');
+        AsyncStorage.removeItem('userSchoolID');
+        AsyncStorage.removeItem('lastReport');
+        AsyncStorage.removeItem('userScore');
+
         RNSecureStorage.remove('userToken');
         RNSecureStorage.remove('userEmail');
         RNSecureStorage.remove('userPwd');
+
+        OneSignal.removeExternalUserId()
+        OneSignal.deleteTag("group")
+        OneSignal.deleteTag("city")
+        OneSignal.deleteTag("school_unit_id")
+        OneSignal.deleteTag("score")
         
         this.props.navigation.navigate('TelaInicial');
     }

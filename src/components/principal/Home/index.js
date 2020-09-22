@@ -18,6 +18,7 @@ import { Avatar } from 'react-native-elements';
 import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 SimpleLineIcons.loadFont();
@@ -104,6 +105,7 @@ class Home extends Component {
 
     componentDidMount() {
         this.fetchData()
+        this.updateUserInfosToOneSignal()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -162,7 +164,9 @@ class Home extends Component {
         const userAvatar = await AsyncStorage.getItem('userAvatar');
         const userCreatedAt = await AsyncStorage.getItem('userCreatedAt');
         const userToken = await RNSecureStorage.get('userToken');
+
         this.setState({ userID, userName, userBirth, userAvatar, userCreatedAt, userToken });
+        this.setState({ userSelected: this.state.userName, avatarSelected: this.state.userAvatar });
 
         this.initUserSelected();
         this.getHouseholds();
@@ -261,7 +265,7 @@ class Home extends Component {
                 },
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('You can use the location on Android');
+                console.log('You can use the location');
             } else {
                 console.log('Location permission denied');
             }
@@ -287,6 +291,7 @@ class Home extends Component {
     }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
+        this.countScore()
         this.showLoadingAlert();
         try {
             let currentPin = {
@@ -322,6 +327,77 @@ class Home extends Component {
                 this.showAlert(responseJson)
             })
 
+    }
+
+    countScore = async () => {
+        const lastReport = await AsyncStorage.getItem('lastReport')
+        const userScore = parseInt(await AsyncStorage.getItem('userScore'))
+
+        this.setState({lastReport, userScore})
+
+        let dt1 = new Date(this.state.lastReport)
+        let dt2 = new Date() // Today
+
+        let auxCount = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+
+        switch (auxCount) {
+            case 1:
+                // Acrescenta um dia na contagem e atualiza o lastReport
+                console.warn("reportou no dia anterior")
+                this.setState({userScore: this.state.userScore + 1})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+            case 0:
+                // Nada acontece
+                console.warn("Já reportou hoje")
+                break;
+            default:
+                // Zera a contagem e atualiza o lastReport
+                console.warn("Não reportou no dia anterior")
+                this.setState({userScore: 0})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+        }
+        console.warn("User Score: " + this.state.userScore)
+        OneSignal.sendTags({score: this.state.userScore});
+    }
+
+    updateUserInfosToOneSignal = async () => {
+        //const teste = await AsyncStorage.getItem('userSchoolID')
+        //console.log(teste)
+        return fetch(`${API_URL}/user/login`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user:
+                {
+                    email: await RNSecureStorage.get('userEmail'),
+                    password: await RNSecureStorage.get('userPwd')
+                }
+            })
+        })
+            .then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+            })
+            .then((responseJson) => {
+                //Send User ID to Push Notification API
+                OneSignal.setExternalUserId(responseJson.user.id.toString())
+
+                // Variables to OneSignal API
+                AsyncStorage.setItem('userGroup', responseJson.user.group.split("/")[3]);
+                AsyncStorage.setItem('userCity', responseJson.user.city);
+                AsyncStorage.setItem('userSchoolID', responseJson.user.school_unit_id.toString());
+
+                //Send user TAGs
+                OneSignal.sendTags({ group: responseJson.user.group.split("/")[3], city: responseJson.user.city, school_unit_id: responseJson.user.school_unit_id.toString() });
+            })
     }
 
     render() {
