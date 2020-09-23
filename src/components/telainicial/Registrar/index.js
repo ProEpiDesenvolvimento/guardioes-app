@@ -8,8 +8,10 @@ import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckL
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
+
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
+import OneSignal from 'react-native-onesignal'
 import { UserIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils'
 import translate from '../../../../locales/i18n'
@@ -423,7 +425,10 @@ class Registrar extends Component {
                 RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
-                this.props.navigation.navigate('Home')
+                //Send User ID to Push Notification API
+                OneSignal.setExternalUserId(responseJson.user.id.toString())
+
+                this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version })
             })
     }
 }
