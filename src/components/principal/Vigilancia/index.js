@@ -1,27 +1,23 @@
-import React, { Component } from 'react';
-import { SafeAreaView, Modal } from 'react-native';
-import { API_URL } from 'react-native-dotenv'
-import { ModalContainer, ModalBox, ModalTitle, FormInlineCheck, CheckBoxStyled, ModalText, ModalButton, ModalButtonText, CheckLabel } from '../../styled/NormalForms'
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import Feather from 'react-native-vector-icons/Feather';
-import { scale } from '../../../utils/scallingUtils';
+import React, { Component } from 'react'
+import { Alert, Modal, ScrollView } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 
-import { ScrollViewStyled, Title, BodyText } from './styles';
-import {
-    FormGroup,
-    FormGroupChild,
-    FormLabel,
-    Selector,
-    NormalInput,
-    SendContainer,
-    SendText,
-    Button
-} from '../../styled/NormalForms'
-import translate from "../../../../locales/i18n";
-import { ScrollView } from 'react-native-gesture-handler';
+import { Title, BodyText } from './styles'
+import { ModalContainer, ModalBox, ModalTitle, FormInlineCheck, CheckBoxStyled, ModalText, ModalButton, ModalButtonText, CheckLabel } from '../../styled/NormalForms'
+import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput, SendContainer, SendText, Button } from '../../styled/NormalForms'
+
+import AsyncStorage from '@react-native-community/async-storage'
+import RNSecureStorage from 'rn-secure-storage'
+import { scale } from '../../../utils/scallingUtils'
+import translate from "../../../../locales/i18n"
+import { API_URL } from 'react-native-dotenv'
+
+Feather.loadFont()
 
 class Vigilancia extends Component {
+    static navigationOptions = {
+        title: "Vigilância Ativa"
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +25,7 @@ class Vigilancia extends Component {
             phone: null,
             userID: null,
             userToken: null,
-            loading: true,
+            isLoading: true,
             modalTerms: false
         }
     }
@@ -40,11 +36,13 @@ class Vigilancia extends Component {
 
     fetchData = async () => {
         const id = await AsyncStorage.getItem('userID')
-        const userToken = await RNSecureStorage.get('userToken');
+        const userToken = await RNSecureStorage.get('userToken')
+
         this.setState({
             userID: id,
             userToken: userToken
         })
+
         let response = await fetch(`${API_URL}/users/${this.state.userID}`, {
             method: 'GET',
             headers: {
@@ -54,17 +52,18 @@ class Vigilancia extends Component {
             }
         })
         response = response.status == 200 ? await response.json() : response
+
         this.setState({
             vigilance: response.user.is_vigilance,
             phone: response.user.phone,
-            loading: false,
+            isLoading: false,
             acceptTerms: response.user.is_vigilance ? true : false
         })
     }
 
     handleEdit = () => {
-        if (!this.state.acceptTerms)
-            return false
+        if (!this.state.acceptTerms) return false
+
         return fetch(`${API_URL}/users/${this.state.userID}`, {
             method: 'PATCH',
             headers: {
@@ -91,7 +90,7 @@ class Vigilancia extends Component {
 
     render() {
         return (
-            <>
+            <Container>
                 <Modal //Modal View for Terms
                     animationType="fade"
                     transparent={true}
@@ -99,10 +98,9 @@ class Vigilancia extends Component {
                     onRequestClose={() => {
                         this.setState({ modalTerms: !this.state.modalTerms })
                     }}
-                    style={{ padding: 10 + 'px' }}
                 >
                     <ModalContainer>
-                        <ModalBox style={{ maxHeight: 90 + '%' }}>
+                        <ModalBox>
                             <ModalTitle>
                                 {translate("vigilanceTerms.title")}
                             </ModalTitle>
@@ -125,69 +123,60 @@ class Vigilancia extends Component {
                         </ModalBox>
                     </ModalContainer>
                 </Modal>
-                <SafeAreaView style={{ flex: 0, backgroundColor: '#F8F8F8' }}>
-                    <ScrollViewStyled>
-                        <Title>
-                            O que é?
-                        </Title>
-                        <BodyText>
-                            {translate("about.textoVigilancia")}
-                        </BodyText>
-                        {!this.state.loading ?
-                            <>
-                                <Title>
-                                    {this.state.vigilance ? "Você já está participando!" : "Deseja participar?"}
-                                </Title>
-                                {!this.state.vigilance ? (
-                                    <FormGroup>
-                                        <FormGroupChild style={{ width: 100 + '%' }}>
-                                            <FormLabel>Qual seu telefone?</FormLabel>
-                                            <FormLabel>País+DDD+Numero (5561988888888)</FormLabel>
-                                            <NormalInput
-                                                maxLength={13}
-                                                returnKeyType='done'
-                                                keyboardType='number-pad'
-                                                value={this.state.phone}
-                                                onChangeText={(text) => {
-                                                    this.setState({ phone: text })
-                                                }}
-                                            />
-                                        </FormGroupChild>
-                                    </FormGroup>
-                                ) : null}
+                <KeyboardScrollView>
+                    <Title>
+                        O que é?
+                    </Title>
+                    <BodyText>
+                        {translate("about.textoVigilancia")}
+                    </BodyText>
+                    {!this.state.isLoading ?
+                        <>
+                            <Title>
+                                {this.state.vigilance ? "Você já está participando!" : "Deseja participar?"}
+                            </Title>
+                            {!this.state.vigilance ?
+                                <FormInline>
+                                    <FormLabel>Informe seu telefone:</FormLabel>
+                                    <NormalInput
+                                        placeholder='5561988888888'
+                                        maxLength={13}
+                                        returnKeyType='done'
+                                        keyboardType='number-pad'
+                                        value={this.state.phone}
+                                        onChangeText={(text) => this.setState({ phone: text })}
+                                    />
+                                </FormInline>
+                            : null}
 
-                                {!this.state.vigilance ?
+                            {!this.state.vigilance ?
+                                <FormInlineCheck>
+                                    <CheckBoxStyled
+                                        title={"Concordo com a Política de Privacidade e Proteção de Dados"}
+                                        checked={this.state.acceptTerms}
+                                        onPress={() => {
+                                            this.setState({ acceptTerms: !this.state.acceptTerms })
+                                        }}
+                                    />
+                                    <CheckLabel onPress={() => this.setState({ modalTerms: true })}>
+                                        <Feather name="help-circle" size={scale(25)} color="#348EAC" />
+                                    </CheckLabel>
+                                </FormInlineCheck>
+                            : null}
+                            
+                            <FormInline />
 
-                                    <FormInlineCheck>
-                                        <CheckBoxStyled
-                                            title={"Confirmo que li as informações e estou ciente das alterações que serão realizadas após a confirmação"}
-                                            checked={this.state.acceptTerms}
-                                            onPress={() => {
-                                                this.setState({ acceptTerms: !this.state.acceptTerms })
-                                            }}
-                                        />
-                                        <CheckLabel onPress={() => { this.setState({ modalTerms: true }) }}>
-                                            <Feather name="help-circle" size={scale(25)} color="#348EAC" />
-                                        </CheckLabel>
-                                    </FormInlineCheck>
-                                    : null}
-
-                                <Button onPress={this.handleEdit}>
-                                    <SendContainer>
-                                        <SendText>{this.state.vigilance ? "Cancelar Participação" : "Participar"}</SendText>
-                                    </SendContainer>
-                                </Button>
-                            </> : null}
-                    </ScrollViewStyled>
-                </SafeAreaView >
-            </>
+                            <Button onPress={this.handleEdit}>
+                                <SendContainer>
+                                    <SendText>{this.state.vigilance ? "Cancelar Participação" : "Participar"}</SendText>
+                                </SendContainer>
+                            </Button>
+                        </>
+                    : null}
+                </KeyboardScrollView>
+            </Container>
         )
     }
-
-}
-
-Vigilancia.navigationOptions = {
-    title: "Vigilância Ativa"
 }
 
 export default Vigilancia;

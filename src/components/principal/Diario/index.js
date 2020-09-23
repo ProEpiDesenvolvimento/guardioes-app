@@ -75,8 +75,9 @@ class Diario extends Component {
         const userSelected = await AsyncStorage.getItem('userSelected')
         const birthSelected = await AsyncStorage.getItem('birthSelected')
         const avatarSelected = await AsyncStorage.getItem('avatarSelected')
+        const createdSelected = await AsyncStorage.getItem('createdSelected')
         const userToken = await RNSecureStorage.get('userToken')
-        this.setState({ userID, userName, userSelected, birthSelected, avatarSelected, userToken })
+        this.setState({ userID, userName, userSelected, birthSelected, avatarSelected, createdSelected, userToken })
 
         //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
         if (this.state.userSelected == this.state.userName) {
@@ -190,43 +191,20 @@ class Diario extends Component {
 
     getUserParticipation = () => {
         const todayDate = this.state.todayDate
-        const surveyData = this.state.dataSource.reverse();
+        const userCreatedDate = new Date(this.state.createdSelected)
+        userCreatedDate.setHours(0, 0, 0, 0)
+
         const daysMarked = this.state.daysMarked
         const daysGood = this.state.daysGood
         const daysBad = this.state.daysBad
-        let firstSurvey = {}
 
-        for (let i = 0; i < surveyData.length; i++) {
-            if (this.state.householdID) {
-                if (surveyData[i].household && surveyData[i].household.id == this.state.householdID) {
-                    firstSurvey = surveyData[i];
-                    break
-                }
-            }
-            else {
-                if (!surveyData[i].household) {
-                    firstSurvey = surveyData[i];
-                    break
-                }
-            }
-        }
+        const difference = todayDate.getTime() - userCreatedDate.getTime()
+        const daysTotal = Math.ceil(difference / (1000 * 60 * 60 * 24))
+        const daysMissing = daysTotal - daysMarked
 
-        let daysMissing = 1
-        let GoodAbsPercent = 0
-        let BadAbsPercent = 0
-        let MissAbsPercent = 100
-
-        if (firstSurvey.created_at) {
-            const firstSurveyDate = new Date(firstSurvey.created_at)
-            const difference = todayDate.getTime() - firstSurveyDate.getTime()
-
-            const daysTotal = Math.ceil(difference / (1000 * 60 * 60 * 24))
-            daysMissing = daysTotal - daysMarked
-
-            GoodAbsPercent = ((daysGood / daysTotal) * 100).toFixed(0)
-            BadAbsPercent = ((daysBad / daysTotal) * 100).toFixed(0)
-            MissAbsPercent = ((daysMissing / daysTotal) * 100).toFixed(0)
-        }
+        const GoodAbsPercent = ((daysGood / daysTotal) * 100).toFixed(0)
+        const BadAbsPercent = ((daysBad / daysTotal) * 100).toFixed(0)
+        const MissAbsPercent = ((daysMissing / daysTotal) * 100).toFixed(0)
 
         this.setState({ GoodAbsPercent, BadAbsPercent, MissAbsPercent, daysMissing })
     }

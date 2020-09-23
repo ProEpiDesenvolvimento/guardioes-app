@@ -5,10 +5,10 @@ import ScreenLoader from '../../userData/ScreenLoader';
 import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
 import { Container, FormInline, FormLabel, Selector, SendContainer, SendText } from '../../styled/NormalForms';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../../utils/scallingUtils';
 import { API_URL } from 'react-native-dotenv';
@@ -21,6 +21,7 @@ import { country, localSymptom } from '../../../utils/selectorUtils';
 import { Redirect } from '../../../utils/constUtils';
 import Share from "react-native-share";
 import { cardWhatsapp } from '../../../imgs/cardWhatsapp/cardWhatsapp_base64';
+import OneSignal from 'react-native-onesignal';
 
 let data = new Date();
 let d = data.getDate();
@@ -63,14 +64,15 @@ class BadReport extends Component {
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
         this.setState({
-            alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
+            alertMessage: <Text>{alertMessage} {emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
+        console.warn(alertMessage)
     }
 
     showLoadingAlert = () => {
@@ -238,7 +240,43 @@ class BadReport extends Component {
         )
     }
 
+    countScore = async () => {
+        const lastReport = await AsyncStorage.getItem('lastReport')
+        const userScore = parseInt(await AsyncStorage.getItem('userScore'))
+
+        this.setState({lastReport, userScore})
+
+        let dt1 = new Date(this.state.lastReport)
+        let dt2 = new Date() // Today
+
+        let auxCount = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+
+        switch (auxCount) {
+            case 1:
+                // Acrescenta um dia na contagem e atualiza o lastReport
+                console.warn("reportou no dia anterior")
+                this.setState({userScore: this.state.userScore + 1})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+            case 0:
+                // Nada acontece
+                console.warn("Já reportou hoje")
+                break;
+            default:
+                // Zera a contagem e atualiza o lastReport
+                console.warn("Não reportou no dia anterior")
+                this.setState({userScore: 0})
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+        }
+        console.warn("User Score: " + this.state.userScore)
+        OneSignal.sendTags({score: this.state.userScore});
+    }
+
     sendSurvey = async () => {
+        this.countScore()
         this.showLoadingAlert();
         try {
             let currentPin = {
@@ -278,8 +316,9 @@ class BadReport extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
-                    if (responseJson.messages.top_3[0])
+                    if (responseJson.messages.top_3[0]) {
                         this.showSyndromeAlert(responseJson)
+                    }
                     else
                         this.showAlert(responseJson)
                 } else {
@@ -428,24 +467,16 @@ class BadReport extends Component {
                     </Button>
                 </ScrollViewStyled>
 
-                <AwesomeAlert
+                <CoolAlert
                     show={showAlert}
-                    showProgress={this.state.progressBarAlert ? true : false}
+                    showProgress={this.state.progressBarAlert}
                     title={this.state.progressBarAlert ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}</Text>}
-                    message={<Text>{this.state.alertMessage}</Text>}
-                    closeOnTouchOutside={this.state.progressBarAlert ? false : true}
+                    message={this.state.alertMessage}
+                    closeOnTouchOutside={this.state.progressBarAlert}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={false}
                     showConfirmButton={this.state.progressBarAlert ? false : true}
-                    cancelText="No, cancel"
-                    confirmText="Voltar"
-                    confirmButtonColor="#DD6B55"
-                    onCancelPressed={() => {
-                        this.hideAlert();
-                    }}
-                    onConfirmPressed={() => {
-                        this.props.navigation.navigate('Mapa')
-                    }}
+                    confirmText="Ver Mapa"
+                    onConfirmPressed={() => this.props.navigation.navigate('Mapa')}
                     onDismiss={() => this.props.navigation.navigate('Mapa')}
                 />
             </Container>

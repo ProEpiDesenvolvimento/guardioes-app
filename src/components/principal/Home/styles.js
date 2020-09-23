@@ -29,6 +29,17 @@ export const Background = styled(LinearGradient).attrs({
   border-bottom-right-radius: ${scale(25)}px;
 `;
 
+export const MenuBars = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.2
+})`
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 4%;
+  top: 1%;
+  padding: 2%;
+`;
+
 export const Button = styled(TouchableOpacity).attrs({
   activeOpacity: 0.5
 })`

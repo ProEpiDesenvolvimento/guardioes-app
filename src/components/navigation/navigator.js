@@ -13,14 +13,15 @@ import ForgetPwd from '../telainicial/ForgetPwd';
 import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
-import Conselho from '../principal/Conselho';
-import Noticias from '../principal/newNoticias/';
+import Dicas from '../principal/Dicas';
+import Feed from '../principal/Feed/';
 import BadReport from '../principal/badReport';
-import Household from '../principal/Household';
+import NovoPerfil from '../principal/NovoPerfil';
 import drawerContentComponents from './drawerContentComponent';
 import Mapa from '../principal/Mapa';
 import Perfis from '../principal/Perfis';
 import EditarPerfil from '../principal/EditarPerfil';
+import FAQ from '../principal/FAQ';
 import Ajuda from '../principal/Ajuda';
 import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
@@ -47,8 +48,8 @@ export const BottomMenu = createBottomTabNavigator({
     Home,
     Diario,
     Mapa,
-    Conselho,
-    Noticias,
+    Dicas,
+    Feed,
 },
     {
         initialRouteName: 'Home',
@@ -62,9 +63,9 @@ export const BottomMenu = createBottomTabNavigator({
                     iconName = 'clipboard';
                 } else if (routeName === 'Mapa') {
                     iconName = 'map';
-                } else if (routeName === 'Conselho') {
+                } else if (routeName === 'Dicas') {
                     iconName = 'heart';
-                } else if (routeName === 'Noticias') {
+                } else if (routeName === 'Feed') {
                     iconName = 'message-square';
                 }
 
@@ -109,11 +110,12 @@ export const BottomMenu = createBottomTabNavigator({
 export const Stack = createStackNavigator({
     BottomMenu: { screen: BottomMenu, navigationOptions: { header: null } },
     BadReport,
-    Household,
+    NovoPerfil,
     Perfis,
     EditarPerfil,
     Ajuda,
     Vigilancia,
+    FAQ,
     TermosPoliticas,
     Rumor,
     Tutorial,
@@ -160,7 +162,3 @@ export const Authentication = createSwitchNavigator({
         initialRouteName: 'AuthLoading',
     }
 )
-
-
-
-

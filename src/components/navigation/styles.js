@@ -53,7 +53,7 @@ export const AvatarContainer = styled.View`
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  margin-vertical: ${percentage(10)}px;
+  margin-vertical: ${percentage(8)}px;
 `;
 
 const option = `
@@ -101,7 +101,7 @@ export const Aplicativo = styled.Text`
 `;
 
 export const SocialContainer = styled.View`
-  margin-vertical: ${percentage(7)}px;
+  margin-vertical: ${percentage(5)}px;
   flex-direction: row;
   margin-left: ${(scale(75))}px;
   margin-right: ${(scale(75))}px;

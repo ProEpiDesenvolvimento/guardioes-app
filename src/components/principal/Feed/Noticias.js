@@ -15,7 +15,7 @@ import {
     Button,
 } from './styles';
 
-function newNoticias({ data }){
+function newNoticias({ data }) {
     const date = moment(new Date(data.created_at)).format('DD/MM/YY') 
     return (
         <Button
@@ -41,15 +41,16 @@ function newNoticias({ data }){
                 <NoticiaText>
                     {`${data.text.substring(0, 70)}...`} 
                 </NoticiaText>
-                {data.images[0] ? (
-                <Imagem
-                    source={{
-                        uri: data.images[0],
-                    }}
-                />
-                ) :
-                    null
-                }
+                    {data.images[0] ?
+                        (
+                            <Imagem
+                                source={{
+                                    uri: data.images[0],
+                                }}
+                            />
+                        )
+                        : null
+                    }
             </NoticeContainer>
         </Button>
     );
