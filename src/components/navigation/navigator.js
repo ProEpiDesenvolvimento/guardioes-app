@@ -14,7 +14,7 @@ import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
 import Conselho from '../principal/Conselho';
-import Noticias from '../principal/newNoticias/';
+import Noticias from '../principal/Noticias';
 import BadReport from '../principal/badReport';
 import Household from '../principal/Household';
 import drawerContentComponents from './drawerContentComponent';

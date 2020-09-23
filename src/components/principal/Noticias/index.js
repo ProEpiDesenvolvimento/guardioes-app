@@ -5,7 +5,7 @@ import RNSecureStorage from 'rn-secure-storage';
 
 import { API_URL } from 'react-native-dotenv';
 
-import Noticias from './Noticias';
+import NoticiasComponent from './NoticiasComponent';
 
 import { 
     Container, 
@@ -20,7 +20,7 @@ import {
     OptionText,
 } from './styles';
 
-export default function newNoticias() {
+export default function Noticias() {
     const [twitters, setTwitter] = useState([]);
     const [loading, setLoading] = useState(true);
     // const [groupId, setGroupId] = useState(null);
@@ -67,6 +67,7 @@ export default function newNoticias() {
 
     useEffect(() => {
         fetchTweets();
+        console.log('TWITTER -> ', twitters)
         setLoading(true);
     }, []);
 
@@ -104,7 +105,7 @@ export default function newNoticias() {
                     <List 
                         data={twitters.slice(0,15)}
                         keyExtractor={twitters => String(twitters.id)}
-                        renderItem={({item}) => <Noticias data={item}/>}
+                        renderItem={({item}) => <NoticiasComponent data={item}/>}
                     />
                 </ScrollNoticias>
             </Container>

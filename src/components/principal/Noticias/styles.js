@@ -84,18 +84,11 @@ export const FeedTitle = styled.Text`
     margin-bottom: ${percentage(6)}px;
 `;
 
-export const NoticeContainer = styled(ShadowView).attrs({
-})`
-    flex: 1;
+export const NoticeContainer = styled.View`
     background-color: #5DD39E;
     border-radius: ${scale(18)}px;
-    padding: ${scale(16)}px;
-    max-width: 100%; 
+    padding: ${scale(14)}px;
     margin-bottom: ${percentage(7)}px;
-    shadow-color: #5DD39E;
-    shadow-opacity: 0.4;
-    shadow-radius: 4px;
-    shadow-offset: 0px 2px;
 `;
 
 export const Header = styled.View`
@@ -132,9 +125,9 @@ export const NoticiaText = styled.Text`
 `;
 
 export const Imagem = styled.Image`
-    margin-top: ${scale(8)}px;
-    width: ${scale(260)}px;
-    height: ${scale(100)}px;
+    margin-top: ${scale(6)}px;
+    height: ${scale(200)}px;
+    resize-mode: contain;
     border-radius: 10px;
 `;
 
