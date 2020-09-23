@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StatusBar, Text, StyleSheet, NetInfo, Alert, Modal } from 'react-native';
 
-import { Container, ScrollViewStyle, Background, UserView, Button, NamesContainer, TextName, AppName } from './styles';
+import { Container, ScrollViewStyle, Background, MenuBars, UserView, Button, NamesContainer, TextName, AppName } from './styles';
 import { StatusContainer, TextStyle, StatusBemMal, StatusText, Bem, Mal, Alertas, AlertContainer } from './styles';
 import { StatusAlert, StatusTitle, StatusAlertText, Users, UserSelector, UserScroll, UserWrapper, UserName } from './styles';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import { PermissionsAndroid } from 'react-native';
 import { API_URL } from 'react-native-dotenv';
 import RNSecureStorage from 'rn-secure-storage';
 import AsyncStorage from '@react-native-community/async-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
-import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials } from '../../../utils/constUtils';
+import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials, logoutApp } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
 import OneSignal from 'react-native-onesignal';
@@ -36,7 +36,6 @@ class Home extends Component {
             if (!this.state.isLoading) this.fetchData()
         })
         this.state = {
-            modalVisible: false,
             userSelected: '',
             userName: null,
             userID: null,
@@ -47,6 +46,8 @@ class Home extends Component {
             userLatitude: 'unknown',
             userLongitude: 'unknown',
             error: null,
+            modalVisible: false,
+            showTermsConsent: false, 
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
             alertMessage: null,
@@ -62,7 +63,7 @@ class Home extends Component {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
         this.setState({
-            alertMessage: <Text>{alertMessage}{emojis[0]}</Text>,
+            alertMessage: <Text>{alertMessage} {emojis[0]}</Text>,
             showProgressBar: false
         });
         console.warn(alertMessage)
@@ -82,6 +83,10 @@ class Home extends Component {
         })
     }
 
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
+
     _isconnected = () => {
         NetInfo.isConnected.fetch().then(isConnected => {
             isConnected ? this.verifyLocalization() : Alert.alert(
@@ -94,8 +99,17 @@ class Home extends Component {
         });
     }
 
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
+    newTermsPolicy = () => {
+        this.setState({ showTermsConsent: false })
+
+        Alert.alert(
+            Terms.title, Terms.text,
+            [
+                { text: Terms.disagree, onPress: () => logoutApp(this.props.navigation), style: 'cancel' },
+                { text: Terms.agree, onPress: () => this.updateUserTermsConsent() }
+            ],
+            { cancelable: false }
+        );
     }
 
     onHeaderEventControl() { // rolê para acessar a drawer em uma função estática
@@ -104,6 +118,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        this.verifyUserTermsConsent()
         this.fetchData()
         this.updateUserInfosToOneSignal()
 
@@ -130,6 +145,35 @@ class Home extends Component {
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 50000 },
         );
+    }
+
+    verifyUserTermsConsent = () => {
+        const { params } = this.props.navigation.state
+        const currentPolicyTerms = Terms.version
+        const userPolicyTerms = params.userTermsVersion
+
+        if (userPolicyTerms && userPolicyTerms < currentPolicyTerms) {
+            this.setState({ showTermsConsent: true })
+        }
+    }
+
+    updateUserTermsConsent = async () => {
+        return fetch(`${API_URL}/users/${this.state.userID}`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+            body: JSON.stringify(
+                {
+                    policy_version: Terms.version,
+                }
+            )
+        })
+            .then((response) => {
+                console.warn(response.status)
+            })
     }
 
     initUserSelected = async () => {
@@ -267,7 +311,7 @@ class Home extends Component {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 console.log('You can use the location');
             } else {
-                console.log('Location permission denied');
+                console.log('Location permission denied on Android');
             }
         } catch (err) {
             console.warn(err);
@@ -401,6 +445,7 @@ class Home extends Component {
     }
 
     render() {
+        const { showTermsConsent } = this.state;
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
 
@@ -460,6 +505,7 @@ class Home extends Component {
                   <StatusAlertText>Maioria sentindo-se bem</StatusAlertText>
                 </StatusAlert>
               </AlertContainer>*/}
+
               <AlertContainer alert={hasBadReports}>
                 <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
                 <StatusAlert>
@@ -548,7 +594,7 @@ class Home extends Component {
                                     <Button 
                                         onPress={() => {
                                             this.setModalVisible(!this.state.modalVisible)
-                                            navigate('Household')
+                                            navigate('NovoPerfil')
                                         }}
                                     >
                                         <Feather
@@ -565,35 +611,74 @@ class Home extends Component {
                 </Modal>
             </ScrollViewStyle>
 
-            <Button
-                style={styles.menuBars}
-                onPress={() => this.props.navigation.openDrawer()}
-            >
+            <MenuBars onPress={() => this.props.navigation.openDrawer()}>
                 <SimpleLineIcons name="menu" size={26} color='#ffffff' />
-            </Button>
+            </MenuBars>
 
-            <AwesomeAlert
+            <CoolAlert
+                show={showTermsConsent}
+                title={translate("useTerms.consentTitle")}
+                message={translate("useTerms.consentMessage")}
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={true}
+                confirmText={translate("useTerms.seeTerms")}
+                onConfirmPressed={() => this.newTermsPolicy()}
+            />
+
+            <CoolAlert
                 show={showAlert}
-                showProgress={this.state.showProgressBar ? true : false}
+                showProgress={this.state.showProgressBar}
                 title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-                message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
+                message={this.state.alertMessage}
                 closeOnTouchOutside={this.state.showProgressBar ? false : true}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={this.state.showProgressBar ? false : true}
                 confirmText={translate("badReport.alertMessages.confirmText")}
-                confirmButtonColor='green'
-                onCancelPressed={() => {
-                    this.hideAlert();
-                }}
-                onConfirmPressed={() => {
-                    this.hideAlert();
-                }}
+                onCancelPressed={() => this.hideAlert()}
+                onConfirmPressed={() => this.hideAlert()}
                 onDismiss={() => this.hideAlert()}
             />
           </Container>
           </>
         );
     }
+}
+
+const styles = StyleSheet.create({
+    Avatar: {
+        marginRight: `${scale(8)}%`,
+        borderColor: '#ffffff',
+        borderWidth: 3
+    },
+    dotAvatar: {
+        height: scale(14),
+        width: scale(14),
+        backgroundColor: '#ffffff',
+        left: 0,
+        shadowOpacity: 0
+    }
+})
+
+const Terms = {
+    title: translate("useTerms.title"),
+    text: `${translate("useTerms.terms.textoTermosTitulo")}\n
+        ${translate("useTerms.terms.textoTermos_1")}\n
+        ${translate("useTerms.terms.textoTermos_2")}\n
+        ${translate("useTerms.terms.textoTermos_3")}\n
+        ${translate("useTerms.terms.textoTermos_4")}\n
+        ${translate("useTerms.terms.textoTermos_5")}\n
+        ${translate("useTerms.terms.textoTermos_6")}\n
+        ${translate("useTerms.terms.textoTermos_7")}\n
+        ${translate("useTerms.terms.textoTermos_8")}\n
+        ${translate("useTerms.terms.textoTermos_9")}\n
+        ${translate("useTerms.terms.textoTermos_10")}\n
+        ${translate("useTerms.terms.textoTermos_11")}\n
+        ${translate("useTerms.terms.textoTermos_12")}\n
+        ${translate("useTerms.terms.textoTermos_13")}`,
+    version: translate("useTerms.compilation"),
+    disagree: translate("useTerms.disagree"),
+    agree: translate("useTerms.agree")
 }
 
 const emojis = [
@@ -610,27 +695,6 @@ const emojis = [
         />
     )
 ]
-
-const styles = StyleSheet.create({
-    menuBars: {
-        position: 'absolute',
-        left: '4%',
-        top: '1%',
-        padding: '2%'
-    },
-    Avatar: {
-        marginRight: `${scale(8)}%`,
-        borderColor: '#ffffff',
-        borderWidth: 3
-    },
-    dotAvatar: {
-        height: scale(14),
-        width: scale(14),
-        backgroundColor: '#ffffff',
-        left: 0,
-        shadowOpacity: 0
-    }
-})
 
 //make this component available to the app
 export default Home;

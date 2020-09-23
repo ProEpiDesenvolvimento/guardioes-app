@@ -44,8 +44,8 @@ class Tutorial extends Component {
                     {translate("tutorial.healthMapCont")}
                 </BodyText>
 
-                {/* Conselhos de Saude */}
-                <TouchableOpacity onPress={() => navigate('Conselho')}>
+                {/* Dicas de Saude */}
+                <TouchableOpacity onPress={() => navigate('Dicas')}>
                     <Subtitle>
                         {translate("tutorial.advices")}
                     </Subtitle>
@@ -55,7 +55,7 @@ class Tutorial extends Component {
                 </BodyText>
 
                 {/* Mudando para Noticias, titulo */}
-                <TouchableOpacity onPress={() => navigate('Noticias')}>
+                <TouchableOpacity onPress={() => navigate('Feed')}>
                     <Subtitle>
                         {translate("tutorial.news")}
                     </Subtitle>
