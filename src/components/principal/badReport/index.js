@@ -5,10 +5,10 @@ import ScreenLoader from '../../userData/ScreenLoader';
 import { ScrollViewStyled, User, IconWrapper, InfoWrapper, Name, DateSince, DateText, DateSelector } from './styles';
 import { FormTitleWrapper, FormTitle, CheckBoxStyled, Button } from './styles';
 import { Container, FormInline, FormLabel, Selector, SendContainer, SendText } from '../../styled/NormalForms';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import Emoji from 'react-native-emoji';
 import { scale } from '../../../utils/scallingUtils';
 import { API_URL } from 'react-native-dotenv';
@@ -69,7 +69,7 @@ class BadReport extends Component {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
         this.setState({
-            alertMessage: <Text>{alertMessage}{emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
+            alertMessage: <Text>{alertMessage} {emojis[0]}{"\n"}{translate("badReport.alertMessages.seeADoctor")}</Text>,
             progressBarAlert: false
         });
         console.warn(alertMessage)
@@ -467,24 +467,16 @@ class BadReport extends Component {
                     </Button>
                 </ScrollViewStyled>
 
-                <AwesomeAlert
+                <CoolAlert
                     show={showAlert}
-                    showProgress={this.state.progressBarAlert ? true : false}
+                    showProgress={this.state.progressBarAlert}
                     title={this.state.progressBarAlert ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}</Text>}
-                    message={<Text>{this.state.alertMessage}</Text>}
-                    closeOnTouchOutside={this.state.progressBarAlert ? false : true}
+                    message={this.state.alertMessage}
+                    closeOnTouchOutside={this.state.progressBarAlert}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={false}
                     showConfirmButton={this.state.progressBarAlert ? false : true}
-                    cancelText="No, cancel"
-                    confirmText="Voltar"
-                    confirmButtonColor="#DD6B55"
-                    onCancelPressed={() => {
-                        this.hideAlert();
-                    }}
-                    onConfirmPressed={() => {
-                        this.props.navigation.navigate('Mapa')
-                    }}
+                    confirmText="Ver Mapa"
+                    onConfirmPressed={() => this.props.navigation.navigate('Mapa')}
                     onDismiss={() => this.props.navigation.navigate('Mapa')}
                 />
             </Container>

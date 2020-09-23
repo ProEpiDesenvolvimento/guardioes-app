@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import { View, ActivityIndicator, SafeAreaView } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-
-import { API_URL } from 'react-native-dotenv';
 
 import Noticias from './Noticias';
+
+import AsyncStorage from '@react-native-community/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
+import translate from '../../../../locales/i18n';
+import { API_URL } from 'react-native-dotenv';
 
 import { 
     Container, 
@@ -20,7 +21,7 @@ import {
     OptionText,
 } from './styles';
 
-export default function newNoticias() {
+export default function Feed() {
     const [twitters, setTwitter] = useState([]);
     const [loading, setLoading] = useState(true);
     // const [groupId, setGroupId] = useState(null);
@@ -111,3 +112,7 @@ export default function newNoticias() {
         </>
     );
 }
+
+Feed['navigationOptions'] = screenProps => ({
+    title: translate("news.title")
+})

@@ -5,8 +5,8 @@ import SwiperFlatList from 'react-native-swiper-flatlist';
 
 import { GradientBackground, KeyboardScrollView, ButtonBack, SnowInput, Touch, SnowButton, Label } from '../../styled/SnowForms';
 import { ScreenView, PageTitle, LabelWrapper, TextLabel } from './styles';
+import { CoolAlert } from '../../styled/CoolAlert';
 
-import AwesomeAlert from 'react-native-awesome-alerts';
 import { PasswordIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
@@ -127,6 +127,7 @@ class ForgetPwd extends Component {
     }
 
     render() {
+        const { showAlert } = this.state;
         const navigation  = this.props.navigation;
 
         return (
@@ -246,15 +247,13 @@ class ForgetPwd extends Component {
                     </ButtonBack>
                 </KeyboardScrollView>
 
-                <AwesomeAlert
-                    show={this.state.showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
+                <CoolAlert
+                    show={showAlert}
+                    showProgress={this.state.showProgressBar}
                     title={this.state.showProgressBar ? translate("getToken.loading") : null}
                     closeOnTouchOutside={this.state.showProgressBar ? false : true}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
-                    confirmButtonColor="#DD6B55"
                 />
             </GradientBackground>
             </>

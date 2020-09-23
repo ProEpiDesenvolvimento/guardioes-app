@@ -17,7 +17,7 @@ import { gender, country, race, household } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import { handleAvatar, getInitials } from '../../../utils/constUtils'
 import InstitutionSelector from '../../userData/InstitutionSelector'
-import LoadingModal from '../../modals/LoadingModal'
+import LoadingModal from '../../userData/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -471,7 +471,7 @@ class EditarPerfil extends Component {
                         </SendContainer>
                     </Button>
                 </KeyboardScrollView>
-                <LoadingModal show={this.state.showAlert}/>
+                <LoadingModal show={this.state.showAlert} />
             </Container>
         )
     }
