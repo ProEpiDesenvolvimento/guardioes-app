@@ -152,7 +152,7 @@ class Vigilancia extends Component {
                             {!this.state.vigilance ?
                                 <FormInlineCheck>
                                     <CheckBoxStyled
-                                        title={"Concordo com a Política de Privacidade e Proteção de Dados"}
+                                        title={"Confirmo que li as informações e estou ciente das alterações que serão realizadas após a confirmação"}
                                         checked={this.state.acceptTerms}
                                         onPress={() => {
                                             this.setState({ acceptTerms: !this.state.acceptTerms })
