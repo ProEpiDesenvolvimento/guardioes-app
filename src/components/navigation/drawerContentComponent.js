@@ -35,7 +35,17 @@ export default class drawerContentComponents extends Component {
         const isProfessional = await AsyncStorage.getItem('isProfessional');
         const userToken = await RNSecureStorage.get('userToken');
 
-        this.setState({ userID, userName, userAvatar, isProfessional, userToken })
+        let response = await fetch(`${API_URL}/users/${userID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${userToken}`
+            }
+        })
+        response = response.status == 200 ? await response.json() : response
+
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken, userSchoolUnit: response.user.school_unit_id })
         this.getHouseholds()
         this.getHouseholdAvatars()
     }
@@ -144,6 +154,7 @@ export default class drawerContentComponents extends Component {
                     <Aplicativo>
                         {translate("drawer.app")}
                     </Aplicativo>
+                    {this.state.userSchoolUnit !== null ?
                     <Button onPress={() => navigate('Vigilancia')}>
                         <UserOptionGreen>
                             <Feather name='shield'
@@ -156,6 +167,7 @@ export default class drawerContentComponents extends Component {
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
+                    : null}
                     <Button onPress={() =>  {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })
