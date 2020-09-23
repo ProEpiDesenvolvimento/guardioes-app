@@ -58,7 +58,6 @@ class Vigilancia extends Component {
             vigilance: response.user.is_vigilance,
             phone: response.user.phone,
             loading: false,
-            userSchoolUnit: response.user.school_unit_id,
             acceptTerms: response.user.is_vigilance ? true : false
         })
     }
@@ -134,7 +133,7 @@ class Vigilancia extends Component {
                         <BodyText>
                             {translate("about.textoVigilancia")}
                         </BodyText>
-                        {!this.state.loading && this.state.userSchoolUnit !== null ?
+                        {!this.state.loading ?
                             <>
                                 <Title>
                                     {this.state.vigilance ? "Você já está participando!" : "Deseja participar?"}

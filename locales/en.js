@@ -278,7 +278,8 @@ export default {
         "linkBtnProEPi": 'https://proepi.org.br/',
 
         "textoSobreTitulo": '\nAbout Guardiões da Saúde\n',
-        "textoSobre": 'The app "Guardiões da Saúde" was developed for phones and tablets using Android, in colaboration with the Health Minitry of Brasil and suport from Skoll Foundation for the Olympics. A new version is being develped by the University of Brasília and ProEpi. The National Institute of Health is cooperating so that the tool can also be used in Colombia as a strategy to strengthen this monitoring on events of interest in public health and the detection of outbreaks.'
+        "textoSobre": 'The app "Guardiões da Saúde" was developed for phones and tablets using Android, in colaboration with the Health Minitry of Brasil and suport from Skoll Foundation for the Olympics. A new version is being develped by the University of Brasília and ProEpi. The National Institute of Health is cooperating so that the tool can also be used in Colombia as a strategy to strengthen this monitoring on events of interest in public health and the detection of outbreaks.',
+        "textoVigilancia": "A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone."
     },
     "useTerms": {
         "title": "Terms and Policies",
@@ -298,6 +299,23 @@ export default {
             "textoTermos_12": '\n12. RESPONSABILIDADE POR INFORMAÇÕES DE TERCEIROS: \n\n A provisão através do Webapp e a aplicação de links e referências a outros sites, publicações ou recursos de informação não constituem endosso a esses sites ou seus recursos pelo aplicativo "Guardiões da Saúde", seus agentes ou representantes. A equipe de aplicação "Guardiões da Saúde" não faz representações ou afirmações sobre a qualidade, conteúdo e precisão das informações, serviços ou produtos que possam ser fornecidos por esses recursos e, especificamente, está isenta de quaisquer garantias, incluindo, mas não limitado a garantias implícitas ou expressas de comercialização ou adequação a qualquer uso, aplicação ou propósito específico.', 
             "textoTermos_13": '\n13. CONSIFERAÇÕES FINAIS \n\n O acesso ao serviço representa a aceitação expressa e irrestrita dos Termos de Uso descritos acima. Ao concordar com estes termos, você concede uma licença perpétua, isenta de royalties, licença incondicional para o aplicativo "Guardiões da Saúde" e todas as organizações sucessoras, para publicar sua contribuição de forma agregada, no próprio aplicativo, bem como divulgá-los aos serviços de vigilância de saúde pública relacionados. Você também concorda que o aplicativo "Guardiões da Saúde" tem o direito, mas não a obrigação, de editar ou remover qualquer contribuição a critério exclusivo da equipe do aplicativo.\n',   
         }
+    },
+    "vigilanceTerms": {
+        "title": "POLÍTICA DE PRIVACIDADE E PROTEÇÃO DE DADOS",
+        "text": "1. Armazenamento e Transferência de Dados:\n\n" +
+            "O uso do APP e o registro ou apresentação de dados pessoais para o Guardião da saúde implica o consentimento do candidato para o tratamento automatizado dos dados pessoais fornecidos, bem como o envio de comunicações por via eletrônica com informações relacionadas com o Guardião da saúde Durante o processo de registro, o candidato consente que os dados são transferidos somente a terceiros envolvidos no projeto.\n\n" +
+            "Para estes fins significa terceiro 'todos os profissionais para a vigilância ativa' em relação aos cuidados com a saúde.\n\n" +
+            "O usuário que registra as informações, indicando seus sintomas e, por conseguinte, concorda expressamente, que seus dados (nome, e-mail e telefone) que fornece será utilizado no aplicativo, para os motores de busca com a finalidade da pesquisa da vigilância ativa que poderão ser fornecidas aos profissionais dos Guardião da Saúde no âmbito da prestação de informação referentes ao controle de doenças.\n\n" +
+            "O usuário consente expressamente com a transferência de seus dados a empresas associadas ou pertencentes ao projeto. O aplicativo Guardião da Saúde utilizará os dados fornecidos para o envio de questionários e informação relacionadas aos interesses e perfil do usuário.\n\n" +
+            "O usuário está ciente e concorda que todos os dados que nos fornece ou que forem gerados durante o seu relacionamento com o APP poderão ser compartilhados com parceiros da saúde, sempre para a finalidade de apoiar o controle de epidemias e doenças, realização de pesquisas direcionadas.\n\n" +
+            "Os efeitos da presente autorização serão estendidos para as partes envolvidas no projeto Guardião da Saúde.\n\n" +
+            "2. Segurança\n\n" +
+            "A segurança de seus dados é muito importante para o APP Guardião da Saúde por isso o aplicativo adotou medidas técnicas e organizacionais de acordo com as regras estabelecidas para a segurança dos dados pessoais e evitar a sua alteração, perda, tratamento ou acesso não autorizado, tendo em conta o estado da tecnologia, a natureza dos dados armazenados e os riscos a que estão expostas.\n\n" +
+            "3. Direito de acesso, alteração, oposição e cancelamento dos dados\n\n" +
+            "O usuário tem o direito de ter acesso aos seus dados, a qualquer momento, para corrigi-los se os detalhes estiverem incorretos, alterar suas configurações de privacidade, se opor ao tratamento dos seus dados e cancelar a inscrição de serviços do APP Guardião da Saúde.\n\n" +
+            "Esses direitos podem ser feitos através da própria configuração do aplicativo.\n\n" +
+            "4. Modificação da política de privacidade e proteção de dados\n\n" +
+            "O App Guardião da Saúde reserva se ao direito de modificar a presente política para adaptá-la para futuros desenvolvimentos legislativos ou jurisprudenciais. Qualquer mudança que não derivam de adaptação às alterações legislativas ou jurisprudenciais será anunciada no aplicativo ou, se significativas, comunicada por e-mail para os usuários."
     },
     "drawer": {
         "logOut": "Logout",
