@@ -8,7 +8,7 @@ import { TextOption, Aplicativo, SocialContainer, RedeSocial } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import { handleAvatar, getInitials } from '../../utils/constUtils';
+import { handleAvatar, getInitials, logoutApp } from '../../utils/constUtils';
 import { Avatar } from 'react-native-elements';
 import Share from "react-native-share";
 import { scale } from '../../utils/scallingUtils';
@@ -80,22 +80,6 @@ export default class drawerContentComponents extends Component {
         this.setState({ householdAvatars })
     }
 
-    //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
-    _logoutApp = async () => {
-        AsyncStorage.removeItem('userID');
-        AsyncStorage.removeItem('userName');
-        AsyncStorage.removeItem('userBirth');
-        AsyncStorage.removeItem('userAvatar');
-        AsyncStorage.removeItem('userSelected');
-        AsyncStorage.removeItem('householdID');
-
-        RNSecureStorage.remove('userToken');
-        RNSecureStorage.remove('userEmail');
-        RNSecureStorage.remove('userPwd');
-        
-        this.props.navigation.navigate('TelaInicial');
-    }
-
     render() {
         const { navigate } = this.props.navigation;
         const householdsData = this.state.householdsData;
@@ -138,7 +122,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                {translate("home.reportRumor")}
+                                {translate("drawer.reportRumor")}
                             </TextOption>
                         </UserOptionBlue>
                     </Button>
@@ -151,11 +135,11 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Editar perfis
+                                {translate("drawer.toEdit")}
                             </TextOption>
                         </UserOptionBlue>
                     </Button>
-                    <Button onPress={this._logoutApp}>
+                    <Button onPress={() => logoutApp(this.props.navigation)}>
                         <UserOptionBlue>
                             <Feather name='log-out'
                                 size={scale(26)} 
@@ -168,7 +152,7 @@ export default class drawerContentComponents extends Component {
                         </UserOptionBlue>
                     </Button>
                     <Aplicativo>
-                        Aplicativo
+                        {translate("drawer.app")}
                     </Aplicativo>
                     {this.state.userSchoolUnit !== null ?
                     <Button onPress={() => navigate('Vigilancia')}>
@@ -179,7 +163,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Vigilância Ativa
+                                {translate("drawer.toSurveillance")}
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
@@ -197,7 +181,7 @@ export default class drawerContentComponents extends Component {
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                Compartilhar
+                                {translate("drawer.share")}
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
@@ -213,15 +197,15 @@ export default class drawerContentComponents extends Component {
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
-                    <Button onPress={() => navigate('Sobre')}>
+                    <Button onPress={() => navigate('FAQ')}>
                         <UserOptionGreen>
-                            <Feather name='info'
+                            <Feather name='message-circle'
                                 size={scale(26)} 
                                 color='#ffffff' 
                                 style={styles.iconStyle}
                             />
                             <TextOption>
-                                {translate("drawer.toAbout")}
+                                {translate("drawer.toFAQ")}
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
@@ -235,7 +219,7 @@ export default class drawerContentComponents extends Component {
                                 />
                             </RedeSocial>
                         </Button>
-                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb/')}>
+                        <Button onPress={() => Linking.openURL('https://www.instagram.com/guardioesdasaudeunb')}>
                             <RedeSocial>
                                 <SimpleLineIcons name='social-instagram'
                                     size={scale(28)} 
@@ -252,7 +236,7 @@ export default class drawerContentComponents extends Component {
 }
 
 const shareOptions = {
-    message: translate("drawer.share")
+    message: translate("drawer.shareLink")
 }
 
 const styles = StyleSheet.create({

@@ -16,7 +16,7 @@ import {API_URL, APP_ID} from 'react-native-dotenv';
 
 Feather.loadFont();
 
-class Conselho extends Component {
+class Dicas extends Component {
     static navigationOptions = {
         title: translate("advices.title")
     }
@@ -209,4 +209,4 @@ const advicesText = {
 }
 
 //make this component available to the app
-export default Conselho;
+export default Dicas;
