@@ -13,8 +13,13 @@ import ForgetPwd from '../telainicial/ForgetPwd';
 import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
+
+//import Conselho from '../principal/Conselho';
+//import Noticias from '../principal/Noticias';
+
 import Dicas from '../principal/Dicas';
 import Feed from '../principal/Feed/';
+
 import BadReport from '../principal/badReport';
 import NovoPerfil from '../principal/NovoPerfil';
 import drawerContentComponents from './drawerContentComponent';
