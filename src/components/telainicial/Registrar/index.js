@@ -8,8 +8,10 @@ import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckL
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
+
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
+import OneSignal from 'react-native-onesignal'
 import { UserIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils'
 import translate from '../../../../locales/i18n'
@@ -17,8 +19,7 @@ import { API_URL } from 'react-native-dotenv'
 import { gender, country, race } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import InstitutionSelector from '../../userData/InstitutionSelector'
-import LoadingModal from '../../modals/LoadingModal'
-import OneSignal from 'react-native-onesignal';
+import LoadingModal from '../../userData/LoadingModal'
 
 Feather.loadFont();
 
@@ -370,7 +371,8 @@ class Registrar extends Component {
                     identification_code: this.state.userIdCode,
                     group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
-                    risk_group: this.state.riskGroup
+                    risk_group: this.state.riskGroup,
+                    policy_version: Terms.version
                 }
             })
         })
@@ -426,9 +428,13 @@ class Registrar extends Component {
                 //Send User ID to Push Notification API
                 OneSignal.setExternalUserId(responseJson.user.id.toString())
 
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version })
             })
     }
+}
+
+const Terms = {
+    version: translate("useTerms.compilation")
 }
 
 //make this component available to the app

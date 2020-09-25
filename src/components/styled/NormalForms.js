@@ -217,6 +217,7 @@ export const ModalContainer = styled.View`
 
 export const ModalBox = styled(ShadowView).attrs({
 })`
+    max-height: 90%;
     width: 90%;
     background-color: #ffffff;
     border-radius: ${scale(18)}px;

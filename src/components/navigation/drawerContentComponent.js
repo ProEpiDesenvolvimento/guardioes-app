@@ -8,13 +8,12 @@ import { TextOption, Aplicativo, SocialContainer, RedeSocial } from './styles';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-import { handleAvatar, getInitials } from '../../utils/constUtils';
+import { handleAvatar, getInitials, logoutApp } from '../../utils/constUtils';
 import { Avatar } from 'react-native-elements';
 import Share from "react-native-share";
 import { scale } from '../../utils/scallingUtils';
 import translate from '../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
-import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 SimpleLineIcons.loadFont();
@@ -36,7 +35,17 @@ export default class drawerContentComponents extends Component {
         const isProfessional = await AsyncStorage.getItem('isProfessional');
         const userToken = await RNSecureStorage.get('userToken');
 
-        this.setState({ userID, userName, userAvatar, isProfessional, userToken })
+        let response = await fetch(`${API_URL}/users/${userID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${userToken}`
+            }
+        })
+        response = response.status == 200 ? await response.json() : response
+
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken, userGroupId: response.user.group_id })
         this.getHouseholds()
         this.getHouseholdAvatars()
     }
@@ -69,34 +78,6 @@ export default class drawerContentComponents extends Component {
         }
 
         this.setState({ householdAvatars })
-    }
-
-    //Funcao responsavel por apagar as variaveis de login do app salvas no celular ao encerrar uma sessão
-    _logoutApp = () => {
-        AsyncStorage.removeItem('userID');
-        AsyncStorage.removeItem('userName');
-        AsyncStorage.removeItem('userBirth');
-        AsyncStorage.removeItem('userAvatar');
-        AsyncStorage.removeItem('userSelected');
-        AsyncStorage.removeItem('householdID');
-
-        AsyncStorage.removeItem('userGroup');
-        AsyncStorage.removeItem('userCity');
-        AsyncStorage.removeItem('userSchoolID');
-        AsyncStorage.removeItem('lastReport');
-        AsyncStorage.removeItem('userScore');
-
-        RNSecureStorage.remove('userToken');
-        RNSecureStorage.remove('userEmail');
-        RNSecureStorage.remove('userPwd');
-
-        OneSignal.removeExternalUserId()
-        OneSignal.deleteTag("group")
-        OneSignal.deleteTag("city")
-        OneSignal.deleteTag("school_unit_id")
-        OneSignal.deleteTag("score")
-        
-        this.props.navigation.navigate('TelaInicial');
     }
 
     render() {
@@ -158,7 +139,7 @@ export default class drawerContentComponents extends Component {
                             </TextOption>
                         </UserOptionBlue>
                     </Button>
-                    <Button onPress={this._logoutApp}>
+                    <Button onPress={() => logoutApp(this.props.navigation)}>
                         <UserOptionBlue>
                             <Feather name='log-out'
                                 size={scale(26)} 
@@ -173,6 +154,7 @@ export default class drawerContentComponents extends Component {
                     <Aplicativo>
                         {translate("drawer.app")}
                     </Aplicativo>
+                    {this.state.userGroupId !== null ?
                     <Button onPress={() => navigate('Vigilancia')}>
                         <UserOptionGreen>
                             <Feather name='shield'
@@ -185,6 +167,7 @@ export default class drawerContentComponents extends Component {
                             </TextOption>
                         </UserOptionGreen>
                     </Button>
+                    : null}
                     <Button onPress={() =>  {
                         Share.open(shareOptions)
                             .then((res) => { console.log(res) })

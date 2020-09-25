@@ -1,20 +1,19 @@
-import React, { Component } from 'react'
-import AwesomeAlert from 'react-native-awesome-alerts'
+import React, { PureComponent } from 'react'
+import { CoolAlert } from '../styled/CoolAlert'
 
-class LoadingModal extends Component {
+class LoadingModal extends PureComponent {
     constructor(props) {
         super(props)
     }
 
     render() {
         return (
-            <AwesomeAlert
+            <CoolAlert
                 show={this.props.show}
                 showProgress={true}
                 title={"Carregando"}
             />
         )
-
     }
 }
 
