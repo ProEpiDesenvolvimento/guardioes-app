@@ -114,18 +114,18 @@ export default class drawerContentComponents extends Component {
                         : null}
                     </AvatarContainer>
                     {this.state.isProfessional == "true" &&
-                    <Button onPress={() => navigate("Rumor")}>
-                        <UserOptionBlue>
-                            <Feather name='info'
-                                size={scale(26)} 
-                                color='#ffffff' 
-                                style={styles.iconStyle}
-                            />
-                            <TextOption>
-                                {translate("drawer.reportRumor")}
-                            </TextOption>
-                        </UserOptionBlue>
-                    </Button>
+                        <Button onPress={() => navigate("Rumor")}>
+                            <UserOptionBlue>
+                                <Feather name='info'
+                                    size={scale(26)} 
+                                    color='#ffffff' 
+                                    style={styles.iconStyle}
+                                />
+                                <TextOption>
+                                    {translate("drawer.reportRumor")}
+                                </TextOption>
+                            </UserOptionBlue>
+                        </Button>
                     }
                     <Button onPress={() => navigate('Perfis')}>
                         <UserOptionBlue>
@@ -155,18 +155,18 @@ export default class drawerContentComponents extends Component {
                         {translate("drawer.app")}
                     </Aplicativo>
                     {this.state.userGroupId !== null ?
-                    <Button onPress={() => navigate('Vigilancia')}>
-                        <UserOptionGreen>
-                            <Feather name='shield'
-                                size={scale(26)} 
-                                color='#ffffff' 
-                                style={styles.iconStyle}
-                            />
-                            <TextOption>
-                                {translate("drawer.toSurveillance")}
-                            </TextOption>
-                        </UserOptionGreen>
-                    </Button>
+                        <Button onPress={() => navigate('Vigilancia')}>
+                            <UserOptionGreen>
+                                <Feather name='shield'
+                                    size={scale(26)} 
+                                    color='#ffffff' 
+                                    style={styles.iconStyle}
+                                />
+                                <TextOption>
+                                    {translate("drawer.toSurveillance")}
+                                </TextOption>
+                            </UserOptionGreen>
+                        </Button>
                     : null}
                     <Button onPress={() =>  {
                         Share.open(shareOptions)

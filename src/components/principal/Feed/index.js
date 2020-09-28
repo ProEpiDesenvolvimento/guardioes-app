@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 
+import ScreenLoader from '../../userData/ScreenLoader';
 import Noticias from './Noticias';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -23,7 +24,7 @@ import {
 
 export default function Feed() {
     const [twitters, setTwitter] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
     // const [groupId, setGroupId] = useState(null);
     // const [perPage, setPerPage] = useState(0);
     // const [twitterOption, setTwitterOption] = useState('appguardioes')
@@ -36,20 +37,20 @@ export default function Feed() {
         
         // Get the user group_id 
         await fetch(`${API_URL}/users/${userID}`, {
-        headers: {
-            Accept: 'application/vnd.api+json',
-            Authorization: `${userToken}`
-        },
+            headers: {
+                Accept: 'application/vnd.api+json',
+                Authorization: `${userToken}`
+            },
         })
-        .then((response) => response.json())
-        .then((responseJson) => {
-                group = responseJson.user.group_id
-            }
-        )
+            .then((response) => response.json())
+            .then((responseJson) => {
+                    group = responseJson.user.group_id
+                }
+            )
 
         // Check if the user has an group_id, and get group twitter
-        if(group !== null) {
-            await fetch(`${API_URL}/groups/${group}/get_twitter`,)
+        if (group !== null) {
+            await fetch(`${API_URL}/groups/${group}/get_twitter`)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     twitterHandle = responseJson.twitter
@@ -57,7 +58,7 @@ export default function Feed() {
         } 
 
         // Get twitters to show
-        await fetch(`${API_URL}/twitter_apis/${twitterHandle}`, {})
+        await fetch(`${API_URL}/twitter_apis/${twitterHandle}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 setTwitter(responseJson.twitter_api.tweets.slice(0, 10))
@@ -68,19 +69,13 @@ export default function Feed() {
 
     useEffect(() => {
         fetchTweets();
-        setLoading(true);
     }, []);
 
-    function loadingTwitters(){
-        if (loading) {
-        return (
-            <View style={{ flex: 1, padding: 20 }}>
-                <ActivityIndicator />
-            </View>
-        )
-        }
+    if (isLoading) {
+        return <ScreenLoader />
     }
-        return (
+
+    return (
         <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
             <Container>
@@ -101,7 +96,6 @@ export default function Feed() {
                         </OptionRight>
                     </TwitterOption>
                     </TwitterOptionContainer> */}
-                    {loadingTwitters(loading)}
                     <List 
                         data={twitters.slice(0,15)}
                         keyExtractor={twitters => String(twitters.id)}
@@ -110,7 +104,7 @@ export default function Feed() {
                 </ScrollNoticias>
             </Container>
         </>
-    );
+    )
 }
 
 Feed['navigationOptions'] = screenProps => ({
