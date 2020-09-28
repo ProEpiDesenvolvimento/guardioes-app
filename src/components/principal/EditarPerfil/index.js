@@ -108,6 +108,10 @@ class EditarPerfil extends Component {
                     AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
                 }
 
+                if (this.state.originalName === this.state.userSelected) { // Update locally to current user
+                    AsyncStorage.removeItem('avatarSelected')
+                }
+
                 this.setState({ Avatar: null })
             } else {
                 let source = response.uri;
@@ -122,6 +126,10 @@ class EditarPerfil extends Component {
                 else {
                     householdAvatars[householdID] = source
                     AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
+                }
+
+                if (this.state.originalName === this.state.userSelected) { // Update locally to current user
+                    AsyncStorage.setItem('avatarSelected', source)
                 }
 
                 this.setState({ Avatar: source })
@@ -190,7 +198,7 @@ class EditarPerfil extends Component {
                     AsyncStorage.setItem('userName', this.state.Name)
                     AsyncStorage.setItem('userBirth', this.formatBirthAgain(this.state.Birth))
 
-                    if (this.state.originalName === this.state.userSelected) {
+                    if (this.state.originalName === this.state.userSelected) { // Update locally to current user
                         AsyncStorage.setItem('userSelected', this.state.Name)
                         AsyncStorage.setItem('birthSelected', this.formatBirthAgain(this.state.Birth))
                     }
@@ -254,7 +262,7 @@ class EditarPerfil extends Component {
                 console.warn(response.status)
                 this.setAlert(false)
                 if (response.status == 200) {
-                    if (this.state.originalName === this.state.userSelected) {
+                    if (this.state.originalName === this.state.userSelected) { // Update locally to current user
                         AsyncStorage.setItem('userSelected', this.state.Name)
                         AsyncStorage.setItem('birthSelected', this.formatBirthAgain(this.state.Birth))
                     }

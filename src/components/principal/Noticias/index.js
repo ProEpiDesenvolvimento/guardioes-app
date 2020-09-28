@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { View, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
-
+import translate from '../../../../locales/i18n';
 import { API_URL } from 'react-native-dotenv';
 
+import ScreenLoader from '../../userData/ScreenLoader';
 import NoticiasComponent from './NoticiasComponent';
 
 import { 
@@ -22,7 +23,7 @@ import {
 
 export default function Noticias() {
     const [twitters, setTwitter] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
     // const [groupId, setGroupId] = useState(null);
     // const [perPage, setPerPage] = useState(0);
     // const [twitterOption, setTwitterOption] = useState('appguardioes')
@@ -47,8 +48,8 @@ export default function Noticias() {
         )
 
         // Check if the user has an group_id, and get group twitter
-        if(group !== null) {
-            await fetch(`${API_URL}/groups/${group}/get_twitter`,)
+        if (group !== null) {
+            await fetch(`${API_URL}/groups/${group}/get_twitter`)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     twitterHandle = responseJson.twitter
@@ -56,7 +57,7 @@ export default function Noticias() {
         } 
 
         // Get twitters to show
-        await fetch(`${API_URL}/twitter_apis/${twitterHandle}`, {})
+        await fetch(`${API_URL}/twitter_apis/${twitterHandle}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 setTwitter(responseJson.twitter_api.tweets.slice(0, 10))
@@ -67,20 +68,14 @@ export default function Noticias() {
 
     useEffect(() => {
         fetchTweets();
-        console.log('TWITTER -> ', twitters)
-        setLoading(true);
+        console.log('TWITTER -> ', twitters);
     }, []);
 
-    function loadingTwitters(){
-        if (loading) {
-        return (
-            <View style={{ flex: 1, padding: 20 }}>
-                <ActivityIndicator />
-            </View>
-        )
-        }
+    if (isLoading) {
+        return <ScreenLoader />
     }
-        return (
+
+    return (
         <>
             <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
             <Container>
@@ -101,7 +96,6 @@ export default function Noticias() {
                         </OptionRight>
                     </TwitterOption>
                     </TwitterOptionContainer> */}
-                    {loadingTwitters(loading)}
                     <List 
                         data={twitters.slice(0,15)}
                         keyExtractor={twitters => String(twitters.id)}
@@ -112,3 +106,7 @@ export default function Noticias() {
         </>
     );
 }
+
+Noticias['navigationOptions'] = () => ({
+    title: translate("news.title")
+})

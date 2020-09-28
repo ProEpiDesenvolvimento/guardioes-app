@@ -13,12 +13,8 @@ import ForgetPwd from '../telainicial/ForgetPwd';
 import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
-
-//import Conselho from '../principal/Conselho';
-//import Noticias from '../principal/Noticias';
-
 import Dicas from '../principal/Dicas';
-import Feed from '../principal/Feed/';
+import Noticias from '../principal/Noticias/';
 
 import BadReport from '../principal/badReport';
 import NovoPerfil from '../principal/NovoPerfil';
@@ -54,7 +50,7 @@ export const BottomMenu = createBottomTabNavigator({
     Diario,
     Mapa,
     Dicas,
-    Feed,
+    Noticias,
 },
     {
         initialRouteName: 'Home',
@@ -70,7 +66,7 @@ export const BottomMenu = createBottomTabNavigator({
                     iconName = 'map';
                 } else if (routeName === 'Dicas') {
                     iconName = 'heart';
-                } else if (routeName === 'Feed') {
+                } else if (routeName === 'Noticias') {
                     iconName = 'message-square';
                 }
 

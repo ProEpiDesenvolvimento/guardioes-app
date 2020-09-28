@@ -84,11 +84,16 @@ export const FeedTitle = styled.Text`
     margin-bottom: ${percentage(6)}px;
 `;
 
-export const NoticeContainer = styled.View`
+export const NoticeContainer = styled(ShadowView).attrs({
+})`
     background-color: #5DD39E;
     border-radius: ${scale(18)}px;
-    padding: ${scale(14)}px;
+    padding: ${scale(16)}px;
     margin-bottom: ${percentage(7)}px;
+    shadow-color: #5DD39E;
+    shadow-opacity: 0.4;
+    shadow-radius: 4px;
+    shadow-offset: 0px 2px;
 `;
 
 export const Header = styled.View`

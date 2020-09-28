@@ -53,7 +53,7 @@ export const AvatarContainer = styled.View`
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  margin-vertical: ${percentage(8)}px;
+  margin-vertical: ${percentage(10)}px;
 `;
 
 const option = `

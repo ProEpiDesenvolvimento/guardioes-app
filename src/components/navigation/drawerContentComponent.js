@@ -113,7 +113,7 @@ export default class drawerContentComponents extends Component {
                             })
                         : null}
                     </AvatarContainer>
-                    {this.state.isProfessional == "true" &&
+                    {this.state.isProfessional == "true" ?
                         <Button onPress={() => navigate("Rumor")}>
                             <UserOptionBlue>
                                 <Feather name='info'
@@ -126,7 +126,7 @@ export default class drawerContentComponents extends Component {
                                 </TextOption>
                             </UserOptionBlue>
                         </Button>
-                    }
+                    : null}
                     <Button onPress={() => navigate('Perfis')}>
                         <UserOptionBlue>
                             <Feather name='settings'

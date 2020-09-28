@@ -55,7 +55,7 @@ class Tutorial extends Component {
                 </BodyText>
 
                 {/* Mudando para Noticias, titulo */}
-                <TouchableOpacity onPress={() => navigate('Feed')}>
+                <TouchableOpacity onPress={() => navigate('Noticias')}>
                     <Subtitle>
                         {translate("tutorial.news")}
                     </Subtitle>
