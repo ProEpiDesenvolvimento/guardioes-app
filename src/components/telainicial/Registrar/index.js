@@ -420,6 +420,7 @@ class Registrar extends Component {
                 AsyncStorage.setItem('userBirth', responseJson.user.birthdate)
                 AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at)
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString())
+                AsyncStorage.setItem('userScore', '0')
 
                 RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
