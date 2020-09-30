@@ -1,34 +1,60 @@
-language: android
+sudo: false
+language: node_js
+node_js:
+  - 'stable'
+addons:
+  code_climate:
+    repo_token:
+      secure: "gVn6j4pYZRmhwPd+MXqQ5urnwRuqD33kIsal7Knp/M/b7pJWjnUc36rCjAXnzg2IqL3gYDVeERtxztxhsI/uWuczmkZfeUSdiQRgxYUHo793na9EP+rRlrqLtqsUL7mOOScJicRKt2StkOiSE/L90MPRlqvVWtTtE1ULcSVKN2K4OpOHqSgZagaOb4sIpIklR5Q5HvCObX9v+fryJ7gL5sKSxO00v83U7XyP1XhdNe8j9TLOjAUgYSaGb8WcMKs4knsHx/JHl5WnzdCebwv5fRJsXyHLnoeNnlaJRLUMwOcz9LkvdhHubQQuP3hRrExytImQKvcCeY67j1XtC5O5+cCoeLvO/LzMOm/ACuEIRkLC9STYZc2hucRoYd51RDYQRxhuldlChBh/vbMlWfaFx2ekCtMTZSocvYZHvJIEAZ54F1+IqWVC2FCNH5sLj6svmyhzryBWdxFYgGOZF52fq9ieVqrdPYEXZtUsLG/elniG8RiNgYKL4aPFHiLkJVHH3TItu5U7pLaE4hs9WipmF88ou9uaitIVD4LyK9VFINWjv0TsU9yIoTwluDhTQQSzjSDsMRlTkqYXQroAqqOjuOAocEim7jfyFKqbzm1CP8OKIb5t8ESPWWv4NWXK/F7zbVvVb1lSElCJxs4RmInHrXYbUypAUchFBQIccc0yHh0="
+
+branches:
+  only:
+  - feature/ci-cd
+
+cache:
+  directories:
+    - node_modules
 before_install:
-- nvm install 13
-- node --version
-- openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
+  - npm update
 install:
-- npm install
-- yes | sdkmanager "platforms;android-28"
-- touch .env
-- echo "API_URL=http://gds.proepi.org.br" > .env
-- echo "APP_ID=1" >> .env
-android:
-  components:
-  - build-tools-29.0.3
-  - android-29
-  - extra-android-m2repository
-  - extra-google-google_play_services
-  - extra-google-m2repository
-  - addon-google_apis-google-16
+  - npm install
+before_script:
+  - npm install codeclimate-test-reporter -g
 script:
-- npx jetify
-- cd android && ./gradlew assembleRelease
-- cp app/build/outputs/apk/release/app-release.apk ..
-- cd ..
-deploy:
-  provider: releases
-  api_key:
-    secure: xWfNCAJ+520sFClvY879VXWXiPS5O7sJDBMkd25jyk6Va0ogjM3VklGBnQzkhsULcR9v15loIIGmfbBQhabw81csfuoBWDkLqC36wPqNTiSqRPTmNfo741MoWsmNE/x1s46LGe6qLphTyNPTn7GbBm05bixOZjYwy3NtM6a4CiUo+OwmlY0R6Ow0jN23Sm5EY5OYXDp4f/M0SS+5pnSTx651TTfJpZJ6BLbQk9PQrlmhB7hQDUcrDPGvrXu57QisHaib8DYkJtrNI57pDmShB2WaP1B6QKkWzIUqBq/L3CvGBrOEvBTv+7XPd23RIqWux4qFZX3NfVeo34vHbeJw9s7vCbFmRk1IiSa2/0MRJn9d5X5pZ9ftJfXbkCR4G/pFBvr3m4zqXnR+zk/u4a++nBv/E2iNbMPajUfNCOYfQlj8jKZLrxuyv24DpRleql4CZHZRtO8lA8dXhreN+1HMcpFr6+kdR0MyIlROmO0z1y6Z3tP0i8ylpUi+BlvbvDG9HIzML8vZ4V9YhXUly0311f32NEByH/5VrqWN7t1boJbnQDwfDT2aAh2gaQ70C2/PRMcukSKL36GCCOS7TAOPz7gc5XX0W4g82GSdrZmYHuwAxlB+ltXCzEe89K+e23qIgLudi9x5twxuMpmgkmIqgkOZHe9VB3cRWCABq5VtjL8=
-  file: app-release.apk
-  on:
-    repo: proepidesenvolvimento/guardioes-app
-    all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^(development)$
-  skip_cleanup: 'true'
+  - npm test --coverage
+after_script:
+  - codeclimate-test-reporter < ./coverage/lcov.info
+
+# before_install:
+#   - nvm install 13
+#   - node --version
+#   - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
+# install:
+#   - npm install
+#   - yes | sdkmanager "platforms;android-28"
+#   - touch .env
+#   - echo "API_URL=http://gds.proepi.org.br" > .env
+#   - echo "APP_ID=1" >> .env
+# android:
+#   components:
+#     - build-tools-29.0.3
+#     - android-29
+#     - extra-android-m2repository
+#     - extra-google-google_play_services
+#     - extra-google-m2repository
+#     - addon-google_apis-google-16
+# script:
+#   - npx jetify
+#   - cd android && ./gradlew assembleRelease
+#   - cp app/build/outputs/apk/release/app-release.apk ..
+#   - cd ..
+# deploy:
+#   provider: releases
+#   api_key:
+#     secure: xWfNCAJ+520sFClvY879VXWXiPS5O7sJDBMkd25jyk6Va0ogjM3VklGBnQzkhsULcR9v15loIIGmfbBQhabw81csfuoBWDkLqC36wPqNTiSqRPTmNfo741MoWsmNE/x1s46LGe6qLphTyNPTn7GbBm05bixOZjYwy3NtM6a4CiUo+OwmlY0R6Ow0jN23Sm5EY5OYXDp4f/M0SS+5pnSTx651TTfJpZJ6BLbQk9PQrlmhB7hQDUcrDPGvrXu57QisHaib8DYkJtrNI57pDmShB2WaP1B6QKkWzIUqBq/L3CvGBrOEvBTv+7XPd23RIqWux4qFZX3NfVeo34vHbeJw9s7vCbFmRk1IiSa2/0MRJn9d5X5pZ9ftJfXbkCR4G/pFBvr3m4zqXnR+zk/u4a++nBv/E2iNbMPajUfNCOYfQlj8jKZLrxuyv24DpRleql4CZHZRtO8lA8dXhreN+1HMcpFr6+kdR0MyIlROmO0z1y6Z3tP0i8ylpUi+BlvbvDG9HIzML8vZ4V9YhXUly0311f32NEByH/5VrqWN7t1boJbnQDwfDT2aAh2gaQ70C2/PRMcukSKL36GCCOS7TAOPz7gc5XX0W4g82GSdrZmYHuwAxlB+ltXCzEe89K+e23qIgLudi9x5twxuMpmgkmIqgkOZHe9VB3cRWCABq5VtjL8=
+#   file: app-release.apk
+#   on:
+#     repo: proepidesenvolvimento/guardioes-app
+#     all_branches: true
+#     condition: $TRAVIS_BRANCH =~ ^(development)$
+#   skip_cleanup: 'true'
