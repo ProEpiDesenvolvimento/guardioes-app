@@ -11,6 +11,10 @@ branches:
   only:
   - feature/ci-cd
 
+env:
+  - API_URL="http://localhost:3000"
+  - APP_ID="1"
+
 cache:
   directories:
     - node_modules
