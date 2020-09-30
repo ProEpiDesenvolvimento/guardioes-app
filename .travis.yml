@@ -2,10 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - 'stable'
-addons:
-  code_climate:
-    repo_token:
-      secure: "gVn6j4pYZRmhwPd+MXqQ5urnwRuqD33kIsal7Knp/M/b7pJWjnUc36rCjAXnzg2IqL3gYDVeERtxztxhsI/uWuczmkZfeUSdiQRgxYUHo793na9EP+rRlrqLtqsUL7mOOScJicRKt2StkOiSE/L90MPRlqvVWtTtE1ULcSVKN2K4OpOHqSgZagaOb4sIpIklR5Q5HvCObX9v+fryJ7gL5sKSxO00v83U7XyP1XhdNe8j9TLOjAUgYSaGb8WcMKs4knsHx/JHl5WnzdCebwv5fRJsXyHLnoeNnlaJRLUMwOcz9LkvdhHubQQuP3hRrExytImQKvcCeY67j1XtC5O5+cCoeLvO/LzMOm/ACuEIRkLC9STYZc2hucRoYd51RDYQRxhuldlChBh/vbMlWfaFx2ekCtMTZSocvYZHvJIEAZ54F1+IqWVC2FCNH5sLj6svmyhzryBWdxFYgGOZF52fq9ieVqrdPYEXZtUsLG/elniG8RiNgYKL4aPFHiLkJVHH3TItu5U7pLaE4hs9WipmF88ou9uaitIVD4LyK9VFINWjv0TsU9yIoTwluDhTQQSzjSDsMRlTkqYXQroAqqOjuOAocEim7jfyFKqbzm1CP8OKIb5t8ESPWWv4NWXK/F7zbVvVb1lSElCJxs4RmInHrXYbUypAUchFBQIccc0yHh0="
 
 branches:
   only:
@@ -13,20 +9,19 @@ branches:
 
 env:
   - API_URL="http://localhost:3000" APP_ID="1"
-
 cache:
   directories:
     - node_modules
-before_install:
-  - npm update
 install:
   - npm install
 before_script:
-  - npm install codeclimate-test-reporter -g
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
-  - npm test --coverage
+  - npm run test
 after_script:
-  - codeclimate-test-reporter < ./coverage/lcov.info
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 # before_install:
 #   - nvm install 13
