@@ -1,11 +1,7 @@
-language: node_js
-node_js:
-  - 'stable'
-
+language: android
 branches:
   only:
     - feature/ci-cd
-
 env:
   global:
     - CC_TEST_REPORTER_ID=0f594ecd1c19874759be811508bfc0c3ff0f78d3b432adefd355e9e56ce67110
@@ -16,21 +12,13 @@ cache:
 before_install:
   - nvm install 13
   - node --version
-  - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -in $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
-
+  - openssl aes-256-cbc -K $encrypted_4de2092d66d0_key -iv $encrypted_4de2092d66d0_iv -in ./android/app/gds-upload-keystore.keystore.enc -out ./android/app/gds-upload-keystore.keystore -d
 install:
   - npm install
   - yes | sdkmanager "platforms;android-28"
   - touch .env
   - echo "API_URL=http://gds.proepi.org.br" > .env
   - echo "APP_ID=1" >> .env
-
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
-      
 android:
   components:
     - build-tools-29.0.3
@@ -39,25 +27,30 @@ android:
     - extra-google-google_play_services
     - extra-google-m2repository
     - addon-google_apis-google-16
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 jobs:
   include:
-    - stage: 'Test'
-      script:
-        - npm run test --coverage
-      script: skip
-    - stage: 'Deploy'
+    - stage: Test
+      script: npm test
+    - stage: Release
       provider: releases
-      skip_cleanup: 'true'
-      script: bash deploy.sh
       api_key:
-        secure: xWfNCAJ+520sFClvY879VXWXiPS5O7sJDBMkd25jyk6Va0ogjM3VklGBnQzkhsULcR9v15loIIGmfbBQhabw81csfuoBWDkLqC36wPqNTiSqRPTmNfo741MoWsmNE/x1s46LGe6qLphTyNPTn7GbBm05bixOZjYwy3NtM6a4CiUo+OwmlY0R6Ow0jN23Sm5EY5OYXDp4f/M0SS+5pnSTx651TTfJpZJ6BLbQk9PQrlmhB7hQDUcrDPGvrXu57QisHaib8DYkJtrNI57pDmShB2WaP1B6QKkWzIUqBq/L3CvGBrOEvBTv+7XPd23RIqWux4qFZX3NfVeo34vHbeJw9s7vCbFmRk1IiSa2/0MRJn9d5X5pZ9ftJfXbkCR4G/pFBvr3m4zqXnR+zk/u4a++nBv/E2iNbMPajUfNCOYfQlj8jKZLrxuyv24DpRleql4CZHZRtO8lA8dXhreN+1HMcpFr6+kdR0MyIlROmO0z1y6Z3tP0i8ylpUi+BlvbvDG9HIzML8vZ4V9YhXUly0311f32NEByH/5VrqWN7t1boJbnQDwfDT2aAh2gaQ70C2/PRMcukSKL36GCCOS7TAOPz7gc5XX0W4g82GSdrZmYHuwAxlB+ltXCzEe89K+e23qIgLudi9x5twxuMpmgkmIqgkOZHe9VB3cRWCABq5VtjL8=
-        file: app-release.apk
+        secure: YxXNGb0D77gMKMCE8gaV7TIcqSL1VOivtiBH22QFcXmGj7kTkvan5hcf70F2N0M8q3nLEIECoHiC89Z5/34qPXyJuHtE8tZXIMCTJ4VFWHnqrLA7BWsOnJJqKGASbeLmG6zeAhH4fWxvkc5IHFz8p2Wv+f5yEhp1PVrQsjXRnftsOwS5NheT20I8yrJWT4jhExJDkaqaHUW0G7zcT4iA4pxgH8DxkVAHhqCLEhAoSZ0zIs+fCglbApXGXA5bJg9WYk47g2ZE88bjUU0wjlsgfT2mw7nkYh2cKJMO+vmxC9LBH24gkX19oTKaj5KRVTl2svvl3VzB0DDvQGUVoIDQfLkCw4qcZPc+Wx7RRg1A3ahEdpwy2wzoo+bkcxw90X0N0vQiyRIrafVijP+lTeiQZ0lUgSkmNgICdnnlGeQZuxlAMkarBjnsWQew7uUIi9HPc2rOs1fHn+LtAeS/2NXjFkNtRNzgBXHQZdN+KHLtik9PpLToqE2mIBi9oN20ydnTwzQMRTVWh6r22v0lzR3L+fx2BgIxhya1wLY64Wz/OYGirHn0vOV4YLFpUN241V9Iy8Bf0PEVOnaSJs8bN43j2e6rpcGQ2YW8QTA+iivyOK0TaCPZsmlvrOiyBewJO4TtfGajIe+WgTzRhDScl4FcIfzdDLd0r8O+da6mPxuaM1Q=
+      file: app-release.apk
+      script:
+        - npx jetify
+        - cd android && ./gradlew assembleRelease
+        - cp app/build/outputs/apk/release/app-release.apk ..
+        - cd ..
+      skip_cleanup: 'true'
       on:
-        repo: proepidesenvolvimento/guardioes-app
-        branch: 
-          - master
-          - feature/ci-cd
+        repo: FGA-GCES/guardioes-app
+        all_branches: true
+        # condition: '$TRAVIS_BRANCH =~ ^(development)$'
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
+  - './cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info'
