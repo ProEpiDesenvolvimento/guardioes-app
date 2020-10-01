@@ -1,6 +1,6 @@
 # Diagrama de Casos de Uso
 
-![Diagrama de Cados de Uso](https://i.ibb.co/DkSXQnN/casos.png)
+![Diagrama de Cados de Uso](diagrams/UserCase.png)
 
 ## Descrição dos Casos de Uso
 
@@ -86,7 +86,7 @@
 |Fluxo de exceções||
 
 
-### US09 - Visualizar quantidade de sintomáticos
+### US09 - Visualizar porcentagem de sintomáticos
 |||
 |:--:|:--:|
 |Descrição|Usuário visualiza a quantidade de pessoas e a porcentagem sintomáticas de uma determinada região|
