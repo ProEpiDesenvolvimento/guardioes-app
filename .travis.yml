@@ -8,6 +8,8 @@ branches:
   - feature/ci-cd
 
 env:
+  global:
+    - CC_TEST_REPORTER_ID=0f594ecd1c19874759be811508bfc0c3ff0f78d3b432adefd355e9e56ce67110
   - API_URL="http://localhost:3000" APP_ID="1"
 cache:
   directories:
@@ -21,7 +23,7 @@ before_script:
 script:
   - npm run test --coverage
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t coverage/lcov-report/index.html
 
 # before_install:
 #   - nvm install 13
