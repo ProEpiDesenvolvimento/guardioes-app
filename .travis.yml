@@ -13,22 +13,24 @@ cache:
   directories:
     - node_modules
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
+before_install:
   - nvm install 13
   - node --version
   - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
-
+    
 install:
   - npm install
   - yes | sdkmanager "platforms;android-28"
   - touch .env
   - echo "API_URL=http://gds.proepi.org.br" > .env
   - echo "APP_ID=1" >> .env
-  
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+      
 android:
   components:
     - build-tools-29.0.3
@@ -37,7 +39,7 @@ android:
     - extra-google-google_play_services
     - extra-google-m2repository
     - addon-google_apis-google-16
-    
+
 jobs:
   include:
     - stage: 'Test'
@@ -53,7 +55,9 @@ jobs:
         file: app-release.apk
       on:
         repo: proepidesenvolvimento/guardioes-app
-        branch: master
+        branch: 
+          - master
+          - feature/ci-cd
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
