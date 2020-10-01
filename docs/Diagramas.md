@@ -15,6 +15,12 @@ Foram feitos primeiras versões de quatro diagramas UML para servir de base para
 <https://app.lucidchart.com/invitations/accept/57715fa7-b8f4-42a3-86e6-3a34a38324b8>
 
 
+### Diagrama de Atividades
+
+#### Versão 1.0
+
+<https://app.lucidchart.com/invitations/accept/71cd2a06-e378-4317-a8dc-f3b5675613ed>
+
 
 ### Histórico de Revisão
 
@@ -22,3 +28,4 @@ Foram feitos primeiras versões de quatro diagramas UML para servir de base para
 |:-:|:-:|:-:|
 |1/10/2020| Criação do Documento e Adição dos links dos diagramas de Casos de Uso| João Lucas |
 |1/10/2020| Adição do diagrama de pacotes | Fabiana Ribas |
+|1/10/2020| Adição do diagrama de atividades | João Lucas |
