@@ -1,4 +1,3 @@
-sudo: false
 language: node_js
 node_js:
   - 'stable'
@@ -10,11 +9,12 @@ branches:
 env:
   global:
     - CC_TEST_REPORTER_ID=0f594ecd1c19874759be811508bfc0c3ff0f78d3b432adefd355e9e56ce67110
-  jobs:
-    - API_URL="http://localhost:3000" APP_ID="1"
+    - API_URL="http://localhost:3000"
+    - APP_ID="1"
 cache:
   directories:
     - node_modules
+
 install:
   - npm install
 before_script:
