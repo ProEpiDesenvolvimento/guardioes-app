@@ -18,7 +18,7 @@ install:
 before_script:
   - touch .env
   - echo "API_URL=http://localhost:3000" > .env
-  - echo "APP_ID=1" > .env
+  - echo "APP_ID=1" >> .env
   - cat .env
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
