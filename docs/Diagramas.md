@@ -4,6 +4,8 @@ Foram feitos primeiras versões de quatro diagramas UML para servir de base para
 
 ### Diagrama de Pacotes
 
+Diagrama de pacotes para casos de utilização de imports
+
 #### Versão 1.0
 
 <https://app.lucidchart.com/invitations/accept/fbc0c7fc-8599-441f-907d-6b5bd3632f4f>
