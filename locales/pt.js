@@ -1,4 +1,7 @@
 export default {
+    "lang": {
+        "code": "pt"
+    },
     "genderChoices": {
         "cisWoman": "Mulher Cis",
         "cisMan": "Homem Cis",
@@ -14,23 +17,28 @@ export default {
         "black": "Preto",
         "asian": "Amarelo"
     },
+    "selector": {
+        "label": "Selecionar",
+        "cancelButton": "Cancelar"
+    },
     "birthDetails": {
-        "format": "DD/MM/AAAA",
+        "format": "DD-MM-AAAA",
         "confirmButton": "Confirmar",
         "cancelButton": "Cancelar"
     },
     "initialscreen": {
         "title": "Guardiões da Saúde",
-        "welcome": "Bem Vindo!",
+        "welcome": "Bem vindo",
         "subwelcome": "Pronto para ser um guardião da saúde?",
         "signup": "Cadastre-se",
         "login": "Entrar"
     },
     "login": {
         "title": "Entrar",
-        "email": "Email:",
-        "password": "Senha:",
+        "email": "Email",
+        "password": "Senha",
         "loginbutton": "Entrar",
+        "forgetbutton": "Esqueceu a senha?",
         "connectWithFacebook": "Conectar com Facebook",
         "facebookLogin": {
             "error": "Erro ao entrar: ",
@@ -40,10 +48,15 @@ export default {
             "accessing": "Entrando..."
         },
         "errorMessages": {
-            "emailPwdWrong": "Email ou senha invalidos",
-            "emailPwdCantBeBlank": "Email/senha nao podem estar em branco",
-
+            "emailPwdWrong": "Email ou senha inválidos",
+            "emailPwdCantBeBlank": "Email/senha não podem estar em branco",
+        
         }
+    },
+    "forgetPwd": {
+        "title": "Esqueci a senha",
+        "informEmail": "Informe seu email para verificação:",
+        "sendButton": "Enviar"
     },
     "register": {
         "title": "Cadastre-se",
@@ -51,7 +64,7 @@ export default {
         "lastname": "Sobrenome:",
         "gender": "Gênero:",
         "race": "Raça:",
-        "birth": "Data de Nascimento:",
+        "birth": "Nascimento:",
         "country": "Pais de origem:",
         "originCountry": " é seu pais de residência?",
         "email": "Email:",
@@ -65,7 +78,10 @@ export default {
         "errorMessages": {
             "error": "Erro",
             "allFieldsAreFilled": "Todos os campos devem ser preenchidos"
-        }
+        },
+        "riskGroupTitle": "Grupos de Risco:",
+        "riskGroupMessage": "\t Pessoas acima de 60 anos ou pessoas de qualquer idade que tenham comorbidades, como cardiopatia, diabetes, pneumopatia, doença neurológica ou renal, imunodepressão, obesidade, asma e puérperas (fase pós-parto).",
+        "riskGroupButton": "Voltar"
     },
     "noInternet": {
         "noInternetConnection": "Sem Internet!",
@@ -91,14 +107,12 @@ export default {
         "title": "Tutorial",
         "tutorial": "Tutorial de como usar o app",
         "howToUse": "\nPara usar o aplicativo basta clicar no ícone de reportar na tela inicial:",
-        "howToUse2": "Em seguida, escolha como reportar, bem ou mal. \
-        Caso escolha mal você poderá escolher os sintomas e desde quando se sente mal. Pronto, esse é o uso básico do aplicativo, caso queria aprender mais continue lendo para ver algumas dicas e outras funcionalidades",
+        "howToUse2": "Em seguida, escolha como reportar, bem ou mal. Caso escolha mal você poderá escolher os sintomas e desde quando se sente mal. Pronto, esse é o uso básico do aplicativo, caso queria aprender mais continue lendo para ver algumas dicas e outras funcionalidades",
         "news": "Tela de Notícias",
-        "newsCont": "A tela de notícias é uma das funções que você acha na tela inicial, ela fica ligada no perfil do Twitter do Ministério da Saúde e lá você pode ver muitas informações pois eles sempre atualizam essa página. \
-        Já que você está por aqui dê uma passadinha lá. ",
+        "newsCont": "A tela de notícias é uma das funções que você acha na tela inicial, ela fica ligada no perfil do Guardiões e lá você pode ver muitas informações pois essa página está sempre atualizada.\n Já que você está por aqui dê uma passadinha lá.",
         "newsPs": "Ps: você não precisa ter conta no Twitter e você não recebe nenhum tipo de notificação/email.",
         "advices": "Conselhos de Saúde",
-        "advicesCont": "Aqui você encontra algumas informações importantes pra dar uma olhada, como Dengue Chicungunya e Zyca, telefones úteis e também, com auxílio do Google Maps você tem acesso à hospitais e farmácias perto de você.",
+        "advicesCont": "Aqui você encontra algumas informações importantes pra dar uma olhada, como Dengue Chicungunya e Zika, telefones úteis e também, com auxílio do Google Maps você tem acesso à hospitais e farmácias perto de você.",
         "diary": "Diário da Saúde",
         "diaryCont": "Essa é uma das telas mais importantes, aqui você consegue visualizar todos os envios que você tenha feito e também tem um calendário caso você precise desses dados para esclarecer algo em um consulta médica, por exemplo.",
         "healthMap": "Mapa da Saúde",
@@ -156,6 +170,7 @@ export default {
     },
     "advices": {
         "title": "Dicas",
+        "subtitle": "Mantenha a saúde em dia",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevencao",
@@ -190,11 +205,13 @@ export default {
     },
     "diary": {
         "title": "Diário",
+        "year": " ano",
+        "years": " anos",
         "participate": "Participações",
         "good": "Bem",
         "bad": "Mal",
-        "report": " informe",
-        "reports": " informes",
+        "report": " vez",
+        "reports": " vezes",
         "calendar": "Calendário",
         "timesPerMonth": "Quantidade de informes por mês",
         "charts": {
@@ -237,7 +254,7 @@ export default {
         "requestDenied": "Permissão negada"
     },
     "maps": {
-        "title": "Mapa da Saúde",
+        "title": "Mapa",
         "reportGood": "Bem",
         "reportBad": "Mal",
         "guide": `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`
@@ -269,7 +286,7 @@ export default {
     "useTerms": {
         "title": "Termos e Políticas",
         "terms": {
-            "textoTermosTitulo": '\nTermo de uso – Guardiões da Saúde \n\n Por favor, leia estes termos legais de uso antes de usar o aplicativo "Guardiões da Saúde”. Para realizar qualquer colaboração, acesse ou baixe qualquer informação deste aplicativo. Ao acessar ou usar o aplicativo "Guardiões da Saúde", você aceita e concorda em obedecer aos termos e condições estabelecidos nos "Termos de Uso". Esses termos consistem em um contrato de colaboração entre você e o aplicativo "Guardiões da Saúde", que abrange todo o seu acesso e uso, que inclui o uso de todas as informações, dados, ferramentas, produtos, serviços e outros conteúdos disponíveis no aplicativo. Ao usar este aplicativo, você confirma que entende e concorda com as seguintes condições:',
+            "textoTermosTitulo": 'Por favor, leia estes termos legais de uso antes de usar o aplicativo "Guardiões da Saúde”. Para realizar qualquer colaboração, acesse ou baixe qualquer informação deste aplicativo. Ao acessar ou usar o aplicativo "Guardiões da Saúde", você aceita e concorda em obedecer aos termos e condições estabelecidos nos "Termos de Uso". Esses termos consistem em um contrato de colaboração entre você e o aplicativo "Guardiões da Saúde", que abrange todo o seu acesso e uso, que inclui o uso de todas as informações, dados, ferramentas, produtos, serviços e outros conteúdos disponíveis no aplicativo. Ao usar este aplicativo, você confirma que entende e concorda com as seguintes condições:',
             "textoTermos_1": '\n1. RESPEITO AS LEIS \n\n O usuário registrado deve acessar o aplicativo "Guardiões da Saúde" somente para fins legais e relacionados à saúde. O usuário concorda em usar o aplicativo apenas para os fins apropriados e de acordo com estes termos e limitações legais, bem como com qualquer política aplicável no Brasil. Seu acesso é proibido em territórios onde o conteúdo é considerado ilegal. Aqueles que optarem por acessar este site de outros lugares, o farão por sua própria iniciativa e serão responsáveis pelo cumprimento das leis locais aplicáveis. Os materiais não devem ser usados ou exportados em violação das leis brasileira. Qualquer pendência em relação aos materiais será resolvida pelas leis brasileira. A alteração não autorizada do conteúdo deste site é expressamente proibida.',
             "textoTermos_2": '\n2. RESTRIÇÕES DE USO: \n\n O uso do aplicativo só é permitido para maiores de 13 (treze) anos.',
             "textoTermos_3": '\n3. RESPONSABILIDADE PELO CONTEÚDO: \n\n Instituições e desenvolvedores do aplicativo "Guardiões da saúde" não são responsáveis ​​pelo conteúdo de qualquer informação legal ou ilegal, possivelmente trocados pelos usuários através de redes sociais ou para a aplicação "Guardiões da Saúde". Os comentários compartilhados pelo usuário através das redes sociais não representam a opinião das instituições envolvidas no projeto e a responsabilidade cabe ao autor da mensagem. O usuário concorda que ele é o único responsável por sua própria conduta e pela veracidade das informações fornecidas durante o uso do serviço e que ele é responsável pelas consequências decorrentes do fornecimento intencional de dados incorretos. O usuário concorda que o uso do aplicativo "Guardiões da Saúde" não irá publicar, enviar, distribuir ou divulgar conteúdo ou informação difamatório, obsceno ou ilegal, incluindo informações confidenciais pertencentes a outras pessoas ou empresas e marcas registradas ou protegidas por direitos autorais, sem a autorização expressa do proprietário desses direitos. Ninguém pode agir em seu nome no uso do aplicativo "Guardiões da Saúde". Você é responsável pelo conteúdo que indivíduos não autorizados produzem ao usar este aplicativo usando seu perfil registrado com sua permissão. Essa regra não se aplica a casos de violação ou outros problemas de segurança do aplicativo.',
@@ -293,9 +310,31 @@ export default {
         "toAbout": "Sobre",
         "moreComing": "Temos mais vindo aí!",
         "healthDiary": "Diário",
-        "healthMap": "Mapa da Saúde"
+        "healthMap": "Mapa da Saúde",
+        "share": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n"
     },
     "rumor": {
         "rumorSent": "Rumor registrado! "
+    },
+    "getToken": {
+        "title": "Código de Verificação",
+        "invalidCode": "Código Inválido",
+        "confirm": "Confirmar",
+        "loading": "Carregando",
+        "verificationCodeSent": "Foi enviado um codigo de verificação para o email indicado.",
+        "spamCheckWarning": "Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.",
+        "inputVerificationCode": "Código",
+        "errorMessages": {
+            "verificationCodeBlank": "Digite um código de verificação"
+        }
+    },
+    "changePwd": {
+        "title": "Redefinir senha",
+        "newPwd": "Nova senha",
+        "confirmPwd": "Repita a senha",
+        "changeButton": "Redefinir",
+        "errorMessages": {
+            "shortPwd": "A senha precisa ter no mínimo 8 caracteres"
+        }
     }
 }

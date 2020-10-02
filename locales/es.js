@@ -1,4 +1,7 @@
 export default {
+    "lang": {
+        "code": "es"
+    },
     "genderChoices": {
         "cisWoman": "Mujer Cisgénero",
         "cisMan": "Hombre Cisgénero",
@@ -14,8 +17,12 @@ export default {
         "black": "Negro",
         "asian": "Asian"
     },
+    "selector": {
+        "label": "Seleccione",
+        "cancelButton": "Cancelar"
+    },
     "birthDetails": {
-        "format": "DD/MM/AAAA",
+        "format": "DD-MM-AAAA",
         "confirmButton": "Confirmar",
         "cancelButton": "Cancelar"
     },
@@ -28,9 +35,10 @@ export default {
     },
     "login": {
         "title": "Entrar",
-        "email": "Email:",
-        "password": "Contraseña:",
+        "email": "Email",
+        "password": "Contraseña",
         "loginbutton": "Entrar",
+        "forgetbutton": "¿Ha olvidado la contraseña?",
         "connectWithFacebook": "Conectar con Facebook",
         "facebookLogin": {
             "error": "Error al inicio de sersión: ",
@@ -45,13 +53,18 @@ export default {
 
         }
     },
+    "forgetPwd": {
+        "title": "Recuperar mi contraseña",
+        "informEmail": "Ingrese su email para verificación:",
+        "sendButton": "Enviar"
+    },
     "register": {
         "title": "Regístrese",
         "name": "Nombre:",
         "lastname": "Apellido:",
         "gender": "Género:",
         "race": "Raza:",
-        "birth": "Fecha de nacimiento:",
+        "birth": "Nacimiento:",
         "country": "País de origen:",
         "originCountry": "es su país de residencia?",
         "email": "Email:",
@@ -65,7 +78,10 @@ export default {
         "errorMessages": {
             "error": "Error",
             "allFieldsAreFilled": "Todos los campos deben ser llenados"
-        }
+        },
+        "riskGroupTitle": "Grupos de Riesgo:",
+        "riskGroupMessage": "\t Personas mayores de 60 años o personas de cualquier edad que tienen comorbilidades, como enfermedades cardíacas, diabetes, neumopatía, enfermedades neurológicas o renales, inmunodepresión, obesidad, asma y mujeres posparto.",
+        "riskGroupButton": "Vuelve"
     },
     "noInternet": {
         "noInternetConnection": "Sin internet!",
@@ -91,14 +107,12 @@ export default {
         "title": "Tutorial",
         "tutorial": "Tutorial de cómo utilizar la aplicación",
         "howToUse": "\nPara utilizar la aplicación basta con hacer clic en el icono de reportar en la pantalla de inicio:",
-        "howToUse2": "A continuación, elija cómo informar, bien o mal. \
-        Si usted elige mal usted puede elegir los síntomas y desde cuando se siente mal. En este caso, el uso básico de la aplicación, si quería aprender más seguir leyendo para ver algunos consejos y otras características",
+        "howToUse2": "A continuación, elija cómo informar, bien o mal. Si usted elige mal usted puede elegir los síntomas y desde cuando se siente mal. En este caso, el uso básico de la aplicación, si quería aprender más seguir leyendo para ver algunos consejos y otras características",
         "news": "Pantalla de Noticias",
-        "newsCont": "La pantalla de noticias es una de las funciones que usted encuentra en la pantalla de inicio, que está vinculada en el perfil de Twitter del Ministerio de Salud y allí usted puede ver muchas informaciones porque siempre actualizan esa página. \
-        Ya que estás por aquí dar una pasadita allí. ",
+        "newsCont": "La pantalla de noticias es una de las funciones que usted encuentra en la pantalla de inicio, que está vinculada en el perfil de Guardianes y allí puedes ver mucha información porque esta página siempre está actualizada.\n Ya que estás por aquí dar una pasadita allí. ",
         "newsPs": "Ps: usted no necesita tener cuenta en Twitter y usted no recibe ningún tipo de notificación / email.",
         "advices": "Consejos de Salud",
-        "advicesCont": "Aquí encontrará algunas informaciones importantes para echar un vistazo, como Dengue Chicungunya y Zyca, teléfonos útiles y también, con ayuda de Google Maps usted tiene acceso a hospitales y farmacias cerca de usted.",
+        "advicesCont": "Aquí encontrará algunas informaciones importantes para echar un vistazo, como Dengue Chicungunya y Zika, teléfonos útiles y también, con ayuda de Google Maps usted tiene acceso a hospitales y farmacias cerca de usted.",
         "diary": "Diario de la Salud",
         "diaryCont": "Esta es una de las pantallas más importantes, aquí usted puede ver todos los envíos que usted ha hecho y también tiene un calendario si usted necesita estos datos para aclarar algo en una consulta médica, por ejemplo.",
         "healthMap": "Mapa de la Salud",
@@ -156,6 +170,7 @@ export default {
     },
     "advices": {
         "title": "Consejos de Salud",
+        "subtitle": "Mantenga su salud al día",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevencao", // DO NOT CHANGE THIS!!!!!
@@ -190,11 +205,13 @@ export default {
     },
     "diary": {
         "title": "Diario de la Salud",
+        "year": " año",
+        "years": " años",
         "participate": "Participaciones",
         "good": "Bien",
         "bad": "Apenas",
-        "report": " informe",
-        "reports": " informes",
+        "report": " vez",
+        "reports": " veces",
         "calendar": "Calendario",
         "timesPerMonth": "Cantidad de informes por mes",
         "charts": {
@@ -237,7 +254,7 @@ export default {
         "requestDenied": "Permiso denegado"
     },
     "maps": {
-        "title": "Mapa de la Salud",
+        "title": "Mapa",
         "reportGood": "Bien",
         "reportBad": "Malo",
         "guide": `Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.`
@@ -269,7 +286,7 @@ export default {
     "useTerms": {
         "title": "Condiciones y Políticas",
         "terms": {
-            "textoTermosTitulo": '\nCondiciones de uso - Guardianes de la Salud \n\n Por favor, lea estos términos legales de uso antes de usar la aplicación "Guardianes de la Salud". Para realizar cualquier colaboración, acceda o descargue cualquier información de esta aplicación. Al acceder o usar la aplicación "Guardianes de la Salud", usted acepta y acepta de acuerdo con los términos y condiciones establecidos en los "Términos de Uso", que consisten en un contrato de colaboración entre usted y la aplicación "Guardianes de la Salud", que abarca todo su acceso y uso, que incluye el uso de toda la información, los datos, herramientas, productos, servicios y otros contenidos disponibles en la aplicación. Al utilizar esta aplicación, confirma que entiende y acepta las siguientes condiciones:',
+            "textoTermosTitulo": 'Por favor, lea estos términos legales de uso antes de usar la aplicación "Guardianes de la Salud". Para realizar cualquier colaboración, acceda o descargue cualquier información de esta aplicación. Al acceder o usar la aplicación "Guardianes de la Salud", usted acepta y acepta de acuerdo con los términos y condiciones establecidos en los "Términos de Uso", que consisten en un contrato de colaboración entre usted y la aplicación "Guardianes de la Salud", que abarca todo su acceso y uso, que incluye el uso de toda la información, los datos, herramientas, productos, servicios y otros contenidos disponibles en la aplicación. Al utilizar esta aplicación, confirma que entiende y acepta las siguientes condiciones:',
             "textoTermos_1": '\n1. RESPECTO A LAS LEYES \n\n El usuario registrado debe acceder a la aplicación "Guardianes de la Salud" sólo con fines legales y relacionados con la salud. El usuario acepta utilizar la aplicación sólo para los fines apropiados y de acuerdo con estos términos y limitaciones legales, así como con cualquier política aplicable en Brasil. Su acceso está prohibido en territorios donde el contenido se considera ilegal. Aquellos que opten por acceder a este sitio de otros lugares, lo harán por su propia iniciativa y serán responsables del cumplimiento de las leyes locales aplicables. Los materiales no deben ser usados o exportados en violación de las leyes brasileñas. Cualquier pendiente en relación a los materiales será resuelta por las leyes brasileñas. La modificación no autorizada del contenido de este sitio está expresamente prohibida.',
             "textoTermos_2": '\n2. RESTRICCIONES DE USO: \n\n El uso de la aplicación sólo está permitido para mayores de 13 (trece) años.',
             "textoTermos_3": '\n3. RESPONSABILIDAD POR EL CONTENIDO: \n\n Instituciones y desarrolladores de la aplicación "Guardianes de la salud" no son responsables por el contenido de cualquier información legal o ilegal, posiblemente intercambiada por los usuarios a través de redes sociales o para la aplicación "Guardianes de la Salud". Los comentarios compartidos por el usuario a través de las redes sociales no representan la opinión de las instituciones involucradas en el proyecto y la responsabilidad corresponde al autor del mensaje. El usuario acepta que es el único responsable de su propia conducta y la veracidad de la información proporcionada durante el uso del servicio y que es responsable de las consecuencias derivadas del suministro intencional de datos incorrectos. El usuario acepta que el uso de la aplicación "Guardianes de la Salud" no publicará, enviará, distribuirá ni divulgar contenido o información difamatoria, obscena o ilegal, incluyendo información confidencial perteneciente a otras personas o empresas y marcas registradas o protegidas por derechos de autor, sin la autorización expresa del propietario de dichos derechos. Nadie puede actuar en su nombre en el uso de la aplicación "Guardianes de la Salud". Usted es responsable del contenido que los individuos no autorizados producen al usar esta aplicación utilizando su perfil registrado con su permiso. Esta regla no se aplica a casos de infracción u otros problemas de seguridad de la aplicación.',
@@ -293,6 +310,28 @@ export default {
         "toAbout": "Acerca de",
         "moreComing": "¡Tenemos más funciones en el futuro¡",
         "healthDiary": "Diario de Salud",
-        "healthMap": "Mapa de la Salud"
+        "healthMap": "Mapa de la Salud",
+        "share": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n"
+    },
+    "getToken": {
+        "title": "Código de Verificación",
+        "invalidCode": "Código invalid",
+        "confirm": "Confirmar",
+        "loading": "Cargando",
+        "verificationCodeSent": "Se ha enviado un código de verificación al correo electrónico indicado.",
+        "spamCheckWarning": "Si no aparece en su cuadro de mensaje principal, verifique su Spam.",
+        "inputVerificationCode": "Código",
+        "errorMessages": {
+            "verificationCodeBlank": "Ingrese un código de verificación"
+        }
+    },
+    "changePwd": {
+        "title": "Redefinir contraseña",
+        "newPwd": "Nueva contraseña",
+        "confirmPwd": "Repite la contraseña",
+        "changeButton": "Redefinir",
+        "errorMessages": {
+            "shortPwd": "La contraseña debe tener al menos 8 caracteres"
+        }
     }
 }

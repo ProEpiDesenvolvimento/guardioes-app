@@ -134,6 +134,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 24
         versionName "2.2.2"
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -189,6 +191,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-spinkit')
+    implementation project(':react-native-simple-shadow-view')
+    implementation project(':react-native-image-picker')
     implementation project(':rn-secure-storage')
     implementation project(':react-native-webview')
     implementation project(':@react-native-community_async-storage')
@@ -212,6 +217,10 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'Feather.ttf', 'SimpleLineIcons.ttf' ] // Name of the font files you want to copy
+]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 

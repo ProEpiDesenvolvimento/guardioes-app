@@ -1,4 +1,7 @@
 export default {
+    "lang": {
+        "code": "en"
+    },
     "genderChoices": {
         "cisWoman": "Cis Woman",
         "cisMan": "Cis Man",
@@ -14,23 +17,28 @@ export default {
         "black": "Afrodescendant",
         "asian": "Asian"
     },
+    "selector": {
+        "label": "Select",
+        "cancelButton": "Cancel"
+    },
     "birthDetails": {
-        "format": "DD/MM/YYYY",
+        "format": "DD-MM-YYYY",
         "confirmButton": "Confirm",
         "cancelButton": "Cancel"
     },
     "initialscreen": {
         "title": "Guardiões da Saúde",
-        "welcome": "Welcome!",
+        "welcome": "Welcome",
         "subwelcome": "Ready to become a Health Guardian?",
         "signup": "Sign up",
         "login": "Login"
     },
     "login": {
         "title": "Login",
-        "email": "Email:",
-        "password": "Password:",
+        "email": "Email",
+        "password": "Password",
         "loginbutton": "Login",
+        "forgetbutton": "Forgot your password?",
         "connectWithFacebook": "Login with Facebook",
         "facebookLogin": {
             "error": "Error on login: ",
@@ -65,7 +73,15 @@ export default {
         "errorMessages": {
             "error": "Error",
             "allFieldsAreFilled": "All fields must be filled."
-        }
+        },
+        "riskGroupTitle": "Risk Groups:",
+        "riskGroupMessage": "\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.",
+        "riskGroupButton": "Back"
+    },
+    "forgetPwd": {
+        "title": "Forgot password",
+        "informEmail": "Enter your email for verification:",
+        "sendButton": "Send"
     },
     "noInternet": {
         "noInternetConnection": "No internet access.",
@@ -93,11 +109,10 @@ export default {
         "howToUse": "\nTo use the main functionality of the app, click the Good or Bad button on the home screen:",
         "howToUse2": "If you choose Bad, you'll be able to choose symptoms and when it started. That's it, this is the core of it, if you want to learn more keep reading, we have other tips and functionalities.",
         "news": "News",
-        "newsCont": "Is where you'll read about all that's happening is this big world, it's a Twitter page so, if you have an account, you can interact with professionals. \
-        Since you're here, try checking it out. ",
+        "newsCont": "Is where you'll read about all that's happening is this big world, it's a Twitter page so, if you have an account, you can interact with professionals.\n Since you're here, try checking it out. ",
         "newsPs": "Ps: You don't need a Twitter account to see it and you won't get any notifications or email, we got you covered.",
         "advices": "Health Advices",
-        "advicesCont": "Here you find some important information to check out like Dengue fever, Chicungunya and Zyca and, with Google Maps help you have quick access to a map with hospitals and pharmacies near you.",
+        "advicesCont": "Here you find some important information to check out like Dengue fever, Chicungunya and Zika and, with Google Maps help you have quick access to a map with hospitals and pharmacies near you.",
         "diary": "Health Diary",
         "diaryCont": "This is one the most important features, it's where you find information about all reports you've done, so you can check it out if you need to tell a doctor when symptons began, for example.",
         "healthMap": "Mapa da Saúde",
@@ -152,6 +167,7 @@ export default {
     },
     "advices": {
         "title": "Tips",
+        "subtitle": "Keep your health up to date",
         "advicesCaseChoices": {
             "prevention": {
                 "caseChoice": "Prevention",
@@ -186,17 +202,19 @@ export default {
     },
     "diary": {
         "title": "Diary",
-        "participate": "Participants",
+        "year": " year old",
+        "years": " years old",
+        "participate": "Participations",
         "good": "Good",
-        "bad": "Ill",
-        "report": " report",
-        "reports": " reports",
+        "bad": "Bad",
+        "report": " time",
+        "reports": " times",
         "calendar": "Calendar",
         "timesPerMonth": "Monthly reports",
         "charts": {
             "label": {
                 "good": "Good",
-                "bad": "Ill"
+                "bad": "Bad"
             },
             "chartDescription": "How many reports per month"
         }
@@ -235,7 +253,7 @@ export default {
     "maps": {
         "title": "Health Map",
         "reportGood": "Good",
-        "reportBad": "Ill",
+        "reportBad": "Bad",
         "guide": `Each point in the map represents a person or group of people.\n\nThe color represents the percentage of 'bads' and the size, the number of people.\n\nYou can tap the points to know more.`
     },
     "news": {
@@ -245,8 +263,8 @@ export default {
         "title": "New report",
         "howHealth": "How are you feeling?",
         "goodChoice": "Good",
-        "badChoice": "Ill",
-        "else": "If you've selected 'Ill' you can select the symptoms in the next screen."
+        "badChoice": "Bad",
+        "else": "If you've selected 'Bad' you can select the symptoms in the next screen."
     },
     "about": {
         "title": "About",
@@ -265,7 +283,7 @@ export default {
     "useTerms": {
         "title": "Terms and Policies",
         "terms": {
-            "textoTermosTitulo": '\nTermo de uso – Guardiões da Saúde \n\n Por favor, leia estes termos legais de uso antes de usar o aplicativo "Guardiões da Saúde”. Para realizar qualquer colaboração, acesse ou baixe qualquer informação deste aplicativo. Ao acessar ou usar o aplicativo "Guardiões da Saúde", você aceita e concorda em obedecer aos termos e condições estabelecidos nos "Termos de Uso". Esses termos consistem em um contrato de colaboração entre você e o aplicativo "Guardiões da Saúde", que abrange todo o seu acesso e uso, que inclui o uso de todas as informações, dados, ferramentas, produtos, serviços e outros conteúdos disponíveis no aplicativo. Ao usar este aplicativo, você confirma que entende e concorda com as seguintes condições:',
+            "textoTermosTitulo": 'Por favor, leia estes termos legais de uso antes de usar o aplicativo "Guardiões da Saúde”. Para realizar qualquer colaboração, acesse ou baixe qualquer informação deste aplicativo. Ao acessar ou usar o aplicativo "Guardiões da Saúde", você aceita e concorda em obedecer aos termos e condições estabelecidos nos "Termos de Uso". Esses termos consistem em um contrato de colaboração entre você e o aplicativo "Guardiões da Saúde", que abrange todo o seu acesso e uso, que inclui o uso de todas as informações, dados, ferramentas, produtos, serviços e outros conteúdos disponíveis no aplicativo. Ao usar este aplicativo, você confirma que entende e concorda com as seguintes condições:',
             "textoTermos_1": '\n1. RESPEITO AS LEIS \n\n O usuário registrado deve acessar o aplicativo "Guardiões da Saúde" somente para fins legais e relacionados à saúde. O usuário concorda em usar o aplicativo apenas para os fins apropriados e de acordo com estes termos e limitações legais, bem como com qualquer política aplicável no Brasil. Seu acesso é proibido em territórios onde o conteúdo é considerado ilegal. Aqueles que optarem por acessar este site de outros lugares, o farão por sua própria iniciativa e serão responsáveis pelo cumprimento das leis locais aplicáveis. Os materiais não devem ser usados ou exportados em violação das leis brasileira. Qualquer pendência em relação aos materiais será resolvida pelas leis brasileira. A alteração não autorizada do conteúdo deste site é expressamente proibida.',
             "textoTermos_2": '\n2. RESTRIÇÕES DE USO: \n\n O uso do aplicativo só é permitido para maiores de 13 (treze) anos.',
             "textoTermos_3": '\n3. RESPONSABILIDADE PELO CONTEÚDO: \n\n Instituições e desenvolvedores do aplicativo "Guardiões da saúde" não são responsáveis ​​pelo conteúdo de qualquer informação legal ou ilegal, possivelmente trocados pelos usuários através de redes sociais ou para a aplicação "Guardiões da Saúde". Os comentários compartilhados pelo usuário através das redes sociais não representam a opinião das instituições envolvidas no projeto e a responsabilidade cabe ao autor da mensagem. O usuário concorda que ele é o único responsável por sua própria conduta e pela veracidade das informações fornecidas durante o uso do serviço e que ele é responsável pelas consequências decorrentes do fornecimento intencional de dados incorretos. O usuário concorda que o uso do aplicativo "Guardiões da Saúde" não irá publicar, enviar, distribuir ou divulgar conteúdo ou informação difamatório, obsceno ou ilegal, incluindo informações confidenciais pertencentes a outras pessoas ou empresas e marcas registradas ou protegidas por direitos autorais, sem a autorização expressa do proprietário desses direitos. Ninguém pode agir em seu nome no uso do aplicativo "Guardiões da Saúde". Você é responsável pelo conteúdo que indivíduos não autorizados produzem ao usar este aplicativo usando seu perfil registrado com sua permissão. Essa regra não se aplica a casos de violação ou outros problemas de segurança do aplicativo.',
@@ -289,9 +307,31 @@ export default {
         "toAbout": "About",
         "moreComing": "We have more comming",
         "healthDiary": "Health Diary",
-        "healthMap": "Health Map"
+        "healthMap": "Health Map",
+        "share": "Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n"
     },
     "rumor": {
         "rumorSent": "Rumor registered! "
+    },
+    "getToken": {
+        "title": "Verification Code",
+        "invalidCode": "Invalid Code",
+        "confirm": "Confirm",
+        "loading": "Loading",
+        "verificationCodeSent": "A verification code was sent to your email.",
+        "spamCheckWarning": "In case you don't find the email, make sure to check the spam folder.",
+        "inputVerificationCode": "Code",
+        "errorMessages": {
+            "verificationCodeBlank": "Enter a verification code"
+        }
+    },
+    "changePwd": {
+        "title": "Reset Password",
+        "newPwd": "New password",
+        "confirmPwd": "Confirm password",
+        "changeButton": "Change",
+        "errorMessages": {
+            "shortPwd": "Password must be at least 8 characters long"
+        }
     }
 }

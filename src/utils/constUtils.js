@@ -3,7 +3,7 @@ import { Alert, Linking } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 export const getNameParts = (fullName, firstandLast = false) => {
-    if (fullName) {
+    if (typeof fullName === 'string') {
         let nameParts = fullName.split(" ");
         let length = nameParts.length;
 
@@ -13,6 +13,42 @@ export const getNameParts = (fullName, firstandLast = false) => {
         else {
             return nameParts[0];
         }
+    }
+}
+
+export const getInitials = (string) => {
+    if (typeof string === 'string'){
+        let names = string.split(" ")
+        initials = names[0].substring(0, 1).toUpperCase()
+    
+    if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase()
+    }
+    return initials
+    } else {
+        return null
+    }
+};
+
+export const handleAvatar = (image) => {
+    const source = { uri: image }
+    
+    if (image && image !== 'default') {
+        return source
+    }
+    else {
+        return null
+    }
+}
+
+export const handleAsyncAvatar = (image) => {
+    const source = 'default'
+
+    if (image) {
+        return image
+    }
+    else {
+        return source
     }
 }
 
