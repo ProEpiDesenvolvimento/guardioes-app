@@ -22,6 +22,21 @@ Foram feitos primeiras versões de quatro diagramas UML para servir de base para
 <https://app.lucidchart.com/invitations/accept/71cd2a06-e378-4317-a8dc-f3b5675613ed>
 
 
+### Diagrama de Sequência
+
+
+#### Informar Sobre Saúde
+
+#### Versão 1.0
+
+<https://app.creately.com/diagram/hLRbBra4SKl/edit>
+
+#### Visualizar Diário - Calendário, Estatística e Participação
+
+#### Versão 1.0
+
+<https://app.creately.com/diagram/qvszoF2jGaz/edit>
+
 ### Histórico de Revisão
 
 | Data | Descrição | Autor |
@@ -29,3 +44,4 @@ Foram feitos primeiras versões de quatro diagramas UML para servir de base para
 |1/10/2020| Criação do Documento e Adição dos links dos diagramas de Casos de Uso| João Lucas |
 |1/10/2020| Adição do diagrama de pacotes | Fabiana Ribas |
 |1/10/2020| Adição do diagrama de atividades | João Lucas |
+|2/10/2020| Adição do diagrama de sequência | Fabiana Ribas |
