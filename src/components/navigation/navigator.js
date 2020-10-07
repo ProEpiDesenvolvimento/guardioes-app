@@ -133,7 +133,6 @@ export const Stack = createStackNavigator({
                         <Feather name="chevron-left" size={scale(38)} color="#ffffff" />
                     </BackButton>
                     <ScreenTitle>
-                        {console.tron.log(props)}
                         {props.scene.descriptor.options.title}
                     </ScreenTitle>
                     <Empty />

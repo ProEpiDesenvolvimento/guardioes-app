@@ -100,13 +100,11 @@ class Home extends Component {
     }
 
     newTermsPolicy = () => {
-        this.setState({ showTermsConsent: false })
-
         Alert.alert(
             Terms.title, Terms.text,
             [
-                { text: Terms.disagree, onPress: () => logoutApp(this.props.navigation), style: 'cancel' },
-                { text: Terms.agree, onPress: () => this.updateUserTermsConsent() }
+                { text: Terms.disagree, onPress: () => { logoutApp(this.props.navigation); this.setState({ showTermsConsent: false })}, style: 'cancel' },
+                { text: Terms.agree, onPress: () => { this.updateUserTermsConsent(); this.setState({ showTermsConsent: false }) }}
             ],
             { cancelable: false }
         );
