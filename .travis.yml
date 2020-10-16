@@ -35,9 +35,7 @@ before_script:
 jobs:
   include:
     - stage: Test
-      script:
-        - npm test
-        - './cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info'
+      script: npm test
     - stage: Release
       provider: releases
       api_key:
@@ -53,3 +51,6 @@ jobs:
         repo: FGA-GCES/guardioes-app
         all_branches: true
         # condition: '$TRAVIS_BRANCH =~ ^(development)$'
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
