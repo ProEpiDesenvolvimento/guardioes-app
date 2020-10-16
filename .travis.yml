@@ -5,10 +5,7 @@ branches:
 env:
   global:
     - CC_TEST_REPORTER_ID=0f594ecd1c19874759be811508bfc0c3ff0f78d3b432adefd355e9e56ce67110
-cache:
-  directories:
-    - node_modules
-
+    
 before_install:
   - nvm install 13
   - node --version
