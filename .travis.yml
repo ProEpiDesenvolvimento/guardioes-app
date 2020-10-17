@@ -35,18 +35,21 @@ jobs:
       script: 
         - npm test
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
-    - stage: Release
-      provider: releases
-      api_key:
-        secure: YxXNGb0D77gMKMCE8gaV7TIcqSL1VOivtiBH22QFcXmGj7kTkvan5hcf70F2N0M8q3nLEIECoHiC89Z5/34qPXyJuHtE8tZXIMCTJ4VFWHnqrLA7BWsOnJJqKGASbeLmG6zeAhH4fWxvkc5IHFz8p2Wv+f5yEhp1PVrQsjXRnftsOwS5NheT20I8yrJWT4jhExJDkaqaHUW0G7zcT4iA4pxgH8DxkVAHhqCLEhAoSZ0zIs+fCglbApXGXA5bJg9WYk47g2ZE88bjUU0wjlsgfT2mw7nkYh2cKJMO+vmxC9LBH24gkX19oTKaj5KRVTl2svvl3VzB0DDvQGUVoIDQfLkCw4qcZPc+Wx7RRg1A3ahEdpwy2wzoo+bkcxw90X0N0vQiyRIrafVijP+lTeiQZ0lUgSkmNgICdnnlGeQZuxlAMkarBjnsWQew7uUIi9HPc2rOs1fHn+LtAeS/2NXjFkNtRNzgBXHQZdN+KHLtik9PpLToqE2mIBi9oN20ydnTwzQMRTVWh6r22v0lzR3L+fx2BgIxhya1wLY64Wz/OYGirHn0vOV4YLFpUN241V9Iy8Bf0PEVOnaSJs8bN43j2e6rpcGQ2YW8QTA+iivyOK0TaCPZsmlvrOiyBewJO4TtfGajIe+WgTzRhDScl4FcIfzdDLd0r8O+da6mPxuaM1Q=
-      file: app-release.apk
+    - stage: Build
       script:
         - npx jetify
         - cd android && ./gradlew assembleRelease
         - cp app/build/outputs/apk/release/app-release.apk ..
         - cd ..
-      skip_cleanup: 'true'
-      on:
-        repo: FGA-GCES/guardioes-app
-        all_branches: true
-        # condition: '$TRAVIS_BRANCH =~ ^(development)$'
+    - stage: Deploy
+      script: skip
+      deploy:
+        provider: releases
+        api_key:
+          secure: YxXNGb0D77gMKMCE8gaV7TIcqSL1VOivtiBH22QFcXmGj7kTkvan5hcf70F2N0M8q3nLEIECoHiC89Z5/34qPXyJuHtE8tZXIMCTJ4VFWHnqrLA7BWsOnJJqKGASbeLmG6zeAhH4fWxvkc5IHFz8p2Wv+f5yEhp1PVrQsjXRnftsOwS5NheT20I8yrJWT4jhExJDkaqaHUW0G7zcT4iA4pxgH8DxkVAHhqCLEhAoSZ0zIs+fCglbApXGXA5bJg9WYk47g2ZE88bjUU0wjlsgfT2mw7nkYh2cKJMO+vmxC9LBH24gkX19oTKaj5KRVTl2svvl3VzB0DDvQGUVoIDQfLkCw4qcZPc+Wx7RRg1A3ahEdpwy2wzoo+bkcxw90X0N0vQiyRIrafVijP+lTeiQZ0lUgSkmNgICdnnlGeQZuxlAMkarBjnsWQew7uUIi9HPc2rOs1fHn+LtAeS/2NXjFkNtRNzgBXHQZdN+KHLtik9PpLToqE2mIBi9oN20ydnTwzQMRTVWh6r22v0lzR3L+fx2BgIxhya1wLY64Wz/OYGirHn0vOV4YLFpUN241V9Iy8Bf0PEVOnaSJs8bN43j2e6rpcGQ2YW8QTA+iivyOK0TaCPZsmlvrOiyBewJO4TtfGajIe+WgTzRhDScl4FcIfzdDLd0r8O+da6mPxuaM1Q=
+        file: app-release.apk
+        on:
+          repo: FGA-GCES/guardioes-app
+          all_branches: true
+          # condition: '$TRAVIS_BRANCH =~ ^(development)$'
+        skip_cleanup: 'true'
