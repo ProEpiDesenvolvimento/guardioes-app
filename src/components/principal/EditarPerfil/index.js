@@ -281,6 +281,10 @@ class EditarPerfil extends Component {
         this.setState({
             showAlert: val
         })
+
+        setTimeout(() => {
+            this.setState({ showAlert: false })
+        }, 15000);
     }
 
     setInstitutionCallback = (IdCode, Group) => {
