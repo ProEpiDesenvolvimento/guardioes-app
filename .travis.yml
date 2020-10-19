@@ -35,14 +35,12 @@ jobs:
       script: 
         - npm test
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
-    - stage: Build
-      script:
+    - stage: Deploy
+      script: 
         - npx jetify
         - cd android && ./gradlew assembleRelease
         - cp app/build/outputs/apk/release/app-release.apk ..
         - cd ..
-    - stage: Deploy
-      script: skip
       deploy:
         provider: releases
         api_key:
