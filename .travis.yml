@@ -9,7 +9,7 @@ env:
 before_install:
   - nvm install 13
   - node --version
-  - openssl aes-256-cbc -K $encrypted_4de2092d66d0_key -iv $encrypted_4de2092d66d0_iv -in ./android/app/gds-upload-keystore.keystore.enc -out ./android/app/gds-upload-keystore.keystore -d
+  - openssl aes-256-cbc -K $encrypted_4de2092d66d0_key -iv $encrypted_4de2092d66d0_iv -in android/app/gds-upload-keystore.keystore.enc -out android/app/gds-upload-keystore.keystore -d
 install:
   - npm install
   - yes | sdkmanager "platforms;android-28"
