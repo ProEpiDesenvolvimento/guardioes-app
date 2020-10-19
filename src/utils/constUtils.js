@@ -87,6 +87,7 @@ export const logoutApp = (navigation) => {
     AsyncStorage.removeItem('userAvatar');
     AsyncStorage.removeItem('userSelected');
     AsyncStorage.removeItem('householdID');
+    AsyncStorage.removeItem('userGroupID');
 
     AsyncStorage.removeItem('userGroup');
     AsyncStorage.removeItem('userCity');

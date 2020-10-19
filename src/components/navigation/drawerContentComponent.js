@@ -33,19 +33,10 @@ export default class drawerContentComponents extends Component {
         const userName = await AsyncStorage.getItem('userName');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
         const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userGroupID = await AsyncStorage.getItem('userGroupID');
         const userToken = await RNSecureStorage.get('userToken');
 
-        let response = await fetch(`${API_URL}/users/${userID}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-                Authorization: `${userToken}`
-            }
-        })
-        response = response.status == 200 ? await response.json() : response
-
-        this.setState({ userID, userName, userAvatar, isProfessional, userToken, userGroupId: response.user.group_id })
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken, userGroupID })
         this.getHouseholds()
         this.getHouseholdAvatars()
     }
@@ -154,7 +145,7 @@ export default class drawerContentComponents extends Component {
                     <Aplicativo>
                         {translate("drawer.app")}
                     </Aplicativo>
-                    {this.state.userGroupId !== null ?
+                    {this.state.userGroupID !== null ?
                         <Button onPress={() => navigate('Vigilancia')}>
                             <UserOptionGreen>
                                 <Feather name='shield'

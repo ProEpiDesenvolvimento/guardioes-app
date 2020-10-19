@@ -23,9 +23,6 @@ import OneSignal from 'react-native-onesignal';
 Feather.loadFont();
 SimpleLineIcons.loadFont();
 
-let todayDate = new Date();
-let d = todayDate.getDate();
-
 class Home extends Component {
     navOptions // rolê para acessar a drawer em uma função estática
 
@@ -100,11 +97,13 @@ class Home extends Component {
     }
 
     newTermsPolicy = () => {
+        this.setState({ showTermsConsent: false })
+
         Alert.alert(
             Terms.title, Terms.text,
             [
-                { text: Terms.disagree, onPress: () => { logoutApp(this.props.navigation); this.setState({ showTermsConsent: false })}, style: 'cancel' },
-                { text: Terms.agree, onPress: () => { this.updateUserTermsConsent(); this.setState({ showTermsConsent: false }) }}
+                { text: Terms.disagree, onPress: () => { logoutApp(this.props.navigation) }, style: 'cancel' },
+                { text: Terms.agree, onPress: () => { this.updateUserTermsConsent() } }
             ],
             { cancelable: false }
         );
@@ -131,7 +130,7 @@ class Home extends Component {
     }
 
     getLocation() {
-        this.requestFineLocationPermission();
+        this.requestLocationPermission();
         Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
@@ -216,7 +215,6 @@ class Home extends Component {
     }
 
     getHouseholds = () => {//Get households
-        //console.warn("UserID " + this.state.userID + " Token " + this.state.userToken)
         return fetch(`${API_URL}/users/${this.state.userID}/households`, {
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -252,8 +250,10 @@ class Home extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                let todayDate = new Date();
+
                 let lastWeek = new Date();
-                lastWeek.setDate(d - 7);
+                lastWeek.setDate(todayDate.getDate() - 7);
                 lastWeek.setHours(0, 0, 0, 0);
 
                 const userLastSurveys = responseJson.surveys.filter(survey =>
@@ -280,18 +280,35 @@ class Home extends Component {
                 }
             }
         })
+
         this.setState({ userBadReports });
     }
 
     verifyLocalization = async () => {
         if (this.state.userLatitude == 0 || this.state.userLongitude == 0 || this.state.userLatitude == null || this.state.userLongitude == null) {
-            this.requestLocalization();
+            this.requestLocationAlert();
         } else {
             this.sendSurvey();
         }
     }
 
-    async requestFineLocationPermission() {
+    requestLocationAlert = () => {
+        Alert.alert(
+            "Erro Na Localização",
+            "Permita a localização para prosseguir",
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'permitir', onPress: () => this.requestLocationPermission() },
+            ],
+            { cancelable: false },
+        );
+    }
+
+    async requestLocationPermission() {
         try {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -314,38 +331,15 @@ class Home extends Component {
         }
     }
 
-    requestLocalization = () => {
-        Alert.alert(
-            "Erro Na Localização",
-            "Permita a localização para prosseguir",
-            [
-                {
-                    text: 'Cancelar',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
-            ],
-            { cancelable: false },
-        );
-    }
-
     sendSurvey = async () => { //Send Survey GOOD CHOICE
-        this.countScore()
-        this.showLoadingAlert();
-        try {
-            let currentPin = {
-                household_id: this.state.householdID,
-                latitude: this.state.userLatitude,
-                longitude: this.state.userLongitude
-            }
-            await AsyncStorage.setItem(
-                "localpin",
-                JSON.stringify(currentPin)
-            )
-        } catch (error) {
-            console.warn("Não conseguiu guardar pino local")
+        this.showLoadingAlert()
+
+        let currentPin = {
+            household_id: this.state.householdID,
+            latitude: this.state.userLatitude,
+            longitude: this.state.userLongitude
         }
+
         return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
             method: 'POST',
             headers: {
@@ -365,11 +359,13 @@ class Home extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 this.showAlert(responseJson)
+                this.countUserScore()
+                AsyncStorage.setItem("localpin", JSON.stringify(currentPin))
             })
 
     }
 
-    countScore = async () => {
+    countUserScore = async () => {
         const lastReport = await AsyncStorage.getItem('lastReport')
         const userScore = parseInt(await AsyncStorage.getItem('userScore'))
 
@@ -405,8 +401,6 @@ class Home extends Component {
     }
 
     updateUserInfosToOneSignal = async () => {
-        //const teste = await AsyncStorage.getItem('userSchoolID')
-        //console.log(teste)
         return fetch(`${API_URL}/user/login`, {
             method: 'POST',
             headers: {
@@ -432,6 +426,7 @@ class Home extends Component {
 
                 // Variables to OneSignal API
                 AsyncStorage.setItem('userGroup', responseJson.user.group.split("/")[3]);
+                AsyncStorage.setItem('userGroupID', responseJson.user.group_id.toString());
                 AsyncStorage.setItem('userCity', responseJson.user.city);
                 AsyncStorage.setItem('userSchoolID', responseJson.user.school_unit_id.toString());
 
@@ -445,7 +440,6 @@ class Home extends Component {
         const { showAlert } = this.state;
         const { navigate } = this.props.navigation;
 
-        const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
         const householdsData = this.state.data;
         const householdAvatars = this.state.householdAvatars;
 
@@ -460,7 +454,7 @@ class Home extends Component {
                     <Background>
                         <UserView>
                             <NamesContainer>
-                                <TextName>{welcomeMessage}</TextName>
+                                <TextName>{translate("home.hello") + getNameParts(this.state.userSelected)}</TextName>
                                 <AppName>{translate("home.nowAGuardian")}</AppName>
                             </NamesContainer>
                             <Avatar
