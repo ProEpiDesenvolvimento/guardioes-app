@@ -5,18 +5,19 @@ branches:
     - development
 env:
   global:
-    - CC_TEST_REPORTER_ID=0f594ecd1c19874759be811508bfc0c3ff0f78d3b432adefd355e9e56ce67110
+    - CC_TEST_REPORTER_ID=549ab058a372c8bbb51ac6e33a08c3f8a85e5bdf906c8ff05c31986fc69cf75e
 
 before_install:
   - nvm install 13
   - node --version
-  - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
-install:
+
+  install:
   - npm install
   - yes | sdkmanager "platforms;android-28"
   - touch .env
   - echo "API_URL=http://gds.proepi.org.br" > .env
   - echo "APP_ID=1" >> .env
+
 android:
   components:
     - build-tools-29.0.3
@@ -25,6 +26,7 @@ android:
     - extra-google-google_play_services
     - extra-google-m2repository
     - addon-google_apis-google-16
+
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
@@ -37,6 +39,8 @@ jobs:
         - npm test
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
     - stage: Deploy
+      before_script: 
+        - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
       script: 
         - npx jetify
         - cd android && ./gradlew assembleRelease
