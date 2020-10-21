@@ -277,14 +277,10 @@ class EditarPerfil extends Component {
         this.setState({ modalVisibleRiskGroup: visible })
     }
 
-    setAlert = (val) => {
+    setAlert = (show) => {
         this.setState({
-            showAlert: val
+            showAlert: show
         })
-
-        setTimeout(() => {
-            this.setState({ showAlert: false })
-        }, 15000);
     }
 
     setInstitutionCallback = (IdCode, Group) => {
@@ -300,6 +296,7 @@ class EditarPerfil extends Component {
 
     render() {
         const { isUser } = this.state
+        const { showAlert } = this.state
         //console.log(this.state)
 
         return (
@@ -483,7 +480,10 @@ class EditarPerfil extends Component {
                         </SendContainer>
                     </Button>
                 </KeyboardScrollView>
-                <LoadingModal show={this.state.showAlert} />
+
+                {showAlert &&
+                <LoadingModal show={showAlert} />
+                }
             </Container>
         )
     }
