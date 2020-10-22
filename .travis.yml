@@ -10,7 +10,6 @@ env:
 before_install:
   - nvm install 13
   - node --version
-  - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
 install:
   - npm install
   - yes | sdkmanager "platforms;android-28"
@@ -37,6 +36,8 @@ jobs:
         - npm test
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
     - stage: Deploy
+      before_script:
+        - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
       script: 
         - npx jetify
         - cd android && ./gradlew assembleRelease
