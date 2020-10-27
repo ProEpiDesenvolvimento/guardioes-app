@@ -14,8 +14,6 @@ import {
   Advice,
   AdviceTitle,
   AdviceIcon,
-} from './styles';
-import {
   Details,
   DetailsIcon,
   DetailsTitleWrapper,
@@ -200,7 +198,9 @@ class Dicas extends Component {
                             }
                           }}>
                           <Advice>
-                            <AdviceTitle>{content.title}</AdviceTitle>
+                            <AdviceTitle numberOfLines={3}>
+                              {content.title}
+                            </AdviceTitle>
                             <AdviceIcon>
                               {this.getContentIcon(content.icon)}
                             </AdviceIcon>
