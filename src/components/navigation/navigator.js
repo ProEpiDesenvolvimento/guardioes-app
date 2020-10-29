@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {HeaderNavigator, BackButton, ScreenTitle, Empty} from './styles';
@@ -32,6 +32,8 @@ import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
+
+import withBadge from '../components/withBadge';
 
 Feather.loadFont();
 
@@ -74,10 +76,16 @@ export const BottomMenu = createBottomTabNavigator(
         } else if (routeName === 'Noticias') {
           iconName = 'message-square';
         }
+        const BadgedIcon = withBadge(1)(Feather);
 
         // You can return any component that you like here! We usually use an
         // icon component from react-native-vector-icons
-        return <Feather name={iconName} size={scale(26)} color={tintColor} />;
+        return (
+          <>
+            <BadgedIcon name="md-chatbubbles" type="ionicon" color="white" />
+            <Feather name={iconName} size={scale(26)} color={tintColor} />
+          </>
+        );
       },
     }),
     tabBarOptions: {

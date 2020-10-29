@@ -1,8 +1,22 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Badge} from 'react-native-elements';
 
-import styles from './styles';
+const styles = StyleSheet.create({
+  badge: {
+    borderRadius: 9,
+    height: 18,
+    minWidth: 0,
+    width: 18,
+  },
+  badgeContainer: {
+    position: 'absolute',
+  },
+  badgeText: {
+    fontSize: 10,
+    paddingHorizontal: 0,
+  },
+});
 
 const withBadge = (value, options = {}) => WrappedComponent =>
   class extends React.Component {
