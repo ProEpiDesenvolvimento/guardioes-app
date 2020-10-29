@@ -110,9 +110,6 @@ class Dicas extends Component {
         ? 1
         : 0;
     });
-
-    console.log('Ordenado', contents);
-
     return contents;
   };
 
