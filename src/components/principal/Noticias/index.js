@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import translate from '../../../../locales/i18n';
