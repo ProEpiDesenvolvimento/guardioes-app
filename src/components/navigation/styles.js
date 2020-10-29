@@ -1,31 +1,31 @@
 import styled from 'styled-components/native';
 
 import ShadowView from 'react-native-simple-shadow-view';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
-import { scale, percentage } from '../../utils/scallingUtils';
+import {scale, percentage} from '../../utils/scallingUtils';
 
 export const HeaderNavigator = styled.View`
-    width: 100%;
-    background-color: #348EAC;
-    border-bottom-left-radius: ${scale(18)}px;
-    border-bottom-right-radius: ${scale(18)}px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: ${percentage(10)}px;
-    padding-horizontal: ${percentage(4)}px;
-    padding-bottom: ${percentage(4)}px;
+  width: 100%;
+  background-color: #348eac;
+  border-bottom-left-radius: ${scale(18)}px;
+  border-bottom-right-radius: ${scale(18)}px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: ${percentage(10)}px;
+  padding-horizontal: ${percentage(4)}px;
+  padding-bottom: ${percentage(4)}px;
 `;
 
 export const BackButton = styled(TouchableOpacity).attrs({
-    activeOpacity: 0.2
+  activeOpacity: 0.2,
 })``;
 
 export const ScreenTitle = styled.Text`
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(18)}px;
-    color: #ffffff;
+  font-family: ArgentumSans-Medium;
+  font-size: ${scale(18)}px;
+  color: #ffffff;
 `;
 
 export const Empty = styled.View`
@@ -42,11 +42,11 @@ export const Container = styled.View`
 export const ScrollViewStyled = styled.ScrollView.attrs({
   contentContainerStyle: {
     flexGrow: 1,
-  }
+  },
 })``;
 
 export const Button = styled(TouchableOpacity).attrs({
-  activeOpacity: 0.5
+  activeOpacity: 0.5,
 })``;
 
 export const AvatarContainer = styled.View`
@@ -71,18 +71,16 @@ const option = `
   shadow-offset: 0px 0px;
 `;
 
-export const UserOptionGreen = styled(ShadowView).attrs({
-})`
+export const UserOptionGreen = styled(ShadowView).attrs({})`
   ${option}
   background-color: #348eac;
   shadow-color: #348eac;
 `;
 
-export const UserOptionBlue = styled(ShadowView).attrs({
-})`
+export const UserOptionBlue = styled(ShadowView).attrs({})`
   ${option}
   background-color: #5DD39E;
-  shadow-color: #5DD39E;
+  shadow-color: #5dd39e;
 `;
 
 export const TextOption = styled.Text`
@@ -103,16 +101,15 @@ export const Aplicativo = styled.Text`
 export const SocialContainer = styled.View`
   margin-vertical: ${percentage(7)}px;
   flex-direction: row;
-  margin-left: ${(scale(75))}px;
-  margin-right: ${(scale(75))}px;
+  margin-left: ${scale(75)}px;
+  margin-right: ${scale(75)}px;
   justify-content: space-around;
   align-content: center;
   align-items: center;
   flex-wrap: wrap;
 `;
 
-export const RedeSocial = styled(ShadowView).attrs({
-})`
+export const RedeSocial = styled(ShadowView).attrs({})`
   border-radius: 100px;
   background-color: #348eac;
   padding: ${scale(10)}px;
