@@ -3,7 +3,7 @@ import { View, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import translate from '../../../../locales/i18n';
-import { API_URL, ENV_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 
 import ScreenLoader from '../../userData/ScreenLoader';
 import NoticiasComponent from './NoticiasComponent';
@@ -23,7 +23,7 @@ import {
 
 export default function Noticias() {
     const [twitters, setTwitter] = useState([]);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [twitterOption, setTwitterOption] = useState(null)
     const [appTwitter, setAppTwitter] = useState(null)
     const [groupTwitter, setGroupTwitter] = useState(null)
@@ -35,10 +35,10 @@ export default function Noticias() {
         var group;
         var option;
 
-        await fetch(`${ENV_URL}/users/${2}`, {
+        await fetch(`${API_URL}/users/${userID}`, {
         headers: {
             Accept: 'application/vnd.api+json',
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjAzOTI2MDMwLCJleHAiOjE2MDY1NTU3NzYsImp0aSI6IjRmYWE0ZTUzLTgzYjEtNDMyZi05Y2ExLWMxOTQ3ZDM1ZTBmNCJ9.gwAtYo8i5APlHcJsT4D3Ynf0WLc9-UJnVTGd3p56R-A`
+            Authorization: `${userToken}`
         },
         })
         .then((response) => response.json())
@@ -50,19 +50,21 @@ export default function Noticias() {
         )
 
         if (group !== null) {
-            await fetch(`${ENV_URL}/groups/${group}/get_twitter`)
+            await fetch(`${API_URL}/groups/${group}/get_twitter`)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     setGroupTwitter(responseJson.twitter)
                     responseJson.twitter === null ? 
                         setTwitterOption(option) : setTwitterOption(responseJson.twitter)
             })
+        } else {
+            setTwitterOption(option)
         }
     }
 
     async function fetchTweets() {
         // Get twitters to show
-        await fetch(`${ENV_URL}/twitter_apis/${twitterOption}`)
+        await fetch(`${API_URL}/twitter_apis/${twitterOption}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 setTwitter(responseJson.twitter_api.tweets.slice(0, 10))
@@ -76,8 +78,7 @@ export default function Noticias() {
     }, []);
 
     useEffect(() => {
-        // fetchTweets();
-        console.warn('OPTION ->', twitterOption)
+        fetchTweets();
     }, [twitterOption]);
 
     if (isLoading) {
