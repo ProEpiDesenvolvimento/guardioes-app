@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage from 'rn-secure-storage';
 import translate from '../../../../locales/i18n';
@@ -24,17 +24,17 @@ import {
 export default function Noticias() {
     const [twitters, setTwitter] = useState([]);
     const [isLoading, setLoading] = useState(true);
-    // const [groupId, setGroupId] = useState(null);
-    // const [perPage, setPerPage] = useState(0);
-    // const [twitterOption, setTwitterOption] = useState('appguardioes')
+    const [twitterOption, setTwitterOption] = useState(null)
+    const [appTwitter, setAppTwitter] = useState(null)
+    const [groupTwitter, setGroupTwitter] = useState(null)
 
-    async function fetchTweets() {
+    // Get group and app twitter from user
+    async function userTwitters(){
         const userID = await AsyncStorage.getItem('userID');
         const userToken = await RNSecureStorage.get('userToken');
-        var group; 
-        var twitterHandle = 'appguardioes';
-        
-        // Get the user group_id 
+        var group;
+        var option;
+
         await fetch(`${API_URL}/users/${userID}`, {
         headers: {
             Accept: 'application/vnd.api+json',
@@ -44,20 +44,27 @@ export default function Noticias() {
         .then((response) => response.json())
         .then((responseJson) => {
                 group = responseJson.user.group_id
+                option = responseJson.user.app.twitter
+                setAppTwitter(responseJson.user.app.twitter)
             }
         )
 
-        // Check if the user has an group_id, and get group twitter
         if (group !== null) {
             await fetch(`${API_URL}/groups/${group}/get_twitter`)
                 .then((response) => response.json())
                 .then((responseJson) => {
-                    twitterHandle = responseJson.twitter
+                    setGroupTwitter(responseJson.twitter)
+                    responseJson.twitter === null ? 
+                        setTwitterOption(option) : setTwitterOption(responseJson.twitter)
             })
-        } 
+        } else {
+            setTwitterOption(option)
+        }
+    }
 
+    async function fetchTweets() {
         // Get twitters to show
-        await fetch(`${API_URL}/twitter_apis/${twitterHandle}`)
+        await fetch(`${API_URL}/twitter_apis/${twitterOption}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 setTwitter(responseJson.twitter_api.tweets.slice(0, 10))
@@ -67,9 +74,12 @@ export default function Noticias() {
     }
 
     useEffect(() => {
-        fetchTweets();
-        console.log('TWITTER -> ', twitters);
+        userTwitters();
     }, []);
+
+    useEffect(() => {
+        fetchTweets();
+    }, [twitterOption]);
 
     if (isLoading) {
         return <ScreenLoader />
@@ -86,16 +96,18 @@ export default function Noticias() {
                     <FeedTitle>
                         Feed RSS do Guardiões
                     </FeedTitle>
-                    {/* <TwitterOptionContainer>
-                    <TwitterOption>
-                        <OptionLeft onPress={() => {setTwitterOption('unb_oficial')}} >
-                        <OptionText>@unb_oficial</OptionText>
-                        </OptionLeft>
-                        <OptionRight onPress={() => {setTwitterOption('guardioesunb')}}>
-                        <OptionText>@guardioesunb</OptionText>
-                        </OptionRight>
-                    </TwitterOption>
-                    </TwitterOptionContainer> */}
+                    <TwitterOptionContainer>
+                        {groupTwitter !== null ? 
+                            <TwitterOption>
+                                <OptionLeft onPress={() => {setTwitterOption(appTwitter)}} >
+                                    <OptionText>{appTwitter}</OptionText>
+                                </OptionLeft>
+                                <OptionRight onPress={() => {setTwitterOption(groupTwitter)}}>
+                                    <OptionText>{groupTwitter}</OptionText>
+                                </OptionRight>
+                            </TwitterOption>
+                        : null}
+                    </TwitterOptionContainer>
                     <List 
                         data={twitters.slice(0,15)}
                         keyExtractor={twitters => String(twitters.id)}
