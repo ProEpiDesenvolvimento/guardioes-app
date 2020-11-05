@@ -162,7 +162,9 @@ class InstitutionSelector extends Component {
             })
             .then(() => {
                 this.updateParent()
-                if (setAlert) this.props.setAlert(false)
+                setTimeout(() => {
+                    if (setAlert) this.props.setAlert(false)
+                }, 1000);
             })
     }
 
