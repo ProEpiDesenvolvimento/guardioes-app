@@ -27,7 +27,7 @@
     "react-native-maps": "0.27.0",
     "react-native-maps-super-cluster": "^1.6.0",
     "react-native-modal-selector": "^2.0.3",
-    "react-native-onesignal": "^3.9.1",
+    "react-native-onesignal": "^3.9.2",
     "react-native-share": "^3.8.5",
     "react-native-simple-shadow-view": "^1.6.3",
     "react-native-spinkit": "^1.5.1",

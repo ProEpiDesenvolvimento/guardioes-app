@@ -21,7 +21,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - OneSignal (2.15.2)
+  - OneSignal (2.15.4)
   - RCTRequired (0.61.5)
   - RCTTypeSafety (0.61.5):
     - FBLazyVector (= 0.61.5)
@@ -191,8 +191,8 @@ PODS:
     - React-Core
   - react-native-maps (0.27.0):
     - React
-  - react-native-onesignal (3.9.1):
-    - OneSignal (= 2.15.2)
+  - react-native-onesignal (3.9.2):
+    - OneSignal (= 2.15.4)
     - React (< 1.0.0, >= 0.13.0)
   - react-native-spinkit (1.4.1):
     - React
@@ -382,12 +382,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: aaeaf388755e4f29cd74acbc9e3b8da6d807c37f
   FBReactNativeSpec: 118d0d177724c2d67f08a59136eb29ef5943ec75
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  OneSignal: 9531e385388565f4d31797ddadbe0fcc786430ec
+  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  OneSignal: 6647275955d0f06d9e17c90dc93af9d85ecfd2b9
   RCTRequired: b153add4da6e7dbc44aebf93f3cf4fcae392ddf1
   RCTTypeSafety: 9aa1b91d7f9310fc6eadc3cf95126ffe818af320
   React: b6a59ef847b2b40bb6e0180a97d0ca716969ac78
@@ -400,7 +400,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: 79c743ad7a2e86617811ef23f49308824e92520c
   react-native-image-picker: 32d1ad2c0024ca36161ae0d5c2117e2d6c441f11
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
-  react-native-onesignal: 4d82a09492e4937c1b6eb22dcd602b0b26a9e4b0
+  react-native-onesignal: 9fdf8cf885105266960a75567a38823bd824a22b
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
   react-native-webview: c51f73be304c61d359ec3e7c5e4e8f2c977fd360
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -424,4 +424,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 094864a88c5fe8ebfcd15de616b80d4c8af54e82
 
-COCOAPODS: 1.10.0.rc.1
+COCOAPODS: 1.9.3
