@@ -426,7 +426,6 @@ class Home extends Component {
 
                 // Variables to OneSignal API
                 AsyncStorage.setItem('userGroup', responseJson.user.group.split("/")[3]);
-                AsyncStorage.setItem('userGroupID', responseJson.user.group_id.toString());
                 AsyncStorage.setItem('userCity', responseJson.user.city);
                 AsyncStorage.setItem('userSchoolID', responseJson.user.school_unit_id.toString());
 

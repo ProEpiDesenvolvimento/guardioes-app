@@ -33,8 +33,18 @@ export default class drawerContentComponents extends Component {
         const userName = await AsyncStorage.getItem('userName');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
         const isProfessional = await AsyncStorage.getItem('isProfessional');
-        const userGroupID = await AsyncStorage.getItem('userGroupID');
         const userToken = await RNSecureStorage.get('userToken');
+
+        let response = await fetch(`${API_URL}/users/${userID}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${userToken}`
+            }
+        })
+        response = response.status == 200 ? await response.json() : response
+        const userGroupID = response.user.group_id;
 
         this.setState({ userID, userName, userAvatar, isProfessional, userToken, userGroupID })
         this.getHouseholds()

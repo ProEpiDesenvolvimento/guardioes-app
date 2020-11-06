@@ -481,9 +481,7 @@ class EditarPerfil extends Component {
                     </Button>
                 </KeyboardScrollView>
 
-                {showAlert &&
                 <LoadingModal show={showAlert} />
-                }
             </Container>
         )
     }
