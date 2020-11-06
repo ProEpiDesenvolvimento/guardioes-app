@@ -104,12 +104,11 @@ class Dicas extends Component {
 
   sortContents = (contents = []) => {
     contents.sort((a, b) => {
-      return parseInt(a.id) > parseInt(b.id)
-        ? -1
-        : parseInt(b.id) > parseInt(a.id)
-        ? 1
-        : 0;
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
     });
+    console.log(contents, 'ORDENADO');
     return contents;
   };
 
