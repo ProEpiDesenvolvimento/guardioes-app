@@ -67,10 +67,6 @@ class Dicas extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchData();
-  }
-
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -103,12 +99,7 @@ class Dicas extends Component {
   };
 
   sortContents = (contents = []) => {
-    contents.sort((a, b) => {
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-    });
-    console.log(contents, 'ORDENADO');
+    contents.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     return contents;
   };
 
