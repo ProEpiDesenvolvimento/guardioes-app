@@ -62,7 +62,7 @@ const option = `
   flex-direction: row;
   align-content: center;
   align-items: center;
-  border-radius: 20px;
+  border-radius: ${scale(18)}px;
   margin-right: ${scale(16)}px;
   margin-left: ${scale(16)}px;
   padding: ${scale(10)}px;

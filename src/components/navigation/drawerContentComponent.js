@@ -44,8 +44,9 @@ export default class drawerContentComponents extends Component {
             }
         })
         response = response.status == 200 ? await response.json() : response
+        const userGroupID = response.user.group_id;
 
-        this.setState({ userID, userName, userAvatar, isProfessional, userToken, userGroupId: response.user.group_id })
+        this.setState({ userID, userName, userAvatar, isProfessional, userToken, userGroupID })
         this.getHouseholds()
         this.getHouseholdAvatars()
     }
@@ -154,7 +155,7 @@ export default class drawerContentComponents extends Component {
                     <Aplicativo>
                         {translate("drawer.app")}
                     </Aplicativo>
-                    {this.state.userGroupId !== null ?
+                    {this.state.userGroupID !== null ?
                         <Button onPress={() => navigate('Vigilancia')}>
                             <UserOptionGreen>
                                 <Feather name='shield'
