@@ -55,6 +55,10 @@ export default {
     title: 'Esqueci a senha',
     informEmail: 'Informe seu email para verificação:',
     sendButton: 'Enviar',
+    invalidEmail: 'E-mail Inválido',
+    tryAgain: 'Tente Novamente',
+    differentsPass: 'Senhas não conferem!',
+    passwordChanged: 'Senha Redefinida',
   },
   register: {
     title: 'Cadastre-se',
@@ -149,6 +153,7 @@ export default {
       fourth: 'Para que país você viajou?',
       fifth: 'Aperte na bandeira para selecionar!',
     },
+    yes: 'Sim',
     checkboxConfirm: 'Confirmar',
     alertMessages: {
       button: 'Mostrar Mapa',
@@ -324,14 +329,12 @@ export default {
     shareLink: 'Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n',
     toHelp: 'Ajuda',
     toFAQ: 'FAQ',
-    /////
     participateSuccess: 'Você já está participando!',
     participateQuestion: 'Deseja participar?',
     confirmRead:
       'Confirmo que li as informações e estou ciente das alterações que serão realizadas após a confirmação',
     cancelParticipation: 'Cancelar Participação',
     participate: 'Participar',
-    /////
   },
   map: {
     people: 'Pessoas: ',

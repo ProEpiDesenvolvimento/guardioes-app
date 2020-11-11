@@ -55,6 +55,10 @@ export default {
     title: 'Recuperar mi contraseña',
     informEmail: 'Ingrese su email para verificación:',
     sendButton: 'Enviar',
+    invalidEmail: 'Email inválido',
+    tryAgain: 'Inténtalo de Nuevo',
+    differentsPass: '¡Las Contraseñas no Coinciden!',
+    passwordChanged: 'Restablecer la contraseña',
   },
   register: {
     title: 'Regístrese',
@@ -149,6 +153,7 @@ export default {
       fourth: '¿Para qué país usted ha viajado?',
       fifth: '¡Apriete en la bandera para seleccionar!',
     },
+    yes: 'Si',
     checkboxConfirm: 'Confirmar',
     alertMessages: {
       button: 'Mostrar Mapa',

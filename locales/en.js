@@ -102,6 +102,10 @@ export default {
     title: 'Forgot password',
     informEmail: 'Enter your email for verification:',
     sendButton: 'Send',
+    invalidEmail: 'Invalid E-mail',
+    tryAgain: 'Try again',
+    differentsPass: "Passwords don't match!",
+    passwordChanged: 'Reset Password',
   },
   noInternet: {
     noInternetConnection: 'No internet access.',
@@ -143,6 +147,14 @@ export default {
     sickAge: 'Since when have you been feeling bad?',
     symptoms: 'Select the symptoms you are feeling now:',
     answerQuestions: 'Anwser the following questions:',
+    checkboxes: {
+      first: 'Have you had contact with someone who had the same symptoms?',
+      second: 'Did you look for a hospital service?',
+      third: 'Have you left your place of residence for the past 14 days?',
+      fourth: 'What country did you travel to?',
+      fifth: 'Click on the flag to select!',
+    },
+    yes: 'Yes',
     checkboxConfirm: 'Confirm',
     alertMessages: {
       button: 'Show Map',

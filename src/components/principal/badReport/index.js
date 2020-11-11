@@ -211,16 +211,14 @@ class BadReport extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: translate('maps.locationRequest.requestLocationMessageTitle'),
-          message: translate(
-            'maps.locationRequest.requestLocationMessageMessage',
-          ),
+          title: translate('locationRequest.requestLocationMessageTitle'),
+          message: translate('locationRequest.requestLocationMessageMessage'),
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the location');
       } else {
-        console.warn(translate('maps.locationRequest.requestDenied'));
+        console.warn(translate('locationRequest.requestDenied'));
 
         if (Platform.OS === 'android') {
           this.props.navigation.navigate('Home');
@@ -233,11 +231,11 @@ class BadReport extends Component {
 
   requestLocalization = () => {
     Alert.alert(
-      'Erro Na Localização',
-      'Permita a localização para prosseguir',
+      translate('home.locationError'),
+      translate('home.locationError'),
       [
         {
-          text: 'Cancelar',
+          text: translate('selector.cancelButton'),
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
@@ -252,7 +250,7 @@ class BadReport extends Component {
     if (responseJson.messages.top_3[0].name === 'Síndrome Gripal') {
       data = [
         {
-          text: 'Mais informações',
+          text: translate('advices.moreInformations'),
           onPress: () => {
             Redirect(
               'Ministerio da Saúde',
@@ -284,7 +282,7 @@ class BadReport extends Component {
           onPress: () => this.showAlert(responseJson),
         },
         {
-          text: 'Sim',
+          text: translate('badReport.yes'),
           onPress: () => {
             Share.open(shareOptions)
               .then(res => {
