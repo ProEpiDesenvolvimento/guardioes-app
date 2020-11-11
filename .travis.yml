@@ -14,8 +14,8 @@ install:
   - npm install
   - yes | sdkmanager "platforms;android-28"
   - touch .env
-  - echo "API_URL=http://gds.proepi.org.br" > .env
-  - echo "APP_ID=1" >> .env
+  - echo "API_URL=${API_URL}" > .env
+  - echo "APP_ID=${APP_ID}" >> .env
 android:
   components:
     - build-tools-29.0.3
@@ -32,13 +32,13 @@ before_script:
 jobs:
   include:
     - stage: Test
-      script: 
+      script:
         - npm test
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
     - stage: Deploy
       before_script:
         - openssl aes-256-cbc -K $encrypted_1a6dcd56cf03_key -iv $encrypted_1a6dcd56cf03_iv -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
-      script: 
+      script:
         - npx jetify
         - cd android && ./gradlew assembleRelease
         - cp app/build/outputs/apk/release/app-release.apk ..
