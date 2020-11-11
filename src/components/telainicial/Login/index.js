@@ -5,14 +5,15 @@ import Feather from 'react-native-vector-icons/Feather';
 import { GradientBackground, KeyboardScrollView } from '../../styled/SnowForms';
 import { ButtonBack, FormSeparator, SnowInput, Touch, SnowButton, Label, TransparentButton } from '../../styled/SnowForms';
 import { Logo, PageTitle, LabelVisible } from './styles';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import { GDSLogoES, GDSLogoBR } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 
@@ -111,15 +112,13 @@ class Login extends Component {
                     </ButtonBack>
                 </KeyboardScrollView>
 
-                <AwesomeAlert
+                <CoolAlert
                     show={showAlert}
-                    showProgress={this.state.showProgressBar ? true : false}
+                    showProgress={this.state.showProgressBar}
                     title={this.state.showProgressBar ? translate("login.awesomeAlert.accessing") : null}
                     closeOnTouchOutside={this.state.showProgressBar ? false : true}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={false}
                     showConfirmButton={this.state.showProgressBar ? false : true}
-                    confirmButtonColor="#DD6B55"
                 />
             </GradientBackground>
             </>
@@ -166,13 +165,18 @@ class Login extends Component {
                     AsyncStorage.setItem('userID', responseJson.user.id.toString());
                     AsyncStorage.setItem('userName', responseJson.user.user_name);
                     AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
+                    AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at);
                     AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString());
+                    AsyncStorage.setItem('userScore', '0');
 
-                    RNSecureStorage.set('userToken', this.state.userToken, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    RNSecureStorage.set('userEmail', this.state.userEmail, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
-                    RNSecureStorage.set('userPwd', this.state.userPwd, {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+                    RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                    RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
+                    RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED });
 
-                    this.props.navigation.navigate('Home');
+                    //Send User ID to Push Notification API
+                    OneSignal.setExternalUserId(responseJson.user.id.toString())
+
+                    this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version })
                 })
         }
     }

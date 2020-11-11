@@ -64,6 +64,7 @@ export const ScrollNoticias = styled.ScrollView.attrs({
         flexGrow: 1,
         paddingTop: percentage(6),
         paddingHorizontal: percentage(7),
+        paddingBottom: 20
     }
 })``;
 
@@ -85,11 +86,9 @@ export const FeedTitle = styled.Text`
 
 export const NoticeContainer = styled(ShadowView).attrs({
 })`
-    flex: 1;
     background-color: #5DD39E;
     border-radius: ${scale(18)}px;
     padding: ${scale(16)}px;
-    max-width: 100%; 
     margin-bottom: ${percentage(7)}px;
     shadow-color: #5DD39E;
     shadow-opacity: 0.4;
@@ -131,9 +130,9 @@ export const NoticiaText = styled.Text`
 `;
 
 export const Imagem = styled.Image`
-    margin-top: ${scale(8)}px;
-    width: ${scale(260)}px;
-    height: ${scale(100)}px;
+    margin-top: ${scale(6)}px;
+    height: ${scale(200)}px;
+    resize-mode: cover;
     border-radius: 10px;
 `;
 

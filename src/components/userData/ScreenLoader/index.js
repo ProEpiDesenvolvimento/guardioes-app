@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { SafeAreaView } from 'react-native'
+
 import { Screen, Loading } from './styles'
 
 class ScreenLoader extends PureComponent {

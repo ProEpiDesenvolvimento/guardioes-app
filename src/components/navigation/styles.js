@@ -62,7 +62,7 @@ const option = `
   flex-direction: row;
   align-content: center;
   align-items: center;
-  border-radius: 20px;
+  border-radius: ${scale(18)}px;
   margin-right: ${scale(16)}px;
   margin-left: ${scale(16)}px;
   padding: ${scale(10)}px;
@@ -71,14 +71,14 @@ const option = `
   shadow-offset: 0px 0px;
 `;
 
-export const UserOptionGreen = styled(ShadowView).attrs({
+export const UserOptionBlue = styled(ShadowView).attrs({
 })`
   ${option}
   background-color: #348eac;
   shadow-color: #348eac;
 `;
 
-export const UserOptionBlue = styled(ShadowView).attrs({
+export const UserOptionGreen = styled(ShadowView).attrs({
 })`
   ${option}
   background-color: #5DD39E;
@@ -101,7 +101,7 @@ export const Aplicativo = styled.Text`
 `;
 
 export const SocialContainer = styled.View`
-  margin-vertical: ${percentage(7)}px;
+  margin-vertical: ${percentage(5)}px;
   flex-direction: row;
   margin-left: ${(scale(75))}px;
   margin-right: ${(scale(75))}px;

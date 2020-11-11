@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { HeaderNavigator, BackButton, ScreenTitle, Empty } from './styles';
@@ -13,20 +13,22 @@ import ForgetPwd from '../telainicial/ForgetPwd';
 import Login from '../telainicial/Login';
 import Home from '../principal/Home';
 import Diario from '../principal/Diario';
-import Conselho from '../principal/Conselho';
-// import Noticias from '../principal/Noticias';
-import Noticias from '../principal/newNoticias/';
+import Dicas from '../principal/Dicas';
+import Noticias from '../principal/Noticias/';
+
 import BadReport from '../principal/badReport';
-import Household from '../principal/Household';
+import NovoPerfil from '../principal/NovoPerfil';
 import drawerContentComponents from './drawerContentComponent';
 import Mapa from '../principal/Mapa';
 import Perfis from '../principal/Perfis';
 import EditarPerfil from '../principal/EditarPerfil';
+import FAQ from '../principal/FAQ';
 import Ajuda from '../principal/Ajuda';
 import Tutorial from '../principal/Tutorial';
 import TermosPoliticas from '../principal/TermosPoliticas';
 import Rumor from '../principal/Rumor';
 import Sobre from '../principal/Sobre';
+import Vigilancia from '../principal/Vigilancia'
 
 Feather.loadFont();
 
@@ -47,7 +49,7 @@ export const BottomMenu = createBottomTabNavigator({
     Home,
     Diario,
     Mapa,
-    Conselho,
+    Dicas,
     Noticias,
 },
     {
@@ -62,7 +64,7 @@ export const BottomMenu = createBottomTabNavigator({
                     iconName = 'clipboard';
                 } else if (routeName === 'Mapa') {
                     iconName = 'map';
-                } else if (routeName === 'Conselho') {
+                } else if (routeName === 'Dicas') {
                     iconName = 'heart';
                 } else if (routeName === 'Noticias') {
                     iconName = 'message-square';
@@ -81,8 +83,9 @@ export const BottomMenu = createBottomTabNavigator({
                 borderTopWidth: 0,
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20,
-                justifyContent: 'flex-start',
+                marginTop: -20,
                 paddingTop: 5,
+                justifyContent: 'flex-start',
                 shadowColor: "#000000",
                 shadowOffset: {
                     width: 0,
@@ -108,11 +111,12 @@ export const BottomMenu = createBottomTabNavigator({
 export const Stack = createStackNavigator({
     BottomMenu: { screen: BottomMenu, navigationOptions: { header: null } },
     BadReport,
-    Household,
+    NovoPerfil,
     Perfis,
     EditarPerfil,
     Ajuda,
-    Household,
+    Vigilancia,
+    FAQ,
     TermosPoliticas,
     Rumor,
     Tutorial,
@@ -158,7 +162,3 @@ export const Authentication = createSwitchNavigator({
         initialRouteName: 'AuthLoading',
     }
 )
-
-
-
-

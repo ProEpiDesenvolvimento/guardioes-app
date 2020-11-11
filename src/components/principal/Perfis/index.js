@@ -16,6 +16,8 @@ import translate from '../../../../locales/i18n';
 
 Feather.loadFont();
 
+let todayDate = new Date();
+
 class Perfis extends Component {
     static navigationOptions = {
         title: "Perfis"
@@ -62,11 +64,15 @@ class Perfis extends Component {
             }
         })
         .then(async (responseJson) => {
+            const userName = responseJson.user.user_name
             const userAvatar = this.state.userAvatar
 
-            // Trata userBirth no formato correto
+            // Trata data de nascimento do user no formato correto
+            if (!responseJson.user.birthdate) {
+                responseJson.user.birthdate = JSON.stringify(todayDate)
+            }
             responseJson.user.birthdate = responseJson.user.birthdate.split('T', 1).toString()
-            
+
             let birthDate = responseJson.user.birthdate.split('-')
             birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
 
@@ -89,7 +95,7 @@ class Perfis extends Component {
                 City: responseJson.user.city,
             }
 
-            this.setState({ userData });
+            this.setState({ userName, userData })
         })
     }
 
@@ -123,6 +129,11 @@ class Perfis extends Component {
         const householdAvatar = this.state.householdAvatars[household.id]
 
         // Trata a data de nascimento do household para o formato apropriado
+        if (!household.birthdate) {
+            household.birthdate = JSON.stringify(todayDate)
+        }
+        household.birthdate = household.birthdate.split('T', 1).toString()
+
         let birthDate = household.birthdate.split('-')
         birthDate = birthDate[2] + '-' + birthDate[1] + '-' + birthDate[0]
 
@@ -143,7 +154,7 @@ class Perfis extends Component {
             RiskGroup: household.risk_group,
         }
 
-        this.setState({ householdData });
+        this.setState({ householdData })
     }
 
     render() {

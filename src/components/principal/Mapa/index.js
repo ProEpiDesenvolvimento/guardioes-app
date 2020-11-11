@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { SafeAreaView, View, StyleSheet } from 'react-native'
 
 import { Container } from './styles'
+import { CoolAlert } from '../../styled/CoolAlert'
 import mapStyle from '../../../utils/MarkerClustering/mapStyle'
 
 import AsyncStorage from '@react-native-community/async-storage'
@@ -11,7 +12,6 @@ import { API_URL } from 'react-native-dotenv'
 import translate from '../../../../locales/i18n'
 import Geolocation from 'react-native-geolocation-service'
 import poligonoBR from '../../../utils/DF.json'
-import AwesomeAlert from 'react-native-awesome-alerts'
 import { Marker } from 'react-native-maps'
 import { greenMarker, redMarker } from '../../../imgs/imageConst'
 
@@ -25,8 +25,7 @@ class Maps extends Component {
     constructor(props) {
         super(props)
         this.props.navigation.addListener('didFocus', payload => {
-            //console.warn(payload)
-            //this.fetchData()
+            this.fetchData()
         })
         this.state = {
             dataSource: [],
@@ -45,7 +44,15 @@ class Maps extends Component {
         }
         this.getLocation()
     }
-    
+
+    hideAlert = () => {
+        this.setState({
+            showAlert: false
+        })
+
+        AsyncStorage.setItem('showMapTip', JSON.stringify(false))
+    }
+
     componentDidMount() {
         this.fetchData()
     }
@@ -205,20 +212,14 @@ class Maps extends Component {
                     CLUSTER_SIZE_DIVIDER={CLUSTER_SIZE_DIVIDER} // The log of number of points in cluster by this constant's base defines cluster image size
                     screenSizeClusterPercentage={0.13} // Cluster occupies 13% of screen 
                 />
-                <AwesomeAlert
+                <CoolAlert
                     show={showAlert}
                     message={translate(`maps.guide`)}
                     closeOnTouchOutside={true}
                     closeOnHardwareBackPress={false}
-                    showCancelButton={true}
-                    cancelText="Entendido!"
-                    cancelButtonColor="#55dd55"
-                    onCancelPressed={() => {
-                        this.setState({
-                            showAlert: false
-                        })
-                        AsyncStorage.setItem('showMapTip', JSON.stringify(false))
-                    }}
+                    showConfirmButton={true}
+                    confirmText="Entendido!"
+                    onConfirmPressed={() => this.hideAlert()}
                 />
                 {/*<TouchableOpacity style={styles.mapChange}
                     onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>

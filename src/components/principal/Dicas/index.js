@@ -16,24 +16,20 @@ import {API_URL, APP_ID} from 'react-native-dotenv';
 
 Feather.loadFont();
 
-class Conselho extends Component {
+class Dicas extends Component {
     static navigationOptions = {
         title: translate("advices.title")
     }
     constructor(props) {
         super(props);
-        this.props.navigation.addListener('didFocus', payload => {
-            //this.fetchData();
+        this.props.navigation.addListener('willFocus', payload => {
+            this.fetchData();
         });
         this.state = {
             modalVisible: false,
             isLoading: true,
             dataSource: []
         }
-    }
-
-    componentDidMount() {
-        this.fetchData()
     }
 
     setModalVisible(visible) {
@@ -213,4 +209,4 @@ const advicesText = {
 }
 
 //make this component available to the app
-export default Conselho;
+export default Dicas;

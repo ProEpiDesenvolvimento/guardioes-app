@@ -16,7 +16,8 @@ export const ScrollViewStyle = styled.ScrollView.attrs({
     flexGrow: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
+    paddingBottom: 20
+  }
 })``;
 
 export const Background = styled(LinearGradient).attrs({
@@ -26,6 +27,17 @@ export const Background = styled(LinearGradient).attrs({
   min-width: 100%;
   border-bottom-left-radius: ${scale(25)}px;
   border-bottom-right-radius: ${scale(25)}px;
+`;
+
+export const MenuBars = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.2
+})`
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 4%;
+  top: 1%;
+  padding: 2%;
 `;
 
 export const Button = styled(TouchableOpacity).attrs({
@@ -171,7 +183,6 @@ export const StatusAlertText = styled.Text`
   color: white;
   font-family: ArgentumSans;
   font-size: ${scale(15)}px;
-  font-weight: 500;
   include-font-padding: false;
 `;
 

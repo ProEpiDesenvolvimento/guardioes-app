@@ -8,8 +8,10 @@ import { Selector, DateSelector, FormInlineCheck, CheckBoxStyled, Button, CheckL
 import { ModalContainer, ModalBox, ModalTitle, ModalText, ModalButton, ModalButtonText } from '../../styled/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
+
 import AsyncStorage from '@react-native-community/async-storage'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
+import OneSignal from 'react-native-onesignal'
 import { UserIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils'
 import translate from '../../../../locales/i18n'
@@ -17,7 +19,7 @@ import { API_URL } from 'react-native-dotenv'
 import { gender, country, race } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import InstitutionSelector from '../../userData/InstitutionSelector'
-import LoadingModal from '../../modals/LoadingModal'
+import LoadingModal from '../../userData/LoadingModal'
 
 Feather.loadFont();
 
@@ -34,13 +36,9 @@ class Registrar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            school_units: [],
-            query: '',
             isProfessional: false,
             residence: null,
             residenceCountryCheckbox: true,
-            groupCheckbox: false,
-            statusCode: null,
             userName: null,
             userEmail: null,
             userPwd: null,
@@ -83,16 +81,6 @@ class Registrar extends Component {
         })
     }
 
-    findFilm(query) {
-        if (query === '') {
-            return []
-        }
-
-        const { school_units } = this.state
-        const regex = new RegExp(`${query.trim()}`, 'i')
-        return school_units.filter(school => school.description.search(regex) >= 0)
-    }
-
     setUserInstitutionCallback = (userIdCode, userGroup) => {
         this.setState({
             userIdCode: userIdCode,
@@ -106,9 +94,6 @@ class Registrar extends Component {
 
     render() {
         const { showAlert } = this.state
-        const { query } = this.state
-        const school_units = this.findFilm(query)
-        const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim()
 
         return (
             <>
@@ -333,8 +318,11 @@ class Registrar extends Component {
 
     isUserDataValid = () => {
         let error = false
-        if (this.state.userName == null || this.state.userPwd == null || this.state.userEmail == null) {
-            Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro.")
+        if (this.state.userName == null || this.state.userName == '' || this.state.userEmail == null || this.state.userPwd == null) {
+            Alert.alert("Campos não podem ficar em branco", "Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro")
+            error = true
+        } else if (this.state.userBirth == null) {
+            Alert.alert("A data de nascimento deve estar preenchida")
             error = true
         } else if (this.state.userCountry == "Brazil" && (this.state.userState == null || this.state.userCity == null)) {
             Alert.alert("Estado e Cidade devem estar preenchidos")
@@ -348,8 +336,8 @@ class Registrar extends Component {
             Alert.alert(this.state.instituitionComponentError)
             error = true
         } else if (this.state.userCountry == null) {
-                Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país")
-                error = true
+            Alert.alert("Nacionalidade não pode ficar em Branco", "Precisamos da sua Nacionalidade para lhe mostrar as informações referentes ao seu país")
+            error = true
         }
         return !error
     }
@@ -383,7 +371,8 @@ class Registrar extends Component {
                     identification_code: this.state.userIdCode,
                     group_id: this.state.userGroup,
                     is_professional: this.state.isProfessional,
-                    risk_group: this.state.riskGroup
+                    risk_group: this.state.riskGroup,
+                    policy_version: Terms.version
                 }
             })
         })
@@ -429,15 +418,24 @@ class Registrar extends Component {
                 AsyncStorage.setItem('userID', responseJson.user.id.toString())
                 AsyncStorage.setItem('userName', responseJson.user.user_name)
                 AsyncStorage.setItem('userBirth', responseJson.user.birthdate)
+                AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at)
                 AsyncStorage.setItem('isProfessional', responseJson.user.is_professional.toString())
+                AsyncStorage.setItem('userScore', '0')
 
                 RNSecureStorage.set('userToken', this.state.userToken, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userEmail', this.state.userEmail, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
                 RNSecureStorage.set('userPwd', this.state.userPwd, { accessible: ACCESSIBLE.WHEN_UNLOCKED })
 
-                this.props.navigation.navigate('Home')
+                //Send User ID to Push Notification API
+                OneSignal.setExternalUserId(responseJson.user.id.toString())
+
+                this.props.navigation.navigate('Home', { userTermsVersion: responseJson.user.policy_version })
             })
     }
+}
+
+const Terms = {
+    version: translate("useTerms.compilation")
 }
 
 //make this component available to the app

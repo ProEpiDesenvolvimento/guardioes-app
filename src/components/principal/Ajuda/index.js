@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Help, Box, Button, IconWrapper, InfoWrapper, Title } from './styles';
 
-import { TermsIcon, TutorialIcon } from '../../../imgs/imageConst';
+import { TermsIcon, TutorialIcon, InfoIcon } from '../../../imgs/imageConst';
 import { scale } from '../../../utils/scallingUtils';
 import translate from "../../../../locales/i18n";
 
@@ -15,6 +15,19 @@ class Ajuda extends Component {
         const { navigate } = this.props.navigation;
         return (
             <Help>
+                <Box>
+                    <Button onPress={() => navigate('Tutorial')}>
+                        <IconWrapper>
+                            <TutorialIcon height={scale(45)} width={scale(45)} />
+                        </IconWrapper>
+                        <InfoWrapper>
+                            <Title>
+                                {translate("ajuda.tutorialBtn")}
+                            </Title>
+                        </InfoWrapper>
+                    </Button>
+                </Box>
+
                 <Box>
                     <Button onPress={() => navigate('TermosPoliticas')}>
                         <IconWrapper>
@@ -29,13 +42,13 @@ class Ajuda extends Component {
                 </Box>
 
                 <Box>
-                    <Button onPress={() => navigate('Tutorial')}>
+                    <Button onPress={() => navigate('Sobre')}>
                         <IconWrapper>
-                            <TutorialIcon height={scale(45)} width={scale(45)} />
+                            <InfoIcon height={scale(45)} width={scale(45)} />
                         </IconWrapper>
                         <InfoWrapper>
                             <Title>
-                                {translate("ajuda.tutorialBtn")}
+                                {translate("ajuda.aboutBtn")}
                             </Title>
                         </InfoWrapper>
                     </Button>

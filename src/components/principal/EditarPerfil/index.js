@@ -17,7 +17,7 @@ import { gender, country, race, household } from '../../../utils/selectorUtils'
 import { state, getCity } from '../../../utils/brasil'
 import { handleAvatar, getInitials } from '../../../utils/constUtils'
 import InstitutionSelector from '../../userData/InstitutionSelector'
-import LoadingModal from '../../modals/LoadingModal'
+import LoadingModal from '../../userData/LoadingModal'
 
 let data = new Date()
 let d = data.getDate()
@@ -39,10 +39,8 @@ class EditarPerfil extends Component {
             householdID: 0,
             modalVisibleRiskGroup: false,
             Picture: 'default',
-            CategoryLabel: translate("selector.label"),
-            GroupLabel: translate("selector.label"),
-            SchoolLocationLabel: translate("selector.label"),
-            EducationLevelLabel: translate("selector.label"),
+            IdCode: null,
+            Group: null,
             paramsLoaded: false,
             showAlert: false,
         }
@@ -55,13 +53,17 @@ class EditarPerfil extends Component {
     fetchData = async () => {
         const { params } = this.props.navigation.state
 
-        await this.setState({ isUser: params.isUser })
+        await this.setState({ 
+            isUser: params.isUser,
+            originalName: params.data.Name,
+        })
+
         await this.setState(params.data)
+        this.setState({ paramsLoaded: true })
 
         await this.getHouseholdAvatars()
-        this.setState({
-            paramsLoaded: true
-        })
+        const userSelected = await AsyncStorage.getItem('userSelected')
+        this.setState({ userSelected })
     }
 
     getHouseholdAvatars = async () => {
@@ -75,9 +77,6 @@ class EditarPerfil extends Component {
     }
 
     handleEdit = async () => {
-        if (!this.state.groupCheckbox) {
-            this.setState({ Group: null, IdCode: null, GroupName: null })
-        }
         if (this.state.Country !== "Brazil") {
             this.setState({ City: null, State: null })
         }
@@ -96,7 +95,6 @@ class EditarPerfil extends Component {
         let householdAvatars = this.state.householdAvatars
 
         ImagePicker.showImagePicker(options, (response) => {
-
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
@@ -108,6 +106,10 @@ class EditarPerfil extends Component {
                 else {
                     householdAvatars[householdID] = null
                     AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
+                }
+
+                if (this.state.originalName === this.state.userSelected) { // Update locally to current user
+                    AsyncStorage.removeItem('avatarSelected')
                 }
 
                 this.setState({ Avatar: null })
@@ -126,9 +128,19 @@ class EditarPerfil extends Component {
                     AsyncStorage.setItem('householdAvatars', JSON.stringify(householdAvatars))
                 }
 
+                if (this.state.originalName === this.state.userSelected) { // Update locally to current user
+                    AsyncStorage.setItem('avatarSelected', source)
+                }
+
                 this.setState({ Avatar: source })
             }
         });
+    }
+
+    formatBirthAgain = (birthDate) => {
+        let newDate = birthDate.split('-')
+        newDate = newDate[2] + '-' + newDate[1] + '-' + newDate[0]
+        return newDate
     }
 
     isUserDataValid = () => {
@@ -184,6 +196,12 @@ class EditarPerfil extends Component {
                 this.setAlert(false)
                 if (response.status == 200) {
                     AsyncStorage.setItem('userName', this.state.Name)
+                    AsyncStorage.setItem('userBirth', this.formatBirthAgain(this.state.Birth))
+
+                    if (this.state.originalName === this.state.userSelected) { // Update locally to current user
+                        AsyncStorage.setItem('userSelected', this.state.Name)
+                        AsyncStorage.setItem('birthSelected', this.formatBirthAgain(this.state.Birth))
+                    }
                     this.props.navigation.goBack()
                 } else {
                     Alert.alert("Ocorreu um erro, tente novamente depois.")
@@ -244,6 +262,10 @@ class EditarPerfil extends Component {
                 console.warn(response.status)
                 this.setAlert(false)
                 if (response.status == 200) {
+                    if (this.state.originalName === this.state.userSelected) { // Update locally to current user
+                        AsyncStorage.setItem('userSelected', this.state.Name)
+                        AsyncStorage.setItem('birthSelected', this.formatBirthAgain(this.state.Birth))
+                    }
                     this.props.navigation.goBack()
                 } else {
                     Alert.alert("Ocorreu um erro, tente novamente depois.")
@@ -255,9 +277,9 @@ class EditarPerfil extends Component {
         this.setState({ modalVisibleRiskGroup: visible })
     }
 
-    setAlert = (val) => {
+    setAlert = (show) => {
         this.setState({
-            showAlert: val
+            showAlert: show
         })
     }
 
@@ -274,6 +296,7 @@ class EditarPerfil extends Component {
 
     render() {
         const { isUser } = this.state
+        const { showAlert } = this.state
         //console.log(this.state)
 
         return (
@@ -457,7 +480,8 @@ class EditarPerfil extends Component {
                         </SendContainer>
                     </Button>
                 </KeyboardScrollView>
-                <LoadingModal show={this.state.showAlert}/>
+
+                <LoadingModal show={showAlert} />
             </Container>
         )
     }

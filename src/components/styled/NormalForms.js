@@ -100,7 +100,7 @@ export const Selector = styled(ModalSelector).attrs({
     },
     optionContainerStyle: {
         backgroundColor: "#ffffff",
-        borderRadius: scale(12)
+        borderRadius: scale(14)
     },
     optionStyle: {
         borderBottomWidth: 0,
@@ -112,12 +112,13 @@ export const Selector = styled(ModalSelector).attrs({
     },
     cancelContainerStyle: {
         backgroundColor: '#ffffff',
-        borderRadius: scale(12),
+        borderRadius: scale(14),
         marginTop: scale(10)
     },
     cancelStyle: {
         backgroundColor: '#348EAC',
-        borderRadius: scale(10),
+        padding: scale(10),
+        borderRadius: scale(12),
     },
     cancelTextStyle: {
         fontFamily: 'ArgentumSans',
@@ -217,6 +218,7 @@ export const ModalContainer = styled.View`
 
 export const ModalBox = styled(ShadowView).attrs({
 })`
+    max-height: 90%;
     width: 90%;
     background-color: #ffffff;
     border-radius: ${scale(18)}px;

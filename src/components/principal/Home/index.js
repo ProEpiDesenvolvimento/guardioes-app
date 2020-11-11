@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import { SafeAreaView, StatusBar, Text, StyleSheet, NetInfo, Alert, Modal } from 'react-native';
 
-import { Container, ScrollViewStyle, Background, UserView, Button, NamesContainer, TextName, AppName } from './styles';
+import { Container, ScrollViewStyle, Background, MenuBars, UserView, Button, NamesContainer, TextName, AppName } from './styles';
 import { StatusContainer, TextStyle, StatusBemMal, StatusText, Bem, Mal, Alertas, AlertContainer } from './styles';
 import { StatusAlert, StatusTitle, StatusAlertText, Users, UserSelector, UserScroll, UserWrapper, UserName } from './styles';
+import { CoolAlert } from '../../styled/CoolAlert';
 
 import { PermissionsAndroid } from 'react-native';
-import {API_URL} from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv';
 import RNSecureStorage from 'rn-secure-storage';
 import AsyncStorage from '@react-native-community/async-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 import Geolocation from 'react-native-geolocation-service';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Emoji from 'react-native-emoji';
 import { Avatar } from 'react-native-elements';
-import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials } from '../../../utils/constUtils';
+import { getNameParts, handleAsyncAvatar, handleAvatar, getInitials, logoutApp } from '../../../utils/constUtils';
 import translate from "../../../../locales/i18n";
 import { scale } from "../../../utils/scallingUtils";
+import OneSignal from 'react-native-onesignal';
 
 Feather.loadFont();
 SimpleLineIcons.loadFont();
-
-let todayDate = new Date();
-let d = todayDate.getDate();
 
 class Home extends Component {
     navOptions // rolê para acessar a drawer em uma função estática
@@ -31,11 +29,10 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.getLocation();
-        this.props.navigation.addListener('didFocus', payload => {
-            this.getHouseholdAvatars();
+        this.props.navigation.addListener('willFocus', payload => {
+            if (!this.state.isLoading) this.fetchData()
         })
         this.state = {
-            modalVisible: false,
             userSelected: '',
             userName: null,
             userID: null,
@@ -46,21 +43,24 @@ class Home extends Component {
             userLatitude: 'unknown',
             userLongitude: 'unknown',
             error: null,
+            modalVisible: false,
+            showTermsConsent: false, 
             showAlert: false, //Custom Alerts
             showProgressBar: false, //Custom Progress Bar
-            alertMessage: null
+            alertMessage: null,
+            isLoading: true
         }
     }
 
     showAlert = (responseJson) => {
         let alertMessage = ""
         if (responseJson !== null && !responseJson.errors) {
-            alertMessage = translate("badReport.alertMessages.reportSent")
+            alertMessage = responseJson.feedback_message ? responseJson.feedback_message : translate("badReport.alertMessages.reportSent")
         } else {
             alertMessage = translate("badReport.alertMessages.reportNotSent")
         }
         this.setState({
-            alertMessage: <Text>{alertMessage}{emojis[0]}</Text>,
+            alertMessage: <Text>{alertMessage} {emojis[0]}</Text>,
             showProgressBar: false
         });
         console.warn(alertMessage)
@@ -80,6 +80,10 @@ class Home extends Component {
         })
     }
 
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
+
     _isconnected = () => {
         NetInfo.isConnected.fetch().then(isConnected => {
             isConnected ? this.verifyLocalization() : Alert.alert(
@@ -92,8 +96,17 @@ class Home extends Component {
         });
     }
 
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
+    newTermsPolicy = () => {
+        this.setState({ showTermsConsent: false })
+
+        Alert.alert(
+            Terms.title, Terms.text,
+            [
+                { text: Terms.disagree, onPress: () => { logoutApp(this.props.navigation) }, style: 'cancel' },
+                { text: Terms.agree, onPress: () => { this.updateUserTermsConsent() } }
+            ],
+            { cancelable: false }
+        );
     }
 
     onHeaderEventControl() { // rolê para acessar a drawer em uma função estática
@@ -102,7 +115,9 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        this.verifyUserTermsConsent()
         this.fetchData()
+        this.updateUserInfosToOneSignal()
 
         this.props.navigation.setParams({ // rolê para acessar a drawer em uma função estática
             _onHeaderEventControl: this.onHeaderEventControl,
@@ -115,7 +130,7 @@ class Home extends Component {
     }
 
     getLocation() {
-        this.requestFineLocationPermission();
+        this.requestLocationPermission();
         Geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
@@ -129,26 +144,77 @@ class Home extends Component {
         );
     }
 
+    verifyUserTermsConsent = () => {
+        const { params } = this.props.navigation.state
+        const currentPolicyTerms = Terms.version
+        const userPolicyTerms = params.userTermsVersion
+
+        if (userPolicyTerms && userPolicyTerms < currentPolicyTerms) {
+            this.setState({ showTermsConsent: true })
+        }
+    }
+
+    updateUserTermsConsent = async () => {
+        return fetch(`${API_URL}/users/${this.state.userID}`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: `${this.state.userToken}`
+            },
+            body: JSON.stringify(
+                {
+                    policy_version: Terms.version,
+                }
+            )
+        })
+            .then((response) => {
+                console.warn(response.status)
+            })
+    }
+
+    initUserSelected = async () => {
+        const userSelected = await AsyncStorage.getItem('userSelected');
+        const birthSelected = await AsyncStorage.getItem('birthSelected');
+
+        if (userSelected && birthSelected) {
+            const avatarSelected = await AsyncStorage.getItem('avatarSelected');
+            const createdSelected = await AsyncStorage.getItem('createdSelected');
+
+            this.setState({ userSelected, birthSelected, avatarSelected, createdSelected });
+        }
+        else {
+            AsyncStorage.setItem('userSelected', this.state.userName);
+            AsyncStorage.setItem('birthSelected', this.state.userBirth);
+            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.userAvatar));
+            AsyncStorage.setItem('createdSelected', this.state.userCreatedAt);
+
+            this.setState({
+                userSelected: this.state.userName,
+                birthSelected: this.state.userBirth,
+                avatarSelected: this.state.userAvatar,
+                createdSelected: this.state.userCreatedAt
+            });
+        }
+    }
+
     fetchData = async () => { //Get user infos
         const userID = await AsyncStorage.getItem('userID');
         const userName = await AsyncStorage.getItem('userName');
         const userBirth = await AsyncStorage.getItem('userBirth');
         const userAvatar = await AsyncStorage.getItem('userAvatar');
-        const isProfessional = await AsyncStorage.getItem('isProfessional');
+        const userCreatedAt = await AsyncStorage.getItem('userCreatedAt');
         const userToken = await RNSecureStorage.get('userToken');
-        
-        this.setState({ userID, userName, userBirth, userAvatar, isProfessional, userToken });
-        this.setState({ userSelected: this.state.userName, avatarSelected: this.state.userAvatar });
+        this.setState({ userID, userName, userBirth, userAvatar, userCreatedAt, userToken });
 
-        AsyncStorage.setItem('userSelected', this.state.userSelected);
-        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+        this.initUserSelected();
         this.getHouseholds();
         this.getHouseholdAvatars();
         this.getUserLastSurveys();
+        this.setState({ isLoading: false });
     }
 
     getHouseholds = () => {//Get households
-        //console.warn("UserID " + this.state.userID + " Token " + this.state.userToken)
         return fetch(`${API_URL}/users/${this.state.userID}/households`, {
             headers: {
                 Accept: 'application/vnd.api+json',
@@ -166,7 +232,7 @@ class Home extends Component {
 
     getHouseholdAvatars = async () => {
         let householdAvatars = JSON.parse(await AsyncStorage.getItem('householdAvatars'))
-        
+
         if (!householdAvatars) {
             householdAvatars = {}
         }
@@ -184,11 +250,13 @@ class Home extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                let todayDate = new Date();
+
                 let lastWeek = new Date();
-                lastWeek.setDate(d - 7);
+                lastWeek.setDate(todayDate.getDate() - 7);
                 lastWeek.setHours(0, 0, 0, 0);
 
-                const userLastSurveys = responseJson.surveys.filter(survey => 
+                const userLastSurveys = responseJson.surveys.filter(survey =>
                     new Date(survey.created_at).getTime() >= lastWeek.getTime()
                 );
 
@@ -212,71 +280,66 @@ class Home extends Component {
                 }
             }
         })
+
         this.setState({ userBadReports });
     }
 
     verifyLocalization = async () => {
         if (this.state.userLatitude == 0 || this.state.userLongitude == 0 || this.state.userLatitude == null || this.state.userLongitude == null) {
-            this.requestLocalization();
+            this.requestLocationAlert();
         } else {
             this.sendSurvey();
         }
     }
 
-    async requestFineLocationPermission() {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-              title: 'Guardiões da Saúde needs Location Permission',
-              message:
-                'Guardiões da Saúde needs access to your location ' +
-                'so you can take location reports.',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('You can use the location');
-          } else {
-            console.log('Location permission denied');
-          }
-        } catch (err) {
-          console.warn(err);
-        }
-      }
-
-    requestLocalization = () => {
+    requestLocationAlert = () => {
         Alert.alert(
-          "Erro Na Localização",
-          "Permita a localização para prosseguir",
-          [
-            {
-              text: 'Cancelar',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'permitir', onPress: () => this.requestFineLocationPermission() },
-          ],
-          { cancelable: false },
+            "Erro Na Localização",
+            "Permita a localização para prosseguir",
+            [
+                {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'permitir', onPress: () => this.requestLocationPermission() },
+            ],
+            { cancelable: false },
         );
-      }
+    }
+
+    async requestLocationPermission() {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: 'Guardiões da Saúde needs Location Permission',
+                    message:
+                        'Guardiões da Saúde needs access to your location ' +
+                        'so you can take location reports.',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the location');
+            } else {
+                console.log('Location permission denied on Android');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
 
     sendSurvey = async () => { //Send Survey GOOD CHOICE
-        this.showLoadingAlert();
-        try {
-            let currentPin = {
-                household_id: this.state.householdID,
-                latitude: this.state.userLatitude,
-                longitude: this.state.userLongitude
-            }
-            await AsyncStorage.setItem(
-                "localpin",
-                JSON.stringify(currentPin)
-            )
-        } catch (error) {
-            console.warn("Não conseguiu guardar pino local")
+        this.showLoadingAlert()
+
+        let currentPin = {
+            household_id: this.state.householdID,
+            latitude: this.state.userLatitude,
+            longitude: this.state.userLongitude
         }
+
         return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
             method: 'POST',
             headers: {
@@ -296,190 +359,307 @@ class Home extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 this.showAlert(responseJson)
+                this.countUserScore()
+                AsyncStorage.setItem("localpin", JSON.stringify(currentPin))
             })
 
     }
 
+    countUserScore = async () => {
+        const lastReport = await AsyncStorage.getItem('lastReport')
+        const userScore = parseInt(await AsyncStorage.getItem('userScore'))
+
+        this.setState({ lastReport, userScore })
+
+        let dt1 = new Date(this.state.lastReport)
+        let dt2 = new Date() // Today
+
+        const auxCount = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+
+        switch (auxCount) {
+            case 1:
+                // Acrescenta um dia na contagem e atualiza o lastReport
+                console.warn("Reportou no dia anterior")
+                this.setState({ userScore: this.state.userScore + 1 })
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+            case 0:
+                // Nada acontece
+                console.warn("Já reportou hoje")
+                break;
+            default:
+                // Zera a contagem e atualiza o lastReport
+                console.warn("Não reportou no dia anterior")
+                this.setState({ userScore: 0 })
+                AsyncStorage.setItem('lastReport', dt2.toString())
+                AsyncStorage.setItem('userScore', this.state.userScore.toString())
+                break;
+        }
+        console.warn("User Score: " + this.state.userScore)
+        OneSignal.sendTags({ score: this.state.userScore });
+    }
+
+    updateUserInfosToOneSignal = async () => {
+        return fetch(`${API_URL}/user/login`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user:
+                {
+                    email: await RNSecureStorage.get('userEmail'),
+                    password: await RNSecureStorage.get('userPwd')
+                }
+            })
+        })
+            .then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+            })
+            .then((responseJson) => {
+                //Send User ID to Push Notification API
+                OneSignal.setExternalUserId(responseJson.user.id.toString())
+
+                // Variables to OneSignal API
+                AsyncStorage.setItem('userGroup', responseJson.user.group.split("/")[3]);
+                AsyncStorage.setItem('userCity', responseJson.user.city);
+                AsyncStorage.setItem('userSchoolID', responseJson.user.school_unit_id.toString());
+
+                //Send user TAGs
+                OneSignal.sendTags({ group: responseJson.user.group.split("/")[3], city: responseJson.user.city, school_unit_id: responseJson.user.school_unit_id.toString() });
+            })
+    }
+
     render() {
-      const { showAlert } = this.state;
-      const { navigate } = this.props.navigation;
+        const { showTermsConsent } = this.state;
+        const { showAlert } = this.state;
+        const { navigate } = this.props.navigation;
 
-      const welcomeMessage = translate("home.hello") + getNameParts(this.state.userSelected);
-      const householdsData = this.state.data;
-      const householdAvatars = this.state.householdAvatars;
+        const householdsData = this.state.data;
+        const householdAvatars = this.state.householdAvatars;
 
-      const hasBadReports = this.state.userBadReports > 2
+        const hasBadReports = this.state.userBadReports > 2
 
-      return (
-          <>
-          <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-          <StatusBar backgroundColor='#348EAC' barStyle="light-content"/>
-          <Container>
-            <ScrollViewStyle>
-              <Background>
-                <UserView>  
-                  <NamesContainer>
-                    <TextName>{welcomeMessage}</TextName>
-                    <AppName>{translate("home.nowAGuardian")}</AppName>
-                  </NamesContainer>
-                  <Avatar
-                    containerStyle={styles.Avatar}
-                    size={scale(58)}
-                    source={handleAvatar(this.state.avatarSelected)}
-                    title={getInitials(this.state.userSelected)}
-                    editButton={{name: null, type: 'feather', style: styles.dotAvatar}}
-                    showEditButton
-                    activeOpacity={0.5}
-                    rounded
-                    onPress={() => {
-                        this.getHouseholds();
-                        this.setModalVisible(true);
-                    }}
-                  />
-                </UserView>
-              </Background>
+        return (
+            <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+            <StatusBar backgroundColor='#348EAC' barStyle="light-content" />
+            <Container>
+                <ScrollViewStyle>
+                    <Background>
+                        <UserView>
+                            <NamesContainer>
+                                <TextName>{translate("home.hello") + getNameParts(this.state.userSelected)}</TextName>
+                                <AppName>{translate("home.nowAGuardian")}</AppName>
+                            </NamesContainer>
+                            <Avatar
+                                containerStyle={styles.Avatar}
+                                size={scale(58)}
+                                source={handleAvatar(this.state.avatarSelected)}
+                                title={getInitials(this.state.userSelected)}
+                                editButton={{ name: null, type: 'feather', style: styles.dotAvatar }}
+                                showEditButton
+                                activeOpacity={0.5}
+                                rounded
+                                onPress={() => {
+                                    this.getHouseholds();
+                                    this.setModalVisible(true);
+                                }}
+                            />
+                        </UserView>
+                    </Background>
 
-              <StatusContainer>
-                <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
-                <StatusBemMal>
-                  <Bem onPress={() => this.verifyLocalization()}>
-                    <StatusText>{translate("report.goodChoice")}</StatusText>
-                  </Bem>
-                  <Mal onPress={() => navigate('BadReport')}>
-                    <StatusText>{translate("report.badChoice")}</StatusText>
-                  </Mal>
-                </StatusBemMal>
-              </StatusContainer>
-              
-              <Alertas>Alertas</Alertas>
+                    <StatusContainer>
+                        <TextStyle>{translate("home.userHowYouFelling")}</TextStyle>
+                        <StatusBemMal>
+                            <Bem onPress={() => this.verifyLocalization()}>
+                                <StatusText>{translate("report.goodChoice")}</StatusText>
+                            </Bem>
+                            <Mal onPress={() => navigate('BadReport')}>
+                                <StatusText>{translate("report.badChoice")}</StatusText>
+                            </Mal>
+                        </StatusBemMal>
+                    </StatusContainer>
 
-              {/*<AlertContainer>
-                <SimpleLineIcons name='exclamation' size={48} color='#ffffff' />  
-                <StatusAlert>
-                  <StatusTitle>Status do seu bairro:</StatusTitle>
-                  <StatusAlertText>Maioria sentindo-se bem</StatusAlertText>
-                </StatusAlert>
-              </AlertContainer>*/}
+                    <Alertas>Alertas</Alertas>
 
-              <AlertContainer alert={hasBadReports}>
-                <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
-                <StatusAlert>
-                  <StatusTitle>{translate("home.statusLast7Days")}</StatusTitle>
-                  <StatusAlertText>
-                      {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
-                  </StatusAlertText>
-                </StatusAlert>
-              </AlertContainer>
+                    <AlertContainer alert={hasBadReports}>
+                        <SimpleLineIcons name={hasBadReports ? "exclamation" : "check"} size={48} color='#ffffff' /> 
+                        <StatusAlert>
+                            <StatusTitle>{translate("home.statusLast7Days")}</StatusTitle>
+                            <StatusAlertText>
+                                {hasBadReports ? translate("home.statusLast7DaysBad") : translate("home.statusLast7DaysGood")}
+                            </StatusAlertText>
+                        </StatusAlert>
+                    </AlertContainer>
 
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        this.setModalVisible(!this.state.modalVisible); //Exit to modal view
-                    }
-                }>
-                    <Users>
-                        <UserSelector>
-                            <UserScroll>
-                                <UserWrapper>
-                                    <Button
-                                        onPress={async () => {
-                                            await this.setState({ householdID: null, userSelected: this.state.userName, avatarSelected: this.state.userAvatar });
-                                            this.setModalVisible(!this.state.modalVisible);
-                                            AsyncStorage.setItem('userSelected', this.state.userSelected);
-                                            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
-                                            AsyncStorage.setItem('userBirth', this.state.userBirth);
-                                            AsyncStorage.removeItem('householdID');
-                                            this.getUserHealth();
-                                        }}
-                                    >
-                                        <Avatar
-                                            size={scale(60)}
-                                            source={handleAvatar(this.state.userAvatar)}
-                                            title={getInitials(this.state.userName)}
-                                            rounded
-                                        />
-                                        <UserName>{getNameParts(this.state.userName, true)}</UserName>
-                                    </Button>
-                                </UserWrapper>
-                                {householdsData != null ?
-                                    householdsData.map((household) => {
-                                        return (
-                                            <UserWrapper key={household.id}>
-                                                <Button
-                                                    onPress={async () => {
-                                                        await this.setState({ householdID: household.id, householdName: household.description, userSelected: household.description, avatarSelected: householdAvatars[household.id] });
-                                                        this.setModalVisible(!this.state.modalVisible);
-                                                        AsyncStorage.setItem('userSelected', this.state.userSelected);
-                                                        AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
-                                                        AsyncStorage.setItem('userBirth', household.birthdate);
-                                                        AsyncStorage.setItem('householdID', this.state.householdID.toString());
-                                                        this.getUserHealth();
-                                                    }}
-                                                >
-                                                    <Avatar
-                                                        size={scale(60)}
-                                                        source={handleAvatar(householdAvatars[household.id])}
-                                                        title={getInitials(household.description)}
-                                                        rounded
-                                                    />
-                                                    <UserName>{getNameParts(household.description, true)}</UserName>
-                                                </Button>
-                                            </UserWrapper>
-                                        )
-                                    })
-                                : null}
-                                <UserWrapper>
-                                    <Button 
-                                        onPress={() => {
-                                            this.setModalVisible(!this.state.modalVisible)
-                                            navigate('Household')
-                                        }}
-                                    >
-                                        <Feather
-                                            name="plus"
-                                            size={scale(60)}
-                                            color="#c4c4c4"
-                                        />
-                                        <UserName>{translate("home.addProfile")}</UserName>
-                                    </Button>
-                                </UserWrapper>
-                            </UserScroll>
-                        </UserSelector>
-                    </Users>
-                </Modal>
-            </ScrollViewStyle>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            this.setModalVisible(!this.state.modalVisible); //Exit to modal view
+                        }
+                    }>
+                        <Users>
+                            <UserSelector>
+                                <UserScroll>
+                                    <UserWrapper>
+                                        <Button
+                                            onPress={async () => {
+                                                await this.setState({
+                                                    householdID: null,
+                                                    userSelected: this.state.userName,
+                                                    birthSelected: this.state.userBirth,
+                                                    avatarSelected: this.state.userAvatar,
+                                                    createdSelected: this.state.userCreatedAt
+                                                });
+                                                this.setModalVisible(!this.state.modalVisible);
+                                                AsyncStorage.setItem('userSelected', this.state.userSelected);
+                                                AsyncStorage.setItem('birthSelected', this.state.birthSelected);
+                                                AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                                AsyncStorage.setItem('createdSelected', this.state.createdSelected);
+                                                AsyncStorage.removeItem('householdID');
+                                                this.getUserHealth();
+                                            }}
+                                        >
+                                            <Avatar
+                                                size={scale(60)}
+                                                source={handleAvatar(this.state.userAvatar)}
+                                                title={getInitials(this.state.userName)}
+                                                rounded
+                                            />
+                                            <UserName>{getNameParts(this.state.userName, true)}</UserName>
+                                        </Button>
+                                    </UserWrapper>
+                                    {householdsData != null ?
+                                        householdsData.map((household) => {
+                                            return (
+                                                <UserWrapper key={household.id}>
+                                                    <Button
+                                                        onPress={async () => {
+                                                            await this.setState({
+                                                                householdID: household.id,
+                                                                householdName: household.description,
+                                                                userSelected: household.description,
+                                                                birthSelected: household.birthdate,
+                                                                avatarSelected: householdAvatars[household.id],
+                                                                createdSelected: household.created_at
+                                                            });
+                                                            this.setModalVisible(!this.state.modalVisible);
+                                                            AsyncStorage.setItem('userSelected', this.state.userSelected);
+                                                            AsyncStorage.setItem('birthSelected', this.state.birthSelected);
+                                                            AsyncStorage.setItem('avatarSelected', handleAsyncAvatar(this.state.avatarSelected));
+                                                            AsyncStorage.setItem('createdSelected', this.state.createdSelected);
+                                                            AsyncStorage.setItem('householdID', this.state.householdID.toString());
+                                                            this.getUserHealth();
+                                                        }}
+                                                    >
+                                                        <Avatar
+                                                            size={scale(60)}
+                                                            source={handleAvatar(householdAvatars[household.id])}
+                                                            title={getInitials(household.description)}
+                                                            rounded
+                                                        />
+                                                        <UserName>{getNameParts(household.description, true)}</UserName>
+                                                    </Button>
+                                                </UserWrapper>
+                                            )
+                                        })
+                                    : null}
+                                    <UserWrapper>
+                                        <Button 
+                                            onPress={() => {
+                                                this.setModalVisible(!this.state.modalVisible)
+                                                navigate('NovoPerfil')
+                                            }}
+                                        >
+                                            <Feather
+                                                name="plus"
+                                                size={scale(60)}
+                                                color="#c4c4c4"
+                                            />
+                                            <UserName>{translate("home.addProfile")}</UserName>
+                                        </Button>
+                                    </UserWrapper>
+                                </UserScroll>
+                            </UserSelector>
+                        </Users>
+                    </Modal>
+                </ScrollViewStyle>
 
-            <Button
-                style={styles.menuBars}
-                onPress={() => this.props.navigation.openDrawer()}
-            >
-                <SimpleLineIcons name="menu" size={26} color='#ffffff' />
-            </Button>
+                <MenuBars onPress={() => this.props.navigation.openDrawer()}>
+                    <SimpleLineIcons name="menu" size={26} color='#ffffff' />
+                </MenuBars>
 
-            <AwesomeAlert
-                show={showAlert}
-                showProgress={this.state.showProgressBar ? true : false}
-                title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-                message={<Text style={{ alignSelf: 'center' }}>{this.state.alertMessage}</Text>}
-                closeOnTouchOutside={this.state.showProgressBar ? false : true}
-                closeOnHardwareBackPress={false}
-                showConfirmButton={this.state.showProgressBar ? false : true}
-                confirmText={translate("badReport.alertMessages.confirmText")}
-                confirmButtonColor='green'
-                onCancelPressed={() => {
-                    this.hideAlert();
-                }}
-                onConfirmPressed={() => {
-                    this.hideAlert();
-                }}
-                onDismiss={() => this.hideAlert()}
-            />
-          </Container>
-          </>
+                <CoolAlert
+                    show={showTermsConsent}
+                    title={translate("useTerms.consentTitle")}
+                    message={translate("useTerms.consentMessage")}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton={true}
+                    confirmText={translate("useTerms.seeTerms")}
+                    onConfirmPressed={() => this.newTermsPolicy()}
+                />
+
+                <CoolAlert
+                    show={showAlert}
+                    showProgress={this.state.showProgressBar}
+                    title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
+                    message={this.state.alertMessage}
+                    closeOnTouchOutside={this.state.showProgressBar ? false : true}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton={this.state.showProgressBar ? false : true}
+                    confirmText={translate("badReport.alertMessages.confirmText")}
+                    onCancelPressed={() => this.hideAlert()}
+                    onConfirmPressed={() => this.hideAlert()}
+                    onDismiss={() => this.hideAlert()}
+                />
+            </Container>
+            </>
         );
     }
+}
+
+const styles = StyleSheet.create({
+    Avatar: {
+        marginRight: `${scale(8)}%`,
+        borderColor: '#ffffff',
+        borderWidth: 3
+    },
+    dotAvatar: {
+        height: scale(14),
+        width: scale(14),
+        backgroundColor: '#ffffff',
+        left: 0,
+        shadowOpacity: 0
+    }
+})
+
+const Terms = {
+    title: translate("useTerms.title"),
+    text: `${translate("useTerms.terms.textoTermosTitulo")}\n
+        ${translate("useTerms.terms.textoTermos_1")}\n
+        ${translate("useTerms.terms.textoTermos_2")}\n
+        ${translate("useTerms.terms.textoTermos_3")}\n
+        ${translate("useTerms.terms.textoTermos_4")}\n
+        ${translate("useTerms.terms.textoTermos_5")}\n
+        ${translate("useTerms.terms.textoTermos_6")}\n
+        ${translate("useTerms.terms.textoTermos_7")}\n
+        ${translate("useTerms.terms.textoTermos_8")}\n
+        ${translate("useTerms.terms.textoTermos_9")}\n
+        ${translate("useTerms.terms.textoTermos_10")}\n
+        ${translate("useTerms.terms.textoTermos_11")}\n
+        ${translate("useTerms.terms.textoTermos_12")}\n
+        ${translate("useTerms.terms.textoTermos_13")}`,
+    version: translate("useTerms.compilation"),
+    disagree: translate("useTerms.disagree"),
+    agree: translate("useTerms.agree")
 }
 
 const emojis = [
@@ -496,27 +676,6 @@ const emojis = [
         />
     )
 ]
-
-const styles = StyleSheet.create({
-    menuBars: {
-        position: 'absolute',
-        left: '4%',
-        top: '1%',
-        padding: '2%'
-    },
-    Avatar: {
-        marginRight: `${scale(8)}%`,
-        borderColor: '#ffffff',
-        borderWidth: 3
-    },
-    dotAvatar: {
-        height: scale(14),
-        width: scale(14),
-        backgroundColor: '#ffffff',
-        left: 0,
-        shadowOpacity: 0
-    }
-})
 
 //make this component available to the app
 export default Home;

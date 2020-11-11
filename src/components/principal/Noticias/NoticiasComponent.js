@@ -15,7 +15,7 @@ import {
     Button,
 } from './styles';
 
-function newNoticias({ data }){
+function NoticiasComponent({ data }){
     const date = moment(new Date(data.created_at)).format('DD/MM/YY') 
     return (
         <Button
@@ -55,4 +55,4 @@ function newNoticias({ data }){
     );
 }
 
-export default newNoticias;
+export default NoticiasComponent;
