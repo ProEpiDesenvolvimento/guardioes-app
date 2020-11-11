@@ -9,18 +9,19 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* guardioesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* guardioesappTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* guardioesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* guardioesappTests.m */; };
-		3C9008E4242047AE0086D022 /* roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9008E3242047AE0086D022 /* roboto.ttf */; };
+		34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */; };
+		34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */; };
 		3CD18F4C2432D1840042534C /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD18F4B2432D1840042534C /* NotificationService.m */; };
 		3CD18F502432D1840042534C /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3CD18F482432D1840042534C /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4E9621BB8367B537E1C86D6A /* libPods-guardioesappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */; };
 		67DE0FF2FF69BF2513AD33B3 /* libPods-guardioesapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD232F028C384D36231E2F1 /* libPods-guardioesapp.a */; };
+		758D12E16561465F945FC656 /* ArgentumSans.otf in Resources */ = {isa = PBXBuildFile; fileRef = 492FCC4977C74530BBEE3120 /* ArgentumSans.otf */; };
 		8C9F85A9E256AEE03ED0D3D6 /* libPods-guardioesapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */; };
 		98693461100712AEC3C4F9AD /* libPods-guardioesapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */; };
 		A42466FF10C4B1A9EB62700C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */; };
@@ -72,7 +73,6 @@
 		13B07F961A680F5B00A75B9A /* Guardiões da Saúde.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Guardiões da Saúde.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = guardioesapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = guardioesapp/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = guardioesapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = guardioesapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = guardioesapp/main.m; sourceTree = "<group>"; };
@@ -83,19 +83,21 @@
 		2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32CC15A262775DD345BBC40C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
-		3C9008E3242047AE0086D022 /* roboto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = roboto.ttf; sourceTree = "<group>"; };
 		3CD18F432432D0AD0042534C /* Guardiões da Saúde.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Guardiões da Saúde.entitlements"; path = "guardioesapp/Guardiões da Saúde.entitlements"; sourceTree = "<group>"; };
 		3CD18F482432D1840042534C /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CD18F4A2432D1840042534C /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		3CD18F4B2432D1840042534C /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		3CD18F4D2432D1840042534C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		492FCC4977C74530BBEE3120 /* ArgentumSans.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = ArgentumSans.otf; path = ../src/fonts/ArgentumSans.otf; sourceTree = "<group>"; };
 		5F29C1279822AFAE02AC8156 /* Pods-guardioesapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp/Pods-guardioesapp.debug.xcconfig"; sourceTree = "<group>"; };
 		68E569044C4288A548F3E06C /* Pods-guardioesapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOSTests/Pods-guardioesapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A306153B06723EA25413F30B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A40042D3B55C62135A62F45F /* Pods-guardioesapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp/Pods-guardioesapp.release.xcconfig"; sourceTree = "<group>"; };
+		A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArgentumSans-SemiBold.otf"; path = "../src/fonts/ArgentumSans-SemiBold.otf"; sourceTree = "<group>"; };
 		AC092D86BB1F4E45A4D44945 /* Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-OneSignalNotificationServiceExtension/Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		B4042C4842586D83F36E0D77 /* Pods-guardioesapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOSTests/Pods-guardioesapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArgentumSans-Medium.otf"; path = "../src/fonts/ArgentumSans-Medium.otf"; sourceTree = "<group>"; };
 		C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE5CFC927120A290716AB25B /* Pods-guardioesapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOS/Pods-guardioesapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		D68B3371A2A7FA693CE8427C /* Pods-guardioesappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesappTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesappTests/Pods-guardioesappTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -170,13 +172,11 @@
 			isa = PBXGroup;
 			children = (
 				3CD18F432432D0AD0042534C /* Guardiões da Saúde.entitlements */,
-				3C9008E3242047AE0086D022 /* roboto.ttf */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = guardioesapp;
@@ -206,6 +206,16 @@
 			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
+		5D06F3FFFC8B49FAB90A4884 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */,
+				492FCC4977C74530BBEE3120 /* ArgentumSans.otf */,
+				A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +233,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				CFCD70F7AB983319EE5195FF /* Pods */,
+				5D06F3FFFC8B49FAB90A4884 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -368,7 +379,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 940;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -430,8 +441,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				3C9008E4242047AE0086D022 /* roboto.ttf in Resources */,
+				34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */,
+				758D12E16561465F945FC656 /* ArgentumSans.otf in Resources */,
+				34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -749,18 +761,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = guardioesapp;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -811,12 +811,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "guardioesapp/Guardiões da Saúde.entitlements";
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 36;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 594JXPP866;
 				INFOPLIST_FILE = guardioesapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.2.2;
+				MARKETING_VERSION = 3.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -834,11 +834,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "guardioesapp/Guardiões da Saúde.entitlements";
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 594JXPP866;
 				INFOPLIST_FILE = guardioesapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.2.2;
+				MARKETING_VERSION = 3.1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -971,14 +971,14 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 35;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 594JXPP866;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 3.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.guardioesapp.OneSignalNotificationServiceExtension;
@@ -1000,14 +1000,14 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 35;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 594JXPP866;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 3.1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.guardioesapp.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1110,6 +1110,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
