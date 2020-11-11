@@ -8,7 +8,6 @@ export default {
     transWoman: 'Mulher Trans',
     transMan: 'Homem Trans',
     nonBinary: 'Não-binárie',
-    intersex: 'Intersexo',
   },
   raceChoices: {
     white: 'Branco',
@@ -30,9 +29,7 @@ export default {
     cancelButton: 'Cancelar',
   },
   initialscreen: {
-    title: 'Guardiões da Saúde',
     welcome: 'Bem vindo',
-    subwelcome: 'Pronto para ser um guardião da saúde?',
     signup: 'Cadastre-se',
     login: 'Entrar',
   },
@@ -46,11 +43,6 @@ export default {
     password: 'Senha',
     loginbutton: 'Entrar',
     forgetbutton: 'Esqueceu a senha?',
-    connectWithFacebook: 'Conectar com Facebook',
-    facebookLogin: {
-      error: 'Erro ao entrar: ',
-      canceled: 'Cancelado',
-    },
     awesomeAlert: {
       accessing: 'Entrando...',
     },
@@ -67,7 +59,6 @@ export default {
   register: {
     title: 'Cadastre-se',
     name: 'Nome:',
-    lastname: 'Sobrenome:',
     gender: 'Gênero:',
     race: 'Raça:',
     birth: 'Nascimento:',
@@ -77,7 +68,6 @@ export default {
     password: 'Senha:',
     passwordCondition: 'A senha deve conter no mínimo 8 caracteres',
     signupButton: 'Cadastrar',
-    signupWithFacebook: 'Cadastrar com Facebook',
     editProfile: 'Editar Perfil',
     emptyName: 'Nome não pode ficar em branco',
     localRequired: 'Estado e Cidade devem estar preenchidos',
@@ -117,17 +107,6 @@ export default {
     ohNo: 'Poxa parece que voce nao tem internet, tenta de novo mais tarde ok',
     alertAllRightMessage: 'Ok, vou tentar mais tarde.',
   },
-  facebookRegister: {
-    title: 'Informações Adicionais',
-    hello: 'Hello ',
-    moreInformation:
-      'Precisamos de algumas informações adicionais para completar o cadastro',
-    gender: 'Sexo: ',
-    race: 'Raça: ',
-    birthday: 'Data de Nascimento:',
-    country: 'País:',
-    finishRegistering: 'Finalizar Cadastro',
-  },
   ajuda: {
     title: 'Ajuda',
     tutorialBtn: 'Tutorial',
@@ -162,25 +141,6 @@ export default {
     sickAge: 'Desde quando está se sentindo mal?',
     symptoms:
       'Selecione abaixo os sintomas que voce está sentindo neste momento:',
-    blisters: 'Bolhas na Pele',
-    noseCongestion: 'Congestão Nasal',
-    diarrhea: 'Diarréia',
-    breathingDifficulty: 'Dificuldade de respirar',
-    jointPain: 'Dor nas Articulações',
-    headache: 'Dor de cabeça',
-    stomachAche: 'Dor no Estômago',
-    musclePain: 'Dor nos Músculos',
-    eyePain: 'Dor nos Olhos',
-    chills: 'Calafrios',
-    fever: 'Febre',
-    fellingIll: 'Mal-estar',
-    redSpots: 'Manchas vermelhas no corpo',
-    sickness: 'Náuseas',
-    redishEyes: 'Olhos vermelhos',
-    feetEyeRedissh: 'Pele e olhos avermelhados',
-    bleeding: 'Sangramentos',
-    cough: 'Tosse',
-    vomiting: 'Vômito',
     answerQuestions: 'Responda as perguntas a seguir:',
     checkboxes: {
       first: 'Teve contato com alguem que apresentava os mesmos sintomas?',
@@ -190,7 +150,6 @@ export default {
       fifth: 'Aperte na bandeira para selecionar!',
     },
     checkboxConfirm: 'Confirmar',
-    checkboxDateConfirmation: 'A data deve ser preenchida',
     alertMessages: {
       button: 'Mostrar Mapa',
       sending: 'Enviando...',
@@ -206,42 +165,13 @@ export default {
     },
     datePlaceHolder: 'Haga clic aquí para introducir la fecha!',
   },
-  chooseReporter: {
-    title: 'Guardiões da Saúde',
-    whoToReport: 'Quem participará?',
-    selectProfile: 'Selecione o perfil que quer reportar',
-  },
   advices: {
     moreInformations: 'Mais Informações',
     redirectPermission: 'Deseja ser redirecionado para a fonte do conteúdo?',
     title: 'Dicas',
     subtitle: 'Mantenha a saúde em dia',
     more: 'Saiba Mais',
-    advicesCaseChoices: {
-      prevention: {
-        caseChoice: 'Prevencao',
-        screenTitle: 'Prevenção',
-      },
-      travelerHealth: {
-        caseChoice: 'Saude do Viajante',
-        screenTitle: 'Saúde do Viajante',
-      },
-      dengueChicungunyaZica: {
-        caseChoice: 'Dengue, Chikungunya e Zika',
-        screenTitle: 'Dengue, Chikungunya e Zika',
-      },
-      imunoPreventables: {
-        caseChoice: 'Enfermidades Imunopreviniveis',
-        screenTitle: 'Enfermidades Imunopreviníveis',
-      },
-      usefulNumbers: {
-        caseChoice: 'Telefones Uteis',
-        screenTitle: 'Telefones Úteis',
-      },
-    },
     buttons: {
-      healthInst: 'Instituições de Saúde',
-      pharmacy: 'Farmácias',
       messages: {
         title: 'Redirecionando...',
         subtitle: 'Deseja ser redirecionado para o Google Maps?',
@@ -257,34 +187,19 @@ export default {
     bad: 'Mal',
     report: ' vez',
     reports: ' vezes',
-    calendar: 'Calendário',
-    timesPerMonth: 'Quantidade de informes por mês',
     statisticsTitle: 'Estatísticas',
     goodPercent: '% dias - Bem',
     badPercent: '% dias - Mal',
     notInformed: '% dias - Não Informado',
-    charts: {
-      label: {
-        good: 'BEM',
-        bad: 'Mal',
-      },
-      chartDescription: 'Quantidade de relatos por mês',
-    },
   },
   home: {
-    title: 'Guardiões da Saúde',
-    toastAlertMessage: 'Aperte mais uma vez para sair',
     hello: 'Olá, ',
     nowAGuardian: 'Guardião da Saúde',
-    selectProfile: 'Selecione um Perfil',
     addProfile: 'Adicionar Perfil',
     statusLast7Days: 'Status nos últimos 7 dias:',
     statusLast7DaysGood: 'Você tem se sentido bem.',
     statusLast7DaysBad: 'Você não esteve bem.',
     userHowYouFelling: 'Como está se sentindo hoje?',
-    householdHowYouFelling_part_1: 'Como ',
-    householdHowYouFelling_part_2: ' se sente hoje?',
-    alertTitle: 'Alertas',
     locationError: 'Erro Na Localização',
     locationError2: 'Permita a localização para prosseguir',
     permission: 'permitir',
@@ -295,15 +210,8 @@ export default {
     localPermissionMessage2:
       'para que você possa obter os relatórios de localização.',
     okText: 'OK',
-    homeButtons: {
-      news: 'Notícias',
-      healthTips: 'Dicas',
-      healthDiary: 'Diário',
-      healthMap: 'Mapa da Saúde',
-    },
   },
   profiles: {
-    profile: 'Perfil',
     households: 'Familiares',
     title: 'Perfis',
     owner: 'Proprietário',
@@ -316,8 +224,6 @@ export default {
   },
   maps: {
     title: 'Mapa',
-    reportGood: 'Bem',
-    reportBad: 'Mal',
     guide: `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`,
   },
   news: {
@@ -326,12 +232,8 @@ export default {
     twitter: 'Você será redirecionado para twitter.com',
   },
   report: {
-    title: 'Novo Relato',
-    howHealth: 'Como você se sente?',
     goodChoice: 'BEM',
     badChoice: 'MAL',
-    else:
-      "Se a opção escolhida for 'MAL' poderá selecionar os sintomas na seguinte tela.",
   },
   faq: {
     title: 'FAQ',
@@ -453,9 +355,6 @@ export default {
     spamCheckWarning:
       'Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.',
     inputVerificationCode: 'Código',
-    errorMessages: {
-      verificationCodeBlank: 'Digite um código de verificação',
-    },
   },
   changePwd: {
     title: 'Redefinir senha',

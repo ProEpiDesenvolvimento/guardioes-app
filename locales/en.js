@@ -8,7 +8,6 @@ export default {
     transWoman: 'Trans Woman',
     transMan: 'Trans Man',
     nonBinary: 'Non Binary',
-    intersex: 'Intersex',
   },
   raceChoices: {
     white: 'White',
@@ -30,9 +29,7 @@ export default {
     cancelButton: 'Cancel',
   },
   initialscreen: {
-    title: 'Guardiões da Saúde',
     welcome: 'Welcome',
-    subwelcome: 'Ready to become a Health Guardian?',
     signup: 'Sign up',
     login: 'Login',
   },
@@ -47,11 +44,6 @@ export default {
     password: 'Password',
     loginbutton: 'Login',
     forgetbutton: 'Forgot your password?',
-    connectWithFacebook: 'Login with Facebook',
-    facebookLogin: {
-      error: 'Error on login: ',
-      canceled: 'Canceled',
-    },
     awesomeAlert: {
       accessing: 'Working...',
     },
@@ -63,7 +55,6 @@ export default {
   register: {
     title: 'Sign up',
     name: 'Name:',
-    lastname: 'Last name:',
     gender: 'Gender:',
     race: 'Race:',
     birth: 'Birthdate:',
@@ -73,7 +64,6 @@ export default {
     password: 'Password:',
     passwordCondition: 'Password must be at leats 8 characters long.',
     signupButton: 'Sign up',
-    signupWithFacebook: 'Sign up with Facebook',
     editProfile: 'Edit Profile',
     emptyName: 'Name cannot be empty',
     localRequired: 'State and City must be filled',
@@ -119,16 +109,6 @@ export default {
       "Oh sorry, it seems that you don't have access to internet right now, try again soon, ok.",
     alertAllRightMessage: "Ok, i'll try later.",
   },
-  facebookRegister: {
-    title: 'Adicional Information.',
-    hello: 'Hello ',
-    moreInformation: 'We need a few more info to finish registering.',
-    gender: 'Gender: ',
-    race: 'Race: ',
-    birthday: 'Birthday:',
-    country: 'Country:',
-    finishRegistering: 'Finish',
-  },
   ajuda: {
     title: 'Help',
     tutorialBtn: 'Tutorial',
@@ -162,33 +142,8 @@ export default {
     title: 'What are you feeling?',
     sickAge: 'Since when have you been feeling bad?',
     symptoms: 'Select the symptoms you are feeling now:',
-    blisters: 'Blisters',
-    noseCongestion: 'Nasal Congestion',
-    diarrhea: 'Diarrhea',
-    breathingDifficulty: 'Breathing Difficulty',
-    jointPain: 'Joint Pain',
-    headache: 'Headache',
-    stomachAche: 'Stomachache',
-    musclePain: 'Muscle Pain',
-    eyePain: 'Eye Pain',
-    chills: 'Chills',
-    fever: 'Fever',
-    fellingIll: 'Discomfort',
-    redSpots: 'Red Spots on body',
-    sickness: 'Nausea',
-    redishEyes: 'Redish Eyes',
-    feetEyeRedissh: 'Redish skin and eyes',
-    bleeding: 'Bleeding',
-    cough: 'Cough',
-    vomiting: 'Vomiting',
     answerQuestions: 'Anwser the following questions:',
-    ba: {
-      first: 'Have had contact with someone with the same symptoms?',
-      second: 'Seeked medical help?',
-      third: 'Left your house in the last 14 days?',
-    },
     checkboxConfirm: 'Confirm',
-    checkboxDateConfirmation: 'The date must be filled',
     alertMessages: {
       button: 'Show Map',
       sending: 'Sending...',
@@ -202,11 +157,6 @@ export default {
         'Download the Guardiões da Saúde and contribute to coping with Covid-19, access:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=en\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=en&ls=1\n\nDownload the app Coronavírus-SUS, access:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=en\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinition of Close Contact: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
     },
   },
-  chooseReporter: {
-    title: 'Guardiões da Saúde',
-    whoToReport: 'Who will report?',
-    selectProfile: 'Select a profile to report',
-  },
   advices: {
     moreInformations: 'More information',
     redirectPermission:
@@ -214,31 +164,7 @@ export default {
     title: 'Tips',
     subtitle: 'Keep your health up to date',
     more: 'See More',
-    advicesCaseChoices: {
-      prevention: {
-        caseChoice: 'Prevention',
-        screenTitle: 'Prevention',
-      },
-      travelerHealth: {
-        caseChoice: 'Travelers Health',
-        screenTitle: 'Travelers Health',
-      },
-      dengueChicungunyaZica: {
-        caseChoice: 'Dengue, Chikungunya and Zika',
-        screenTitle: 'Dengue, Chikungunya and Zika',
-      },
-      imunoPreventables: {
-        caseChoice: 'Immunopreventable Diseases',
-        screenTitle: 'Immunopreventable Diseases',
-      },
-      usefulNumbers: {
-        caseChoice: 'Useful Phone Numbers',
-        screenTitle: 'Useful Phone Numbers',
-      },
-    },
     buttons: {
-      healthInst: 'Health Institutions',
-      pharmacy: 'Pharmacies',
       messages: {
         title: 'Redirecting...',
         subtitle: 'Do you want to be redirected to Google Maps?',
@@ -254,34 +180,19 @@ export default {
     bad: 'Bad',
     report: ' time',
     reports: ' times',
-    calendar: 'Calendar',
-    timesPerMonth: 'Monthly reports',
     statisticsTitle: 'Statistcs',
     goodPercent: '% days - Good',
     badPercent: '% days - Bad',
     notInformed: '% days - Not Informed',
-    charts: {
-      label: {
-        good: 'Good',
-        bad: 'Bad',
-      },
-      chartDescription: 'How many reports per month',
-    },
   },
   home: {
-    title: 'Guardiões da Saúde',
-    toastAlertMessage: 'Press one more time to quit',
     hello: 'Hi, ',
     nowAGuardian: 'Guardião da Saúde',
-    selectProfile: 'Select a Profile',
     addProfile: 'Add a Profile',
     statusLast7Days: 'Status in the last 7 days:',
     statusLast7DaysGood: 'You have been feeling well.',
     statusLast7DaysBad: 'You were not feeling well.',
     userHowYouFelling: 'How are you feeling today?',
-    householdHowYouFelling_part_1: 'How ',
-    householdHowYouFelling_part_2: ' are you feeling today?',
-    alertTitle: 'Alerts',
     locationError: 'Location Error',
     locationError2: 'Allow location to proceed',
     permission: 'Allow',
@@ -289,15 +200,8 @@ export default {
     localPermissionMessage1: 'Guardiões da Saúde need access to their location',
     localPermissionMessage2: 'so you can get location reports.',
     okText: 'OK',
-    homeButtons: {
-      news: 'News',
-      healthTips: 'Tips',
-      healthDiary: 'Health Diary',
-      healthMap: 'Health Map',
-    },
   },
   profiles: {
-    profile: 'Profile',
     households: 'Relatives',
     title: 'Profiles',
     owner: 'Owner',
@@ -310,8 +214,6 @@ export default {
   },
   maps: {
     title: 'Health Map',
-    reportGood: 'Good',
-    reportBad: 'Bad',
     guide: `Each point in the map represents a person or group of people.\n\nThe color represents the percentage of 'bads' and the size, the number of people.\n\nYou can tap the points to know more.`,
   },
   news: {
@@ -320,12 +222,8 @@ export default {
     twitter: 'You will be redirected to twitter.com',
   },
   report: {
-    title: 'New report',
-    howHealth: 'How are you feeling?',
     goodChoice: 'Good',
     badChoice: 'Bad',
-    else:
-      "If you've selected 'Bad' you can select the symptoms in the next screen.",
   },
   faq: {
     title: 'FAQ',
@@ -444,9 +342,6 @@ export default {
     spamCheckWarning:
       "In case you don't find the email, make sure to check the spam folder.",
     inputVerificationCode: 'Code',
-    errorMessages: {
-      verificationCodeBlank: 'Enter a verification code',
-    },
   },
   changePwd: {
     title: 'Reset Password',
