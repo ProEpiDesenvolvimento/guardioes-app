@@ -10,50 +10,68 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.9.0",
+    "@react-native-community/async-storage": "^1.12.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "react-native-awesome-alerts": "^1.4.0",
-    "react-native-calendars": "^1.264.0",
+    "react-native-awesome-alerts": "^1.4.2",
+    "react-native-calendars": "^1.403.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^1.2.7",
     "react-native-emoji": "^1.8.0",
-    "react-native-geolocation-service": "^4.0.0",
-    "react-native-gesture-handler": "^1.6.0",
+    "react-native-geolocation-service": "^4.0.2",
+    "react-native-gesture-handler": "^1.8.0",
     "react-native-i18n": "^2.0.15",
-    "react-native-image-picker": "^2.3.2",
+    "react-native-image-picker": "^2.3.4",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-maps": "0.27.0",
     "react-native-maps-super-cluster": "^1.6.0",
-    "react-native-modal-selector": "^2.0.0",
-    "react-native-onesignal": "^3.6.5",
-    "react-native-share": "^3.6.0",
+    "react-native-modal-selector": "^2.0.3",
+    "react-native-onesignal": "^3.9.2",
+    "react-native-share": "^3.8.5",
     "react-native-simple-shadow-view": "^1.6.3",
-    "react-native-spinkit": "^1.5.0",
+    "react-native-spinkit": "^1.5.1",
     "react-native-svg": "^12.1.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-swiper-flatlist": "^2.0.4",
-    "react-native-vector-icons": "^6.6.0",
-    "react-native-webview": "^10.9.0",
+    "react-native-vector-icons": "6.6.0",
+    "react-native-webview": "^10.9.2",
     "react-navigation": "^2.18.3",
-    "reactotron-react-native": "^5.0.0",
-    "rn-secure-storage": "^2.0.4",
-    "styled-components": "^5.1.1"
+    "rn-secure-storage": "^2.0.6",
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
+    "@babel/core": "^7.12.3",
+    "@babel/runtime": "^7.12.1",
     "@react-native-community/eslint-config": "^0.0.5",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
-    "eslint": "^6.5.1",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.2",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "jest": "^24.9.0",
+    "jest-styled-components": "^7.0.3",
     "metro-react-native-babel-preset": "^0.56.0",
+    "prettier": "^2.1.2",
     "react-native-dotenv": "^0.2.0",
     "react-native-svg-transformer": "^0.14.3",
-    "react-test-renderer": "16.9.0"
+    "react-test-renderer": "16.9.0",
+    "reactotron-react-native": "^5.0.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov"
+    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ]
   }
 }

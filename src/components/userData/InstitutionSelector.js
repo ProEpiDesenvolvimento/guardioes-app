@@ -128,8 +128,7 @@ class InstitutionSelector extends Component {
                     }
                     i++
                 }
-                this.state.groupCheckbox = true
-                
+                this.setState({ groupCheckbox: true })
             })
             .then(() => {
                 this.updateParent()
@@ -139,7 +138,7 @@ class InstitutionSelector extends Component {
 
     getChildren(id, setAlert=true) {       
         if (setAlert) this.props.setAlert(true)
-        this.state.idCodeInputShow = false
+        this.setState({ idCodeInputShow: false })
         return fetch(`${API_URL}/groups/${id}/get_children`, {
             method: 'GET',
             headers: {
@@ -154,7 +153,7 @@ class InstitutionSelector extends Component {
             })
             .then((responseJson) => {
                 if (responseJson.is_child) {
-                    this.state.userGroup = id
+                    this.setState({ userGroup: id })
                     this.getGroup(id, setAlert)
                     return
                 }
@@ -163,13 +162,15 @@ class InstitutionSelector extends Component {
             })
             .then(() => {
                 this.updateParent()
-                if (setAlert) this.props.setAlert(false)
+                setTimeout(() => {
+                    if (setAlert) this.props.setAlert(false)
+                }, 1000);
             })
     }
 
     getGroup(id, setAlert=true) {
-        this.state.idCodeInputShow = false
         if (setAlert) this.props.setAlert(true)
+        this.setState({ idCodeInputShow: false })
         return fetch(`${API_URL}/groups/${id}`, {
             method: 'GET',
             headers: {
@@ -183,11 +184,11 @@ class InstitutionSelector extends Component {
                 }
             })
             .then((responseJson) => {
-                this.state.selectedGroup = responseJson.group
+                this.setState({ selectedGroup: responseJson.group })
                 if (responseJson.group.require_id) {
-                    this.setState({idCodeInputShow: true})
+                    this.setState({ idCodeInputShow: true })
                 } else {
-                    this.state.userIdCode = null
+                    this.setState({ userIdCode: null })
                 }
                 this.updateParent()
                 if (setAlert) this.props.setAlert(false)
@@ -200,7 +201,7 @@ class InstitutionSelector extends Component {
 
     groupComponent(group, index) {
         return (
-            <FormGroupChild>
+            <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
                 </FormLabel>
@@ -233,9 +234,9 @@ class InstitutionSelector extends Component {
         )
     }
 
-    identificationCodeInput() {
+    identificationCodeInput(index) {
         return (
-            <FormGroupChild>
+            <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
                     Nº de Identificação:
                 </FormLabel>
@@ -264,14 +265,16 @@ class InstitutionSelector extends Component {
     }
 
     groupItemsManager() {
-        const elements = this.state.groupList.map((x, i) => this.groupComponent(x, i))
+        let elements = this.state.groupList.map((x, i) => this.groupComponent(x, i))
+
         if (this.state.idCodeInputShow) {
-            elements.push(this.identificationCodeInput())
+            elements.push(this.identificationCodeInput(elements.length))
         }
         if (elements.length == 0) {
             return null
         }
-        const rowedElements = []
+
+        let rowedElements = []
         let pair = null
         for (let el of elements) {
             if (pair == null) {
@@ -281,9 +284,11 @@ class InstitutionSelector extends Component {
                 pair = null
             }
         }
+
         if (pair != null) {
             rowedElements.push(this.rowElements(pair, null))
         }
+
         return rowedElements
     }
 

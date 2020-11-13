@@ -277,9 +277,9 @@ class EditarPerfil extends Component {
         this.setState({ modalVisibleRiskGroup: visible })
     }
 
-    setAlert = (val) => {
+    setAlert = (show) => {
         this.setState({
-            showAlert: val
+            showAlert: show
         })
     }
 
@@ -296,6 +296,7 @@ class EditarPerfil extends Component {
 
     render() {
         const { isUser } = this.state
+        const { showAlert } = this.state
         //console.log(this.state)
 
         return (
@@ -479,7 +480,8 @@ class EditarPerfil extends Component {
                         </SendContainer>
                     </Button>
                 </KeyboardScrollView>
-                <LoadingModal show={this.state.showAlert} />
+
+                <LoadingModal show={showAlert} />
             </Container>
         )
     }

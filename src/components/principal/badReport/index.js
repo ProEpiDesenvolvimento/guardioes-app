@@ -240,11 +240,11 @@ class BadReport extends Component {
         )
     }
 
-    countScore = async () => {
+    countUserScore = async () => {
         const lastReport = await AsyncStorage.getItem('lastReport')
         const userScore = parseInt(await AsyncStorage.getItem('userScore'))
 
-        this.setState({lastReport, userScore})
+        this.setState({ lastReport, userScore })
 
         let dt1 = new Date(this.state.lastReport)
         let dt2 = new Date() // Today
@@ -255,7 +255,7 @@ class BadReport extends Component {
             case 1:
                 // Acrescenta um dia na contagem e atualiza o lastReport
                 console.warn("reportou no dia anterior")
-                this.setState({userScore: this.state.userScore + 1})
+                this.setState({ userScore: this.state.userScore + 1 })
                 AsyncStorage.setItem('lastReport', dt2.toString())
                 AsyncStorage.setItem('userScore', this.state.userScore.toString())
                 break;
@@ -266,32 +266,25 @@ class BadReport extends Component {
             default:
                 // Zera a contagem e atualiza o lastReport
                 console.warn("Não reportou no dia anterior")
-                this.setState({userScore: 0})
+                this.setState({ userScore: 0 })
                 AsyncStorage.setItem('lastReport', dt2.toString())
                 AsyncStorage.setItem('userScore', this.state.userScore.toString())
                 break;
         }
         console.warn("User Score: " + this.state.userScore)
-        OneSignal.sendTags({score: this.state.userScore});
+        OneSignal.sendTags({ score: this.state.userScore });
     }
 
     sendSurvey = async () => {
-        this.countScore()
-        this.showLoadingAlert();
-        try {
-            let currentPin = {
-                household_id: this.state.householdID,
-                latitude: this.state.userLatitude,
-                longitude: this.state.userLongitude,
-                symptom: this.state.symptoms
-            }
-            await AsyncStorage.setItem(
-                "localpin",
-                JSON.stringify(currentPin)
-            )
-        } catch (error) {
-            console.warn("Não conseguiu guardar pino local")
+        this.showLoadingAlert()
+
+        let currentPin = {
+            household_id: this.state.householdID,
+            latitude: this.state.userLatitude,
+            longitude: this.state.userLongitude,
+            symptom: this.state.symptoms
         }
+
         return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
             method: 'POST',
             headers: {
@@ -315,6 +308,9 @@ class BadReport extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                this.countUserScore()
+                AsyncStorage.setItem("localpin", JSON.stringify(currentPin))
+
                 if (responseJson && !responseJson.errors && responseJson.messages.top_3) {
                     if (responseJson.messages.top_3[0]) {
                         this.showSyndromeAlert(responseJson)
