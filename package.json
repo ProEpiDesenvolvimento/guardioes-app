@@ -69,7 +69,9 @@
     "coverageReporters": [
       "lcov"
     ],
-    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/"
     ]
