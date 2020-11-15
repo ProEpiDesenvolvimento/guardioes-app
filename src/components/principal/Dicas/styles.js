@@ -63,7 +63,7 @@ export const Advice = styled(ShadowView).attrs({})`
   shadow-opacity: 0.4;
   shadow-radius: 10px;
   shadow-offset: 0px 4px;
-  height: 200px;
+  height: ${scale(180)}px;
   justify-content: space-evenly;
   align-items: center;
 `;
