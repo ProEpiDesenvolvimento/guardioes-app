@@ -58,7 +58,7 @@ let y = data.getFullYear();
 let minDate = d + '-' + m + '-' + (y - 13);
 // let tomorrow = y + "-" + m + "-" + (d + 1)
 
-class Registrar extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -499,4 +499,4 @@ const Terms = {
 };
 
 //make this component available to the app
-export default Registrar;
+export default Register;

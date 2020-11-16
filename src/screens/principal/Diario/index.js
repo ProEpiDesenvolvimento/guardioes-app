@@ -99,6 +99,8 @@ LocaleConfig.locales['pt'] = {
   dayNamesShort: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
 };
 
+LocaleConfig.defaultLocale = 'pt';
+
 class Diario extends Component {
   static navigationOptions = {
     title: translate('diary.title'),

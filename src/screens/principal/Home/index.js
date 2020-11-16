@@ -27,7 +27,7 @@ import {
   StatusText,
   Bem,
   Mal,
-  Alertas,
+  Alerts,
   AlertContainer,
 } from './styles';
 import {
@@ -598,7 +598,7 @@ class Home extends Component {
               </StatusBemMal>
             </StatusContainer>
 
-            <Alertas>{translate('home.Alerts')}</Alertas>
+            <Alerts>{translate('home.alerts')}</Alerts>
 
             <AlertContainer alert={hasBadReports}>
               <SimpleLineIcons

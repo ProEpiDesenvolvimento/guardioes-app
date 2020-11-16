@@ -140,7 +140,7 @@ export const StatusText = styled.Text`
   color: white;
 `;
 
-export const Alertas = styled.Text`
+export const Alerts = styled.Text`
   width: 88%;
   font-size: ${scale(16)}px;
   font-family: ArgentumSans-Medium;

@@ -20,7 +20,7 @@ const Redirect = (titulo, message, navigation) => {
       onPress: () => navigation.navigate('Welcome'),
       style: 'cancel',
     },
-    {text: 'Ok', onPress: () => navigation.navigate('Registrar')},
+    {text: 'Ok', onPress: () => navigation.navigate('Register')},
   ]);
 };
 
@@ -96,7 +96,7 @@ const textos = {
         ${translate('useTerms.terms.textoTermos_11')}\n
         ${translate('useTerms.terms.textoTermos_12')}\n
         ${translate('useTerms.terms.textoTermos_13')}`,
-  ifYes: 'Registrar',
+  ifYes: 'Register',
   ifNo: 'Welcome',
 };
 

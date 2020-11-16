@@ -8,7 +8,7 @@ import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
 import Loading from '../../screens/inicio/Loading';
 import Welcome from '../../screens/inicio/Welcome';
-import Registrar from '../../screens/inicio/Registrar';
+import Register from '../../screens/inicio/Register';
 import ForgetPwd from '../../screens/inicio/ForgetPwd';
 import Login from '../../screens/inicio/Login';
 import Home from '../../screens/principal/Home';
@@ -34,7 +34,7 @@ Feather.loadFont();
 
 export const Cadastro = createStackNavigator({
     Welcome: { screen: Welcome },
-    Registrar: { screen: Registrar },
+    Register: { screen: Register },
     Login: { screen: Login },
     ForgetPwd: { screen: ForgetPwd },
 },
