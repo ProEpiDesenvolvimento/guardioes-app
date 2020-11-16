@@ -1,18 +1,30 @@
-import React, { Component } from 'react';
-import { Text, View, Modal, Keyboard } from 'react-native';
+import React, {Component} from 'react';
+import {Text, View, Modal, Keyboard} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
-import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles';
-import { Container, KeyboardScrollView, FormInline, FormLabel, NormalInput } from '../../styled/NormalForms';
-import { FormGroup, FormGroupChild, Button, SendContainer, SendText } from '../../styled/NormalForms';
-import { CoolAlert } from '../../styled/CoolAlert';
+import {ExitMap, ConfirmMap, MapFormMarker, MapFormText} from './styles';
+import {
+  Container,
+  KeyboardScrollView,
+  FormInline,
+  FormLabel,
+  NormalInput,
+} from '../../styled/NormalForms';
+import {
+  FormGroup,
+  FormGroupChild,
+  Button,
+  SendContainer,
+  SendText,
+} from '../../styled/NormalForms';
+import {CoolAlert} from '../../styled/CoolAlert';
 
 import RNSecureStorage from 'rn-secure-storage';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import {API_URL} from 'react-native-dotenv';
-import translate from "../../../../locales/i18n";
+import translate from '../../../../locales/i18n';
 import Emoji from 'react-native-emoji';
-import { scale } from '../../../utils/scallingUtils';
+import {scale} from '../../../utils/scallingUtils';
 import Geolocation from 'react-native-geolocation-service';
 
 Feather.loadFont();
@@ -22,8 +34,8 @@ let markerLon = 0;
 
 export class Rumor extends Component {
   static navigationOptions = {
-    title: "Rumor"
-  }
+    title: 'Rumor',
+  };
 
   constructor(props) {
     super(props);
@@ -44,112 +56,112 @@ export class Rumor extends Component {
       description: '',
       confirmed_cases: 0,
       confirmed_deaths: 0,
-      title: ''
-    }
+      title: '',
+    };
   }
 
   showAlert = () => {
     this.setState({
       showAlert: true,
-      showProgressBar: true
+      showProgressBar: true,
     });
   };
 
   hideAlert = () => {
     this.setState({
-      showAlert: false
-    })
-  }
+      showAlert: false,
+    });
+  };
 
   getLocation() {
     Geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         this.setState({
           userLatitude: position.coords.latitude,
           userLongitude: position.coords.longitude,
           error: null,
         });
-        console.log("Log the position -> ", position);
-        console.log("Log the state after get location", this.state);
+        console.log('Log the position -> ', position);
+        console.log('Log the state after get location', this.state);
       },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 50000 },
+      error => this.setState({error: error.message}),
+      {enableHighAccuracy: true, timeout: 50000},
     );
   }
 
   _setModalVisible = () => {
-    this.setState({ modalVisibility: !this.state.modalVisibility })
-  }
+    this.setState({modalVisibility: !this.state.modalVisibility});
+  };
 
-  _showMarker = (show) => {
-    this.setState({ showMarker: show })
-  }
+  _showMarker = show => {
+    this.setState({showMarker: show});
+  };
 
   _updateUserLoc = (lat, lon) => {
     this.setState({
       userLatitude: lat,
-      userLongitude: lon
-    })
-  }
-
-  updateSize = (height) => {
-    this.setState({
-      descriptionHeight: height
+      userLongitude: lon,
     });
-  }
+  };
+
+  updateSize = height => {
+    this.setState({
+      descriptionHeight: height,
+    });
+  };
 
   _createRumor = async () => {
     this.showAlert();
     Keyboard.dismiss();
     const userToken = await RNSecureStorage.get('userToken');
-    const { title, description, confirmed_cases, confirmed_deaths } = this.state;
+    const {title, description, confirmed_cases, confirmed_deaths} = this.state;
 
     try {
-      fetch(API_URL + "/rumors", {
+      fetch(API_URL + '/rumors', {
         method: 'POST',
         headers: {
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/json',
-          Authorization: userToken
+          Authorization: userToken,
         },
         body: JSON.stringify({
           rumor: {
             title,
             description,
             confirmed_cases,
-            confirmed_deaths
-          }
-        })
+            confirmed_deaths,
+          },
+        }),
       })
         .then(res => {
-          console.log("Res -> ", res);
+          console.log('Res -> ', res);
           return res.json();
         })
         .then(resJson => {
-          console.log("ResJson -> ", resJson);
-          console.log("Data -> ", resJson.data)
-          if (resJson.message == "Sucesso") {
+          console.log('ResJson -> ', resJson);
+          console.log('Data -> ', resJson.data);
+          if (resJson.message == 'Sucesso') {
             // this.props.navigation.navigate('Home');
             // this.hideAlert();
-            this.setState({ showProgressBar: false })
+            this.setState({showProgressBar: false});
           }
-        })
+        });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   render() {
-    const { showAlert } = this.state
+    const {showAlert} = this.state;
 
     const marker = (
       <Marker
         coordinate={{
           latitude: markerLat,
-          longitude: markerLon
+          longitude: markerLon,
         }}
       />
-    )
+    );
 
     return (
       <Container>
@@ -159,15 +171,14 @@ export class Rumor extends Component {
             visible={this.state.modalVisibility}
             onRequestClose={() => {
               this._setModalVisible();
-            }}
-          >
+            }}>
             <MapView
               style={{flex: 1}}
               region={{
                 latitude: this.state.userLatitude,
                 longitude: this.state.userLongitude,
                 latitudeDelta: this.state.userLatitudeDelta,
-                longitudeDelta: this.state.userLongitudeDelta
+                longitudeDelta: this.state.userLongitudeDelta,
               }}
               // liteMode={true}
               showsUserLocation={true}
@@ -175,30 +186,35 @@ export class Rumor extends Component {
                 // console.log("My Coordinate -> ", this.state.userLatitude, this.state.userLongitude);
                 markerLat = e.nativeEvent.coordinate.latitude;
                 markerLon = e.nativeEvent.coordinate.longitude;
-                console.warn("Show Marker", markerLat, markerLon);
+                console.warn('Show Marker', markerLat, markerLon);
 
                 this._showMarker(true);
                 //When user scrolls through the map and clicks, the map goes back to where the
                 //the user is, thus is required userLatitude and userLongitude to be changed as well
-                this._updateUserLoc(e.nativeEvent.coordinate.latitude, e.nativeEvent.coordinate.longitude);
-              }}
-            >
+                this._updateUserLoc(
+                  e.nativeEvent.coordinate.latitude,
+                  e.nativeEvent.coordinate.longitude,
+                );
+              }}>
               {this.state.showMarker ? marker : null}
             </MapView>
 
-            <ExitMap onPress={() => {
+            <ExitMap
+              onPress={() => {
                 this._showMarker(false);
-                this._updateUserLoc(this.state.userLatitude, this.state.userLongitude);
+                this._updateUserLoc(
+                  this.state.userLatitude,
+                  this.state.userLongitude,
+                );
                 this._setModalVisible();
-              }
-            }>
-              <Feather name="x" size={scale(25)} color='#ffffff' />
+              }}>
+              <Feather name="x" size={scale(25)} color="#ffffff" />
             </ExitMap>
-            {this.state.showMarker ?
+            {this.state.showMarker ? (
               <ConfirmMap onPress={() => this._setModalVisible()}>
-                <Feather name="check" size={scale(25)} color='#ffffff' />
+                <Feather name="check" size={scale(25)} color="#ffffff" />
               </ConfirmMap>
-            : null}
+            ) : null}
           </Modal>
 
           <FormInline>
@@ -206,7 +222,7 @@ export class Rumor extends Component {
             <NormalInput
               maxLength={100}
               onSubmitEditing={() => this.eventInput.focus()}
-              onChangeText={title => this.setState({ title })}
+              onChangeText={title => this.setState({title})}
             />
           </FormInline>
           <FormInline>
@@ -214,10 +230,12 @@ export class Rumor extends Component {
             <NormalInput
               multiline={true}
               maxLength={300}
-              ref={(input) => this.eventInput = input}
+              ref={input => (this.eventInput = input)}
               onSubmitEditing={() => this.casesInput.focus()}
-              onContentSizeChange={(e) => this.updateSize(e.nativeEvent.contentSize.height)}
-              onChangeText={description => this.setState({ description })}
+              onContentSizeChange={e =>
+                this.updateSize(e.nativeEvent.contentSize.height)
+              }
+              onChangeText={description => this.setState({description})}
             />
           </FormInline>
 
@@ -225,19 +243,23 @@ export class Rumor extends Component {
             <FormGroupChild>
               <FormLabel>Número de Casos:</FormLabel>
               <NormalInput
-                keyboardType='number-pad'
-                ref={(input) => this.casesInput = input}
+                keyboardType="number-pad"
+                ref={input => (this.casesInput = input)}
                 onSubmitEditing={() => this.deathsInput.focus()}
-                onChangeText={(confirmed_cases) => this.setState({ confirmed_cases })}
+                onChangeText={confirmed_cases =>
+                  this.setState({confirmed_cases})
+                }
               />
             </FormGroupChild>
 
             <FormGroupChild>
               <FormLabel>Número de Mortes:</FormLabel>
               <NormalInput
-                keyboardType='number-pad'
-                ref={(input) => this.deathsInput = input}
-                onChangeText={(confirmed_deaths) => this.setState({ confirmed_deaths })}
+                keyboardType="number-pad"
+                ref={input => (this.deathsInput = input)}
+                onChangeText={confirmed_deaths =>
+                  this.setState({confirmed_deaths})
+                }
               />
             </FormGroupChild>
           </FormGroup>
@@ -245,19 +267,23 @@ export class Rumor extends Component {
           <FormGroup>
             <FormGroupChild>
               <FormLabel>Localização:</FormLabel>
-              <Button onPress={() => { 
+              <Button
+                onPress={() => {
                   this._setModalVisible();
                   Keyboard.dismiss();
-                }
-              }>
-              <MapFormMarker>
-                <MapFormText>Marcar no Mapa</MapFormText>
-                {this.state.showMarker ?
-                  <Feather name="check-circle" size={scale(20)} color='#348EAC' />
-                : 
-                  <Feather name="x-circle" size={scale(20)} color='#c4c4c4' />
-                }
-              </MapFormMarker>
+                }}>
+                <MapFormMarker>
+                  <MapFormText>Marcar no Mapa</MapFormText>
+                  {this.state.showMarker ? (
+                    <Feather
+                      name="check-circle"
+                      size={scale(20)}
+                      color="#348EAC"
+                    />
+                  ) : (
+                    <Feather name="x-circle" size={scale(20)} color="#c4c4c4" />
+                  )}
+                </MapFormMarker>
               </Button>
             </FormGroupChild>
           </FormGroup>
@@ -272,34 +298,48 @@ export class Rumor extends Component {
         <CoolAlert
           show={showAlert}
           showProgress={this.state.showProgressBar}
-          title={this.state.showProgressBar ? translate("badReport.alertMessages.sending") : <Text>{translate("badReport.alertMessages.thanks")} {emojis[1]}{emojis[1]}{emojis[1]}</Text>}
-          message={this.state.showProgressBar ? null : <Text>{translate("rumor.rumorSent")} {emojis[0]}{emojis[0]}{emojis[0]}</Text>}
+          title={
+            this.state.showProgressBar ? (
+              translate('badReport.alertMessages.sending')
+            ) : (
+              <Text>
+                {translate('badReport.alertMessages.thanks')} {emojis[1]}
+                {emojis[1]}
+                {emojis[1]}
+              </Text>
+            )
+          }
+          message={
+            this.state.showProgressBar ? null : (
+              <Text>
+                {translate('rumor.rumorSent')} {emojis[0]}
+                {emojis[0]}
+                {emojis[0]}
+              </Text>
+            )
+          }
           closeOnTouchOutside={this.state.showProgressBar ? false : true}
           closeOnHardwareBackPress={false}
           showConfirmButton={this.state.showProgressBar ? false : true}
-          confirmText={translate("badReport.alertMessages.confirmText")}
+          confirmText={translate('badReport.alertMessages.confirmText')}
           onCancelPressed={() => this.hideAlert()}
           onConfirmPressed={() => this.hideAlert()}
           onDismiss={() => this.hideAlert()}
         />
       </Container>
-    )
+    );
   }
 }
 
 const emojis = [
-  (
-    <Emoji //Emoji heart up
-      name='heart'
-      style={{ fontSize: scale(15) }}
-    />
-  ),
-  (
-    <Emoji //Emoji tada up
-      name='tada'
-      style={{ fontSize: scale(15) }}
-    />
-  )
-]
+  <Emoji //Emoji heart up
+    name="heart"
+    style={{fontSize: scale(15)}}
+  />,
+  <Emoji //Emoji tada up
+    name="tada"
+    style={{fontSize: scale(15)}}
+  />,
+];
 
 export default Rumor;

@@ -99,7 +99,10 @@ class Dicas extends Component {
   };
 
   sortContents = (contents = []) => {
-    contents.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    contents.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
     return contents;
   };
 
@@ -233,12 +236,14 @@ class Dicas extends Component {
                 <DetailsButton
                   onPress={() =>
                     Redirect(
-                      'Mais Informações',
-                      'Deseja ser redirecionado para a fonte do conteúdo?',
+                      translate('advices.moreInformations'),
+                      translate('advices.redirectPermission'),
                       this.state.contentSource,
                     )
                   }>
-                  <DetailsButtonLabel>Saiba Mais</DetailsButtonLabel>
+                  <DetailsButtonLabel>
+                    {translate('advices.more')}
+                  </DetailsButtonLabel>
                 </DetailsButton>
               </Details>
             </SafeAreaView>
