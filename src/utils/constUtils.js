@@ -20,14 +20,14 @@ export const getNameParts = (fullName, firstandLast = false) => {
 }
 
 export const getInitials = (string) => {
-    if (typeof string === 'string'){
+    if (typeof string === 'string') {
         let names = string.split(" ")
         initials = names[0].substring(0, 1).toUpperCase()
     
-    if (names.length > 1) {
-        initials += names[names.length - 1].substring(0, 1).toUpperCase()
-    }
-    return initials
+        if (names.length > 1) {
+            initials += names[names.length - 1].substring(0, 1).toUpperCase()
+        }
+        return initials
     } else {
         return null
     }
@@ -104,5 +104,5 @@ export const logoutApp = (navigation) => {
     OneSignal.deleteTag("school_unit_id")
     OneSignal.deleteTag("score")
 
-    navigation.navigate('TelaInicial');
+    navigation.navigate('Welcome');
 }

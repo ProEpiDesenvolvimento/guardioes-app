@@ -6,35 +6,35 @@ import { HeaderNavigator, BackButton, ScreenTitle, Empty } from './styles';
 
 import { scale } from '../../utils/scallingUtils';
 import { createDrawerNavigator, createStackNavigator, createBottomTabNavigator, createSwitchNavigator } from 'react-navigation';
-import Loading from '../telainicial/Loading';
-import TelaInicial from '../telainicial/TelaInicial';
-import Registrar from '../telainicial/Registrar';
-import ForgetPwd from '../telainicial/ForgetPwd';
-import Login from '../telainicial/Login';
-import Home from '../principal/Home';
-import Diario from '../principal/Diario';
-import Dicas from '../principal/Dicas';
-import Noticias from '../principal/Noticias/';
+import Loading from '../../screens/inicio/Loading';
+import Welcome from '../../screens/inicio/Welcome';
+import Register from '../../screens/inicio/Register';
+import ForgetPwd from '../../screens/inicio/ForgetPwd';
+import Login from '../../screens/inicio/Login';
+import Home from '../../screens/principal/Home';
+import Diario from '../../screens/principal/Diario';
+import Dicas from '../../screens/principal/Dicas';
+import Noticias from '../../screens/principal/Noticias/';
 
-import BadReport from '../principal/badReport';
-import NovoPerfil from '../principal/NovoPerfil';
+import BadReport from '../../screens/principal/BadReport';
+import NovoPerfil from '../../screens/principal/NovoPerfil';
 import drawerContentComponents from './drawerContentComponent';
-import Mapa from '../principal/Mapa';
-import Perfis from '../principal/Perfis';
-import EditarPerfil from '../principal/EditarPerfil';
-import FAQ from '../principal/FAQ';
-import Ajuda from '../principal/Ajuda';
-import Tutorial from '../principal/Tutorial';
-import TermosPoliticas from '../principal/TermosPoliticas';
-import Rumor from '../principal/Rumor';
-import Sobre from '../principal/Sobre';
-import Vigilancia from '../principal/Vigilancia'
+import Mapa from '../../screens/principal/Mapa';
+import Perfis from '../../screens/principal/Perfis';
+import EditarPerfil from '../../screens/principal/EditarPerfil';
+import FAQ from '../../screens/principal/FAQ';
+import Ajuda from '../../screens/principal/Ajuda';
+import Tutorial from '../../screens/principal/Tutorial';
+import TermosPoliticas from '../../screens/principal/TermosPoliticas';
+import Rumor from '../../screens/principal/Rumor';
+import Sobre from '../../screens/principal/Sobre';
+import Vigilancia from '../../screens/principal/Vigilancia'
 
 Feather.loadFont();
 
 export const Cadastro = createStackNavigator({
-    TelaInicial: { screen: TelaInicial },
-    Registrar: { screen: Registrar },
+    Welcome: { screen: Welcome },
+    Register: { screen: Register },
     Login: { screen: Login },
     ForgetPwd: { screen: ForgetPwd },
 },

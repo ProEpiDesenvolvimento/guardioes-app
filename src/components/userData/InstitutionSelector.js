@@ -8,7 +8,7 @@ import {
   NormalInput,
   Selector,
   CheckBoxStyled,
-} from '../styled/NormalForms';
+} from '../NormalForms';
 
 import {API_URL} from 'react-native-dotenv';
 import translate from '../../../locales/i18n';
