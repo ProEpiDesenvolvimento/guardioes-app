@@ -1,6 +1,5 @@
 import translate from '../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
-import ShcoolsSheet from '../utils/shoolsSheet.json';
 
 export const localSymptom = [
   {key: 'Casa', label: 'Em Casa'},

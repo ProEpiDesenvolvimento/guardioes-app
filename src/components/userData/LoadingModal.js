@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { CoolAlert } from '../styled/CoolAlert'
+import { CoolAlert } from '../CoolAlert'
 
 class LoadingModal extends PureComponent {
     constructor(props) {

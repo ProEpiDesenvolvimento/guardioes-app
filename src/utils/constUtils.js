@@ -104,5 +104,5 @@ export const logoutApp = (navigation) => {
     OneSignal.deleteTag("school_unit_id")
     OneSignal.deleteTag("score")
 
-    navigation.navigate('TelaInicial');
+    navigation.navigate('Welcome');
 }
