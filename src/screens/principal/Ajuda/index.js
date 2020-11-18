@@ -1,55 +1,53 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-import {Help, Box, Button, IconWrapper, InfoWrapper, Title} from './styles';
+import { Help, Box, Button, IconWrapper, InfoWrapper, Title } from './styles';
 
-import {TermsIcon, TutorialIcon, InfoIcon} from '../../../img/imageConst';
-import {scale} from '../../../utils/scallingUtils';
+import { TermsIcon, TutorialIcon, InfoIcon } from '../../../img/imageConst';
+import { scale } from '../../../utils/scallingUtils';
 import translate from '../../../../locales/i18n';
 
-class Ajuda extends Component {
-  static navigationOptions = {
-    title: translate('ajuda.title'),
-  };
+const Ajuda = ({ navigation }) => {
+  const { navigate } = navigation;
 
-  render() {
-    const {navigate} = this.props.navigation;
-    return (
-      <Help>
-        <Box>
-          <Button onPress={() => navigate('Tutorial')}>
-            <IconWrapper>
-              <TutorialIcon height={scale(45)} width={scale(45)} />
-            </IconWrapper>
-            <InfoWrapper>
-              <Title>{translate('ajuda.tutorialBtn')}</Title>
-            </InfoWrapper>
-          </Button>
-        </Box>
+  const BoxItem = ({ title, children, onPress }) => (
+    <Box>
+      <Button onPress={onPress}>
+        <IconWrapper>{children}</IconWrapper>
+        <InfoWrapper>
+          <Title>{title}</Title>
+        </InfoWrapper>
+      </Button>
+    </Box>
+  );
 
-        <Box>
-          <Button onPress={() => navigate('TermosPoliticas')}>
-            <IconWrapper>
-              <TermsIcon height={scale(45)} width={scale(45)} />
-            </IconWrapper>
-            <InfoWrapper>
-              <Title>{translate('ajuda.useTermsBtn')}</Title>
-            </InfoWrapper>
-          </Button>
-        </Box>
+  return (
+    <Help>
+      <BoxItem
+        title={translate('ajuda.tutorialBtn')}
+        onPress={() => navigate('Tutorial')}
+      >
+        <TutorialIcon height={scale(45)} width={scale(45)} />
+      </BoxItem>
 
-        <Box>
-          <Button onPress={() => navigate('Sobre')}>
-            <IconWrapper>
-              <InfoIcon height={scale(45)} width={scale(45)} />
-            </IconWrapper>
-            <InfoWrapper>
-              <Title>{translate('ajuda.aboutBtn')}</Title>
-            </InfoWrapper>
-          </Button>
-        </Box>
-      </Help>
-    );
-  }
-}
+      <BoxItem
+        title={translate('ajuda.useTermsBtn')}
+        onPress={() => navigate('TermosPoliticas')}
+      >
+        <TermsIcon height={scale(45)} width={scale(45)} />
+      </BoxItem>
+
+      <BoxItem
+        title={translate('ajuda.aboutBtn')}
+        onPress={() => navigate('Sobre')}
+      >
+        <InfoIcon height={scale(45)} width={scale(45)} />
+      </BoxItem>
+    </Help>
+  );
+};
+
+Ajuda.navigationOptions = {
+  title: translate('ajuda.title'),
+};
 
 export default Ajuda;
