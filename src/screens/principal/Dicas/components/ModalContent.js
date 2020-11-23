@@ -6,6 +6,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import PropTypes from 'prop-types';
 
 import translate from '../../../../../locales/i18n';
 import Colors from '../../../../styles/colors';
@@ -24,7 +25,6 @@ import {
 Feather.loadFont();
 
 const ModalContent = ({
-  visible,
   onRequestClose,
   title,
   body,
@@ -74,5 +74,19 @@ const ModalContent = ({
     </SafeAreaView>
   </Modal>
 );
+
+ModalContent.propTypes = {
+  onRequestClose: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  body: PropTypes.string,
+  source: PropTypes.string,
+  modalVisible: PropTypes.bool.isRequired,
+};
+
+ModalContent.defaultProps = {
+  source: null,
+  title: null,
+  body: null,
+};
 
 export default ModalContent;

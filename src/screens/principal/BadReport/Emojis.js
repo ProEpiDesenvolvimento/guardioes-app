@@ -1,7 +1,7 @@
 import React from 'react';
 import Emoji from 'react-native-emoji';
 
-import { scale } from '../../../../utils/scallingUtils';
+import { scale } from '../../../utils/scallingUtils';
 
 const Emojis = [
   <Emoji // Emoji heart up

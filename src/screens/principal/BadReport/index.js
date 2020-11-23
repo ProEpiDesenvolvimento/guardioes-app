@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { Text, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -40,8 +38,8 @@ import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64';
 import { getSymptoms, sendSurvey } from '../../../services/BadReportService';
 import UserCard from './components/UserCard';
 import SymptomsCheck from './components/SymtomsCheck';
-import emojis from './components/Emojis';
-import requestFineLocationPermission from './components/RequestLocation';
+import emojis from './Emojis';
+import requestFineLocationPermission from './RequestLocation';
 
 const data = new Date();
 const today = `${data.getDate()}-${data.getMonth() + 1}-${data.getFullYear()}`;
@@ -58,7 +56,7 @@ class BadReport extends Component {
   constructor(props) {
     super(props);
     this.getLocation();
-    const { navigation } = this.props;
+    const { navigation } = props;
     navigation.addListener('willFocus', () => {
       this.fetchData();
     });

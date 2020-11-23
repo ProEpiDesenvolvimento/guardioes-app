@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Avatar } from 'react-native-elements';
 import { User, IconWrapper, InfoWrapper, Name } from '../styles';
@@ -19,5 +20,16 @@ const UserCard = ({ avatarSelected, nameInitials, avatarSize, nameParts }) => (
     </InfoWrapper>
   </User>
 );
+
+UserCard.propTypes = {
+  avatarSelected: PropTypes.string,
+  nameInitials: PropTypes.string.isRequired,
+  avatarSize: PropTypes.number.isRequired,
+  nameParts: PropTypes.string.isRequired,
+};
+
+UserCard.defaultProps = {
+  avatarSelected: null,
+};
 
 export default UserCard;

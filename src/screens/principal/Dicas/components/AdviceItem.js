@@ -1,6 +1,7 @@
 import React from 'react';
-import { Advice, AdviceTitle, AdviceIcon } from '../styles';
+import PropTypes from 'prop-types';
 
+import { Advice, AdviceTitle, AdviceIcon } from '../styles';
 import { scale } from '../../../../utils/scallingUtils';
 import {
   BedIcon,
@@ -49,6 +50,15 @@ const AdviceItem = ({ title, icon }) => {
       <AdviceIcon>{getContentIcon[icon] || getContentIcon.sick}</AdviceIcon>
     </Advice>
   );
+};
+
+AdviceItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+};
+
+AdviceItem.defaultProps = {
+  icon: null,
 };
 
 export default AdviceItem;

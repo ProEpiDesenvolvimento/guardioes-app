@@ -1,5 +1,5 @@
 import { Platform, PermissionsAndroid } from 'react-native';
-import translate from '../../../../../locales/i18n';
+import translate from '../../../../locales/i18n';
 
 const RequestLocation = async ({ navigation }) => {
   try {

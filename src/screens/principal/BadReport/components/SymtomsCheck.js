@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { FormTitleWrapper, FormTitle, CheckBoxStyled } from '../styles';
 import translate from '../../../../../locales/i18n';
 
@@ -18,5 +20,11 @@ const SymptomsCheck = ({ checked, onPress, symptomsData }) => (
       ))}
   </>
 );
+
+SymptomsCheck.propTypes = {
+  checked: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
+  symptomsData: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default SymptomsCheck;
