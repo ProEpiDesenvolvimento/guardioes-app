@@ -1,7 +1,10 @@
-import React, {Component} from 'react';
-import {TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { TouchableOpacity, Image } from 'react-native';
 
-import {ScrollViewStyled, Title, Subtitle, BodyText} from './styles';
+import Feather from 'react-native-vector-icons/Feather';
+import { scale } from '../../../utils/scallingUtils';
+
+import { ScrollViewStyled, Title, Subtitle, BodyText, ImageContainer } from './styles';
 
 import translate from '../../../../locales/i18n';
 
@@ -10,43 +13,110 @@ class Tutorial extends Component {
     title: translate('tutorial.title'),
   };
   render() {
-    const {navigate} = this.props.navigation;
+    const { navigate } = this.props.navigation;
 
     return (
       <ScrollViewStyled>
-        <Title>{translate('tutorial.tutorial')}</Title>
-
         {/* Como Usar */}
-        <BodyText>{translate('tutorial.howToUse')}</BodyText>
+        <BodyText>{translate("tutorial.howToUse")}</BodyText>
+
+        <TouchableOpacity onPress={() => navigate('Home')}>
+          <ImageContainer style={{ alignSelf: "flex-start" }}>
+            <Feather name={'home'} size={scale(30)} style={{ alignSelf: 'center', marginRight: 10 }} color={'#348EAC'} />
+            <Subtitle>
+              {translate("tutorial.home")}
+            </Subtitle>
+          </ImageContainer>
+        </TouchableOpacity>
 
         {/* Continuacao de como usar */}
-        <BodyText>{translate('tutorial.howToUse2')}</BodyText>
+        <BodyText>{translate("tutorial.homeCont")}</BodyText>
 
         {/* Diario */}
         <TouchableOpacity onPress={() => navigate('Diario')}>
-          <Subtitle>{translate('tutorial.diary')}</Subtitle>
+          <ImageContainer style={{ alignSelf: "flex-start" }}>
+            <Feather name={'clipboard'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Subtitle>
+              {translate("tutorial.diary")}
+            </Subtitle>
+          </ImageContainer>
         </TouchableOpacity>
-        <BodyText>{translate('tutorial.diaryCont')}</BodyText>
+
+        <BodyText>
+          {translate("tutorial.diaryCont")}
+        </BodyText>
 
         {/* Mapa da Saude */}
         <TouchableOpacity onPress={() => navigate('Mapa')}>
-          <Subtitle>{translate('tutorial.healthMap')}</Subtitle>
+          <ImageContainer style={{ alignSelf: "flex-start" }}>
+            <Feather name={'map'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Subtitle>
+              {translate("tutorial.healthMap")}
+            </Subtitle>
+          </ImageContainer>
         </TouchableOpacity>
-        <BodyText>{translate('tutorial.healthMapCont')}</BodyText>
+
+        <BodyText>
+          {translate("tutorial.healthMapCont")}
+        </BodyText>
+
+        <Image
+          style={{
+            width: 300,
+            height: 300,
+            resizeMode: 'cover',
+            alignSelf: 'center',
+            marginVertical: 20
+          }}
+          source={require('../../../../src/img/tutorial/image2.jpg')} />
+
+        <BodyText>
+          {translate("tutorial.healthMapCont2")}
+        </BodyText>
+
+        <Image
+          style={{
+            width: 300,
+            height: 300,
+            resizeMode: 'cover',
+            alignSelf: 'center',
+            marginVertical: 20
+          }}
+          source={require('../../../../src/img/tutorial/image1.jpg')} />
+
+        <BodyText>
+          {translate("tutorial.healthMapCont3")}
+        </BodyText>
 
         {/* Dicas de Saude */}
         <TouchableOpacity onPress={() => navigate('Dicas')}>
-          <Subtitle>{translate('tutorial.advices')}</Subtitle>
+          <ImageContainer style={{ alignSelf: "flex-start" }}>
+            <Feather name={'heart'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Subtitle>
+              {translate("tutorial.advices")}
+            </Subtitle>
+          </ImageContainer>
         </TouchableOpacity>
-        <BodyText>{translate('tutorial.advicesCont')}</BodyText>
+        <BodyText>
+          {translate("tutorial.advicesCont")}
+        </BodyText>
 
         {/* Mudando para Noticias, titulo */}
         <TouchableOpacity onPress={() => navigate('Noticias')}>
-          <Subtitle>{translate('tutorial.news')}</Subtitle>
+          <ImageContainer style={{ alignSelf: "flex-start" }}>
+            <Feather name={'message-square'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Subtitle>
+              {translate("tutorial.news")}
+            </Subtitle>
+          </ImageContainer>
         </TouchableOpacity>
-        <BodyText>{translate('tutorial.newsCont')}</BodyText>
+        <BodyText>
+          {translate("tutorial.newsCont")}
+        </BodyText>
 
-        <BodyText>{translate('tutorial.newsPs')}</BodyText>
+        <BodyText>
+          {translate("tutorial.newsPs")}
+        </BodyText>
       </ScrollViewStyled>
     );
   }
