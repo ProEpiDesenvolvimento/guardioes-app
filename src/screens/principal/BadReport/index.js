@@ -41,7 +41,7 @@ import { getSymptoms, sendSurvey } from '../../../services/BadReportService';
 import UserCard from './components/UserCard';
 import SymptomsCheck from './components/SymtomsCheck';
 import emojis from './components/Emojis';
-import requestFineLocationPermission from './components/requestLocation';
+import requestFineLocationPermission from './components/RequestLocation';
 
 const data = new Date();
 const today = `${data.getDate()}-${data.getMonth() + 1}-${data.getFullYear()}`;

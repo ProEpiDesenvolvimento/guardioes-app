@@ -1,7 +1,12 @@
-import React, {Component} from 'react';
-import {SafeAreaView, TouchableOpacity, ScrollView, Modal} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { Component } from 'react';
+import { SafeAreaView } from 'react-native';
+import RNSecureStorage from 'rn-secure-storage';
+import { APP_ID } from 'react-native-dotenv';
 
+import { getTips } from '../../../services/TipService';
+import AdviceItem from './components/AdviceItem';
+import ModalContent from './components/ModalContent';
+import Colors from '../../../styles/colors';
 import ScreenLoader from '../../../components/ScreenLoader';
 import {
   Container,
@@ -11,55 +16,29 @@ import {
   SubTitle,
   AdvicesView,
   Touch,
-  Advice,
-  AdviceTitle,
-  AdviceIcon,
-  Details,
-  DetailsIcon,
-  DetailsTitleWrapper,
-  DetailsTitle,
-  DetailsBodyText,
-  DetailsButton,
-  DetailsButtonLabel,
 } from './styles';
-
-import RNSecureStorage from 'rn-secure-storage';
-import {Redirect} from '../../../utils/constUtils';
-import {
-  BedIcon,
-  DoctorIcon,
-  GermIcon,
-  HelplineIcon,
-  HomeworkIcon,
-  HospitalIcon,
-  InsectIcon,
-  MaskIcon,
-} from '../../../img/imageConst';
-import {
-  NoFlightIcon,
-  ProtectionIcon,
-  SickIcon,
-  TentIcon,
-  ThermometerIcon,
-  VaccineIcon,
-  VirusIcon,
-  WashIcon,
-} from '../../../img/imageConst';
-import {scale} from '../../../utils/scallingUtils';
+import { Redirect } from '../../../utils/constUtils';
 import translate from '../../../../locales/i18n';
-import {API_URL, APP_ID} from 'react-native-dotenv';
 
-Feather.loadFont();
-
+const advicesText = {
+  redirect: {
+    title: translate('advices.buttons.messages.title'),
+    text: translate('advices.buttons.messages.subtitle'),
+  },
+};
 class Dicas extends Component {
   static navigationOptions = {
     title: translate('advices.title'),
   };
+
   constructor(props) {
     super(props);
-    this.props.navigation.addListener('willFocus', payload => {
+    const { navigation } = this.props;
+
+    navigation.addListener('willFocus', () => {
       this.fetchData();
     });
+
     this.state = {
       modalVisible: false,
       isLoading: true,
@@ -68,95 +47,67 @@ class Dicas extends Component {
   }
 
   setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+    this.setState({ modalVisible: visible });
   }
 
   fetchData = async () => {
-    //Get user info
+    // Get user info
     const userToken = await RNSecureStorage.get('userToken');
-    this.setState({userToken});
+    this.setState({ userToken });
     this.getContents();
   };
 
-  getContents = () => {
-    return fetch(`${API_URL}/contents/`, {
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-        Authorization: `${this.state.userToken}`,
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        const sortedContents = this.sortContents(responseJson.contents);
-
-        if (sortedContents) {
-          this.setState({dataSource: sortedContents});
-        }
-
-        this.setState({isLoading: false});
-      });
+  getContents = async () => {
+    const { userToken } = this.state;
+    await getTips(userToken).then((responseJson) => {
+      const sortedContents = this.sortContents(responseJson.contents);
+      this.setState({ dataSource: sortedContents || [] });
+      this.setState({ isLoading: false });
+    });
   };
 
   sortContents = (contents = []) => {
     contents.sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
     return contents;
   };
 
-  getContentIcon = icon => {
-    const size = scale(50);
-
-    switch (icon) {
-      case 'bed':
-        return <BedIcon height={size} width={size} />;
-      case 'doctor':
-        return <DoctorIcon height={size} width={size} />;
-      case 'germ':
-        return <GermIcon height={size} width={size} />;
-      case 'helpline':
-        return <HelplineIcon height={size} width={size} />;
-      case 'homework':
-        return <HomeworkIcon height={size} width={size} />;
-      case 'hospital':
-        return <HospitalIcon height={size} width={size} />;
-      case 'insect':
-        return <InsectIcon height={size} width={size} />;
-      case 'mask':
-        return <MaskIcon height={size} width={size} />;
-      case 'no-flight':
-        return <NoFlightIcon height={size} width={size} />;
-      case 'protection':
-        return <ProtectionIcon height={size} width={size} />;
-      case 'sick':
-        return <SickIcon height={size} width={size} />;
-      case 'tent':
-        return <TentIcon height={size} width={size} />;
-      case 'thermometer':
-        return <ThermometerIcon height={size} width={size} />;
-      case 'vaccine':
-        return <VaccineIcon height={size} width={size} />;
-      case 'virus':
-        return <VirusIcon height={size} width={size} />;
-      case 'wash':
-        return <WashIcon height={size} width={size} />;
-    }
-
-    return <SickIcon height={size} width={size} />;
-  };
-
   render() {
-    const contentsData = this.state.dataSource;
+    const {
+      dataSource,
+      isLoading,
+      modalVisible,
+      contentTitle,
+      contentBody,
+      contentSource,
+    } = this.state;
 
-    if (this.state.isLoading) {
+    if (isLoading) {
       return <ScreenLoader />;
     }
 
+    const onTipPress = (content) => {
+      if (content.content_type === 'redirect') {
+        Redirect(
+          advicesText.redirect.title,
+          advicesText.redirect.text,
+          content.source_link
+        );
+      } else {
+        this.setModalVisible(true);
+        this.setState({
+          contentTitle: content.title,
+          contentBody: content.body,
+          contentSource: content.source_link,
+        });
+      }
+    };
+
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
+        <SafeAreaView style={{ flex: 0, backgroundColor: Colors.primary }} />
         <Container>
           <ScrollViewStyled>
             <TitleWrapper>
@@ -165,101 +116,31 @@ class Dicas extends Component {
             </TitleWrapper>
 
             <AdvicesView>
-              {contentsData != null
-                ? contentsData.map(content => {
-                    if (content.app.id == APP_ID) {
-                      return (
-                        <Touch
-                          key={content.id}
-                          onPress={() => {
-                            if (content.content_type === 'redirect') {
-                              Redirect(
-                                advicesText.redirect.title,
-                                advicesText.redirect.text,
-                                content.source_link,
-                              );
-                            } else {
-                              this.setModalVisible(true);
-                              this.setState({
-                                contentTitle: content.title,
-                                contentBody: content.body,
-                                contentSource: content.source_link,
-                              });
-                            }
-                          }}>
-                          <Advice>
-                            <AdviceTitle numberOfLines={3}>
-                              {content.title}
-                            </AdviceTitle>
-                            <AdviceIcon>
-                              {this.getContentIcon(content.icon)}
-                            </AdviceIcon>
-                          </Advice>
-                        </Touch>
-                      );
-                    }
-                  })
-                : null}
+              {dataSource?.map(
+                (content) =>
+                  content.app.id === +APP_ID && (
+                    <Touch key={content.id} onPress={() => onTipPress(content)}>
+                      <AdviceItem title={content.title} icon={content.icon} />
+                    </Touch>
+                  )
+              )}
             </AdvicesView>
           </ScrollViewStyled>
-
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
+          <ModalContent
+            visible={modalVisible}
             onRequestClose={
-              () => this.setModalVisible(!this.state.modalVisible) //Exit to modal view
-            }>
-            <SafeAreaView style={{flex: 1}}>
-              <Details>
-                <DetailsIcon>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.setModalVisible(!this.state.modalVisible)
-                    }>
-                    <Feather
-                      name="arrow-left-circle"
-                      size={scale(35)}
-                      color="#5DD39E"
-                    />
-                  </TouchableOpacity>
-                </DetailsIcon>
-
-                <DetailsTitleWrapper>
-                  <DetailsTitle>{this.state.contentTitle}</DetailsTitle>
-                </DetailsTitleWrapper>
-
-                <ScrollView>
-                  <DetailsBodyText>{this.state.contentBody}</DetailsBodyText>
-                </ScrollView>
-
-                <DetailsButton
-                  onPress={() =>
-                    Redirect(
-                      translate('advices.moreInformations'),
-                      translate('advices.redirectPermission'),
-                      this.state.contentSource,
-                    )
-                  }>
-                  <DetailsButtonLabel>
-                    {translate('advices.more')}
-                  </DetailsButtonLabel>
-                </DetailsButton>
-              </Details>
-            </SafeAreaView>
-          </Modal>
+              () => this.setModalVisible(!modalVisible) // Exit to modal view
+            }
+            title={contentTitle}
+            body={contentBody}
+            source={contentSource}
+            modalVisible={modalVisible}
+          />
         </Container>
       </>
     );
   }
 }
 
-const advicesText = {
-  redirect: {
-    title: translate('advices.buttons.messages.title'),
-    text: translate('advices.buttons.messages.subtitle'),
-  },
-};
-
-//make this component available to the app
+// make this component available to the app
 export default Dicas;
