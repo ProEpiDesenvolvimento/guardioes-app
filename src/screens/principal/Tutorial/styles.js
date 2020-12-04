@@ -19,6 +19,14 @@ export const Title = styled.Text`
     padding: 0;
 `;
 
+export const Image = styled.Image`
+    width: 300px,
+    height: 300px;
+    
+    align-self: center;
+    margin: 20px 0px;
+`;
+
 export const Subtitle = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
@@ -33,6 +41,7 @@ export const ImageContainer = styled.View`
     justify-content: space-evenly;
     margin-top: ${scale(20)}px;
     margin-bottom: ${scale(20)}px;
+    align-self: flex-start;
 `;
 
 export const BodyText = styled.Text`
