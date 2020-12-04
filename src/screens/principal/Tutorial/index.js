@@ -21,7 +21,7 @@ class Tutorial extends Component {
         <BodyText>{translate("tutorial.howToUse")}</BodyText>
 
         <TouchableOpacity onPress={() => navigate('Home')}>
-          <ImageContainer style={{ alignSelf: "flex-start" }}>
+          <ImageContainer>
             <Feather name={'home'} size={scale(30)} style={{ alignSelf: 'center', marginRight: 10 }} color={'#348EAC'} />
             <Subtitle>
               {translate("tutorial.home")}
@@ -34,7 +34,7 @@ class Tutorial extends Component {
 
         {/* Diario */}
         <TouchableOpacity onPress={() => navigate('Diario')}>
-          <ImageContainer style={{ alignSelf: "flex-start" }}>
+          <ImageContainer>
             <Feather name={'clipboard'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
             <Subtitle>
               {translate("tutorial.diary")}
@@ -48,7 +48,7 @@ class Tutorial extends Component {
 
         {/* Mapa da Saude */}
         <TouchableOpacity onPress={() => navigate('Mapa')}>
-          <ImageContainer style={{ alignSelf: "flex-start" }}>
+          <ImageContainer >
             <Feather name={'map'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
             <Subtitle>
               {translate("tutorial.healthMap")}
@@ -61,13 +61,6 @@ class Tutorial extends Component {
         </BodyText>
 
         <Image
-          style={{
-            width: 300,
-            height: 300,
-            resizeMode: 'cover',
-            alignSelf: 'center',
-            marginVertical: 20
-          }}
           source={require('../../../../src/img/tutorial/image2.jpg')} />
 
         <BodyText>
@@ -75,13 +68,6 @@ class Tutorial extends Component {
         </BodyText>
 
         <Image
-          style={{
-            width: 300,
-            height: 300,
-            resizeMode: 'cover',
-            alignSelf: 'center',
-            marginVertical: 20
-          }}
           source={require('../../../../src/img/tutorial/image1.jpg')} />
 
         <BodyText>
@@ -90,7 +76,7 @@ class Tutorial extends Component {
 
         {/* Dicas de Saude */}
         <TouchableOpacity onPress={() => navigate('Dicas')}>
-          <ImageContainer style={{ alignSelf: "flex-start" }}>
+          <ImageContainer>
             <Feather name={'heart'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
             <Subtitle>
               {translate("tutorial.advices")}
@@ -103,7 +89,7 @@ class Tutorial extends Component {
 
         {/* Mudando para Noticias, titulo */}
         <TouchableOpacity onPress={() => navigate('Noticias')}>
-          <ImageContainer style={{ alignSelf: "flex-start" }}>
+          <ImageContainer>
             <Feather name={'message-square'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
             <Subtitle>
               {translate("tutorial.news")}
