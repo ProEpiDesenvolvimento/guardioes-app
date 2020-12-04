@@ -95,6 +95,15 @@ $ npx react-native run-android
 5. Crie o pull request
 
 ----
+## Bugs Frequentes
+
+<ul>
+   <li>  <h2>Problemas gerais com os pacotes</h2>Apague a pasta <i>node_modules</i> e execute o comando <i>npm install</i></li>
+   <li>  <h2>Erro ao gerar o <i>apk</i> localmente</h2> Tente executar <i>npx jetify</i> antes de algum comando do gradlew</li>
+   <li>  <h2>Problemas ao executar o app no dispositivo ou emulador Android</h2> No diretório ./Android, execute o comando <i>./gradlew clean</i></li>
+</ul>
+
+----
 ## License & copyright
 
 ProEpi, Associação Brasileira de Profissionais de Epidemiologia de Campo
