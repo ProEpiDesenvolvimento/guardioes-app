@@ -51,5 +51,5 @@ jobs:
         on:
           repo: proepidesenvolvimento/guardioes-app
           all_branches: true
-          condition: ($TRAVIS_BRANCH =~ ^(development)) AND ($TRAVIS_PULL_REQUEST = false)$
+          condition: $TRAVIS_BRANCH =~ ^(development) AND $TRAVIS_PULL_REQUEST=false
         skip_cleanup: 'true'
