@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
-import Feather from 'react-native-vector-icons/Feather';
+// import  from 'react-native-vector-icons/Feath size={scale(30)}';
 import { scale } from '../../../utils/scallingUtils';
 
-import { ScrollViewStyled, Title, Subtitle, BodyText, ImageContainer } from './styles';
+import { ScrollViewStyled, Subtitle, BodyText, ImageContainer, Image, Feath } from './styles';
 
 import translate from '../../../../locales/i18n';
 
@@ -22,7 +22,7 @@ class Tutorial extends Component {
 
         <TouchableOpacity onPress={() => navigate('Home')}>
           <ImageContainer>
-            <Feather name={'home'} size={scale(30)} style={{ alignSelf: 'center', marginRight: 10 }} color={'#348EAC'} />
+            <Feath size={scale(30)} name={'home'} />
             <Subtitle>
               {translate("tutorial.home")}
             </Subtitle>
@@ -35,7 +35,7 @@ class Tutorial extends Component {
         {/* Diario */}
         <TouchableOpacity onPress={() => navigate('Diario')}>
           <ImageContainer>
-            <Feather name={'clipboard'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Feath size={scale(30)} name={'clipboard'} />
             <Subtitle>
               {translate("tutorial.diary")}
             </Subtitle>
@@ -49,7 +49,7 @@ class Tutorial extends Component {
         {/* Mapa da Saude */}
         <TouchableOpacity onPress={() => navigate('Mapa')}>
           <ImageContainer >
-            <Feather name={'map'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Feath size={scale(30)} name={'map'} />
             <Subtitle>
               {translate("tutorial.healthMap")}
             </Subtitle>
@@ -77,7 +77,7 @@ class Tutorial extends Component {
         {/* Dicas de Saude */}
         <TouchableOpacity onPress={() => navigate('Dicas')}>
           <ImageContainer>
-            <Feather name={'heart'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Feath size={scale(30)} name={'heart'} />
             <Subtitle>
               {translate("tutorial.advices")}
             </Subtitle>
@@ -90,7 +90,7 @@ class Tutorial extends Component {
         {/* Mudando para Noticias, titulo */}
         <TouchableOpacity onPress={() => navigate('Noticias')}>
           <ImageContainer>
-            <Feather name={'message-square'} size={scale(30)} color={'#348EAC'} style={{ alignSelf: "center", marginRight: 10 }} />
+            <Feath size={scale(30)} name={'message-square'} />
             <Subtitle>
               {translate("tutorial.news")}
             </Subtitle>

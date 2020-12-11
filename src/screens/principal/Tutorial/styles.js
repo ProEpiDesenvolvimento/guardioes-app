@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Image as Img } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 
 import { scale, percentage } from '../../../utils/scallingUtils';
 
@@ -19,12 +21,18 @@ export const Title = styled.Text`
     padding: 0;
 `;
 
-export const Image = styled.Image`
-    width: 300px,
+export const Image = styled(Img)`
+    width: 300px;
     height: 300px;
-    
+    resize-mode: cover;
     align-self: center;
     margin: 20px 0px;
+`;
+
+export const Feath = styled(Feather)`
+    align-self: center;
+    margin-right: 10px;
+    color: #348EAC;
 `;
 
 export const Subtitle = styled.Text`
