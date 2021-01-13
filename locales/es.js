@@ -184,7 +184,7 @@ export default {
     },
   },
   diary: {
-    title: 'Diario de la Salud',
+    title: 'Diario',
     year: ' año',
     years: ' años',
     participate: 'Participaciones',

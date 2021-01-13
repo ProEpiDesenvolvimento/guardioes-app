@@ -25,6 +25,7 @@
 		8C9F85A9E256AEE03ED0D3D6 /* libPods-guardioesapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */; };
 		98693461100712AEC3C4F9AD /* libPods-guardioesapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */; };
 		A42466FF10C4B1A9EB62700C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */; };
+		CD2400D425AF9AE800DB428F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD2400D325AF9AE800DB428F /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,7 @@
 		B4042C4842586D83F36E0D77 /* Pods-guardioesapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOSTests/Pods-guardioesapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArgentumSans-Medium.otf"; path = "../src/fonts/ArgentumSans-Medium.otf"; sourceTree = "<group>"; };
 		C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD2400D325AF9AE800DB428F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE5CFC927120A290716AB25B /* Pods-guardioesapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOS/Pods-guardioesapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		D68B3371A2A7FA693CE8427C /* Pods-guardioesappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesappTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesappTests/Pods-guardioesappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DAD232F028C384D36231E2F1 /* libPods-guardioesapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,6 +180,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				CD2400D325AF9AE800DB428F /* LaunchScreen.storyboard */,
 			);
 			name = guardioesapp;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */,
 				758D12E16561465F945FC656 /* ArgentumSans.otf in Resources */,
+				CD2400D425AF9AE800DB428F /* LaunchScreen.storyboard in Resources */,
 				34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

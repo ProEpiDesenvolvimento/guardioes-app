@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GradientBackground" translatesAutoresizingMaskIntoConstraints="NO" id="hTz-82-LwQ">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="yij-eB-xoH">
+                                <rect key="frame" x="74.5" y="315.5" width="265" height="265"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.36611539125442505" green="0.82889401912689209" blue="0.61825615167617798" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="hTz-82-LwQ" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="4OI-li-AcE"/>
+                            <constraint firstAttribute="trailing" secondItem="hTz-82-LwQ" secondAttribute="trailing" id="6kT-tO-8uZ"/>
+                            <constraint firstItem="hTz-82-LwQ" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="8Na-hQ-zae"/>
+                            <constraint firstItem="yij-eB-xoH" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JIa-uZ-0UN"/>
+                            <constraint firstItem="yij-eB-xoH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="mpe-Jq-4ay"/>
+                            <constraint firstAttribute="bottom" secondItem="hTz-82-LwQ" secondAttribute="bottom" id="vA5-VS-am9"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="GradientBackground" width="480" height="480"/>
+        <image name="SplashIcon" width="265" height="265"/>
+    </resources>
+</document>

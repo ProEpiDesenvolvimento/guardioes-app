@@ -192,7 +192,7 @@ export default {
     bad: 'Bad',
     report: ' time',
     reports: ' times',
-    statisticsTitle: 'Statistcs',
+    statisticsTitle: 'Statistics',
     goodPercent: '% days - Good',
     badPercent: '% days - Bad',
     notInformed: '% days - Not Informed',
