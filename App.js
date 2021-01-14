@@ -1,3 +1,4 @@
+import AppProvider from "./src/hooks";
 import React, { Component } from 'react';
 import * as Navegar from './src/components/navigation/navigator';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
@@ -37,7 +38,9 @@ class Guardioes extends Component {
 
   render() {
     return (
-      <Navegar.Authentication />
+      //<AppProvider>
+        <Navegar.Authentication />
+      //</AppProvider>
     );
   }
 }
