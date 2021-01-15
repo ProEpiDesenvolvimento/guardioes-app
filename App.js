@@ -1,3 +1,4 @@
+import AppProvider from "./src/hooks";
 import React, { Component } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import * as Navegar from './src/components/navigation/navigator';
@@ -42,7 +43,9 @@ class Guardioes extends Component {
 
   render() {
     return (
-      <Navegar.Authentication />
+      //<AppProvider>
+        <Navegar.Authentication />
+      //</AppProvider>
     );
   }
 }
