@@ -31,6 +31,7 @@
     "react-native-share": "^3.8.5",
     "react-native-simple-shadow-view": "^1.6.3",
     "react-native-spinkit": "^1.5.1",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-swiper-flatlist": "^2.0.4",
