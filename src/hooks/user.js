@@ -8,6 +8,7 @@ import React, {
     useContext,
 } from "react";
 import RNSecureStorage from 'rn-secure-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 import { authUser } from "../api/user";
 
@@ -33,6 +34,7 @@ export const UserProvider = ({ children }) => {
     }, []);
 
     const initUserData = (user, token) => {
+        console.warn("Deu certo");
         const household = user.households;
         const appID = user.app.id;
         const groupTwitter = user.app.twitter;
@@ -75,6 +77,7 @@ export const UserProvider = ({ children }) => {
 
         if (!response.body.error && response.status === 200) {
             initUserData(response.body.user, response.token);
+            SplashScreen.hide();
         }
 
         setIsLoading(false);

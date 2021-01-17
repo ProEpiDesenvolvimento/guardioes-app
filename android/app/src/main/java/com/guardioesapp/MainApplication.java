@@ -9,7 +9,6 @@ import com.imagepicker.ImagePickerPackage;
 import com.como.RNTShadowView.ShadowViewPackage;
 import com.taluttasgiran.rnsecurestorage.RNSecureStoragePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.react.ReactNativeHost;
