@@ -198,6 +198,7 @@ export default {
     notInformed: '% days - Not Informed',
   },
   home: {
+    title: 'Home',
     hello: 'Hi, ',
     nowAGuardian: 'Guardião da Saúde',
     addProfile: 'Add a Profile',
@@ -344,6 +345,7 @@ export default {
     noAlert: 'No, I will warn you later',
   },
   rumor: {
+    title: 'Rumor',
     rumorSent: 'Rumor registered! ',
   },
   getToken: {

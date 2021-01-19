@@ -76,7 +76,7 @@ class EditarPerfil extends Component {
   }
 
   fetchData = async () => {
-    const {params} = this.props.navigation.state;
+    const {params} = this.props.route;
 
     await this.setState({
       isUser: params.isUser,

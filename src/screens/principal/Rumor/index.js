@@ -32,7 +32,7 @@ Feather.loadFont();
 let markerLat = 0;
 let markerLon = 0;
 
-export class Rumor extends Component {
+class Rumor extends Component {
   static navigationOptions = {
     title: 'Rumor',
   };

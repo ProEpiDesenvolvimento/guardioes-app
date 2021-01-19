@@ -198,6 +198,7 @@ export default {
     notInformed: '% dias - Não Informado',
   },
   home: {
+    title: 'Início',
     hello: 'Olá, ',
     nowAGuardian: 'Guardião da Saúde',
     addProfile: 'Adicionar Perfil',
@@ -347,6 +348,7 @@ export default {
     noAlert: 'Não, irei avisá-los mais tarde',
   },
   rumor: {
+    title: 'Rumor',
     rumorSent: 'Rumor registrado! ',
   },
   getToken: {

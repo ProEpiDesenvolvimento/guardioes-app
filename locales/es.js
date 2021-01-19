@@ -198,6 +198,7 @@ export default {
     notInformed: '% dias - No informado',
   },
   home: {
+    title: 'Inicio',
     hello: '¡Hola, ',
     nowAGuardian: 'Guardián de la Salud',
     addProfile: 'Añadir Perfil',
@@ -343,6 +344,10 @@ export default {
     share:
       '¿Quieres compartir un anuncio con personas con las que has tenido contacto?',
     noAlert: 'No, te lo advertiré luego',
+  },
+  rumor: {
+    title: 'Rumor',
+    rumorSent: 'Rumor registered! ',
   },
   getToken: {
     title: 'Código de Verificación',

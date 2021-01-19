@@ -71,7 +71,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.getLocation();
-    this.props.navigation.addListener('willFocus', payload => {
+    this.props.navigation.addListener('focus', payload => {
       if (!this.state.isLoading) this.fetchData();
     });
     this.state = {
@@ -213,9 +213,9 @@ class Home extends Component {
   }
 
   verifyUserTermsConsent = () => {
-    const {params} = this.props.navigation.state;
+    //const {params} = this.props.navigation.state;
     const currentPolicyTerms = Terms.version;
-    const userPolicyTerms = params.userTermsVersion;
+    const userPolicyTerms = 2;
 
     if (userPolicyTerms && userPolicyTerms < currentPolicyTerms) {
       this.setState({showTermsConsent: true});

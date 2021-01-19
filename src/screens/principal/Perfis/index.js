@@ -40,7 +40,7 @@ class Perfis extends Component {
   };
   constructor(props) {
     super(props);
-    this.props.navigation.addListener('willFocus', payload => {
+    this.props.navigation.addListener('focus', payload => {
       this.fetchData();
     });
     this.state = {
