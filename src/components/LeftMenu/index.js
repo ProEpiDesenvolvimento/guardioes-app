@@ -25,7 +25,7 @@ import {API_URL} from 'react-native-dotenv';
 Feather.loadFont();
 SimpleLineIcons.loadFont();
 
-export default class drawerContentComponents extends Component {
+class LeftMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -256,6 +256,8 @@ export default class drawerContentComponents extends Component {
     );
   }
 }
+
+export default LeftMenu;
 
 const shareOptions = {
   message: translate('drawer.shareLink'),
