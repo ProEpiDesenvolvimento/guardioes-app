@@ -167,7 +167,6 @@ class Dicas extends Component {
             <AdvicesView>
               {contentsData != null
                 ? contentsData.map(content => {
-                    if (content.app.id == APP_ID) {
                       return (
                         <Touch
                           key={content.id}
@@ -197,7 +196,6 @@ class Dicas extends Component {
                           </Advice>
                         </Touch>
                       );
-                    }
                   })
                 : null}
             </AdvicesView>
