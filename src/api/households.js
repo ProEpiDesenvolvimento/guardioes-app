@@ -1,12 +1,12 @@
-import { API_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv'
 
-export const getUserHousehold = async (id, token) => {
+export const getUserHouseholds = async (id, token) => {
     const response = await fetch(`${API_URL}/users/${id}/households`, {
         headers: {
             Accept: 'application/vnd.api+json',
             Authorization: token,
         },
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -33,7 +33,7 @@ export const createHousehold = async (data, id, token) => {
             identification_code: data.identification_code,
             group_id: data.group_id,
         }),
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -49,7 +49,7 @@ export const updateHousehold = async (data, id, token) => {
             Authorization: token,
         },
         body: JSON.stringify(data),
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -63,7 +63,7 @@ export const deleteHousehold = async (data, id, token) => {
             Accept: 'application/vnd.api+json',
             Authorization: token,
         },
-    });
+    })
     return {
         status: response.status,
     }

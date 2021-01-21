@@ -1,4 +1,17 @@
-import { API_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv'
+
+export const getUser = async (id, token) => {
+    const response = await fetch(`${API_URL}/users/${id}`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            Authorization: token,
+        },
+    })
+    return {
+        status: response.status,
+        body: await response.json(),
+    }
+}
 
 export const authUser = async (data) => {
     const response = await fetch(`${API_URL}/user/login`, {
@@ -13,10 +26,10 @@ export const authUser = async (data) => {
                 password: data.password,
             },
         }),
-    });
+    })
     return {
         status: response.status,
-        headers: response.headers.map,
+        token: response.headers.map.authorization,
         body: await response.json(),
     }
 }
@@ -48,7 +61,7 @@ export const createUser = async (data) => {
                 policy_version: data.policy_version,
             },
         }),
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -64,7 +77,7 @@ export const updateUser = async (data, id, token) => {
             Authorization: token,
         },
         body: JSON.stringify(data),
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -81,7 +94,7 @@ export const sendCode = async (email) => {
         body: JSON.stringify({
             email,
         }),
-    });
+    })
     return {
         status: response.status,
     }
@@ -97,7 +110,7 @@ export const confirmCode = async (code) => {
         body: JSON.stringify({
             code,
         }),
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -116,7 +129,7 @@ export const resetPassword = async (data) => {
             password: data.password,
             password_confirmation: data.password_confirm,
         }),
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
