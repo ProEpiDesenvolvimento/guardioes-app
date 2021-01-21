@@ -11,7 +11,7 @@ export const Container = styled.View`
   background-color: #f8f8f8;
 `;
 
-export const ScrollViewStyle = styled.ScrollView.attrs({
+export const ScrollViewStyled = styled.ScrollView.attrs({
   contentContainerStyle: {
     flexGrow: 1,
     justifyContent: 'flex-start',

@@ -10,7 +10,9 @@ const Drawer = createDrawerNavigator()
 const HomeDrawer = () => {
     return (
         <Drawer.Navigator
-            drawerContent={(props) => <LeftMenu {...props} />}
+            drawerContent={({ navigation }) => (
+                <LeftMenu navigation={navigation} />
+            )}
             drawerStyle={{
                 backgroundColor: 'transparent',
                 width: scale(290),
