@@ -207,14 +207,6 @@ export default {
     statusLast7DaysGood: 'Te has sentido bien.',
     statusLast7DaysBad: 'Usted no estaba bien.',
     userHowYouFelling: '¿Cómo se siente hoy?',
-    locationError: 'Error de Ubicación',
-    locationError2: 'Permita que la ubicación continúe',
-    permission: 'permitir',
-    localPermissionTitle: 'Guardiões da Saúde necesitan permiso de ubicación',
-    localPermissionMessage1:
-      'Guardiões da Saúde necesitan acceso a su ubicación',
-    localPermissionMessage2: 'para que pueda obtener informes de ubicación.',
-    okText: 'OK',
   },
   profiles: {
     households: 'Familia',
@@ -222,10 +214,13 @@ export default {
     owner: 'Propietario',
   },
   locationRequest: {
-    requestLocationMessageTitle: 'Permitir el uso de su ubicación',
-    requestLocationMessageMessage:
-      'Los Guardianes de la Salud necesitan su ubicación para acceder al Mapa de la Salud',
-    requestDenied: 'Permiso denegado',
+    permissionTitle: 'Permitir el uso de su ubicación',
+    permissionMessage:
+      'Guardianes de la Salud necesitan acceso a su ubicación ',
+    permissionMessage2: 
+      'para que pueda enviar su estado de salud, ver informes y acceder al Mapa de Salud.',
+    cancelText: 'Cancelar',
+    okText: 'OK',
   },
   maps: {
     title: 'Mapa',
@@ -326,7 +321,7 @@ export default {
     app: 'Aplicación',
     toSurveillance: 'Vigilancia activa',
     share: 'Compartir',
-    shareLink: 'Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n',
+    shareLink: 'Guardianes de la Salud\nhttps://linktr.ee/guardioesdasaude\n',
     toHelp: 'Ayuda',
     toFAQ: 'FAQ',
     participateSuccess: '¡Ya estás participando!',

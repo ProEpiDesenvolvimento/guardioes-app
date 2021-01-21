@@ -5,12 +5,14 @@ import React, {
     useEffect,
     useContext,
 } from 'react'
+import { PermissionsAndroid, Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import Geolocation from 'react-native-geolocation-service'
 import OneSignal from 'react-native-onesignal'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import SplashScreen from 'react-native-splash-screen'
 
+import translate from '../../locales/i18n'
 import { authUser } from '../api/user'
 
 const UserContext = createContext(null)
@@ -23,10 +25,9 @@ export const UserProvider = ({ children }) => {
     const [householdAvatars, setHouseholdAvatars] = useState({})
     const [selected, setSelected] = useState({})
     const [surveys, setSurveys] = useState([{}])
-    const [score, setScore] = useState(0)
     const [location, setLocation] = useState({})
-    const [appID, setAppID] = useState(1)
-    const [appTwitter, setAppTwitter] = useState('')
+    const [app, setApp] = useState({})
+    const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
 
     const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -35,27 +36,6 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         loadStoredData()
     }, [])
-
-    const storeUserData = async (user, token) => {
-        const households = user.households
-        const appID = user.app.id
-        const appTwitter = user.app.twitter
-
-        setToken(token)
-        setHouseholds(households)
-        setAppID(appID)
-        setAppTwitter(appTwitter)
-
-        user.households = undefined
-        user.app = undefined
-
-        setData(user)
-
-        await AsyncStorage.setItem(
-            'userData',
-            JSON.stringify(user)
-        )
-    }
 
     const loadStoredData = useCallback(async () => {
         const userData = JSON.parse(
@@ -120,6 +100,39 @@ export const UserProvider = ({ children }) => {
         await signIn({ email, password })
     }, [])
 
+    const storeUserData = async (user, token) => {
+        const households = user.households
+        const app = user.app
+
+        setToken(token)
+        setHouseholds(households)
+        setApp(app)
+
+        user.households = undefined
+        user.app = undefined
+
+        setData(user)
+
+        await AsyncStorage.setItem(
+            'userData',
+            JSON.stringify(user)
+        )
+    }
+
+    const sendUserTagsToOneSignal = (user) => {
+        const userGroup = user.group ? user.group.split('/')[3] : null
+        const userSchool = user.school_unit_id ? user.school_unit_id.toString() : null
+
+        OneSignal.setExternalUserId(user.id.toString())
+        OneSignal.sendTags({
+            city: user.city,
+            group: userGroup,
+            school_unit_id: userSchool,
+            platform: Platform.OS,
+            platform_version: Platform.Version.toString(),
+        })
+    }
+
     const signIn = useCallback(async ({ email, password }) => {
         const response = await authUser({
             email,
@@ -128,6 +141,7 @@ export const UserProvider = ({ children }) => {
 
         if (response.status === 200) {
             storeUserData(response.body.user, response.token)
+            sendUserTagsToOneSignal(response.body.user)
         }
         else if (response.status === 401) {
             signOut()
@@ -137,7 +151,15 @@ export const UserProvider = ({ children }) => {
         }
     }, [])
 
-    const signOut = useCallback(() => {
+    const removeUserTagsfromOneSignal = () => {
+        OneSignal.removeExternalUserId()
+        OneSignal.deleteTag('city')
+        OneSignal.deleteTag('group')
+        OneSignal.deleteTag('school_unit_id')
+        OneSignal.deleteTag('score')
+    }
+
+    const signOut = () => {
         AsyncStorage.multiRemove([
             'userData',
             //'userScore',
@@ -150,13 +172,13 @@ export const UserProvider = ({ children }) => {
         RNSecureStorage.remove('userEmail')
         RNSecureStorage.remove('userPwd')
 
-        //OneSignal.removeExternalUserId()
-
+        removeUserTagsfromOneSignal()
         setIsLoggedIn(false)
-    }, [])
+    }
 
     const selectUser = async (person) => {
-        if (person.description) { // Is a household
+        if (person.description) {
+            // Is a household
             person.user = undefined
 
             setSelected(person)
@@ -171,7 +193,8 @@ export const UserProvider = ({ children }) => {
     }
 
     const getCurrentUserInfo = () => {
-        if (selected.description) { // Is a household
+        if (selected.description) {
+            // Is a household
             return {
                 ...selected,
                 is_household: true,
@@ -208,20 +231,78 @@ export const UserProvider = ({ children }) => {
         setSurveys(surveys)
     }
 
+    const updateUserScore = async () => {
+        const lastReportDate = new Date(lastReport)
+        const todayDate = new Date()
+
+        const daysDiff = Math.floor(
+            (todayDate.getTime() - lastReportDate.getTime())
+            / (1000 * 60 * 60 * 24)
+        )
+
+        switch (daysDiff) {
+            case 0:
+                console.warn('Already reported today')
+                break
+            case 1:
+                setScore(score + 1)
+                setLastReport(todayDate.toString())
+                console.warn('Reported the day before')
+                
+                await AsyncStorage.setItem('userScore', score.toString())
+                await AsyncStorage.setItem('lastReport', todayDate.toString())
+                break
+            default:
+                setScore(0)
+                setLastReport(todayDate.toString())
+                console.warn('Did not report the day before')
+                
+                await AsyncStorage.setItem('userScore', score.toString())
+                await AsyncStorage.setItem('lastReport', todayDate.toString())
+        }
+
+        OneSignal.sendTags({ score })
+        console.warn(`User score: ${score}`)
+    }
+
     const getCurrentLocation = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: translate('locationRequest.permissionTitle'),
+                    message:
+                        translate('locationRequest.permissionMessage') +
+                        translate('locationRequest.permissionMessage2'),
+                    buttonNegative: translate('locationRequest.cancelText'),
+                    buttonPositive: translate('locationRequest.okText'),
+                }
+            )
+
+            if (Platform.OS === 'android') {
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    console.log('Location permission granted')
+                } else {
+                    console.log('Location permission denied')
+                }
+            }
+        } catch (err) {
+            console.warn(err)
+        }
+
         Geolocation.getCurrentPosition(
             (position) => {
                 setLocation({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    error: '',
+                    error: 0,
                 })
             },
             (error) => {
                 setLocation({
                     latitude: 0,
                     longitude: 0,
-                    error: error.message,
+                    error: error.code,
                 })
             },
             {
@@ -238,23 +319,22 @@ export const UserProvider = ({ children }) => {
                 signOut,
                 token,
                 data,
-                avatar,
                 loadSecondaryData,
-                selected,
                 selectUser,
                 getCurrentUserInfo,
+                avatar,
                 households,
                 storeHouseholds,
                 householdAvatars,
                 updateHouseholdAvatars,
                 surveys,
-                setSurveys,
-                score,
+                storeSurveys,
+                updateUserScore,
                 location,
                 getCurrentLocation,
-                appID,
-                appTwitter,
+                app,
                 lastReport,
+                score,
                 isLoading,
                 isLoggedIn,
             }}

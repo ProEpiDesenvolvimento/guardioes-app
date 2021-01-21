@@ -207,16 +207,6 @@ export default {
     statusLast7DaysGood: 'Você tem se sentido bem.',
     statusLast7DaysBad: 'Você não esteve bem.',
     userHowYouFelling: 'Como está se sentindo hoje?',
-    locationError: 'Erro Na Localização',
-    locationError2: 'Permita a localização para prosseguir',
-    permission: 'permitir',
-    localPermissionTitle:
-      'Guardiões da Saúde precisa da permissão de localização',
-    localPermissionMessage1:
-      'Guardiões da Saúde precisa de acesso à sua localização ',
-    localPermissionMessage2:
-      'para que você possa obter os relatórios de localização.',
-    okText: 'OK',
   },
   profiles: {
     households: 'Familiares',
@@ -224,10 +214,13 @@ export default {
     owner: 'Proprietário',
   },
   locationRequest: {
-    requestLocationMessageTitle: 'Permitir o uso de sua localização',
-    requestLocationMessageMessage:
-      'O Guardiões da Saúde precisa da sua localização para você acessar o Mapa da Saúde',
-    requestDenied: 'Permissão negada',
+    permissionTitle: 'Permitir o uso de sua localização',
+    permissionMessage:
+      'O Guardiões da Saúde precisa do acesso à sua localização ',
+    permissionMessage2: 
+      'para que você possa enviar seu estado de saúde, ver os relatórios e acessar o Mapa da Saúde.',
+    cancelText: 'Cancelar',
+    okText: 'OK',
   },
   maps: {
     title: 'Mapa',

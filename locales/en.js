@@ -207,13 +207,6 @@ export default {
     statusLast7DaysGood: 'You have been feeling well.',
     statusLast7DaysBad: 'You were not feeling well.',
     userHowYouFelling: 'How are you feeling today?',
-    locationError: 'Location Error',
-    locationError2: 'Allow location to proceed',
-    permission: 'Allow',
-    localPermissionTitle: 'Guardiões da Saúde need location permission',
-    localPermissionMessage1: 'Guardiões da Saúde need access to their location',
-    localPermissionMessage2: 'so you can get location reports.',
-    okText: 'OK',
   },
   profiles: {
     households: 'Relatives',
@@ -221,10 +214,13 @@ export default {
     owner: 'Owner',
   },
   locationRequest: {
-    requestLocationMessageTitle: 'Allow the use of you location',
-    requestLocationMessageMessage:
-      'Guardiões da Saúde needs your location to acess the Health Map',
-    requestDenied: 'Permission denied',
+    permissionTitle: 'Allow the use of your location',
+    permissionMessage:
+      'Guardiões da Saúde needs access to your location ',
+    permissionMessage2: 
+      'so that you can submit your health status, view reports and access the Health Map.',
+    cancelText: 'Cancel',
+    okText: 'OK',
   },
   maps: {
     title: 'Health Map',
