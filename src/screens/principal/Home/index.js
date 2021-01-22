@@ -15,6 +15,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import Emoji from 'react-native-emoji'
 
 import ScreenLoader from '../../../components/ScreenLoader'
+import { CoolAlert } from '../../../components/CoolAlert'
 import {
     Container,
     ScrollViewStyled,
@@ -43,9 +44,8 @@ import {
     UserName,
 } from './styles'
 
-import { CoolAlert } from '../../../components/CoolAlert'
-
 import {
+    terms,
     getNameParts,
     handleAvatar,
     getInitials,
@@ -479,27 +479,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0,
     },
 })
-
-const terms = {
-    title: translate('useTerms.title'),
-    text: `${translate('useTerms.terms.textoTermosTitulo')}\n
-        ${translate('useTerms.terms.textoTermos_1')}\n
-        ${translate('useTerms.terms.textoTermos_2')}\n
-        ${translate('useTerms.terms.textoTermos_3')}\n
-        ${translate('useTerms.terms.textoTermos_4')}\n
-        ${translate('useTerms.terms.textoTermos_5')}\n
-        ${translate('useTerms.terms.textoTermos_6')}\n
-        ${translate('useTerms.terms.textoTermos_7')}\n
-        ${translate('useTerms.terms.textoTermos_8')}\n
-        ${translate('useTerms.terms.textoTermos_9')}\n
-        ${translate('useTerms.terms.textoTermos_10')}\n
-        ${translate('useTerms.terms.textoTermos_11')}\n
-        ${translate('useTerms.terms.textoTermos_12')}\n
-        ${translate('useTerms.terms.textoTermos_13')}`,
-    version: translate('useTerms.compilation'),
-    disagree: translate('useTerms.disagree'),
-    agree: translate('useTerms.agree'),
-}
 
 const emojis = [
     <Emoji // Emoji heart up
