@@ -1,4 +1,4 @@
-import { API_URL } from 'react-native-dotenv';
+import { API_URL } from 'react-native-dotenv'
 
 export const getUserSurveys = async (id, token) => {
     const response = await fetch(`${API_URL}/users/${id}/surveys`, {
@@ -6,7 +6,7 @@ export const getUserSurveys = async (id, token) => {
             Accept: 'application/vnd.api+json',
             Authorization: token,
         },
-    });
+    })
     return {
         status: response.status,
         body: await response.json(),
@@ -28,7 +28,20 @@ export const createSurvey = async (data, id, token) => {
                 longitude: data.longitude,
             },
         }),
-    });
+    })
+    return {
+        status: response.status,
+        body: await response.json(),
+    }
+}
+
+export const getWeekSurveys = async (token) => {
+    const response = await fetch(`${API_URL}/surveys/week`, {
+        headers: {
+            Accept: 'application/vnd.api+json',
+            Authorization: token,
+        },
+    })
     return {
         status: response.status,
         body: await response.json(),

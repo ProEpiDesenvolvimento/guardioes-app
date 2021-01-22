@@ -216,7 +216,7 @@ const Home = ({ navigation }) => {
         updateUserScore()
 
         if (response.status === 200) {
-            await AsyncStorage.setItem('localpin', JSON.stringify(survey))
+            await AsyncStorage.setItem('localPin', JSON.stringify(survey))
         }
     }
 

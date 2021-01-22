@@ -225,6 +225,7 @@ export default {
   maps: {
     title: 'Mapa',
     guide: `Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.`,
+    confirmGuide: 'OK!',
   },
   news: {
     title: 'Noticias',

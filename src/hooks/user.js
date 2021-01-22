@@ -142,11 +142,9 @@ export const UserProvider = ({ children }) => {
         if (response.status === 200) {
             storeUserData(response.body.user, response.token)
             sendUserTagsToOneSignal(response.body.user)
-        }
-        else if (response.status === 401) {
+        } else if (response.status === 401) {
             signOut()
-        }
-        else {
+        } else {
             setIsLoggedIn(false)
         }
     }, [])
@@ -167,6 +165,7 @@ export const UserProvider = ({ children }) => {
             'selectedData',
             'householdAvatars',
             //'lastReport',
+            'showMapTip',
         ])
 
         RNSecureStorage.remove('userEmail')
@@ -202,14 +201,13 @@ export const UserProvider = ({ children }) => {
                 description: undefined,
                 avatar: householdAvatars[selected.id],
             }
-        } else {
-            return {
-                ...data,
-                is_household: false,
-                name: data.user_name,
-                user_name: undefined,
-                avatar: avatar,
-            }
+        }
+        return {
+            ...data,
+            is_household: false,
+            name: data.user_name,
+            user_name: undefined,
+            avatar,
         }
     }
 
@@ -236,8 +234,8 @@ export const UserProvider = ({ children }) => {
         const todayDate = new Date()
 
         const daysDiff = Math.floor(
-            (todayDate.getTime() - lastReportDate.getTime())
-            / (1000 * 60 * 60 * 24)
+            (todayDate.getTime() - lastReportDate.getTime()) /
+                (1000 * 60 * 60 * 24)
         )
 
         switch (daysDiff) {
@@ -248,7 +246,7 @@ export const UserProvider = ({ children }) => {
                 setScore(score + 1)
                 setLastReport(todayDate.toString())
                 console.warn('Reported the day before')
-                
+
                 await AsyncStorage.setItem('userScore', score.toString())
                 await AsyncStorage.setItem('lastReport', todayDate.toString())
                 break
@@ -256,7 +254,7 @@ export const UserProvider = ({ children }) => {
                 setScore(0)
                 setLastReport(todayDate.toString())
                 console.warn('Did not report the day before')
-                
+
                 await AsyncStorage.setItem('userScore', score.toString())
                 await AsyncStorage.setItem('lastReport', todayDate.toString())
         }
@@ -295,6 +293,8 @@ export const UserProvider = ({ children }) => {
                 setLocation({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
+                    latitudeDelta: 0.06,
+                    longitudeDelta: 0.06,
                     error: 0,
                 })
             },
@@ -302,6 +302,8 @@ export const UserProvider = ({ children }) => {
                 setLocation({
                     latitude: 0,
                     longitude: 0,
+                    latitudeDelta: 0.06,
+                    longitudeDelta: 0.06,
                     error: error.code,
                 })
             },

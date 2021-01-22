@@ -225,6 +225,7 @@ export default {
   maps: {
     title: 'Health Map',
     guide: `Each point in the map represents a person or group of people.\n\nThe color represents the percentage of 'bads' and the size, the number of people.\n\nYou can tap the points to know more.`,
+    confirmGuide: 'Okay!',
   },
   news: {
     title: 'News',
