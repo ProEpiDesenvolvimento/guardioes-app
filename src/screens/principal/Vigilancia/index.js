@@ -1,200 +1,148 @@
-import React, {Component} from 'react';
-import {Alert, Modal, ScrollView} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { useState } from 'react'
+import { Alert, Modal, ScrollView } from 'react-native'
+import Feather from 'react-native-vector-icons/Feather'
 
-import {Title, BodyText} from './styles';
 import {
-  ModalContainer,
-  ModalBox,
-  ModalTitle,
-  FormInlineCheck,
-  CheckBoxStyled,
-  ModalText,
-  ModalButton,
-  ModalButtonText,
-  CheckLabel,
-} from '../../../components/NormalForms';
-import {
-  Container,
-  KeyboardScrollView,
-  FormInline,
-  FormLabel,
-  NormalInput,
-  SendContainer,
-  SendText,
-  Button,
-} from '../../../components/NormalForms';
+    ModalContainer,
+    ModalBox,
+    ModalTitle,
+    FormInlineCheck,
+    CheckBoxStyled,
+    ModalText,
+    ModalButton,
+    ModalButtonText,
+    CheckLabel,
+    Container,
+    KeyboardScrollView,
+    FormInline,
+    FormLabel,
+    NormalInput,
+    SendContainer,
+    SendText,
+    Button,
+} from '../../../components/NormalForms'
+import { Title, BodyText } from './styles'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import {scale} from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
+import translate from '../../../../locales/i18n'
+import { useUser } from '../../../hooks/user'
+import { scale } from '../../../utils/scallingUtils'
+import { updateUser } from '../../../api/user'
 
-Feather.loadFont();
+Feather.loadFont()
 
-class Vigilancia extends Component {
-  static navigationOptions = {
-    title: translate('drawer.toSurveillance'),
-  };
-  constructor(props) {
-    super(props);
-    this.state = {
-      vigilance: false,
-      phone: null,
-      userID: null,
-      userToken: null,
-      isLoading: true,
-      modalTerms: false,
-    };
-  }
+const Vigilancia = ({ navigation }) => {
+    const { token, data } = useUser()
 
-  componentDidMount() {
-    this.fetchData();
-  }
+    const [showModalTerms, setShowModalTerms] = useState(false)
+    const [acceptedTerms, setAcceptedTerms] = useState(data.is_vigilance)
+    const [phone, setPhone] = useState(data.phone)
 
-  fetchData = async () => {
-    const id = await AsyncStorage.getItem('userID');
-    const userToken = await RNSecureStorage.get('userToken');
+    const handleEdit = async () => {
+        if (!acceptedTerms) return false
 
-    this.setState({
-      userID: id,
-      userToken: userToken,
-    });
+        const vigilance = {
+            is_vigilance: !data.is_vigilance,
+            phone: !data.is_vigilance ? phone : null,
+        }
 
-    let response = await fetch(`${API_URL}/users/${this.state.userID}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-        Authorization: `${this.state.userToken}`,
-      },
-    });
-    response = response.status == 200 ? await response.json() : response;
+        const response = await updateUser(vigilance, data.id, token)
+        console.warn(response.status)
 
-    this.setState({
-      vigilance: response.user.is_vigilance,
-      phone: response.user.phone,
-      isLoading: false,
-      acceptTerms: response.user.is_vigilance ? true : false,
-    });
-  };
+        if (response.status === 200) {
+            navigation.goBack()
+        } else {
+            Alert.alert(translate('register.geralError'))
+        }
+    }
 
-  handleEdit = () => {
-    if (!this.state.acceptTerms) return false;
-
-    return fetch(`${API_URL}/users/${this.state.userID}`, {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-        Authorization: `${this.state.userToken}`,
-      },
-      body: JSON.stringify({
-        is_vigilance: !this.state.vigilance,
-        phone: !this.state.vigilance ? this.state.phone : null,
-      }),
-    }).then(response => {
-      console.warn(response.status);
-      if (response.status == 200) {
-        this.props.navigation.goBack();
-      } else {
-        Alert.alert(translate('register.geralError'));
-      }
-    });
-  };
-
-  render() {
     return (
-      <Container>
-        <Modal //Modal View for Terms
-          animationType="fade"
-          transparent={true}
-          visible={this.state.modalTerms}
-          onRequestClose={() => {
-            this.setState({modalTerms: !this.state.modalTerms});
-          }}>
-          <ModalContainer>
-            <ModalBox>
-              <ModalTitle>{translate('vigilanceTerms.title')}</ModalTitle>
+        <Container>
+            <Modal // Modal View for Terms
+                animationType='fade'
+                transparent
+                visible={showModalTerms}
+                onRequestClose={() => {
+                    setShowModalTerms(!showModalTerms)
+                }}
+            >
+                <ModalContainer>
+                    <ModalBox>
+                        <ModalTitle>
+                            {translate('vigilanceTerms.title')}
+                        </ModalTitle>
 
-              <ScrollView>
-                <ModalText>{translate('vigilanceTerms.text')}</ModalText>
-              </ScrollView>
+                        <ScrollView>
+                            <ModalText>
+                                {translate('vigilanceTerms.text')}
+                            </ModalText>
+                        </ScrollView>
 
-              <Button
-                onPress={() => {
-                  this.setState({modalTerms: !this.state.modalTerms});
-                }}>
-                <ModalButton>
-                  <ModalButtonText>
-                    {translate('register.riskGroupButton')}
-                  </ModalButtonText>
-                </ModalButton>
-              </Button>
-            </ModalBox>
-          </ModalContainer>
-        </Modal>
-        <KeyboardScrollView>
-          <Title>O que é?</Title>
-          <BodyText>{translate('about.textoVigilancia')}</BodyText>
-          {!this.state.isLoading ? (
-            <>
-              <Title>
-                {this.state.vigilance
-                  ? translate('drawer.participateSuccess')
-                  : translate('drawer.participateQuestion')}
-              </Title>
-              {!this.state.vigilance ? (
-                <FormInline>
-                  <FormLabel>Informe seu telefone:</FormLabel>
-                  <NormalInput
-                    placeholder="5561988888888"
-                    maxLength={13}
-                    returnKeyType="done"
-                    keyboardType="number-pad"
-                    value={this.state.phone}
-                    onChangeText={text => this.setState({phone: text})}
-                  />
-                </FormInline>
-              ) : null}
+                        <Button
+                            onPress={() => setShowModalTerms(!showModalTerms)}
+                        >
+                            <ModalButton>
+                                <ModalButtonText>
+                                    {translate('register.riskGroupButton')}
+                                </ModalButtonText>
+                            </ModalButton>
+                        </Button>
+                    </ModalBox>
+                </ModalContainer>
+            </Modal>
 
-              {!this.state.vigilance ? (
-                <FormInlineCheck>
-                  <CheckBoxStyled
-                    title={translate('drawer.confirmRead')}
-                    checked={this.state.acceptTerms}
-                    onPress={() => {
-                      this.setState({acceptTerms: !this.state.acceptTerms});
-                    }}
-                  />
-                  <CheckLabel onPress={() => this.setState({modalTerms: true})}>
-                    <Feather
-                      name="help-circle"
-                      size={scale(25)}
-                      color="#348EAC"
-                    />
-                  </CheckLabel>
-                </FormInlineCheck>
-              ) : null}
+            <KeyboardScrollView>
+                <Title>O que é?</Title>
+                <BodyText>{translate('about.textoVigilancia')}</BodyText>
+                <Title>
+                    {data.is_vigilance
+                        ? translate('drawer.participateSuccess')
+                        : translate('drawer.participateQuestion')}
+                </Title>
+                {!data.is_vigilance ? (
+                    <FormInline>
+                        <FormLabel>Informe seu telefone:</FormLabel>
+                        <NormalInput
+                            placeholder='5561988888888'
+                            maxLength={13}
+                            returnKeyType='done'
+                            keyboardType='number-pad'
+                            value={phone}
+                            onChangeText={(text) => setPhone(text)}
+                        />
+                    </FormInline>
+                ) : null}
 
-              <FormInline />
+                {!data.is_vigilance ? (
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={translate('drawer.confirmRead')}
+                            checked={acceptedTerms}
+                            onPress={() => setAcceptedTerms(!acceptedTerms)}
+                        />
+                        <CheckLabel onPress={() => setShowModalTerms(true)}>
+                            <Feather
+                                name='help-circle'
+                                size={scale(25)}
+                                color='#348EAC'
+                            />
+                        </CheckLabel>
+                    </FormInlineCheck>
+                ) : null}
 
-              <Button onPress={this.handleEdit}>
-                <SendContainer>
-                  <SendText>
-                    {this.state.vigilance
-                      ? translate('drawer.cancelParticipation')
-                      : translate('drawer.participate')}
-                  </SendText>
-                </SendContainer>
-              </Button>
-            </>
-          ) : null}
-        </KeyboardScrollView>
-      </Container>
-    );
-  }
+                <FormInline />
+
+                <Button onPress={() => handleEdit()}>
+                    <SendContainer>
+                        <SendText>
+                            {data.is_vigilance
+                                ? translate('drawer.cancelParticipation')
+                                : translate('drawer.participate')}
+                        </SendText>
+                    </SendContainer>
+                </Button>
+            </KeyboardScrollView>
+        </Container>
+    )
 }
 
-export default Vigilancia;
+export default Vigilancia
