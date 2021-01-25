@@ -87,7 +87,7 @@ const Home = ({ navigation }) => {
     const [showProgressBar, setProgressBar] = useState(false)
     const [alertMessage, setAlertMessage] = useState(null)
 
-    const userSelected = getCurrentUserInfo()
+    const user = getCurrentUserInfo()
 
     useEffect(() => {
         if (!isLoading) {
@@ -179,11 +179,11 @@ const Home = ({ navigation }) => {
 
         if (userLastSurveys.length > 0) {
             userLastSurveys.map((survey) => {
-                if (userSelected.is_household) {
+                if (user.is_household) {
                     if (
                         survey.symptom.length > 0 &&
                         survey.household &&
-                        survey.household.id === userSelected.id
+                        survey.household.id === user.id
                     ) {
                         badReports += 1
                     }
@@ -203,7 +203,7 @@ const Home = ({ navigation }) => {
         if (location.error !== 0) return
 
         showLoadingAlert()
-        const householdID = userSelected.is_household ? userSelected.id : null
+        const householdID = user.is_household ? user.id : null
 
         const survey = {
             household_id: householdID,
@@ -261,7 +261,7 @@ const Home = ({ navigation }) => {
                             <NamesContainer>
                                 <TextName>
                                     {translate('home.hello') +
-                                        getNameParts(userSelected.name)}
+                                        getNameParts(user.name)}
                                 </TextName>
                                 <AppName>
                                     {translate('home.nowAGuardian')}
@@ -270,8 +270,8 @@ const Home = ({ navigation }) => {
                             <Avatar
                                 containerStyle={styles.avatar}
                                 size={scale(58)}
-                                source={handleAvatar(userSelected.avatar)}
-                                title={getInitials(userSelected.name)}
+                                source={handleAvatar(user.avatar)}
+                                title={getInitials(user.name)}
                                 editButton={{
                                     name: null,
                                     type: 'feather',

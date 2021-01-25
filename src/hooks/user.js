@@ -38,6 +38,16 @@ export const UserProvider = ({ children }) => {
     }, [])
 
     const loadStoredData = useCallback(async () => {
+        // Loads only essencial data stored
+
+        let token = ''
+
+        RNSecureStorage.get('userToken').then((data) => {
+            token = data
+        }).catch((err) => {
+            console.log(err)
+        })
+
         const userData = JSON.parse(
             await AsyncStorage.getItem('userData')
         )
@@ -58,6 +68,7 @@ export const UserProvider = ({ children }) => {
     }, [])
 
     const loadSecondaryData = useCallback(async () => {
+        // Loads secondary data and verify user credentials
         let email = ''
         let password = ''
 
@@ -117,6 +128,12 @@ export const UserProvider = ({ children }) => {
             'userData',
             JSON.stringify(user)
         )
+
+        await RNSecureStorage.set(
+            'userToken',
+            token,
+            { accessible: ACCESSIBLE }
+        )
     }
 
     const sendUserTagsToOneSignal = (user) => {
@@ -134,10 +151,16 @@ export const UserProvider = ({ children }) => {
     }
 
     const signIn = useCallback(async ({ email, password }) => {
-        const response = await authUser({
-            email,
-            password,
-        })
+        let response = {}
+
+        try {
+            response = await authUser({
+                email,
+                password,
+            })
+        } catch (err) {
+            console.log(err)
+        }
 
         if (response.status === 200) {
             storeUserData(response.body.user, response.token)
@@ -168,8 +191,17 @@ export const UserProvider = ({ children }) => {
             'showMapTip',
         ])
 
-        RNSecureStorage.remove('userEmail')
-        RNSecureStorage.remove('userPwd')
+        RNSecureStorage.exists('userEmail').then((exists) =>
+            exists ? RNSecureStorage.remove('userEmail') : null
+        )
+
+        RNSecureStorage.exists('userPwd').then((exists) =>
+            exists ? RNSecureStorage.remove('userPwd') : null
+        )
+
+        RNSecureStorage.exists('userToken').then((exists) =>
+            exists ? RNSecureStorage.remove('userToken') : null
+        )
 
         removeUserTagsfromOneSignal()
         setIsLoggedIn(false)
@@ -181,10 +213,7 @@ export const UserProvider = ({ children }) => {
             person.user = undefined
 
             setSelected(person)
-            await AsyncStorage.setItem(
-                'selectedData',
-                JSON.stringify(person)
-            )
+            await AsyncStorage.setItem('selectedData', JSON.stringify(person))
         } else {
             setSelected({})
             await AsyncStorage.removeItem('selectedData')
@@ -197,7 +226,7 @@ export const UserProvider = ({ children }) => {
             return {
                 ...selected,
                 is_household: true,
-                name: selected.description,
+                name: selected.description ? selected.description : '',
                 description: undefined,
                 avatar: householdAvatars[selected.id],
             }
@@ -205,7 +234,7 @@ export const UserProvider = ({ children }) => {
         return {
             ...data,
             is_household: false,
-            name: data.user_name,
+            name: data.user_name ? data.user_name : '',
             user_name: undefined,
             avatar,
         }
@@ -232,6 +261,7 @@ export const UserProvider = ({ children }) => {
     const updateUserScore = async () => {
         const lastReportDate = new Date(lastReport)
         const todayDate = new Date()
+        let newScore = 0
 
         const daysDiff = Math.floor(
             (todayDate.getTime() - lastReportDate.getTime()) /
@@ -240,27 +270,29 @@ export const UserProvider = ({ children }) => {
 
         switch (daysDiff) {
             case 0:
+                newScore = score
                 console.warn('Already reported today')
                 break
             case 1:
-                setScore(score + 1)
+                newScore = score + 1
+                setScore(newScore)
                 setLastReport(todayDate.toString())
                 console.warn('Reported the day before')
 
-                await AsyncStorage.setItem('userScore', score.toString())
-                await AsyncStorage.setItem('lastReport', todayDate.toString())
+                await AsyncStorage.setItem('userScore', newScore.toString())
+                await AsyncStorage.setItem('lastReport', JSON.stringify(todayDate))
                 break
             default:
-                setScore(0)
+                setScore(newScore)
                 setLastReport(todayDate.toString())
                 console.warn('Did not report the day before')
 
-                await AsyncStorage.setItem('userScore', score.toString())
-                await AsyncStorage.setItem('lastReport', todayDate.toString())
+                await AsyncStorage.setItem('userScore', newScore.toString())
+                await AsyncStorage.setItem('lastReport', JSON.stringify(todayDate))
         }
 
-        OneSignal.sendTags({ score })
-        console.warn(`User score: ${score}`)
+        OneSignal.sendTags({ score: newScore })
+        console.warn(`User score: ${newScore}`)
     }
 
     const getCurrentLocation = async () => {
@@ -322,6 +354,7 @@ export const UserProvider = ({ children }) => {
                 token,
                 data,
                 loadSecondaryData,
+                storeUserData,
                 selectUser,
                 getCurrentUserInfo,
                 avatar,
@@ -331,14 +364,15 @@ export const UserProvider = ({ children }) => {
                 updateHouseholdAvatars,
                 surveys,
                 storeSurveys,
-                updateUserScore,
                 location,
                 getCurrentLocation,
                 app,
                 lastReport,
                 score,
+                updateUserScore,
                 isLoading,
                 isLoggedIn,
+                setIsLoggedIn,
             }}
         >
             {children}
