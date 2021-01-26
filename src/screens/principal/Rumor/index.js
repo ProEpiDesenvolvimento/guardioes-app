@@ -1,345 +1,281 @@
-import React, {Component} from 'react';
-import {Text, View, Modal, Keyboard} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { createRef, useCallback, useState } from 'react'
+import { Text, Modal, Keyboard, Platform, StyleSheet } from 'react-native'
 
-import {ExitMap, ConfirmMap, MapFormMarker, MapFormText} from './styles';
+import Emoji from 'react-native-emoji'
+import Feather from 'react-native-vector-icons/Feather'
+import MapView, { Marker } from 'react-native-maps'
+import { useFocusEffect } from '@react-navigation/native'
+
+import mapStyle from '../../../utils/MarkerClustering/mapStyle'
 import {
-  Container,
-  KeyboardScrollView,
-  FormInline,
-  FormLabel,
-  NormalInput,
-} from '../../../components/NormalForms';
-import {
-  FormGroup,
-  FormGroupChild,
-  Button,
-  SendContainer,
-  SendText,
-} from '../../../components/NormalForms';
-import {CoolAlert} from '../../../components/CoolAlert';
+    Container,
+    KeyboardScrollView,
+    FormInline,
+    FormLabel,
+    NormalInput,
+    FormGroup,
+    FormGroupChild,
+    Button,
+    SendContainer,
+    SendText,
+} from '../../../components/NormalForms'
+import { CoolAlert } from '../../../components/CoolAlert'
+import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles'
 
-import RNSecureStorage from 'rn-secure-storage';
-import MapView, {Marker} from 'react-native-maps';
-import {API_URL} from 'react-native-dotenv';
-import translate from '../../../../locales/i18n';
-import Emoji from 'react-native-emoji';
-import {scale} from '../../../utils/scallingUtils';
-import Geolocation from 'react-native-geolocation-service';
+import translate from '../../../../locales/i18n'
+import { scale } from '../../../utils/scallingUtils'
+import { useUser } from '../../../hooks/user'
+import { createRumor } from '../../../api/rumors'
 
-Feather.loadFont();
+Feather.loadFont()
 
-let markerLat = 0;
-let markerLon = 0;
+const Rumor = ({ navigation }) => {
+    const { token, location, getCurrentLocation } = useUser()
 
-class Rumor extends Component {
-  static navigationOptions = {
-    title: 'Rumor',
-  };
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [confirmedCases, setConfirmedCases] = useState(0)
+    const [confirmedDeaths, setConfirmedDeaths] = useState(0)
+    const [region, setRegion] = useState(location)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [showMarker, setShowMarker] = useState(false)
+    const [showAlert, setShowAlert] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
 
-  constructor(props) {
-    super(props);
+    const eventInput = createRef()
+    const casesInput = createRef()
+    const deathsInput = createRef()
 
-    this.getLocation(); //Get user location
+    useFocusEffect(
+        useCallback(() => {
+            getCurrentLocation()
+        }, [])
+    )
 
-    this.state = {
-      showAlert: false,
-      showProgressBar: false, //Custom Progress Bar
-      userLatitude: 0,
-      userLongitude: 0,
-      userLatitudeDelta: 0.0222,
-      userLongitudeDelta: 0.0121,
-      modalVisibility: false,
-      showMarker: false,
-      descriptionHeight: 40,
+    const sendRumor = async () => {
+        Keyboard.dismiss()
+        setShowProgressBar(true)
+        setShowAlert(true)
 
-      description: '',
-      confirmed_cases: 0,
-      confirmed_deaths: 0,
-      title: '',
-    };
-  }
+        const response = await createRumor(
+            {
+                rumor: {
+                    title,
+                    description,
+                    confirmed_cases: confirmedCases,
+                    confirmed_deaths: confirmedDeaths,
+                },
+            },
+            token
+        )
 
-  showAlert = () => {
-    this.setState({
-      showAlert: true,
-      showProgressBar: true,
-    });
-  };
-
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-    });
-  };
-
-  getLocation() {
-    Geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          userLatitude: position.coords.latitude,
-          userLongitude: position.coords.longitude,
-          error: null,
-        });
-        console.log('Log the position -> ', position);
-        console.log('Log the state after get location', this.state);
-      },
-      error => this.setState({error: error.message}),
-      {enableHighAccuracy: true, timeout: 50000},
-    );
-  }
-
-  _setModalVisible = () => {
-    this.setState({modalVisibility: !this.state.modalVisibility});
-  };
-
-  _showMarker = show => {
-    this.setState({showMarker: show});
-  };
-
-  _updateUserLoc = (lat, lon) => {
-    this.setState({
-      userLatitude: lat,
-      userLongitude: lon,
-    });
-  };
-
-  updateSize = height => {
-    this.setState({
-      descriptionHeight: height,
-    });
-  };
-
-  _createRumor = async () => {
-    this.showAlert();
-    Keyboard.dismiss();
-    const userToken = await RNSecureStorage.get('userToken');
-    const {title, description, confirmed_cases, confirmed_deaths} = this.state;
-
-    try {
-      fetch(API_URL + '/rumors', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/vnd.api+json',
-          'Content-Type': 'application/json',
-          Authorization: userToken,
-        },
-        body: JSON.stringify({
-          rumor: {
-            title,
-            description,
-            confirmed_cases,
-            confirmed_deaths,
-          },
-        }),
-      })
-        .then(res => {
-          console.log('Res -> ', res);
-          return res.json();
-        })
-        .then(resJson => {
-          console.log('ResJson -> ', resJson);
-          console.log('Data -> ', resJson.data);
-          if (resJson.message == 'Sucesso') {
-            // this.props.navigation.navigate('Home');
-            // this.hideAlert();
-            this.setState({showProgressBar: false});
-          }
-        });
-    } catch (error) {
-      console.log(error);
+        if (response.status === 200) {
+            console.warn(response.status)
+            // navigation.navigate('Home')
+            setShowAlert(false)
+            setShowProgressBar(false)
+        }
     }
-  };
-
-  render() {
-    const {showAlert} = this.state;
-
-    const marker = (
-      <Marker
-        coordinate={{
-          latitude: markerLat,
-          longitude: markerLon,
-        }}
-      />
-    );
 
     return (
-      <Container>
-        <KeyboardScrollView>
-          <Modal
-            transparent={true}
-            visible={this.state.modalVisibility}
-            onRequestClose={() => {
-              this._setModalVisible();
-            }}>
-            <MapView
-              style={{flex: 1}}
-              region={{
-                latitude: this.state.userLatitude,
-                longitude: this.state.userLongitude,
-                latitudeDelta: this.state.userLatitudeDelta,
-                longitudeDelta: this.state.userLongitudeDelta,
-              }}
-              // liteMode={true}
-              showsUserLocation={true}
-              onPress={e => {
-                // console.log("My Coordinate -> ", this.state.userLatitude, this.state.userLongitude);
-                markerLat = e.nativeEvent.coordinate.latitude;
-                markerLon = e.nativeEvent.coordinate.longitude;
-                console.warn('Show Marker', markerLat, markerLon);
+        <Container>
+            <KeyboardScrollView>
+                <Modal
+                    transparent
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible)
+                    }}
+                >
+                    <MapView
+                        style={{ flex: 1 }}
+                        region={region}
+                        customMapStyle={mapStyle}
+                        showsUserLocation
+                        onPress={(e) => {
+                            console.warn(
+                                'Show Marker',
+                                e.nativeEvent.coordinate.latitude,
+                                e.nativeEvent.coordinate.longitude
+                            )
 
-                this._showMarker(true);
-                //When user scrolls through the map and clicks, the map goes back to where the
-                //the user is, thus is required userLatitude and userLongitude to be changed as well
-                this._updateUserLoc(
-                  e.nativeEvent.coordinate.latitude,
-                  e.nativeEvent.coordinate.longitude,
-                );
-              }}>
-              {this.state.showMarker ? marker : null}
-            </MapView>
+                            setShowMarker(true)
+                            // When user scrolls through the map and clicks, the map goes back to where the
+                            // the user is, thus is required userLatitude and userLongitude to be changed as well
+                            setRegion({
+                                ...region,
+                                latitude: e.nativeEvent.coordinate.latitude,
+                                longitude: e.nativeEvent.coordinate.longitude,
+                            })
+                        }}
+                    >
+                        {showMarker ? (
+                            <Marker
+                                coordinate={{
+                                    latitude: region.latitude,
+                                    longitude: region.longitude,
+                                }}
+                            />
+                        ) : null}
+                    </MapView>
 
-            <ExitMap
-              onPress={() => {
-                this._showMarker(false);
-                this._updateUserLoc(
-                  this.state.userLatitude,
-                  this.state.userLongitude,
-                );
-                this._setModalVisible();
-              }}>
-              <Feather name="x" size={scale(25)} color="#ffffff" />
-            </ExitMap>
-            {this.state.showMarker ? (
-              <ConfirmMap onPress={() => this._setModalVisible()}>
-                <Feather name="check" size={scale(25)} color="#ffffff" />
-              </ConfirmMap>
-            ) : null}
-          </Modal>
+                    <ExitMap
+                        onPress={() => {
+                            setShowMarker(false)
+                            setRegion({
+                                ...region,
+                                latitude: location.latitude,
+                                longitude: location.longitude,
+                            })
+                            setModalVisible(false)
+                        }}
+                    >
+                        <Feather
+                            name='x'
+                            size={scale(25)}
+                            color='#ffffff'
+                            style={styles.icons}
+                        />
+                    </ExitMap>
+                    {showMarker ? (
+                        <ConfirmMap onPress={() => setModalVisible(false)}>
+                            <Feather
+                                name='check'
+                                size={scale(25)}
+                                color='#ffffff'
+                                style={styles.icons}
+                            />
+                        </ConfirmMap>
+                    ) : null}
+                </Modal>
 
-          <FormInline>
-            <FormLabel>Título:</FormLabel>
-            <NormalInput
-              maxLength={100}
-              onSubmitEditing={() => this.eventInput.focus()}
-              onChangeText={title => this.setState({title})}
-            />
-          </FormInline>
-          <FormInline>
-            <FormLabel>Descrição:</FormLabel>
-            <NormalInput
-              multiline={true}
-              maxLength={300}
-              ref={input => (this.eventInput = input)}
-              onSubmitEditing={() => this.casesInput.focus()}
-              onContentSizeChange={e =>
-                this.updateSize(e.nativeEvent.contentSize.height)
-              }
-              onChangeText={description => this.setState({description})}
-            />
-          </FormInline>
-
-          <FormGroup>
-            <FormGroupChild>
-              <FormLabel>Número de Casos:</FormLabel>
-              <NormalInput
-                keyboardType="number-pad"
-                ref={input => (this.casesInput = input)}
-                onSubmitEditing={() => this.deathsInput.focus()}
-                onChangeText={confirmed_cases =>
-                  this.setState({confirmed_cases})
-                }
-              />
-            </FormGroupChild>
-
-            <FormGroupChild>
-              <FormLabel>Número de Mortes:</FormLabel>
-              <NormalInput
-                keyboardType="number-pad"
-                ref={input => (this.deathsInput = input)}
-                onChangeText={confirmed_deaths =>
-                  this.setState({confirmed_deaths})
-                }
-              />
-            </FormGroupChild>
-          </FormGroup>
-
-          <FormGroup>
-            <FormGroupChild>
-              <FormLabel>Localização:</FormLabel>
-              <Button
-                onPress={() => {
-                  this._setModalVisible();
-                  Keyboard.dismiss();
-                }}>
-                <MapFormMarker>
-                  <MapFormText>Marcar no Mapa</MapFormText>
-                  {this.state.showMarker ? (
-                    <Feather
-                      name="check-circle"
-                      size={scale(20)}
-                      color="#348EAC"
+                <FormInline>
+                    <FormLabel>Título:</FormLabel>
+                    <NormalInput
+                        maxLength={100}
+                        onSubmitEditing={() => eventInput.focus()}
+                        onChangeText={(text) => setTitle(text)}
                     />
-                  ) : (
-                    <Feather name="x-circle" size={scale(20)} color="#c4c4c4" />
-                  )}
-                </MapFormMarker>
-              </Button>
-            </FormGroupChild>
-          </FormGroup>
+                </FormInline>
+                <FormInline>
+                    <FormLabel>Descrição:</FormLabel>
+                    <NormalInput
+                        multiline
+                        maxLength={300}
+                        ref={eventInput}
+                        onSubmitEditing={() => casesInput.focus()}
+                        onChangeText={(text) => setDescription(text)}
+                    />
+                </FormInline>
 
-          <Button onPress={() => this._createRumor()}>
-            <SendContainer>
-              <SendText>Enviar</SendText>
-            </SendContainer>
-          </Button>
-        </KeyboardScrollView>
+                <FormGroup>
+                    <FormGroupChild>
+                        <FormLabel>Número de Casos:</FormLabel>
+                        <NormalInput
+                            keyboardType='number-pad'
+                            ref={casesInput}
+                            onSubmitEditing={() => deathsInput.focus()}
+                            onChangeText={(text) => setConfirmedCases(text)}
+                        />
+                    </FormGroupChild>
 
-        <CoolAlert
-          show={showAlert}
-          showProgress={this.state.showProgressBar}
-          title={
-            this.state.showProgressBar ? (
-              translate('badReport.alertMessages.sending')
-            ) : (
-              <Text>
-                {translate('badReport.alertMessages.thanks')} {emojis[1]}
-                {emojis[1]}
-                {emojis[1]}
-              </Text>
-            )
-          }
-          message={
-            this.state.showProgressBar ? null : (
-              <Text>
-                {translate('rumor.rumorSent')} {emojis[0]}
-                {emojis[0]}
-                {emojis[0]}
-              </Text>
-            )
-          }
-          closeOnTouchOutside={this.state.showProgressBar ? false : true}
-          closeOnHardwareBackPress={false}
-          showConfirmButton={this.state.showProgressBar ? false : true}
-          confirmText={translate('badReport.alertMessages.confirmText')}
-          onCancelPressed={() => this.hideAlert()}
-          onConfirmPressed={() => this.hideAlert()}
-          onDismiss={() => this.hideAlert()}
-        />
-      </Container>
-    );
-  }
+                    <FormGroupChild>
+                        <FormLabel>Número de Mortes:</FormLabel>
+                        <NormalInput
+                            keyboardType='number-pad'
+                            ref={deathsInput}
+                            onChangeText={(text) => setConfirmedDeaths(text)}
+                        />
+                    </FormGroupChild>
+                </FormGroup>
+
+                <FormGroup>
+                    <FormGroupChild>
+                        <FormLabel>Localização:</FormLabel>
+                        <Button
+                            onPress={() => {
+                                Keyboard.dismiss()
+                                setModalVisible(true)
+                            }}
+                        >
+                            <MapFormMarker>
+                                <MapFormText>Marcar no Mapa</MapFormText>
+                                {showMarker ? (
+                                    <Feather
+                                        name='check-circle'
+                                        size={scale(20)}
+                                        color='#348EAC'
+                                    />
+                                ) : (
+                                    <Feather
+                                        name='x-circle'
+                                        size={scale(20)}
+                                        color='#c4c4c4'
+                                    />
+                                )}
+                            </MapFormMarker>
+                        </Button>
+                    </FormGroupChild>
+                </FormGroup>
+
+                <Button onPress={() => sendRumor()}>
+                    <SendContainer>
+                        <SendText>Enviar</SendText>
+                    </SendContainer>
+                </Button>
+            </KeyboardScrollView>
+
+            <CoolAlert
+                show={showAlert}
+                showProgress={showProgressBar}
+                title={
+                    showProgressBar ? (
+                        translate('badReport.alertMessages.sending')
+                    ) : (
+                        <Text>
+                            {translate('badReport.alertMessages.thanks')}{' '}
+                            {emojis[1]}
+                            {emojis[1]}
+                            {emojis[1]}
+                        </Text>
+                    )
+                }
+                message={
+                    showProgressBar ? null : (
+                        <Text>
+                            {translate('rumor.rumorSent')} {emojis[0]}
+                            {emojis[0]}
+                            {emojis[0]}
+                        </Text>
+                    )
+                }
+                closeOnTouchOutside={!showProgressBar}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={!showProgressBar}
+                confirmText={translate('badReport.alertMessages.confirmText')}
+                onCancelPressed={() => setShowAlert(false)}
+                onConfirmPressed={() => setShowAlert(false)}
+                onDismiss={() => setShowAlert(false)}
+            />
+        </Container>
+    )
 }
 
-const emojis = [
-  <Emoji //Emoji heart up
-    name="heart"
-    style={{fontSize: scale(15)}}
-  />,
-  <Emoji //Emoji tada up
-    name="tada"
-    style={{fontSize: scale(15)}}
-  />,
-];
+const styles = StyleSheet.create({
+    icons: {
+        marginBottom: Platform.OS === 'ios' ? -3 : 0,
+    },
+})
 
-export default Rumor;
+const emojis = [
+    <Emoji // Emoji heart up
+        name='heart'
+        style={{ fontSize: scale(15) }}
+    />,
+    <Emoji // Emoji tada up
+        name='tada'
+        style={{ fontSize: scale(15) }}
+    />,
+]
+
+export default Rumor
