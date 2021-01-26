@@ -38,18 +38,21 @@ export const createHousehold = async (data, id, token) => {
         status: response.status,
         body: await response.json(),
     }
-} 
+}
 
 export const updateHousehold = async (data, id, token) => {
-    const response = await fetch(`${API_URL}/users/${id}/households/${data.id}`, {
-        method: 'PATCH',
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/json',
-            Authorization: token,
-        },
-        body: JSON.stringify(data),
-    })
+    const response = await fetch(
+        `${API_URL}/users/${id}/households/${data.id}`,
+        {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
+                Authorization: token,
+            },
+            body: JSON.stringify(data),
+        }
+    )
     return {
         status: response.status,
         body: await response.json(),
@@ -57,13 +60,16 @@ export const updateHousehold = async (data, id, token) => {
 }
 
 export const deleteHousehold = async (data, id, token) => {
-    const response = await fetch(`${API_URL}/users/${id}/households/${data.id}`, {
-        method: 'DELETE',
-        headers: {
-            Accept: 'application/vnd.api+json',
-            Authorization: token,
-        },
-    })
+    const response = await fetch(
+        `${API_URL}/users/${id}/households/${data.id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                Authorization: token,
+            },
+        }
+    )
     return {
         status: response.status,
     }
