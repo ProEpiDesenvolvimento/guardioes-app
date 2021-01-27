@@ -111,11 +111,10 @@ export const UserProvider = ({ children }) => {
         await signIn({ email, password })
     }, [])
 
-    const storeUserData = async (user, token) => {
+    const storeUserData = async (user, token = null) => {
         const { households } = user
         const { app } = user
 
-        setToken(token)
         setHouseholds(households)
         setApp(app)
 
@@ -126,9 +125,13 @@ export const UserProvider = ({ children }) => {
 
         await AsyncStorage.setItem('userData', JSON.stringify(user))
 
-        await RNSecureStorage.set('userToken', token, {
-            accessible: ACCESSIBLE,
-        })
+        if (token) {
+            setToken(token)
+
+            await RNSecureStorage.set('userToken', token, {
+                accessible: ACCESSIBLE,
+            })
+        }
     }
 
     const sendUserTagsToOneSignal = (user) => {
