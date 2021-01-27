@@ -21,10 +21,10 @@ export const UserProvider = ({ children }) => {
     const [token, setToken] = useState('')
     const [data, setData] = useState({})
     const [avatar, setAvatar] = useState('')
-    const [households, setHouseholds] = useState([{}])
+    const [households, setHouseholds] = useState([])
     const [householdAvatars, setHouseholdAvatars] = useState({})
     const [selected, setSelected] = useState({})
-    const [surveys, setSurveys] = useState([{}])
+    const [surveys, setSurveys] = useState([])
     const [location, setLocation] = useState({})
     const [app, setApp] = useState({})
     const [score, setScore] = useState(0)
@@ -39,7 +39,6 @@ export const UserProvider = ({ children }) => {
 
     const loadStoredData = useCallback(async () => {
         // Loads only essencial data stored
-
         let token = ''
 
         RNSecureStorage.get('userToken').then((data) => {
@@ -48,14 +47,15 @@ export const UserProvider = ({ children }) => {
             console.log(err)
         })
 
-        const userData = JSON.parse(
-            await AsyncStorage.getItem('userData')
-        )
+        const userData = JSON.parse(await AsyncStorage.getItem('userData'))
 
         const selectedData = JSON.parse(
             await AsyncStorage.getItem('selectedData')
         )
 
+        if (token !== '') {
+            setToken(token)
+        }
         if (userData) {
             setData(userData)
         }
@@ -85,7 +85,7 @@ export const UserProvider = ({ children }) => {
         })
 
         const avatar = await AsyncStorage.getItem('userAvatar')
-        const score = parseInt(await AsyncStorage.getItem('userScore'))
+        const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
 
         const householdAvatars = JSON.parse(
@@ -112,8 +112,8 @@ export const UserProvider = ({ children }) => {
     }, [])
 
     const storeUserData = async (user, token) => {
-        const households = user.households
-        const app = user.app
+        const { households } = user
+        const { app } = user
 
         setToken(token)
         setHouseholds(households)
@@ -124,21 +124,18 @@ export const UserProvider = ({ children }) => {
 
         setData(user)
 
-        await AsyncStorage.setItem(
-            'userData',
-            JSON.stringify(user)
-        )
+        await AsyncStorage.setItem('userData', JSON.stringify(user))
 
-        await RNSecureStorage.set(
-            'userToken',
-            token,
-            { accessible: ACCESSIBLE }
-        )
+        await RNSecureStorage.set('userToken', token, {
+            accessible: ACCESSIBLE,
+        })
     }
 
     const sendUserTagsToOneSignal = (user) => {
         const userGroup = user.group ? user.group.split('/')[3] : null
-        const userSchool = user.school_unit_id ? user.school_unit_id.toString() : null
+        const userSchool = user.school_unit_id
+            ? user.school_unit_id.toString()
+            : null
 
         OneSignal.setExternalUserId(user.id.toString())
         OneSignal.sendTags({
@@ -258,43 +255,6 @@ export const UserProvider = ({ children }) => {
         setSurveys(surveys)
     }
 
-    const updateUserScore = async () => {
-        const lastReportDate = new Date(lastReport)
-        const todayDate = new Date()
-        let newScore = 0
-
-        const daysDiff = Math.floor(
-            (todayDate.getTime() - lastReportDate.getTime()) /
-                (1000 * 60 * 60 * 24)
-        )
-
-        switch (daysDiff) {
-            case 0:
-                newScore = score
-                console.warn('Already reported today')
-                break
-            case 1:
-                newScore = score + 1
-                setScore(newScore)
-                setLastReport(todayDate.toString())
-                console.warn('Reported the day before')
-
-                await AsyncStorage.setItem('userScore', newScore.toString())
-                await AsyncStorage.setItem('lastReport', JSON.stringify(todayDate))
-                break
-            default:
-                setScore(newScore)
-                setLastReport(todayDate.toString())
-                console.warn('Did not report the day before')
-
-                await AsyncStorage.setItem('userScore', newScore.toString())
-                await AsyncStorage.setItem('lastReport', JSON.stringify(todayDate))
-        }
-
-        OneSignal.sendTags({ score: newScore })
-        console.warn(`User score: ${newScore}`)
-    }
-
     const getCurrentLocation = async () => {
         try {
             const granted = await PermissionsAndroid.request(
@@ -344,6 +304,51 @@ export const UserProvider = ({ children }) => {
                 timeout: 50000,
             }
         )
+    }
+
+    const updateUserScore = async () => {
+        const lastReportDate = new Date(lastReport)
+        const todayDate = new Date()
+
+        lastReportDate.setHours(0, 0, 0, 0)
+        let newScore = 0
+
+        const daysDiff = Math.floor(
+            (todayDate.getTime() - lastReportDate.getTime()) /
+                (1000 * 60 * 60 * 24)
+        )
+
+        switch (daysDiff) {
+            case 0:
+                newScore = score
+                console.warn('Already reported today')
+                break
+            case 1:
+                newScore = score + 1
+                setScore(newScore)
+                setLastReport(todayDate.toString())
+                console.warn('Reported the day before')
+
+                await AsyncStorage.setItem('userScore', newScore.toString())
+                await AsyncStorage.setItem(
+                    'lastReport',
+                    todayDate.toISOString()
+                )
+                break
+            default:
+                setScore(newScore)
+                setLastReport(todayDate.toString())
+                console.warn('Did not report the day before')
+
+                await AsyncStorage.setItem('userScore', newScore.toString())
+                await AsyncStorage.setItem(
+                    'lastReport',
+                    todayDate.toISOString()
+                )
+        }
+
+        OneSignal.sendTags({ score: newScore })
+        console.warn(`User score: ${newScore}`)
     }
 
     return (
