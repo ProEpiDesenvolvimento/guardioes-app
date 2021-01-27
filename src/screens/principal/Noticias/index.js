@@ -14,8 +14,9 @@ import {
     OptionText,
 } from './styles'
 
+import translate from '../../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
-import { getGroupTwitter } from '../../../api/groups'
+import { getUserGroupTwitter } from '../../../api/groups'
 import { getGroupTweets } from '../../../api/twitter'
 
 const posts = 10
@@ -23,7 +24,7 @@ const posts = 10
 const Noticias = () => {
     const { token, data, app } = useUser()
 
-    const [isLoading, setLoading] = useState(true)
+    const [isLoaded, setIsLoaded] = useState(false)
     const [groupTwitter, setGroupTwitter] = useState(null)
     const [twitterOption, setTwitterOption] = useState('')
     const [length, setLength] = useState(posts)
@@ -31,9 +32,9 @@ const Noticias = () => {
     const [filteredTweets, setFilteredTweets] = useState([])
 
     // Get group twitter from user
-    const fetchGroupTwitter = async () => {
+    const getGroupTwitter = async () => {
         if (data.group_id !== null) {
-            const response = await getGroupTwitter(data.group_id, token)
+            const response = await getUserGroupTwitter(data.group_id, token)
 
             if (response.status === 200) {
                 setGroupTwitter(response.body.twitter)
@@ -54,7 +55,7 @@ const Noticias = () => {
 
     // Get tweets to show
     const fetchTweets = async () => {
-        setLoading(true)
+        setIsLoaded(false)
         setLength(posts)
 
         const twitter = {
@@ -68,11 +69,11 @@ const Noticias = () => {
             setFilteredTweets(response.body.twitter_api.tweets.slice(0, posts))
         }
 
-        setLoading(false)
+        setIsLoaded(true)
     }
 
     useEffect(() => {
-        fetchGroupTwitter()
+        getGroupTwitter()
     }, [])
 
     useEffect(() => {
@@ -81,7 +82,7 @@ const Noticias = () => {
         }
     }, [twitterOption])
 
-    if (isLoading) {
+    if (!isLoaded) {
         return <ScreenLoader />
     }
 
@@ -92,7 +93,9 @@ const Noticias = () => {
                 <NoticiasList
                     ListHeaderComponent={
                         <>
-                            <NoticiasTitle>Notícias</NoticiasTitle>
+                            <NoticiasTitle>
+                                {translate('news.title')}
+                            </NoticiasTitle>
                             <FeedTitle>Feed RSS do Guardiões</FeedTitle>
 
                             {groupTwitter !== null ? (
