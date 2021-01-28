@@ -15,7 +15,7 @@ export const getUser = async (id, token) => {
 
 export const authUser = async (data) => {
     const response = await fetch(`${API_URL}/user/login`, {
-        method: "POST",
+        method: 'POST',
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const authUser = async (data) => {
 
 export const createUser = async (data) => {
     const response = await fetch(`${API_URL}/user/signup`, {
-        method: "POST",
+        method: 'POST',
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
@@ -70,10 +70,10 @@ export const createUser = async (data) => {
 
 export const updateUser = async (data, id, token) => {
     const response = await fetch(`${API_URL}/users/${id}`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
             Authorization: token,
         },
         body: JSON.stringify(data),
@@ -84,31 +84,32 @@ export const updateUser = async (data, id, token) => {
     }
 }
 
-export const sendCode = async (email) => {
+export const sendCode = async (data) => {
     const response = await fetch(`${API_URL}/email_reset_password`, {
-        method: "POST",
+        method: 'POST',
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            email,
+            email: data.email,
         }),
     })
     return {
         status: response.status,
+        body: await response.json(),
     }
 }
 
-export const confirmCode = async (code) => {
+export const confirmCode = async (data) => {
     const response = await fetch(`${API_URL}/show_reset_token`, {
-        method: "POST",
+        method: 'POST',
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            code,
+            code: data.code,
         }),
     })
     return {
@@ -119,7 +120,7 @@ export const confirmCode = async (code) => {
 
 export const resetPassword = async (data) => {
     const response = await fetch(`${API_URL}/reset_password`, {
-        method: "POST",
+        method: 'POST',
         headers: {
             Accept: 'application/vnd.api+json',
             'Content-Type': 'application/json',

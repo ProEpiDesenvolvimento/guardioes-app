@@ -1,300 +1,308 @@
-import React, {Component} from 'react';
-import {SafeAreaView, Alert, NetInfo, View} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import SwiperFlatList from 'react-native-swiper-flatlist';
+import React, { useCallback, useRef, useState } from 'react'
+import { Alert, BackHandler, SafeAreaView } from 'react-native'
+
+import Feather from 'react-native-vector-icons/Feather'
+import SwiperFlatList from 'react-native-swiper-flatlist'
+import { useFocusEffect } from '@react-navigation/native'
 
 import {
-  GradientBackground,
-  KeyboardScrollView,
-  ButtonBack,
-  SnowInput,
-  Touch,
-  SnowButton,
-  Label,
-} from '../../../components/SnowForms';
-import {ScreenView, PageTitle, LabelWrapper, TextLabel} from './styles';
-import {CoolAlert} from '../../../components/CoolAlert';
+    GradientBackground,
+    KeyboardScrollView,
+    ButtonBack,
+    SnowInput,
+    Touch,
+    SnowButton,
+    Label,
+} from '../../../components/SnowForms'
+import { ScreenView, PageTitle, LabelWrapper, TextLabel } from './styles'
 
-import {PasswordIcon} from '../../../img/imageConst';
-import {scale} from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
+import translate from '../../../../locales/i18n'
+import { scale } from '../../../utils/scallingUtils'
+import { CoolAlert } from '../../../components/CoolAlert'
+import { PasswordIcon } from '../../../img/imageConst'
+import { sendCode, confirmCode, resetPassword } from '../../../api/user'
 
-Feather.loadFont();
+Feather.loadFont()
 
-class ForgetPwd extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userEmail: null,
-      verificationToken: null,
-      userPwd: '',
-      userPwdConfirm: '',
-      showAlert: false, //Custom Alerts
-      showProgressBar: false, //Custom Progress Bar
-      slideIndex: 0,
-    };
-  }
+const ForgetPwd = ({ navigation }) => {
+    const [email, setEmail] = useState('')
+    const [code, setCode] = useState('')
+    const [token, setToken] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [slideIndex, setSlideIndex] = useState(0)
+    const [showAlert, setShowAlert] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
 
-  showAlert = () => {
-    this.setState({
-      showAlert: true,
-      showProgressBar: true,
-    });
-  };
+    const passwordInput = useRef()
+    const swiper = useRef()
 
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-    });
-  };
+    useFocusEffect(
+        useCallback(() => {
+            BackHandler.addEventListener(
+                'hardwareBackPress',
+                goToPreviousScreen
+            )
 
-  goToNextScreen = () => {
-    const slideIndex = this.state.slideIndex + 1;
-    this.setState({slideIndex});
-    this.swiper.scrollToIndex({index: slideIndex});
-  };
+            return () =>
+                BackHandler.removeEventListener(
+                    'hardwareBackPress',
+                    goToPreviousScreen
+                )
+        }, [slideIndex])
+    )
 
-  sendToken = async () => {
-    this.showAlert();
-    return fetch(`${API_URL}/email_reset_password`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: this.state.userEmail,
-      }),
-    }).then(response => {
-      this.setState({statusCode: response.status});
-      if (this.state.statusCode == 200) {
-        this.goToNextScreen();
-        this.hideAlert();
-        return response.json();
-      } else {
-        this.hideAlert();
-        Alert.alert(
-          translate('forgetPwd.invalidEmail'),
-          translate('forgetPwd.tryAgain'),
-        );
-        //console.warn(response)
-      }
-    });
-  };
+    const showLoadingAlert = () => {
+        setShowAlert(true)
+        setShowProgressBar(true)
+    }
 
-  confirmVerificationCode = async () => {
-    this.showAlert();
-    return fetch(`${API_URL}/show_reset_token`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        code: this.state.verificationToken,
-      }),
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson.error == true) {
-          this.hideAlert();
-          Alert.alert(translate('getToken.invalidCode'));
-        } else {
-          this.setState({verificationToken: responseJson.reset_password_token});
-          this.goToNextScreen();
-          this.hideAlert();
+    const goToPreviousScreen = () => {
+        if (slideIndex === 0) {
+            navigation.goBack()
+            return true
         }
-      });
-  };
+        const newSlideIndex = slideIndex - 1
 
-  resetPassword = async () => {
-    this.showAlert();
-    return fetch(`${API_URL}/reset_password`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        reset_password_token: this.state.verificationToken,
-        password: this.state.userPwd,
-        password_confirmation: this.state.userPwdConfirm,
-      }),
-    }).then(response => {
-      this.setState({statusCode: response.status});
-      if (this.state.statusCode == 200) {
-        this.hideAlert();
-        Alert.alert(translate('forgetPwd.passwordChanged'));
-        this.props.navigation.navigate('Login');
-        return response.json();
-      } else {
-        this.hideAlert();
-        Alert.alert(
-          translate('forgetPwd.differentsPass'),
-          translate('forgetPwd.tryAgain'),
-        );
-      }
-    });
-  };
+        swiper.current.scrollToIndex({ index: newSlideIndex })
+        setSlideIndex(newSlideIndex)
 
-  render() {
-    const {showAlert} = this.state;
-    const navigation = this.props.navigation;
+        return true
+    }
+
+    const goToNextScreen = () => {
+        const newSlideIndex = slideIndex + 1
+
+        swiper.current.scrollToIndex({ index: newSlideIndex })
+        setSlideIndex(newSlideIndex)
+    }
+
+    const sendUserToken = async () => {
+        showLoadingAlert()
+
+        const response = await sendCode({ email })
+
+        if (response.status === 200) {
+            goToNextScreen()
+            setShowAlert(false)
+        } else {
+            console.warn(response)
+            Alert.alert(
+                translate('forgetPwd.invalidEmail'),
+                translate('forgetPwd.tryAgain')
+            )
+            setShowAlert(false)
+        }
+    }
+
+    const confirmUserToken = async () => {
+        if (code === '') {
+            Alert.alert(
+                translate('getToken.errorMessages.verificationCodeBlank')
+            )
+            return
+        }
+
+        showLoadingAlert()
+
+        const response = await confirmCode({ code })
+
+        if (response.status === 200) {
+            setToken(response.body.reset_password_token)
+            goToNextScreen()
+            setShowAlert(false)
+        } else {
+            Alert.alert(translate('getToken.invalidCode'))
+            setShowAlert(false)
+        }
+    }
+
+    const handleResetPassword = async () => {
+        if (password.length < 8 || confirmPassword.length < 8) {
+            Alert.alert(translate('changePwd.errorMessages.shortPwd'))
+            return
+        }
+
+        showLoadingAlert()
+
+        const reset = {
+            reset_password_token: token,
+            password,
+            password_confirmation: confirmPassword,
+        }
+
+        const response = await resetPassword(reset)
+
+        if (response.status === 200) {
+            Alert.alert(translate('forgetPwd.passwordChanged'))
+            setShowAlert(false)
+            navigation.navigate('Login')
+        } else {
+            Alert.alert(
+                translate('forgetPwd.differentsPass'),
+                translate('forgetPwd.tryAgain')
+            )
+            setShowAlert(false)
+        }
+    }
 
     return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-        <GradientBackground>
-          <KeyboardScrollView>
-            <SwiperFlatList
-              showPagination={false}
-              disableGesture={true}
-              ref={swiper => (this.swiper = swiper)}>
-              <ScreenView>
-                <PasswordIcon
-                  height={scale(68)}
-                  width={scale(68)}
-                  fill="#ffffff"
-                />
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+            <GradientBackground>
+                <KeyboardScrollView>
+                    <SwiperFlatList
+                        showPagination={false}
+                        disableGesture
+                        ref={swiper}
+                    >
+                        <ScreenView>
+                            <PasswordIcon
+                                height={scale(68)}
+                                width={scale(68)}
+                                fill='#ffffff'
+                            />
 
-                <PageTitle>{translate('forgetPwd.title')}</PageTitle>
+                            <PageTitle>
+                                {translate('forgetPwd.title')}
+                            </PageTitle>
 
-                <LabelWrapper>
-                  <TextLabel>{translate('forgetPwd.informEmail')}</TextLabel>
-                </LabelWrapper>
+                            <LabelWrapper>
+                                <TextLabel>
+                                    {translate('forgetPwd.informEmail')}
+                                </TextLabel>
+                            </LabelWrapper>
 
-                <SnowInput
-                  placeholder={translate('login.email')}
-                  returnKeyType="next"
-                  keyboardType="email-address"
-                  maxLength={100}
-                  onChangeText={async text =>
-                    await this.setState({userEmail: text})
-                  }
-                />
+                            <SnowInput
+                                placeholder={translate('login.email')}
+                                returnKeyType='next'
+                                keyboardType='email-address'
+                                maxLength={100}
+                                onChangeText={(text) => setEmail(text)}
+                                onSubmitEditing={() => sendUserToken()}
+                            />
 
-                <Touch
-                  onPress={() =>
-                    //console.warn(this.state.userEmail)
-                    //this.goToNextScreen()
-                    this.sendToken()
-                  }>
-                  <SnowButton>
-                    <Label>{translate('forgetPwd.sendButton')}</Label>
-                  </SnowButton>
-                </Touch>
-              </ScreenView>
-              <ScreenView>
-                <PageTitle>{translate('getToken.title')}</PageTitle>
+                            <Touch
+                                onPress={() =>
+                                    // console.warn(email)
+                                    // goToNextScreen()
+                                    sendUserToken()
+                                }
+                            >
+                                <SnowButton>
+                                    <Label>
+                                        {translate('forgetPwd.sendButton')}
+                                    </Label>
+                                </SnowButton>
+                            </Touch>
+                        </ScreenView>
 
-                <LabelWrapper>
-                  <TextLabel>
-                    {translate('getToken.verificationCodeSent')}
-                  </TextLabel>
-                </LabelWrapper>
+                        <ScreenView>
+                            <PageTitle>{translate('getToken.title')}</PageTitle>
 
-                <LabelWrapper>
-                  <TextLabel>
-                    {translate('getToken.spamCheckWarning')}
-                  </TextLabel>
-                </LabelWrapper>
+                            <LabelWrapper>
+                                <TextLabel>
+                                    {translate('getToken.verificationCodeSent')}
+                                </TextLabel>
+                            </LabelWrapper>
 
-                <SnowInput
-                  placeholder={translate('getToken.inputVerificationCode')}
-                  autoCorrect={false}
-                  maxLength={10}
-                  onChangeText={async text =>
-                    await this.setState({verificationToken: text})
-                  }
-                />
+                            <LabelWrapper>
+                                <TextLabel>
+                                    {translate('getToken.spamCheckWarning')}
+                                </TextLabel>
+                            </LabelWrapper>
 
-                <Touch
-                  onPress={() => {
-                    if (!this.state.verificationToken) {
-                      Alert.alert(
-                        translate(
-                          'getToken.errorMessages.verificationCodeBlank',
-                        ),
-                      );
-                    } else {
-                      this.confirmVerificationCode();
+                            <SnowInput
+                                placeholder={translate(
+                                    'getToken.inputVerificationCode'
+                                )}
+                                autoCorrect={false}
+                                maxLength={10}
+                                onChangeText={(text) => setCode(text)}
+                                onSubmitEditing={() => confirmUserToken()}
+                            />
+
+                            <Touch
+                                onPress={() =>
+                                    // goToNextScreen()
+                                    confirmUserToken()
+                                }
+                            >
+                                <SnowButton>
+                                    <Label>
+                                        {translate('getToken.confirm')}
+                                    </Label>
+                                </SnowButton>
+                            </Touch>
+                        </ScreenView>
+
+                        <ScreenView>
+                            <PageTitle>
+                                {translate('changePwd.title')}
+                            </PageTitle>
+
+                            <SnowInput
+                                placeholder={translate('changePwd.newPwd')}
+                                autoCorrect={false}
+                                secureTextEntry
+                                returnKeyType='next'
+                                maxLength={100}
+                                onChangeText={(text) => setPassword(text)}
+                                onSubmitEditing={() =>
+                                    passwordInput.current.focus()
+                                }
+                            />
+
+                            <SnowInput
+                                placeholder={translate('changePwd.confirmPwd')}
+                                autoCorrect={false}
+                                secureTextEntry
+                                returnKeyType='next'
+                                maxLength={100}
+                                ref={passwordInput}
+                                onChangeText={(text) =>
+                                    setConfirmPassword(text)
+                                }
+                                onSubmitEditing={() => handleResetPassword()}
+                            />
+
+                            <Touch
+                                onPress={() =>
+                                    // console.log(token)
+                                    handleResetPassword()
+                                }
+                            >
+                                <SnowButton>
+                                    <Label>
+                                        {translate('changePwd.changeButton')}
+                                    </Label>
+                                </SnowButton>
+                            </Touch>
+                        </ScreenView>
+                    </SwiperFlatList>
+
+                    <ButtonBack onPress={() => goToPreviousScreen()}>
+                        <Feather
+                            name='chevron-left'
+                            size={scale(40)}
+                            color='#ffffff'
+                        />
+                    </ButtonBack>
+                </KeyboardScrollView>
+
+                <CoolAlert
+                    show={showAlert}
+                    showProgress={showProgressBar}
+                    title={
+                        showProgressBar ? translate('getToken.loading') : null
                     }
-                    //this.goToNextScreen()
-                  }}>
-                  <SnowButton>
-                    <Label>{translate('getToken.confirm')}</Label>
-                  </SnowButton>
-                </Touch>
-              </ScreenView>
-              <ScreenView>
-                <PageTitle>{translate('changePwd.title')}</PageTitle>
-
-                <SnowInput
-                  placeholder={translate('changePwd.newPwd')}
-                  autoCorrect={false}
-                  secureTextEntry={true}
-                  returnKeyType="next"
-                  maxLength={100}
-                  onChangeText={async text =>
-                    await this.setState({userPwd: text})
-                  }
-                  onSubmitEditing={() => this.passwordInput.focus()}
+                    closeOnTouchOutside={!showProgressBar}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton={!showProgressBar}
                 />
-
-                <SnowInput
-                  placeholder={translate('changePwd.confirmPwd')}
-                  autoCorrect={false}
-                  secureTextEntry={true}
-                  returnKeyType="next"
-                  maxLength={100}
-                  ref={input => (this.passwordInput = input)}
-                  onChangeText={async text =>
-                    await this.setState({userPwdConfirm: text})
-                  }
-                  onSubmitEditing={() => this.resetPassword()}
-                />
-
-                <Touch
-                  onPress={() => {
-                    if (
-                      this.state.userPwd.length < 8 ||
-                      this.state.userPwdConfirm.length < 8
-                    ) {
-                      Alert.alert(
-                        translate('changePwd.errorMessages.shortPwd'),
-                      );
-                    } else {
-                      this.resetPassword();
-                    }
-                  }}>
-                  <SnowButton>
-                    <Label>{translate('changePwd.changeButton')}</Label>
-                  </SnowButton>
-                </Touch>
-              </ScreenView>
-            </SwiperFlatList>
-
-            <ButtonBack onPress={() => navigation.goBack()}>
-              <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
-            </ButtonBack>
-          </KeyboardScrollView>
-
-          <CoolAlert
-            show={showAlert}
-            showProgress={this.state.showProgressBar}
-            title={
-              this.state.showProgressBar ? translate('getToken.loading') : null
-            }
-            closeOnTouchOutside={this.state.showProgressBar ? false : true}
-            closeOnHardwareBackPress={false}
-            showConfirmButton={this.state.showProgressBar ? false : true}
-          />
-        </GradientBackground>
-      </>
-    );
-  }
+            </GradientBackground>
+        </>
+    )
 }
 
-//make this component available to the app
-export default ForgetPwd;
+export default ForgetPwd
