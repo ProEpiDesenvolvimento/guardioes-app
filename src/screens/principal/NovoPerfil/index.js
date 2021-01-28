@@ -1,368 +1,263 @@
-import React, {Component} from 'react';
-import {View, NetInfo, Alert, Modal} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { useState } from 'react'
+import { Alert, Modal } from 'react-native'
+import moment from 'moment'
 
+import Feather from 'react-native-vector-icons/Feather'
+
+import { CoolAlert } from '../../../components/CoolAlert'
 import {
-  ModalContainer,
-  ModalBox,
-  ModalTitle,
-  ModalText,
-  ModalButton,
-  ModalButtonText,
-} from '../../../components/NormalForms';
+    ModalContainer,
+    ModalBox,
+    ModalTitle,
+    ModalText,
+    ModalButton,
+    ModalButtonText,
+    Container,
+    KeyboardScrollView,
+    FormInline,
+    FormLabel,
+    NormalInput,
+    FormGroup,
+    FormGroupChild,
+    Selector,
+    DateSelector,
+    FormInlineCheck,
+    CheckBoxStyled,
+    CheckLabel,
+    Button,
+    SendContainer,
+    SendText,
+} from '../../../components/NormalForms'
+
+import InstitutionSelector from '../../../components/userData/InstitutionSelector'
+import LoadingModal from '../../../components/userData/LoadingModal'
+import translate from '../../../../locales/i18n'
+import { scale } from '../../../utils/scallingUtils'
 import {
-  Container,
-  KeyboardScrollView,
-  FormInline,
-  FormLabel,
-  NormalInput,
-  FormGroup,
-  FormGroupChild,
-  Selector,
-  DateSelector,
-} from '../../../components/NormalForms';
-import {
-  FormInlineCheck,
-  CheckBoxStyled,
-  CheckLabel,
-  Button,
-  SendContainer,
-  SendText,
-} from '../../../components/NormalForms';
-import {CoolAlert} from '../../../components/CoolAlert';
+    genderChoices,
+    countryChoices,
+    raceChoices,
+    householdChoices,
+} from '../../../utils/selectorUtils'
+import { validatePerson } from '../../../utils/constUtils'
+import { useUser } from '../../../hooks/user'
+import { createHousehold } from '../../../api/households'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import {scale} from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
-import {gender, country, race, household} from '../../../utils/selectorUtils';
-import InstitutionSelector from '../../../components/userData/InstitutionSelector';
-import LoadingModal from '../../../components/userData/LoadingModal';
+Feather.loadFont()
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
+const NovoPerfil = ({ navigation }) => {
+    const { token, data } = useUser()
 
-let today = d + '-' + m + '-' + y;
+    const [name, setName] = useState('')
+    const [gender, setGender] = useState('')
+    const [country, setCountry] = useState('')
+    const [race, setRace] = useState('')
+    const [birth, setBirth] = useState('')
+    const [kinship, setKinship] = useState('')
+    const [idCode, setIdCode] = useState(null)
+    const [groupId, setGroupId] = useState(null)
+    const [riskGroup, setRiskGroup] = useState(false)
 
-Feather.loadFont();
+    const [showAlert, setShowAlert] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
+    const [modalRiskGroup, setModalRiskGroup] = useState(false)
+    const [institutionError, setInstituitionError] = useState(null)
+    const [loadingAlert, setLoadingAlert] = useState(false)
 
-class NovoPerfil extends Component {
-  static navigationOptions = {
-    title: translate('home.addProfile'),
-  };
-  constructor(props) {
-    super(props);
-    this.fetchData();
-    this.state = {
-      householdName: null,
-      householdPicture: 'default',
-      householdGender: null,
-      householdCountry: null,
-      householdRace: null,
-      householdBirth: null,
-      kinship: null,
-      userID: null,
-      showAlert: false, //Custom Alerts
-      showProgressBar: false, //Custom Progress Bar
-      groupCheckbox: false,
-      userIdCode: null,
-      userGroup: null,
-      loadingAlert: false,
-      riskGroup: false,
-      modalVisibleRiskGroup: false,
-    };
-  }
+    const showLoadingAlert = () => {
+        setShowAlert(true)
+        setShowProgressBar(true)
+    }
 
-  setRiskGroupModalVisible(visible) {
-    this.setState({modalVisibleRiskGroup: visible});
-  }
+    const handleCreate = async () => {
+        const household = {
+            description: name,
+            birthdate: birth,
+            country,
+            gender,
+            race,
+            kinship,
+            identification_code: idCode,
+            group_id: groupId,
+            risk_group: riskGroup,
+        }
 
-  showAlert = () => {
-    this.setState({
-      showAlert: true,
-      showProgressBar: true,
-    });
-  };
+        if (!validatePerson(household, institutionError)) return
 
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-    });
-  };
+        showLoadingAlert()
 
-  setLoadingAlert = alert => {
-    this.setState({
-      loadingAlert: alert,
-    });
-  };
+        const response = await createHousehold(household, data.id, token)
 
-  _isconnected = () => {
-    let validation = false;
-    this.state.householdName && this.state.householdBirth
-      ? (validation = true)
-      : (validation = false);
-    NetInfo.isConnected.fetch().then(isConnected => {
-      isConnected
-        ? validation
-          ? this.create()
-          : Alert.alert(
-              translate('register.errorMessages.error'),
-              translate('register.errorMessages.allFieldsAreFilled'),
-            )
-        : Alert.alert(
-            translate('register.noInternet.noInternet'),
-            translate('register.noInternet.ohNo'),
-            [
-              {
-                text: translate('register.alertAllRightMessage'),
-                onPress: () => null,
-              },
-            ],
-          );
-    });
-  };
+        if (response.status === 201) {
+            console.warn(response.status)
+            setShowAlert(false)
+            navigation.navigate('Home')
+        } else {
+            console.warn(response)
+            Alert.alert('Ocorreu um erro, tente novamente depois.')
+            setShowAlert(false)
+        }
+    }
 
-  fetchData = async () => {
-    const userID = await AsyncStorage.getItem('userID');
-    const userToken = await RNSecureStorage.get('userToken');
-    this.setState({userID, userToken});
-  };
+    const setUserInstitutionCallback = (idCode, groupId) => {
+        setIdCode(idCode)
+        setGroupId(groupId)
+    }
 
-  setUserInstitutionCallback = (userIdCode, userGroup) => {
-    this.setState({
-      userIdCode: userIdCode,
-      userGroup: userGroup,
-    });
-  };
-
-  setInstituitionComponentError = error => {
-    this.state.instituitionComponentError = error;
-  };
-
-  render() {
-    const {showAlert} = this.state;
+    const setInstituitionComponentError = (error) => {
+        setInstituitionError(error)
+    }
 
     return (
-      <Container>
-        <Modal //Modal View for Risk Group Message
-          animationType="fade"
-          transparent={true}
-          visible={this.state.modalVisibleRiskGroup}
-          onRequestClose={() => {
-            this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup);
-          }}>
-          <ModalContainer>
-            <ModalBox>
-              <ModalTitle>{translate('register.riskGroupTitle')}</ModalTitle>
+        <Container>
+            <Modal // Modal for Risk Group Message
+                animationType='fade'
+                transparent
+                visible={modalRiskGroup}
+                onRequestClose={() => {
+                    setModalRiskGroup(!modalRiskGroup)
+                }}
+            >
+                <ModalContainer>
+                    <ModalBox>
+                        <ModalTitle>
+                            {translate('register.riskGroupTitle')}
+                        </ModalTitle>
 
-              <ModalText>{translate('register.riskGroupMessage')}</ModalText>
+                        <ModalText>
+                            {translate('register.riskGroupMessage')}
+                        </ModalText>
 
-              <Button
-                onPress={() => {
-                  this.setRiskGroupModalVisible(
-                    !this.state.modalVisibleRiskGroup,
-                  );
-                }}>
-                <ModalButton>
-                  <ModalButtonText>
-                    {translate('register.riskGroupButton')}
-                  </ModalButtonText>
-                </ModalButton>
-              </Button>
-            </ModalBox>
-          </ModalContainer>
-        </Modal>
-        <KeyboardScrollView keyboardShouldPersistTaps={'always'}>
-          <FormInline>
-            <FormLabel>{translate('register.name')}</FormLabel>
-            <NormalInput
-              onChangeText={text => this.setState({householdName: text})}
-            />
-          </FormInline>
+                        <Button
+                            onPress={() => {
+                                setModalRiskGroup(false)
+                            }}
+                        >
+                            <ModalButton>
+                                <ModalButtonText>
+                                    {translate('register.riskGroupButton')}
+                                </ModalButtonText>
+                            </ModalButton>
+                        </Button>
+                    </ModalBox>
+                </ModalContainer>
+            </Modal>
 
-          <FormGroup>
-            <FormGroupChild>
-              <FormLabel>{translate('register.gender')}</FormLabel>
-              <Selector
-                initValue={translate('selector.label')}
-                cancelText={translate('selector.cancelButton')}
-                data={gender}
-                onChange={option =>
-                  this.setState({householdGender: option.key})
+            <KeyboardScrollView keyboardShouldPersistTaps='always'>
+                <FormInline>
+                    <FormLabel>{translate('register.name')}</FormLabel>
+                    <NormalInput
+                        value={name}
+                        onChangeText={(text) => setName(text)}
+                    />
+                </FormInline>
+
+                <FormGroup>
+                    <FormGroupChild>
+                        <FormLabel>{translate('register.gender')}</FormLabel>
+                        <Selector
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            data={genderChoices}
+                            onChange={(option) => setGender(option.key)}
+                        />
+                    </FormGroupChild>
+
+                    <FormGroupChild>
+                        <FormLabel>{translate('register.race')}</FormLabel>
+                        <Selector
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            data={raceChoices}
+                            onChange={(option) => setRace(option.key)}
+                        />
+                    </FormGroupChild>
+                </FormGroup>
+
+                <FormGroup>
+                    <FormGroupChild>
+                        <FormLabel>{translate('register.birth')}</FormLabel>
+                        <DateSelector
+                            placeholder={translate('birthDetails.format')}
+                            date={birth}
+                            format='DD-MM-YYYY'
+                            minDate='01-01-1918'
+                            maxDate={moment().format('DD/MM/YY')}
+                            locale='pt-BR'
+                            confirmBtnText={translate(
+                                'birthDetails.confirmButton'
+                            )}
+                            cancelBtnText={translate(
+                                'birthDetails.cancelButton'
+                            )}
+                            onDateChange={(date) => setBirth(date)}
+                        />
+                    </FormGroupChild>
+
+                    <FormGroupChild>
+                        <FormLabel>{translate('register.country')}</FormLabel>
+                        <Selector
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            data={countryChoices}
+                            onChange={(option) => setCountry(option.key)}
+                        />
+                    </FormGroupChild>
+                </FormGroup>
+
+                <FormInlineCheck>
+                    <CheckBoxStyled
+                        title={translate('share.riskGroupLabel')}
+                        checked={riskGroup}
+                        onPress={() => setRiskGroup(!riskGroup)}
+                    />
+                    <CheckLabel onPress={() => setModalRiskGroup(true)}>
+                        <Feather
+                            name='help-circle'
+                            size={scale(25)}
+                            color='#348EAC'
+                        />
+                    </CheckLabel>
+                </FormInlineCheck>
+
+                <InstitutionSelector
+                    setUserInstitutionCallback={setUserInstitutionCallback}
+                    setAlert={setLoadingAlert}
+                    setErrorCallback={setInstituitionComponentError}
+                />
+
+                <FormInline>
+                    <FormLabel>Parentesco:</FormLabel>
+                    <Selector
+                        initValue={translate('selector.label')}
+                        cancelText={translate('selector.cancelButton')}
+                        data={householdChoices}
+                        onChange={(option) => setKinship(option.key)}
+                    />
+                </FormInline>
+
+                <Button onPress={() => handleCreate()}>
+                    <SendContainer>
+                        <SendText>Criar</SendText>
+                    </SendContainer>
+                </Button>
+            </KeyboardScrollView>
+
+            <CoolAlert
+                show={showAlert}
+                showProgress={showProgressBar}
+                title={
+                    showProgressBar
+                        ? translate('register.awesomeAlert.registeringMessage')
+                        : null
                 }
-              />
-            </FormGroupChild>
-
-            <FormGroupChild>
-              <FormLabel>{translate('register.race')}</FormLabel>
-              <Selector
-                initValue={translate('selector.label')}
-                cancelText={translate('selector.cancelButton')}
-                data={race}
-                onChange={option => this.setState({householdRace: option.key})}
-              />
-            </FormGroupChild>
-          </FormGroup>
-
-          <FormGroup>
-            <FormGroupChild>
-              <FormLabel>{translate('register.birth')}</FormLabel>
-              <DateSelector
-                placeholder={translate('birthDetails.format')}
-                date={this.state.householdBirth}
-                format="DD-MM-YYYY"
-                minDate="01-01-1918"
-                maxDate={today}
-                locale={'pt-BR'}
-                confirmBtnText={translate('birthDetails.confirmButton')}
-                cancelBtnText={translate('birthDetails.cancelButton')}
-                onDateChange={date => this.setState({householdBirth: date})}
-              />
-            </FormGroupChild>
-
-            <FormGroupChild>
-              <FormLabel>{translate('register.country')}</FormLabel>
-              <Selector
-                initValue={translate('selector.label')}
-                cancelText={translate('selector.cancelButton')}
-                data={country}
-                onChange={option =>
-                  this.setState({householdCountry: option.key})
-                }
-              />
-            </FormGroupChild>
-          </FormGroup>
-
-          <FormInlineCheck>
-            <CheckBoxStyled
-              title={translate('share.riskGroupLabel')}
-              checked={this.state.riskGroup}
-              onPress={() => {
-                this.setState({riskGroup: !this.state.riskGroup});
-              }}
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={!showProgressBar}
             />
-            <CheckLabel
-              onPress={() => {
-                this.setRiskGroupModalVisible(true);
-              }}>
-              <Feather name="help-circle" size={scale(25)} color="#348EAC" />
-            </CheckLabel>
-          </FormInlineCheck>
-
-          <InstitutionSelector
-            setUserInstitutionCallback={this.setUserInstitutionCallback}
-            setAlert={this.setLoadingAlert}
-            setErrorCallback={this.setInstituitionComponentError}
-          />
-
-          <FormInline>
-            <FormLabel>Parentesco:</FormLabel>
-            <Selector
-              initValue={translate('selector.label')}
-              cancelText={translate('selector.cancelButton')}
-              data={household}
-              onChange={option => this.setState({kinship: option.key})}
-            />
-          </FormInline>
-
-          <Button onPress={() => this.create()}>
-            <SendContainer>
-              <SendText>Criar</SendText>
-            </SendContainer>
-          </Button>
-        </KeyboardScrollView>
-
-        <CoolAlert
-          show={showAlert}
-          showProgress={this.state.showProgressBar}
-          title={
-            this.state.showProgressBar
-              ? translate('register.awesomeAlert.registeringMessage')
-              : null
-          }
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          showConfirmButton={this.state.showProgressBar ? false : true}
-        />
-        <LoadingModal show={this.state.loadingAlert} />
-      </Container>
-    );
-  }
-
-  isHouseholdDataValid = () => {
-    let error = false;
-    if (
-      this.state.householdName == null ||
-      this.state.householdName == '' ||
-      this.state.householdBirth == null
-    ) {
-      Alert.alert('O nome e data de nascimento devem estar preenchidos\n');
-      error = true;
-    } else if (
-      this.state.householdGender == null ||
-      this.state.householdRace == null
-    ) {
-      Alert.alert('A raça e genero devem estar preenchidos');
-      error = true;
-    } else if (this.state.kinship == null) {
-      Alert.alert('O parentesco deve estar preenchido');
-      error = true;
-    } else if (
-      this.state.instituitionComponentError != null &&
-      this.state.instituitionComponentError != undefined &&
-      this.state.instituitionComponentError.length > 0
-    ) {
-      Alert.alert(this.state.instituitionComponentError);
-      error = true;
-    } else if (this.state.householdCountry == null) {
-      Alert.alert(
-        'Nacionalidade não pode ficar em Branco',
-        'Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país',
-      );
-      error = true;
-    }
-    return !error;
-  };
-
-  create = () => {
-    if (!this.isHouseholdDataValid()) {
-      return;
-    }
-    this.showAlert();
-    fetch(`${API_URL}/users/${this.state.userID}/households`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-        Authorization: `${this.state.userToken}`,
-      },
-      body: JSON.stringify({
-        description: this.state.householdName,
-        birthdate: this.state.householdBirth,
-        country: this.state.householdCountry,
-        gender: this.state.householdGender,
-        race: this.state.householdRace,
-        risk_group: this.state.riskGroup,
-        kinship: this.state.kinship,
-        picture: this.state.householdPicture,
-        identification_code: this.state.userIdCode,
-        group_id: this.state.userGroup,
-      }),
-    }).then(response => {
-      if (response.status == 201) {
-        console.warn('Criado');
-        this.hideAlert();
-        this.props.navigation.navigate('Home');
-      } else {
-        console.warn(response);
-        Alert.alert('Ocorreu um erro, tente novamente depois.');
-        this.hideAlert();
-      }
-    });
-  };
+            <LoadingModal show={loadingAlert} />
+        </Container>
+    )
 }
 
-export default NovoPerfil;
+export default NovoPerfil

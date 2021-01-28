@@ -27,11 +27,10 @@ export const createHousehold = async (data, id, token) => {
             country: data.country,
             gender: data.gender,
             race: data.race,
-            risk_group: data.risk_group,
             kinship: data.kinship,
-            picture: data.picture,
             identification_code: data.identification_code,
             group_id: data.group_id,
+            risk_group: data.risk_group,
         }),
     })
     return {

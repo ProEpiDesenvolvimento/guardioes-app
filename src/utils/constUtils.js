@@ -36,11 +36,45 @@ export const handleAvatar = (image) => {
     return null
 }
 
-export const Redirect = (titulo, message, url) => {
-    Alert.alert(`${titulo}`, `${message}`, [
+export const Redirect = (title, message, url) => {
+    Alert.alert(`${title}`, `${message}`, [
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Ok', onPress: () => Linking.openURL(`${url}`) },
     ])
+}
+
+export const validatePerson = (person, instituitionComponentError) => {
+    let valid = true
+
+    if (
+        person.user_name === '' ||
+        person.description === '' ||
+        person.birthdate === ''
+    ) {
+        Alert.alert('O nome e data de nascimento devem estar preenchidos\n')
+        valid = false
+    } else if (person.race === '' || person.gender === '') {
+        Alert.alert('A raça e gênero devem estar preenchidos')
+        valid = false
+    } else if (person.kinship === '') {
+        Alert.alert('O parentesco deve estar preenchido')
+        valid = false
+    } else if (
+        instituitionComponentError !== null &&
+        instituitionComponentError !== undefined &&
+        instituitionComponentError.length > 0
+    ) {
+        Alert.alert(instituitionComponentError)
+        valid = false
+    } else if (person.country === '') {
+        Alert.alert(
+            'Nacionalidade não pode ficar em branco',
+            'Precisamos da sua nacionalidade para lhe mostrar informações referentes ao seu país'
+        )
+        valid = false
+    }
+
+    return valid
 }
 
 export const terms = {
