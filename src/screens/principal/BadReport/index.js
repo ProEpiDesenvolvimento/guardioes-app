@@ -66,7 +66,7 @@ const BadReport = ({ navigation }) => {
     const [hasContactWithSymptoms, setHasContactWithSymptoms] = useState(false)
     const [contactWithSymptom, setContactWithSymptom] = useState(null)
     const [hasTraveled, setHasTraveled] = useState(false)
-    const [country, setCountry] = useState('Brazil')
+    const [traveledTo, setTraveledTo] = useState('Brazil')
     const [wentToHospital, setWentToHospital] = useState(false)
 
     const [showAlert, setShowAlert] = useState(false)
@@ -319,7 +319,7 @@ const BadReport = ({ navigation }) => {
                             initValue={translate('selector.label')}
                             cancelText={translate('selector.cancelButton')}
                             data={countryChoices}
-                            onChange={(option) => setCountry(option.key)}
+                            onChange={(option) => setTraveledTo(option.key)}
                         />
                     </FormInline>
                 ) : null}

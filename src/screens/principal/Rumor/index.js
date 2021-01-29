@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import { Text, Modal, Keyboard, Platform, StyleSheet } from 'react-native'
 
 import Emoji from 'react-native-emoji'
@@ -42,9 +42,9 @@ const Rumor = ({ navigation }) => {
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
 
-    const eventInput = createRef()
-    const casesInput = createRef()
-    const deathsInput = createRef()
+    const eventInput = useRef()
+    const casesInput = useRef()
+    const deathsInput = useRef()
 
     useFocusEffect(
         useCallback(() => {
@@ -153,7 +153,7 @@ const Rumor = ({ navigation }) => {
                     <FormLabel>Título:</FormLabel>
                     <NormalInput
                         maxLength={100}
-                        onSubmitEditing={() => eventInput.focus()}
+                        onSubmitEditing={() => eventInput.current.focus()}
                         onChangeText={(text) => setTitle(text)}
                     />
                 </FormInline>
@@ -163,7 +163,7 @@ const Rumor = ({ navigation }) => {
                         multiline
                         maxLength={300}
                         ref={eventInput}
-                        onSubmitEditing={() => casesInput.focus()}
+                        onSubmitEditing={() => casesInput.current.focus()}
                         onChangeText={(text) => setDescription(text)}
                     />
                 </FormInline>
@@ -174,7 +174,7 @@ const Rumor = ({ navigation }) => {
                         <NormalInput
                             keyboardType='number-pad'
                             ref={casesInput}
-                            onSubmitEditing={() => deathsInput.focus()}
+                            onSubmitEditing={() => deathsInput.current.focus()}
                             onChangeText={(text) => setConfirmedCases(text)}
                         />
                     </FormGroupChild>

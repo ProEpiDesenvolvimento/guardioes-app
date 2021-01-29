@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { SafeAreaView, Alert, Keyboard } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
@@ -32,7 +32,7 @@ const Login = ({ navigation }) => {
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
 
-    const passwordInput = createRef()
+    const passwordInput = useRef()
 
     const handleLogIn = async () => {
         if (email === '' || password === '') {
@@ -86,7 +86,9 @@ const Login = ({ navigation }) => {
                             returnKeyType='next'
                             maxLength={100}
                             onChangeText={(text) => setEmail(text)}
-                            onSubmitEditing={() => passwordInput.focus()}
+                            onSubmitEditing={() =>
+                                passwordInput.current.focus()
+                            }
                         />
                         <SnowInput
                             placeholder={translate('login.password')}
