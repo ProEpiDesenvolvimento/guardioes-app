@@ -1,5 +1,5 @@
 //Informação de Estados
-export const state = [
+export const stateOptions = [
      { key: 'ACRE', label: 'ACRE' },
      { key: 'ALAGOAS', label: 'ALAGOAS' },
      { key: 'AMAPÁ', label: 'AMAPÁ' },

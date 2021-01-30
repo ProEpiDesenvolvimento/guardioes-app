@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
-import { SafeAreaView, Alert, Keyboard } from 'react-native'
+import { Alert, Keyboard } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Feather from 'react-native-vector-icons/Feather'
 import {
@@ -25,7 +26,7 @@ import { authUser } from '../../../api/user'
 Feather.loadFont()
 
 const Login = ({ navigation }) => {
-    const { storeUserData, setIsLoggedIn } = useUser()
+    const { storeUser, setIsLoggedIn } = useUser()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -50,7 +51,7 @@ const Login = ({ navigation }) => {
         })
 
         if (response.status === 200) {
-            await storeUserData(response.body.user, response.token)
+            await storeUser(response.body.user, response.token)
 
             setShowAlert(false)
             setIsLoggedIn(true)

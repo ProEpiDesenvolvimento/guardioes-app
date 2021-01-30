@@ -1,6 +1,7 @@
 import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { createStackNavigator } from '@react-navigation/stack'
+
 import Feather from 'react-native-vector-icons/Feather'
 import {
     HeaderNavigator,
@@ -8,11 +9,8 @@ import {
     ScreenTitle,
     Empty,
 } from '../components/Header'
-import { scale } from '../utils/scallingUtils'
-import translate from '../../locales/i18n'
 
 import HomeDrawer from './HomeDrawer'
-
 import Ajuda from '../screens/principal/Ajuda'
 import BadReport from '../screens/principal/BadReport'
 import EditarPerfil from '../screens/principal/EditarPerfil'
@@ -25,7 +23,11 @@ import TermosPoliticas from '../screens/principal/TermosPoliticas'
 import Tutorial from '../screens/principal/Tutorial'
 import Vigilancia from '../screens/principal/Vigilancia'
 
+import translate from '../../locales/i18n'
+import { scale } from '../utils/scallingUtils'
+
 const Stack = createStackNavigator()
+Feather.loadFont()
 
 const AppStack = () => {
     return (

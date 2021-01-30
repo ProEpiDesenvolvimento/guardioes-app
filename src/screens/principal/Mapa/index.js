@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import AsyncStorage from '@react-native-community/async-storage'
 import { Marker } from 'react-native-maps'

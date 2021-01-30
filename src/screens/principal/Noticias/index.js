@@ -22,7 +22,7 @@ import { getGroupTweets } from '../../../api/twitter'
 const posts = 10
 
 const Noticias = () => {
-    const { token, data, app } = useUser()
+    const { token, user, app } = useUser()
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [groupTwitter, setGroupTwitter] = useState(null)
@@ -33,8 +33,8 @@ const Noticias = () => {
 
     // Get group twitter from user
     const getGroupTwitter = async () => {
-        if (data.group_id !== null) {
-            const response = await getUserGroupTwitter(data.group_id, token)
+        if (user.group_id !== null) {
+            const response = await getUserGroupTwitter(user.group_id, token)
 
             if (response.status === 200) {
                 setGroupTwitter(response.body.twitter)

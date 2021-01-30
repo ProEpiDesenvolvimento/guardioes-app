@@ -31,21 +31,21 @@ import { updateUser } from '../../../api/user'
 Feather.loadFont()
 
 const Vigilancia = ({ navigation }) => {
-    const { token, data } = useUser()
+    const { token, user } = useUser()
 
     const [showModalTerms, setShowModalTerms] = useState(false)
-    const [acceptedTerms, setAcceptedTerms] = useState(data.is_vigilance)
-    const [phone, setPhone] = useState(data.phone)
+    const [acceptedTerms, setAcceptedTerms] = useState(user.is_vigilance)
+    const [phone, setPhone] = useState(user.phone)
 
     const handleEdit = async () => {
         if (!acceptedTerms) return false
 
         const vigilance = {
-            is_vigilance: !data.is_vigilance,
-            phone: !data.is_vigilance ? phone : null,
+            is_vigilance: !user.is_vigilance,
+            phone: !user.is_vigilance ? phone : null,
         }
 
-        const response = await updateUser(vigilance, data.id, token)
+        const response = await updateUser(vigilance, user.id, token)
         console.warn(response.status)
 
         if (response.status === 200) {
@@ -94,11 +94,11 @@ const Vigilancia = ({ navigation }) => {
                 <Title>O que é?</Title>
                 <BodyText>{translate('about.textoVigilancia')}</BodyText>
                 <Title>
-                    {data.is_vigilance
+                    {user.is_vigilance
                         ? translate('drawer.participateSuccess')
                         : translate('drawer.participateQuestion')}
                 </Title>
-                {!data.is_vigilance ? (
+                {!user.is_vigilance ? (
                     <FormInline>
                         <FormLabel>Informe seu telefone:</FormLabel>
                         <NormalInput
@@ -112,7 +112,7 @@ const Vigilancia = ({ navigation }) => {
                     </FormInline>
                 ) : null}
 
-                {!data.is_vigilance ? (
+                {!user.is_vigilance ? (
                     <FormInlineCheck>
                         <CheckBoxStyled
                             title={translate('drawer.confirmRead')}
@@ -134,7 +134,7 @@ const Vigilancia = ({ navigation }) => {
                 <Button onPress={() => handleEdit()}>
                     <SendContainer>
                         <SendText>
-                            {data.is_vigilance
+                            {user.is_vigilance
                                 ? translate('drawer.cancelParticipation')
                                 : translate('drawer.participate')}
                         </SendText>

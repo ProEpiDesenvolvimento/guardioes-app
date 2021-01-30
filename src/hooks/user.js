@@ -19,7 +19,7 @@ const UserContext = createContext(null)
 
 export const UserProvider = ({ children }) => {
     const [token, setToken] = useState('')
-    const [data, setData] = useState({})
+    const [user, setUser] = useState({})
     const [avatar, setAvatar] = useState('')
     const [households, setHouseholds] = useState([])
     const [householdAvatars, setHouseholdAvatars] = useState({})
@@ -57,7 +57,7 @@ export const UserProvider = ({ children }) => {
             setToken(token)
         }
         if (userData) {
-            setData(userData)
+            setUser(userData)
         }
         if (selectedData) {
             setSelected(selectedData)
@@ -111,18 +111,20 @@ export const UserProvider = ({ children }) => {
         await signIn({ email, password })
     }, [])
 
-    const storeUserData = async (user, token = null) => {
+    const storeUser = async (user, token = null) => {
         const { households } = user
         const { app } = user
 
-        setHouseholds(households)
-        setApp(app)
+        if (households) {
+            setHouseholds(households)
+            user.households = undefined
+        }
+        if (app) {
+            setApp(app)
+            user.app = undefined
+        }
 
-        user.households = undefined
-        user.app = undefined
-
-        setData(user)
-
+        setUser(user)
         await AsyncStorage.setItem('userData', JSON.stringify(user))
 
         if (token) {
@@ -163,7 +165,7 @@ export const UserProvider = ({ children }) => {
         }
 
         if (response.status === 200) {
-            storeUserData(response.body.user, response.token)
+            storeUser(response.body.user, response.token)
             sendUserTagsToOneSignal(response.body.user)
         } else if (response.status === 401) {
             signOut()
@@ -232,15 +234,31 @@ export const UserProvider = ({ children }) => {
             }
         }
         return {
-            ...data,
+            ...user,
             is_household: false,
-            name: data.user_name ? data.user_name : '',
+            name: user.user_name ? user.user_name : '',
             user_name: undefined,
             avatar,
         }
     }
 
+    const updateUserAvatar = async (source) => {
+        if (source) {
+            setAvatar(source)
+            await AsyncStorage.setItem('userAvatar', source)
+        } else {
+            setAvatar('')
+            await AsyncStorage.removeItem('userAvatar')
+        }
+    }
+
     const storeHouseholds = (households) => {
+        households.sort(
+            (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
+        )
+
         setHouseholds(households)
     }
 
@@ -360,12 +378,13 @@ export const UserProvider = ({ children }) => {
                 signIn,
                 signOut,
                 token,
-                data,
+                user,
                 loadSecondaryData,
-                storeUserData,
+                storeUser,
                 selectUser,
                 getCurrentUserInfo,
                 avatar,
+                updateUserAvatar,
                 households,
                 storeHouseholds,
                 householdAvatars,

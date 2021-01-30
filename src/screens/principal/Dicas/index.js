@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { TouchableOpacity, ScrollView, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
 import { useFocusEffect } from '@react-navigation/native'
 
 import Feather from 'react-native-vector-icons/Feather'

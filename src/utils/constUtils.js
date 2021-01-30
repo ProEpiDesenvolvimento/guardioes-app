@@ -51,13 +51,13 @@ export const validatePerson = (person, instituitionComponentError) => {
         person.description === '' ||
         person.birthdate === ''
     ) {
-        Alert.alert('O nome e data de nascimento devem estar preenchidos\n')
+        Alert.alert(translate('register.nameRequired'))
         valid = false
     } else if (person.race === '' || person.gender === '') {
-        Alert.alert('A raça e gênero devem estar preenchidos')
+        Alert.alert(translate('register.genderRequired'))
         valid = false
     } else if (person.kinship === '') {
-        Alert.alert('O parentesco deve estar preenchido')
+        Alert.alert(translate('register.kinshipRequired'))
         valid = false
     } else if (
         instituitionComponentError !== null &&
@@ -68,9 +68,15 @@ export const validatePerson = (person, instituitionComponentError) => {
         valid = false
     } else if (person.country === '') {
         Alert.alert(
-            'Nacionalidade não pode ficar em branco',
-            'Precisamos da sua nacionalidade para lhe mostrar informações referentes ao seu país'
+            translate('nationalityRequired'),
+            translate('nationalityRequired2')
         )
+        valid = false
+    } else if (
+        person.country === 'Brazil' &&
+        (person.state === '' || person.city === '')
+    ) {
+        Alert.alert(translate('register.localRequired'))
         valid = false
     }
 

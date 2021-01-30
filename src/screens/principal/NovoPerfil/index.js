@@ -29,8 +29,8 @@ import {
     SendText,
 } from '../../../components/NormalForms'
 
-import InstitutionSelector from '../../../components/userData/InstitutionSelector'
-import LoadingModal from '../../../components/userData/LoadingModal'
+import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
+import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scallingUtils'
 import {
@@ -46,7 +46,7 @@ import { createHousehold } from '../../../api/households'
 Feather.loadFont()
 
 const NovoPerfil = ({ navigation }) => {
-    const { token, data } = useUser()
+    const { token, user } = useUser()
 
     const [name, setName] = useState('')
     const [gender, setGender] = useState('')
@@ -83,10 +83,9 @@ const NovoPerfil = ({ navigation }) => {
         }
 
         if (!validatePerson(household, institutionError)) return
-
         showLoadingAlert()
 
-        const response = await createHousehold(household, data.id, token)
+        const response = await createHousehold(household, user.id, token)
 
         if (response.status === 201) {
             console.warn(response.status)
@@ -182,7 +181,7 @@ const NovoPerfil = ({ navigation }) => {
                             date={birth}
                             format='DD-MM-YYYY'
                             minDate='01-01-1918'
-                            maxDate={moment().format('DD/MM/YY')}
+                            maxDate={moment().format('DD-MM-YYYY')}
                             locale='pt-BR'
                             confirmBtnText={translate(
                                 'birthDetails.confirmButton'
@@ -248,7 +247,7 @@ const NovoPerfil = ({ navigation }) => {
                 showProgress={showProgressBar}
                 title={
                     showProgressBar
-                        ? translate('register.awesomeAlert.registeringMessage')
+                        ? translate('register.awesomeAlert.registering')
                         : null
                 }
                 closeOnTouchOutside={false}

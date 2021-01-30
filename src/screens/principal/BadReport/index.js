@@ -46,12 +46,12 @@ import { useUser } from '../../../hooks/user'
 import { getAppSymptoms } from '../../../api/symptoms'
 import { createSurvey } from '../../../api/surveys'
 
-const today = moment().format('DD-MM-YY')
+const today = moment().format('DD-MM-YYYY')
 
 const BadReport = ({ navigation }) => {
     const {
         token,
-        data,
+        user,
         location,
         getCurrentLocation,
         updateUserScore,
@@ -206,7 +206,7 @@ const BadReport = ({ navigation }) => {
             symptom: personSymptoms,
         }
 
-        const response = await createSurvey(survey, data.id, token)
+        const response = await createSurvey(survey, user.id, token)
 
         if (response.status === 200) {
             updateUserScore()
@@ -264,7 +264,7 @@ const BadReport = ({ navigation }) => {
                         date={badSince}
                         format='DD-MM-YYYY'
                         minDate='01-01-2018'
-                        maxDate={moment().format('DD-MM-YY')}
+                        maxDate={moment().format('DD-MM-YYYY')}
                         locale='pt-BR'
                         confirmBtnText={translate('birthDetails.confirmButton')}
                         cancelBtnText={translate('birthDetails.cancelButton')}

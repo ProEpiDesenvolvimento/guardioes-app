@@ -87,7 +87,8 @@ export default {
     emptyLocation: 'State and City must be filled',
     shortPassword: 'Password must be at least 8 characters',
     awesomeAlert: {
-      registeringMessage: 'Working...',
+      loading: 'Loading',
+      registering: 'Working',
     },
     errorMessages: {
       error: 'Error',

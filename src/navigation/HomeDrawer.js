@@ -1,9 +1,10 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { scale } from '../utils/scallingUtils'
 
 import LeftMenu from '../components/LeftMenu'
 import TabBar from './TabBar'
+
+import { scale } from '../utils/scallingUtils'
 
 const Drawer = createDrawerNavigator()
 

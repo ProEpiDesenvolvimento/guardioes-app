@@ -1,8 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+
 import Feather from 'react-native-vector-icons/Feather'
-import { scale } from '../utils/scallingUtils'
-import translate from '../../locales/i18n'
 
 import Diario from '../screens/principal/Diario'
 import Dicas from '../screens/principal/Dicas'
@@ -10,7 +9,11 @@ import Home from '../screens/principal/Home'
 import Mapa from '../screens/principal/Mapa'
 import Noticias from '../screens/principal/Noticias'
 
+import translate from '../../locales/i18n'
+import { scale } from '../utils/scallingUtils'
+
 const Tab = createBottomTabNavigator()
+Feather.loadFont()
 
 const TabBar = () => {
     return (

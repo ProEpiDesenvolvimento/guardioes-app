@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react'
-import { Alert, BackHandler, SafeAreaView } from 'react-native'
+import { Alert, BackHandler } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Feather from 'react-native-vector-icons/Feather'
 import SwiperFlatList from 'react-native-swiper-flatlist'

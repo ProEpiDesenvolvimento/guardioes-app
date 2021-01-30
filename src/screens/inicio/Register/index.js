@@ -44,8 +44,8 @@ import translate from '../../../../locales/i18n';
 import {API_URL} from 'react-native-dotenv';
 import {gender, country, race} from '../../../utils/selectorUtils';
 import {state, getCity} from '../../../utils/brasil';
-import InstitutionSelector from '../../../components/userData/InstitutionSelector';
-import LoadingModal from '../../../components/userData/LoadingModal';
+import InstitutionSelector from '../../../components/Groups/InstitutionSelector';
+import LoadingModal from '../../../components/Groups/LoadingModal';
 
 Feather.loadFont();
 

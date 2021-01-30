@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
-import moment from 'moment'
 import { Avatar } from 'react-native-elements'
 import { PieChart } from 'react-native-svg-charts'
 import { useFocusEffect } from '@react-navigation/native'
@@ -58,10 +58,10 @@ LocaleConfig.defaultLocale = translate('lang.code')
 Feather.loadFont()
 
 const Diario = () => {
-    const { token, data, surveys, storeSurveys, getCurrentUserInfo } = useUser()
+    const { token, user, surveys, storeSurveys, getCurrentUserInfo } = useUser()
 
     const [isLoaded, setIsLoaded] = useState(false)
-    const [userAge, setUserAge] = useState(13)
+    const [personAge, setPersonAge] = useState(13)
     const [allDatesMarked, setAllDatesMarked] = useState([])
     const [datesMarked, setDatesMarked] = useState([])
     const [daysMarked, setDaysMarked] = useState(0)
@@ -72,7 +72,7 @@ const Diario = () => {
     const [percentBad, setPercentBad] = useState(0)
     const [percentMissing, setPercentMissing] = useState(100)
 
-    const user = getCurrentUserInfo()
+    const person = getCurrentUserInfo()
 
     useFocusEffect(
         useCallback(() => {
@@ -89,7 +89,7 @@ const Diario = () => {
     }, [surveys])
 
     const getSurveys = async () => {
-        const response = await getUserSurveys(data.id, token)
+        const response = await getUserSurveys(user.id, token)
 
         if (response.status === 200) {
             storeSurveys(response.body.surveys)
@@ -99,11 +99,14 @@ const Diario = () => {
 
     const getUserAge = () => {
         const todayDate = new Date()
-        const userBirthDate = new Date(user.birthdate)
-        const diff = todayDate.getTime() - userBirthDate.getTime()
-        const userAge = Math.floor(diff / (1000 * 60 * 60 * 24 * 365))
+        const birthDate = new Date(person.birthdate)
 
-        setUserAge(userAge)
+        birthDate.setHours(0, 0, 0, 0)
+
+        const diff = todayDate.getTime() - birthDate.getTime()
+        const personAge = Math.floor(diff / (1000 * 60 * 60 * 24 * 365))
+
+        setPersonAge(personAge)
     }
 
     const defineMarkedDates = async () => {
@@ -112,7 +115,7 @@ const Diario = () => {
         const markedDatesAll = []
 
         surveys.map((survey) => {
-            if (!user.is_household) {
+            if (!person.is_household) {
                 if (survey.household == null) {
                     if (survey.symptom && survey.symptom.length) {
                         // BadReport
@@ -127,7 +130,7 @@ const Diario = () => {
                         )
                     }
                 }
-            } else if (survey.household.id === user.id) {
+            } else if (survey.household.id === person.id) {
                 if (survey.symptom && survey.symptom.length) {
                     // Household BadReport
                     markedDatesBad.push(
@@ -174,11 +177,11 @@ const Diario = () => {
 
     const getUserParticipation = () => {
         const todayDate = new Date()
-        const userCreatedDate = new Date(user.created_at)
+        const createdDate = new Date(person.created_at)
 
-        userCreatedDate.setHours(0, 0, 0, 0)
+        createdDate.setHours(0, 0, 0, 0)
 
-        const diff = todayDate.getTime() - userCreatedDate.getTime()
+        const diff = todayDate.getTime() - createdDate.getTime()
         const daysTotal = Math.ceil(diff / (1000 * 60 * 60 * 24))
         const daysMissing = daysTotal - daysMarked
 
@@ -239,17 +242,19 @@ const Diario = () => {
                                     borderWidth: 3,
                                 }}
                                 size={scale(50)}
-                                source={handleAvatar(user.avatar)}
-                                title={getInitials(user.name)}
+                                source={handleAvatar(person.avatar)}
+                                title={getInitials(person.name)}
                                 rounded
                             />
                         </AvatarContainer>
                         <UserInfo>
-                            <UserName>{getNameParts(user.name, true)}</UserName>
+                            <UserName>
+                                {getNameParts(person.name, true)}
+                            </UserName>
                             <UserDetails>
-                                {userAge === 1
-                                    ? userAge + translate('diary.year')
-                                    : userAge + translate('diary.years')}
+                                {personAge === 1
+                                    ? personAge + translate('diary.year')
+                                    : personAge + translate('diary.years')}
                             </UserDetails>
                         </UserInfo>
                     </UserData>
