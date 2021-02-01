@@ -44,7 +44,7 @@ export default {
     loginbutton: 'Entrar',
     forgetbutton: 'Esqueceu a senha?',
     awesomeAlert: {
-      accessing: 'Entrando...',
+      accessing: 'Entrando',
     },
     errorMessages: {
       emailPwdWrong: 'Email ou senha inválidos',

@@ -45,7 +45,7 @@ export default {
     loginbutton: 'Login',
     forgetbutton: 'Forgot your password?',
     awesomeAlert: {
-      accessing: 'Working...',
+      accessing: 'Working',
     },
     errorMessages: {
       emailPwdWrong: 'Email or password invalid',

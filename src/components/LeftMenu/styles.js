@@ -5,15 +5,11 @@ import { TouchableOpacity } from 'react-native'
 
 import { scale, percentage } from '../../utils/scallingUtils'
 
-export const Container = styled.View`
-    background-color: #ffffff;
-    border-top-right-radius: ${scale(25)}px;
-    border-bottom-right-radius: ${scale(25)}px;
-    flex: 1;
-`
-
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
+        backgroundColor: '#ffffff',
+        borderTopRightRadius: scale(25),
+        borderBottomRightRadius: scale(25),
         flexGrow: 1,
     },
 })``

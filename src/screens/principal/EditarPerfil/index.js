@@ -32,8 +32,8 @@ import {
 } from '../../../components/NormalForms'
 import { Delete } from './styles'
 
-import InstitutionSelector from '../../../components/userData/InstitutionSelector'
-import LoadingModal from '../../../components/userData/LoadingModal'
+import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
+import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scallingUtils'
 import {
@@ -50,15 +50,15 @@ import {
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
-import { updateHousehold } from '../../../api/households'
+import { updateHousehold, deleteHousehold } from '../../../api/households'
 
 Feather.loadFont()
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
         token,
-        data,
-        storeUserData,
+        user,
+        storeUser,
         updateUserAvatar,
         households,
         storeHouseholds,
@@ -86,11 +86,35 @@ const EditarPerfil = ({ navigation, route }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
 
-    const editHousehold = async () => {
+    const removeHousehold = async () => {
         const household = {
             id,
+        }
+
+        setLoadingAlert(true)
+
+        const response = await deleteHousehold(household, user.id, token)
+
+        if (response.status === 204) {
+            const newHouseholds = households.filter((h) => h.id !== id)
+            storeHouseholds(newHouseholds)
+
+            setLoadingAlert(false)
+            navigation.goBack()
+        } else {
+            console.warn(response.status)
+            setLoadingAlert(false)
+            Alert.alert(translate('register.geralError'))
+        }
+    }
+
+    const editHousehold = async () => {
+        const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
+
+        const newHousehold = {
+            id,
             description: name,
-            birthdate: birth,
+            birthdate: birthDate,
             country,
             gender,
             race,
@@ -100,10 +124,10 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(household, institutionError)) return
+        if (!validatePerson(newHousehold, institutionError)) return
         setLoadingAlert(true)
 
-        const response = await updateHousehold(household, data.id, token)
+        const response = await updateHousehold(newHousehold, user.id, token)
 
         if (response.status === 200) {
             const oldHousehold = households.filter((h) => h.id === id)[0]
@@ -111,7 +135,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
             newHouseholds.push({
                 ...oldHousehold,
-                ...household,
+                ...newHousehold,
             })
             storeHouseholds(newHouseholds)
 
@@ -125,28 +149,31 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const editUser = async () => {
-        const user = {
+        const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const isBrazil = country === 'Brazil'
+
+        const newUser = {
             user_name: name,
-            birthdate: birth,
+            birthdate: birthDate,
             gender,
             race,
             country,
-            state,
-            city,
+            state: isBrazil ? state : null,
+            city: isBrazil ? city : null,
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(user, institutionError)) return
+        if (!validatePerson(newUser, institutionError)) return
         setLoadingAlert(true)
 
-        const response = await updateUser(user, data.id, token)
+        const response = await updateUser(newUser, user.id, token)
 
         if (response.status === 200) {
-            storeUserData({
-                ...data,
+            storeUser({
                 ...user,
+                ...newUser,
             })
 
             setLoadingAlert(false)
@@ -192,16 +219,27 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const handleEdit = () => {
-        if (country !== 'Brazil') {
-            setState(null)
-            setCity(null)
-        }
-
         if (isHousehold) {
             editHousehold()
         } else {
             editUser()
         }
+    }
+
+    const handleDelete = () => {
+        Alert.alert(
+            translate('register.confirmDeleteUser'),
+            translate('register.confirmDeleteUser2'),
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => removeHousehold() },
+            ],
+            { cancelable: false }
+        )
     }
 
     const setUserInstitutionCallback = (idCode, groupId) => {
@@ -261,7 +299,7 @@ const EditarPerfil = ({ navigation, route }) => {
                         onEditPress={() => changeAvatar()}
                     />
                     {isHousehold && (
-                        <Delete onPress={() => confirmDelete()}>
+                        <Delete onPress={() => handleDelete()}>
                             <Feather
                                 name='trash-2'
                                 size={scale(25)}

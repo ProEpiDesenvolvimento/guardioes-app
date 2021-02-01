@@ -44,7 +44,7 @@ export default {
     loginbutton: 'Entrar',
     forgetbutton: '¿Ha olvidado la contraseña?',
     awesomeAlert: {
-      accessing: 'Registrando...',
+      accessing: 'Registrando',
     },
     errorMessages: {
       emailPwdWrong: 'Email o contraseña no válida',
