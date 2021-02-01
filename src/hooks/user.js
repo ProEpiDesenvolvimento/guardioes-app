@@ -18,6 +18,7 @@ import { authUser } from '../api/user'
 const UserContext = createContext(null)
 
 export const UserProvider = ({ children }) => {
+    const [credentials, setCredentials] = useState({})
     const [token, setToken] = useState('')
     const [user, setUser] = useState({})
     const [avatar, setAvatar] = useState('')
@@ -31,6 +32,7 @@ export const UserProvider = ({ children }) => {
     const [lastReport, setLastReport] = useState('')
 
     const [isLoggedIn, setIsLoggedIn] = useState(true)
+    const [needSignIn, setNeedSignIn] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
@@ -39,13 +41,33 @@ export const UserProvider = ({ children }) => {
 
     const loadStoredData = useCallback(async () => {
         // Loads only essencial data stored
+        let email = ''
+        let password = ''
         let token = ''
 
-        RNSecureStorage.get('userToken').then((data) => {
-            token = data
-        }).catch((err) => {
-            console.log(err)
-        })
+        RNSecureStorage.get('userEmail')
+            .then((data) => {
+                email = data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+        RNSecureStorage.get('userPwd')
+            .then((data) => {
+                password = data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+
+        RNSecureStorage.get('userToken')
+            .then((data) => {
+                token = data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
 
         const userData = JSON.parse(await AsyncStorage.getItem('userData'))
 
@@ -53,6 +75,14 @@ export const UserProvider = ({ children }) => {
             await AsyncStorage.getItem('selectedData')
         )
 
+        if (email !== '' && password !== '') {
+            setCredentials({
+                email,
+                password,
+            })
+        } else {
+            await signOut()
+        }
         if (token !== '') {
             setToken(token)
         }
@@ -67,23 +97,8 @@ export const UserProvider = ({ children }) => {
         setIsLoading(false)
     }, [])
 
-    const loadSecondaryData = useCallback(async () => {
+    const loadSecondaryData = async () => {
         // Loads secondary data and verify user credentials
-        let email = ''
-        let password = ''
-
-        RNSecureStorage.get('userEmail').then((data) => {
-            email = data
-        }).catch((err) => {
-            console.log(err)
-        })
-
-        RNSecureStorage.get('userPwd').then((data) => {
-            password = data
-        }).catch((err) => {
-            console.log(err)
-        })
-
         const avatar = await AsyncStorage.getItem('userAvatar')
         const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
@@ -92,9 +107,6 @@ export const UserProvider = ({ children }) => {
             await AsyncStorage.getItem('householdAvatars')
         )
 
-        if (email === '' || password === '') {
-            signOut()
-        }
         if (avatar) {
             setAvatar(avatar)
         }
@@ -107,11 +119,12 @@ export const UserProvider = ({ children }) => {
         if (householdAvatars) {
             setHouseholdAvatars(householdAvatars)
         }
+        if (needSignIn) {
+            await signIn(credentials)
+        }
+    }
 
-        await signIn({ email, password })
-    }, [])
-
-    const storeUser = async (user, token = null) => {
+    const storeUser = async (user, token = null, credentials = null) => {
         const { households } = user
         const { app } = user
 
@@ -134,45 +147,45 @@ export const UserProvider = ({ children }) => {
                 accessible: ACCESSIBLE,
             })
         }
+        if (credentials) {
+            await RNSecureStorage.set('userEmail', credentials.email, {
+                accessible: ACCESSIBLE,
+            })
+
+            await RNSecureStorage.set('userPwd', credentials.password, {
+                accessible: ACCESSIBLE,
+            })
+        }
     }
 
     const sendUserTagsToOneSignal = (user) => {
         const userGroup = user.group ? user.group.split('/')[3] : null
-        const userSchool = user.school_unit_id
-            ? user.school_unit_id.toString()
-            : null
 
         OneSignal.setExternalUserId(user.id.toString())
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
-            school_unit_id: userSchool,
             platform: Platform.OS,
             platform_version: Platform.Version.toString(),
         })
     }
 
-    const signIn = useCallback(async ({ email, password }) => {
-        let response = {}
-
-        try {
-            response = await authUser({
-                email,
-                password,
-            })
-        } catch (err) {
-            console.log(err)
-        }
+    const signIn = async ({ email, password }) => {
+        const response = await authUser({
+            email,
+            password,
+        })
 
         if (response.status === 200) {
             storeUser(response.body.user, response.token)
             sendUserTagsToOneSignal(response.body.user)
+            setNeedSignIn(false)
         } else if (response.status === 401) {
             signOut()
         } else {
             setIsLoggedIn(false)
         }
-    }, [])
+    }
 
     const removeUserTagsfromOneSignal = () => {
         OneSignal.removeExternalUserId()
@@ -182,14 +195,14 @@ export const UserProvider = ({ children }) => {
         OneSignal.deleteTag('score')
     }
 
-    const signOut = () => {
-        AsyncStorage.multiRemove([
+    const signOut = async () => {
+        await AsyncStorage.multiRemove([
             'userData',
-            //'userScore',
-            //'userAvatar',
+            // 'userScore',
+            // 'userAvatar',
             'selectedData',
-            'householdAvatars',
-            //'lastReport',
+            // 'householdAvatars',
+            // 'lastReport',
             'showMapTip',
         ])
 
@@ -375,7 +388,6 @@ export const UserProvider = ({ children }) => {
     return (
         <UserContext.Provider
             value={{
-                signIn,
                 signOut,
                 token,
                 user,
@@ -400,6 +412,8 @@ export const UserProvider = ({ children }) => {
                 isLoading,
                 isLoggedIn,
                 setIsLoggedIn,
+                needSignIn,
+                setNeedSignIn,
             }}
         >
             {children}

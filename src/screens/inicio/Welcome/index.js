@@ -34,12 +34,10 @@ const Welcome = ({ navigation }) => {
         )
     }
 
-    let LogoType
+    let LogoType = GDSLogoBR
 
     if (translate('lang.code') === 'es') {
         LogoType = GDSLogoES
-    } else {
-        LogoType = GDSLogoBR
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Alert, Keyboard } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -26,7 +26,7 @@ import { authUser } from '../../../api/user'
 Feather.loadFont()
 
 const Login = ({ navigation }) => {
-    const { storeUser, setIsLoggedIn } = useUser()
+    const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -35,13 +35,14 @@ const Login = ({ navigation }) => {
 
     const passwordInput = useRef()
 
-    const handleLogIn = async () => {
+    const handleLogin = async () => {
+        Keyboard.dismiss()
+
         if (email === '' || password === '') {
             Alert.alert(translate('register.fieldNotBlank'))
             return
         }
 
-        Keyboard.dismiss()
         setShowProgressBar(true)
         setShowAlert(true)
 
@@ -51,9 +52,14 @@ const Login = ({ navigation }) => {
         })
 
         if (response.status === 200) {
-            await storeUser(response.body.user, response.token)
-
             setShowAlert(false)
+
+            await storeUser(response.body.user, response.token, {
+                email,
+                password,
+            })
+
+            setNeedSignIn(false)
             setIsLoggedIn(true)
         } else if (response.status === 401) {
             setShowAlert(false)
@@ -64,12 +70,10 @@ const Login = ({ navigation }) => {
         }
     }
 
-    let LogoType
+    let LogoType = GDSLogoBR
 
     if (translate('lang.code') === 'es') {
         LogoType = GDSLogoES
-    } else {
-        LogoType = GDSLogoBR
     }
 
     return (
@@ -97,12 +101,12 @@ const Login = ({ navigation }) => {
                             maxLength={100}
                             ref={passwordInput}
                             onChangeText={(text) => setPassword(text)}
-                            onSubmitEditing={() => handleLogIn()}
+                            onSubmitEditing={() => handleLogin()}
                         />
                     </FormSeparator>
 
                     <FormSeparator>
-                        <Touch onPress={() => handleLogIn()}>
+                        <Touch onPress={() => handleLogin()}>
                             <SnowButton>
                                 <Label>{translate('login.loginbutton')}</Label>
                             </SnowButton>

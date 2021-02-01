@@ -78,8 +78,8 @@ const EditarPerfil = ({ navigation, route }) => {
     const [race, setRace] = useState(person.race)
     const [birth, setBirth] = useState(person.birthdate)
     const [kinship, setKinship] = useState(person.kinship)
-    const [idCode, setIdCode] = useState(person.identification_code)
     const [groupId, setGroupId] = useState(person.group_id)
+    const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)

@@ -54,8 +54,8 @@ const NovoPerfil = ({ navigation }) => {
     const [race, setRace] = useState('')
     const [birth, setBirth] = useState('')
     const [kinship, setKinship] = useState('')
-    const [idCode, setIdCode] = useState(null)
     const [groupId, setGroupId] = useState(null)
+    const [idCode, setIdCode] = useState(null)
     const [riskGroup, setRiskGroup] = useState(false)
 
     const [showAlert, setShowAlert] = useState(false)
