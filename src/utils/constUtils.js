@@ -53,6 +53,15 @@ export const validatePerson = (person, instituitionComponentError) => {
     ) {
         Alert.alert(translate('register.nameRequired'))
         valid = false
+    } else if (person.email === '' || person.password === '') {
+        Alert.alert(
+            translate('register.fieldNotBlank'),
+            translate('register.fieldNotBlank2')
+        )
+        valid = false
+    } else if (person.password.length < 8) {
+        Alert.alert(translate('register.shortPassword'))
+        valid = false
     } else if (person.race === '' || person.gender === '') {
         Alert.alert(translate('register.genderRequired'))
         valid = false

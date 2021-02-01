@@ -90,7 +90,7 @@ export default {
     removePhoto: 'Quitar foto',
     fieldNotBlank: 'Los campos no pueden estar vacíos',
     fieldNotBlank2:
-      'Nombre\nCorreo electrónico\nContraseña\n\nNecesitamos esta información para completar su registro',
+      'Correo electrónico\nContraseña\n\nNecesitamos esta información para completar su registro',
     emptyDate: 'Se debe completar la fecha de nacimiento',
     emptyLocation: 'Se deben completar el estado y la ciudad',
     shortPassword: 'La contraseña debe tener al menos 8 caracteres',

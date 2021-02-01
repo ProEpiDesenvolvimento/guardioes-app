@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { scale } from '../../../utils/scallingUtils';
+import { scale } from '../../../utils/scallingUtils'
 
 export const PageTitle = styled.Text`
     font-family: 'ArgentumSans-SemiBold';
@@ -8,7 +8,7 @@ export const PageTitle = styled.Text`
     color: #ffffff;
     margin-top: 10%;
     margin-bottom: 10%;
-`;
+`
 
 export const FormLabel = styled.Text`
     align-self: flex-start;
@@ -17,7 +17,7 @@ export const FormLabel = styled.Text`
     color: #ffffff;
     text-align: left;
     margin-bottom: ${scale(12)}px;
-`;
+`
 
 export const FormTip = styled.Text`
     align-self: flex-start;
@@ -25,4 +25,4 @@ export const FormTip = styled.Text`
     font-size: ${scale(12)}px;
     color: #ffffff;
     margin-left: ${scale(12)}px;
-`;
+`

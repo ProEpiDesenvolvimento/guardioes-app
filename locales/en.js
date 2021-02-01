@@ -82,7 +82,7 @@ export default {
     removePhoto: 'Remove photo',
     fieldNotBlank: 'Fields cannot be empty',
     fieldNotBlank2:
-      'Name\nEmail\nPassword\n\nWe need this information to complete your registration',
+      'Email\nPassword\n\nWe need this information to complete your registration',
     emptyDate: 'Date of birth must be completed',
     emptyLocation: 'State and City must be filled',
     shortPassword: 'Password must be at least 8 characters',

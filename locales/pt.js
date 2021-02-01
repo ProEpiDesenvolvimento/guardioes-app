@@ -90,7 +90,7 @@ export default {
     removePhoto: 'Remover foto',
     fieldNotBlank: 'Campos não podem ficar em branco',
     fieldNotBlank2:
-      'Nome\nEmail\nSenha\n\nPrecisamos dessas informações para completar seu cadastro',
+      'Email\nSenha\n\nPrecisamos dessas informações para completar seu cadastro',
     emptyDate: 'A data de nascimento deve estar preenchida',
     emptyLocation: 'Estado e Cidade devem estar preenchidos',
     shortPassword: 'A senha precisa ter no mínimo 8 caracteres',

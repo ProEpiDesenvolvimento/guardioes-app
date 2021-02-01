@@ -14,19 +14,26 @@ export const getUser = async (id, token) => {
 }
 
 export const authUser = async (data) => {
-    const response = await fetch(`${API_URL}/user/login`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/vnd.api+json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            user: {
-                email: data.email,
-                password: data.password,
+    let response = {}
+
+    try {
+        response = await fetch(`${API_URL}/user/login`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/json',
             },
-        }),
-    })
+            body: JSON.stringify({
+                user: {
+                    email: data.email,
+                    password: data.password,
+                },
+            }),
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
     return {
         status: response.status,
         token: response.headers.map.authorization,
@@ -43,19 +50,18 @@ export const createUser = async (data) => {
         },
         body: JSON.stringify({
             user: {
-                residence: data.residence,
-                user_name: data.user_name,
                 email: data.email,
                 password: data.password,
+                user_name: data.user_name,
+                birthdate: data.birthdate,
                 gender: data.gender,
+                race: data.race,
                 country: data.country,
                 state: data.state,
                 city: data.city,
-                race: data.race,
-                birthdate: data.birthdate,
-                picture: data.picture,
-                identification_code: data.identification_code,
+                residence: data.residence,
                 group_id: data.group_id,
+                identification_code: data.identification_code,
                 is_professional: data.is_professional,
                 risk_group: data.risk_group,
                 policy_version: data.policy_version,

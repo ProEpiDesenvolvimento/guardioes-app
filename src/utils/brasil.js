@@ -5771,7 +5771,7 @@ export function getCity(city) {
                     { key: "XAMBIOÁ", label: "XAMBIOÁ" },
                ]
                break;
-          case null:
+          default:
                CITIES = [
 
                ]
