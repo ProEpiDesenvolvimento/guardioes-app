@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
+import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
 import { Avatar } from 'react-native-elements'
-import { useFocusEffect } from '@react-navigation/native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
@@ -34,28 +34,26 @@ Feather.loadFont()
 const Perfis = ({ navigation }) => {
     const {
         token,
-        data,
-        storeUserData,
+        user,
+        storeUser,
         avatar,
         households,
         storeHouseholds,
         householdAvatars,
     } = useUser()
 
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(true)
 
-    useFocusEffect(
-        useCallback(() => {
-            getFullUser()
-        }, [])
-    )
+    useEffect(() => {
+        getFullUser()
+    }, [])
 
     const getFullUser = async () => {
-        const response = await getUser(data.id, token)
+        const response = await getUser(user.id, token)
 
         if (response.status === 200) {
             storeHouseholds(response.body.user.households)
-            storeUserData(response.body.user)
+            storeUser(response.body.user)
 
             setIsLoaded(true)
         }
@@ -63,17 +61,19 @@ const Perfis = ({ navigation }) => {
 
     const getUserInfo = () => {
         const bornDate = new Date()
-        let birthDate = data.birthdate
+        let birthDate = ''
 
-        if (!data.birthdate) {
+        if (!user.birthdate) {
             bornDate.setFullYear(bornDate.getFullYear() - 13)
-            birthDate = bornDate.toISOString()
+            birthDate = moment(new Date(bornDate)).format('DD-MM-YYYY')
+        } else {
+            birthDate = moment(new Date(user.birthdate)).format('DD-MM-YYYY')
         }
 
         return {
-            ...data,
+            ...user,
             is_household: false,
-            name: data.user_name ? data.user_name : '',
+            name: user.user_name ? user.user_name : '',
             avatar,
             birthdate: birthDate,
         }
@@ -81,11 +81,15 @@ const Perfis = ({ navigation }) => {
 
     const getHouseholdInfo = (household) => {
         const bornDate = new Date()
-        let birthDate = household.birthdate
+        let birthDate = ''
 
         if (!household.birthdate) {
             bornDate.setFullYear(bornDate.getFullYear() - 13)
-            birthDate = bornDate.toISOString()
+            birthDate = moment(new Date(bornDate)).format('DD-MM-YYYY')
+        } else {
+            birthDate = moment(new Date(household.birthdate)).format(
+                'DD-MM-YYYY'
+            )
         }
 
         return {
@@ -109,21 +113,20 @@ const Perfis = ({ navigation }) => {
                         containerStyle={styles.Avatar}
                         size={scale(58)}
                         source={handleAvatar(avatar)}
-                        title={getInitials(data.user_name)}
+                        title={getInitials(user.user_name)}
                         rounded
                     />
                 </AvatarWrapper>
                 <InfoContainer>
                     <InfoWrapper>
-                        <Name>{data.user_name}</Name>
+                        <Name>{user.user_name}</Name>
                         <Relation>{translate('profiles.owner')}</Relation>
                     </InfoWrapper>
                     <ButtonsWrapper>
                         <Button
                             onPress={() => {
                                 navigation.navigate('EditarPerfil', {
-                                    is_user: true,
-                                    data: getUserInfo(),
+                                    person: getUserInfo(),
                                 })
                             }}
                         >
@@ -171,8 +174,7 @@ const Perfis = ({ navigation }) => {
                                 <Button
                                     onPress={() => {
                                         navigation.navigate('EditarPerfil', {
-                                            is_user: false,
-                                            data: getHouseholdInfo(household),
+                                            person: getHouseholdInfo(household),
                                         })
                                     }}
                                 >

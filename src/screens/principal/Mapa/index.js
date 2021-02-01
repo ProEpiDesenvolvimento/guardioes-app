@@ -53,7 +53,7 @@ const Maps = () => {
         const showMapTip = JSON.parse(await AsyncStorage.getItem('showMapTip'))
         const localPin = JSON.parse(await AsyncStorage.getItem('localPin'))
 
-        if (showMapTip === null) {
+        if (!showMapTip) {
             setShowAlert(true)
         }
 
@@ -65,7 +65,7 @@ const Maps = () => {
         const response = await getWeekSurveys(token)
 
         if (response.status === 200) {
-            if (localPin !== null) {
+            if (localPin) {
                 setWeekSurveys([...response.body.surveys, localPin])
             } else {
                 setWeekSurveys(response.body.surveys)
@@ -124,7 +124,7 @@ const Maps = () => {
             const yj = vs[j][1]
 
             const intersect =
-                yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi
+                yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi
             if (intersect) inside = !inside
         }
 

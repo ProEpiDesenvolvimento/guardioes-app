@@ -89,7 +89,7 @@ const BadReport = ({ navigation }) => {
     const showConfirmation = (response) => {
         let alertMessage = ''
 
-        if (response !== null && !response.errors) {
+        if (response && !response.errors) {
             alertMessage = response.feedback_message
                 ? response.feedback_message
                 : translate('badReport.alertMessages.reportSent')

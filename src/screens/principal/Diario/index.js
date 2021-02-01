@@ -77,16 +77,17 @@ const Diario = () => {
     useFocusEffect(
         useCallback(() => {
             getSurveys()
-            getUserAge()
+            getPersonAge()
         }, [])
     )
 
     useEffect(() => {
-        if (surveys.length > 0) {
-            defineMarkedDates()
-            getUserParticipation()
-        }
+        defineMarkedDates()
     }, [surveys])
+
+    useEffect(() => {
+        getUserParticipation()
+    }, [daysMarked])
 
     const getSurveys = async () => {
         const response = await getUserSurveys(user.id, token)
@@ -97,7 +98,7 @@ const Diario = () => {
         }
     }
 
-    const getUserAge = () => {
+    const getPersonAge = () => {
         const todayDate = new Date()
         const birthDate = new Date(person.birthdate)
 
@@ -109,14 +110,14 @@ const Diario = () => {
         setPersonAge(personAge)
     }
 
-    const defineMarkedDates = async () => {
+    const defineMarkedDates = () => {
         const markedDatesGood = []
         const markedDatesBad = []
         const markedDatesAll = []
 
         surveys.map((survey) => {
             if (!person.is_household) {
-                if (survey.household == null) {
+                if (!survey.household) {
                     if (survey.symptom && survey.symptom.length) {
                         // BadReport
                         markedDatesBad.push(
@@ -130,7 +131,7 @@ const Diario = () => {
                         )
                     }
                 }
-            } else if (survey.household.id === person.id) {
+            } else if (survey.household && survey.household.id === person.id) {
                 if (survey.symptom && survey.symptom.length) {
                     // Household BadReport
                     markedDatesBad.push(

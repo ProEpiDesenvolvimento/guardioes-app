@@ -33,7 +33,7 @@ const Noticias = () => {
 
     // Get group twitter from user
     const getGroupTwitter = async () => {
-        if (user.group_id !== null) {
+        if (user.group_id) {
             const response = await getUserGroupTwitter(user.group_id, token)
 
             if (response.status === 200) {
@@ -98,7 +98,7 @@ const Noticias = () => {
                             </NoticiasTitle>
                             <FeedTitle>Feed RSS do Guardiões</FeedTitle>
 
-                            {groupTwitter !== null ? (
+                            {groupTwitter ? (
                                 <TwitterOption>
                                     <OptionLeft
                                         onPress={() => {

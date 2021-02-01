@@ -1,18 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import {
-    SafeAreaView,
-    StatusBar,
-    Text,
-    StyleSheet,
-    Alert,
-    Modal,
-} from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { StatusBar, Text, StyleSheet, Alert, Modal } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import AsyncStorage from '@react-native-community/async-storage'
-import { Avatar } from 'react-native-elements'
+import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import Emoji from 'react-native-emoji'
+import { Avatar } from 'react-native-elements'
+import { useFocusEffect } from '@react-navigation/native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
@@ -63,14 +58,16 @@ SimpleLineIcons.loadFont()
 const Home = ({ navigation }) => {
     const {
         isLoading,
+        signOut,
         token,
-        data,
+        user,
         avatar,
         location,
         getCurrentLocation,
         households,
         storeHouseholds,
         householdAvatars,
+        surveys,
         storeSurveys,
         updateUserScore,
         loadSecondaryData,
@@ -79,15 +76,14 @@ const Home = ({ navigation }) => {
     } = useUser()
 
     const [showTermsConsent, setShowTermsConsent] = useState(false)
-    const [userLastSurveys, setUserLastSurveys] = useState([])
     const [userBadReports, setUserBadReports] = useState(0)
     const [hasBadReports, setHasBadReports] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
-    const [showProgressBar, setProgressBar] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertMessage, setAlertMessage] = useState(null)
 
-    const user = getCurrentUserInfo()
+    const person = getCurrentUserInfo()
 
     useEffect(() => {
         if (!isLoading) {
@@ -95,17 +91,23 @@ const Home = ({ navigation }) => {
         }
     }, [isLoading])
 
+    useFocusEffect(
+        useCallback(() => {
+            getUserHealth()
+        }, [surveys])
+    )
+
     const fetchData = async () => {
         await loadSecondaryData()
 
         verifyUserTermsConsent()
         getCurrentLocation()
-        getUserLastSurveys()
+        getSurveys()
     }
 
     const verifyUserTermsConsent = () => {
         const currentPolicyTerms = terms.version
-        const userPolicyTerms = data.policy_version
+        const userPolicyTerms = user.policy_version
 
         if (userPolicyTerms < currentPolicyTerms) {
             setShowTermsConsent(true)
@@ -138,52 +140,50 @@ const Home = ({ navigation }) => {
             policy_version: terms.version,
         }
 
-        const response = await updateUser(policy, data.id, token)
+        const response = await updateUser(policy, user.id, token)
 
         if (response.status === 200) {
             console.warn(response.status)
         }
     }
 
-    const getUserLastSurveys = useCallback(async () => {
-        const response = await getUserSurveys(data.id, token)
+    const getSurveys = async () => {
+        const response = await getUserSurveys(user.id, token)
 
         if (response.status === 200) {
             storeSurveys(response.body.surveys)
-
-            const todayDate = new Date()
-            const lastWeek = new Date()
-
-            lastWeek.setDate(todayDate.getDate() - 7)
-            lastWeek.setHours(0, 0, 0, 0)
-
-            const userLastSurveys = response.body.surveys.filter(
-                (survey) =>
-                    new Date(survey.created_at).getTime() >= lastWeek.getTime()
-            )
-
-            setUserLastSurveys(userLastSurveys)
-            getUserHealth()
         }
-    }, [token])
+    }
 
     const getHouseholds = async () => {
-        const response = await getUserHouseholds(data.id, token)
+        const response = await getUserHouseholds(user.id, token)
+
         if (response.status === 200) {
             storeHouseholds(response.body.households)
         }
     }
 
     const getUserHealth = () => {
+        const todayDate = new Date()
+        const lastWeek = new Date()
+
+        lastWeek.setDate(todayDate.getDate() - 7)
+        lastWeek.setHours(0, 0, 0, 0)
+
+        const userLastSurveys = surveys.filter(
+            (survey) =>
+                new Date(survey.created_at).getTime() >= lastWeek.getTime()
+        )
+
         let badReports = 0
 
         if (userLastSurveys.length > 0) {
             userLastSurveys.map((survey) => {
-                if (user.is_household) {
+                if (person.is_household) {
                     if (
                         survey.symptom.length > 0 &&
                         survey.household &&
-                        survey.household.id === user.id
+                        survey.household.id === person.id
                     ) {
                         badReports += 1
                     }
@@ -203,7 +203,7 @@ const Home = ({ navigation }) => {
         if (location.error !== 0) return
 
         showLoadingAlert()
-        const householdID = user.is_household ? user.id : null
+        const householdID = person.is_household ? person.id : null
 
         const survey = {
             household_id: householdID,
@@ -211,7 +211,7 @@ const Home = ({ navigation }) => {
             longitude: location.longitude,
         }
 
-        const response = await createSurvey(survey, data.id, token)
+        const response = await createSurvey(survey, user.id, token)
         showConfirmation(response.body)
         updateUserScore()
 
@@ -223,13 +223,13 @@ const Home = ({ navigation }) => {
     const showLoadingAlert = () => {
         setAlertMessage(null)
         setShowAlert(true)
-        setProgressBar(true)
+        setShowProgressBar(true)
     }
 
     const showConfirmation = (response) => {
         let alertMessage = ''
 
-        if (response !== null && !response.errors) {
+        if (response && !response.errors) {
             alertMessage = response.feedback_message
                 ? response.feedback_message
                 : translate('badReport.alertMessages.reportSent')
@@ -242,7 +242,7 @@ const Home = ({ navigation }) => {
                 {alertMessage} {emojis[0]}
             </Text>
         )
-        setProgressBar(false)
+        setShowProgressBar(false)
         console.log(alertMessage)
     }
 
@@ -261,7 +261,7 @@ const Home = ({ navigation }) => {
                             <NamesContainer>
                                 <TextName>
                                     {translate('home.hello') +
-                                        getNameParts(user.name)}
+                                        getNameParts(person.name)}
                                 </TextName>
                                 <AppName>
                                     {translate('home.nowAGuardian')}
@@ -270,8 +270,8 @@ const Home = ({ navigation }) => {
                             <Avatar
                                 containerStyle={styles.avatar}
                                 size={scale(58)}
-                                source={handleAvatar(user.avatar)}
-                                title={getInitials(user.name)}
+                                source={handleAvatar(person.avatar)}
+                                title={getInitials(person.name)}
                                 editButton={{
                                     name: null,
                                     type: 'feather',
@@ -343,7 +343,7 @@ const Home = ({ navigation }) => {
                                         <Button
                                             onPress={async () => {
                                                 setModalVisible(!modalVisible)
-                                                await selectUser(data)
+                                                await selectUser(user)
                                                 getUserHealth()
                                             }}
                                         >
@@ -351,13 +351,13 @@ const Home = ({ navigation }) => {
                                                 size={scale(60)}
                                                 source={handleAvatar(avatar)}
                                                 title={getInitials(
-                                                    data.user_name
+                                                    user.user_name
                                                 )}
                                                 rounded
                                             />
                                             <UserName>
                                                 {getNameParts(
-                                                    data.user_name,
+                                                    user.user_name,
                                                     true
                                                 )}
                                             </UserName>

@@ -268,8 +268,8 @@ export const UserProvider = ({ children }) => {
     const storeHouseholds = (households) => {
         households.sort(
             (a, b) =>
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
+                new Date(a.created_at).getTime() -
+                new Date(b.created_at).getTime()
         )
 
         setHouseholds(households)

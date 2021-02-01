@@ -91,7 +91,7 @@ const LeftMenu = ({ navigation }) => {
             </Button>
 
             <Aplicativo>{translate('drawer.app')}</Aplicativo>
-            {user.group_id !== null ? (
+            {user.group_id ? (
                 <Button onPress={() => navigation.navigate('Vigilancia')}>
                     <UserOptionGreen>
                         <Feather
