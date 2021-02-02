@@ -53,7 +53,7 @@ const Maps = () => {
         const showMapTip = JSON.parse(await AsyncStorage.getItem('showMapTip'))
         const localPin = JSON.parse(await AsyncStorage.getItem('localPin'))
 
-        if (!showMapTip) {
+        if (showMapTip === null) {
             setShowAlert(true)
         }
 

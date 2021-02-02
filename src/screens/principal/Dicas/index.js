@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { TouchableOpacity, ScrollView, Modal } from 'react-native'
+import { TouchableOpacity, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { useFocusEffect } from '@react-navigation/native'
@@ -184,7 +184,9 @@ const Dicas = () => {
                         () => setModalVisible(!modalVisible) // Exit to modal view
                     }
                 >
-                    <SafeAreaView style={{ flex: 1 }}>
+                    <SafeAreaView
+                        style={{ flex: 1, backgroundColor: '#348EAC' }}
+                    >
                         <Details>
                             <DetailsIcon>
                                 <TouchableOpacity
@@ -193,7 +195,7 @@ const Dicas = () => {
                                     <Feather
                                         name='arrow-left-circle'
                                         size={scale(35)}
-                                        color='#5DD39E'
+                                        color='#348eac'
                                     />
                                 </TouchableOpacity>
                             </DetailsIcon>
@@ -204,26 +206,24 @@ const Dicas = () => {
                                 </DetailsTitle>
                             </DetailsTitleWrapper>
 
-                            <ScrollView>
-                                <DetailsBodyText>
-                                    {contentSelected.body}
-                                </DetailsBodyText>
-                            </ScrollView>
-
-                            <DetailsButton
-                                onPress={() =>
-                                    Redirect(
-                                        translate('advices.moreInformations'),
-                                        translate('advices.redirectPermission'),
-                                        contentSelected.source_link
-                                    )
-                                }
-                            >
-                                <DetailsButtonLabel>
-                                    {translate('advices.more')}
-                                </DetailsButtonLabel>
-                            </DetailsButton>
+                            <DetailsBodyText>
+                                {contentSelected.body}
+                            </DetailsBodyText>
                         </Details>
+
+                        <DetailsButton
+                            onPress={() =>
+                                Redirect(
+                                    translate('advices.moreInformations'),
+                                    translate('advices.redirectPermission'),
+                                    contentSelected.source_link
+                                )
+                            }
+                        >
+                            <DetailsButtonLabel>
+                                {translate('advices.more')}
+                            </DetailsButtonLabel>
+                        </DetailsButton>
                     </SafeAreaView>
                 </Modal>
             </Container>

@@ -129,7 +129,7 @@ export const UserProvider = ({ children }) => {
         const { app } = user
 
         if (households) {
-            setHouseholds(households)
+            storeHouseholds(households)
             user.households = undefined
         }
         if (app) {
@@ -268,8 +268,8 @@ export const UserProvider = ({ children }) => {
     const storeHouseholds = (households) => {
         households.sort(
             (a, b) =>
-                new Date(a.created_at).getTime() -
-                new Date(b.created_at).getTime()
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime()
         )
 
         setHouseholds(households)

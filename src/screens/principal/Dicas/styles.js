@@ -83,13 +83,17 @@ export const AdviceIcon = styled.View`
     padding: ${scale(12)}px;
 `
 
-export const Details = styled.View`
-    flex: 1;
-    align-self: center;
-    padding-top: ${percentage(5)}px;
-    padding-horizontal: ${percentage(5)}px;
-    background-color: #ffffff;
-`
+export const Details = styled.ScrollView.attrs({
+    contentContainerStyle: {
+        backgroundColor: '#ffffff',
+        borderTopLeftRadius: scale(22),
+        borderTopRightRadius: scale(22),
+        flexGrow: 1,
+        paddingTop: percentage(5),
+        paddingBottom: percentage(15),
+        paddingHorizontal: percentage(5),
+    },
+})``
 
 export const DetailsIcon = styled.View`
     flex-direction: row;
@@ -107,7 +111,7 @@ export const DetailsTitleWrapper = styled.View`
 export const DetailsTitle = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(19)}px;
-    color: #5dd39e;
+    color: #348eac;
     margin-bottom: ${scale(15)}px;
 `
 
@@ -119,14 +123,19 @@ export const DetailsBodyText = styled.Text`
     height: 100%;
 `
 
-export const DetailsButton = styled.TouchableOpacity`
-    align-self: center;
-    background-color: #ffffff;
+export const DetailsButton = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})`
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    background-color: #348eac;
 `
 
 export const DetailsButtonLabel = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(15)}px;
-    color: #5dd39e;
+    color: #ffffff;
+    text-align: center;
     margin-vertical: ${percentage(3)}px;
 `
