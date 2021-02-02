@@ -1,15 +1,17 @@
-import { Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
+import { Dimensions } from 'react-native'
 
-//Guideline sizes are based on standard ~5" screen mobile device
-const guidelineBaseWidth = 350;
-const guidelineBaseHeight = 680;
+const { width, height } = Dimensions.get('window')
 
-const scale = size => width / guidelineBaseWidth * size;
-const verticalScale = size => height / guidelineBaseHeight * size;
-const moderateScale = (size, factor = 0.5) => size + ( scale(size) - size ) * factor;
+// Guideline sizes are based on standard ~5" screen mobile device
+const guidelineBaseWidth = 350
+const guidelineBaseHeight = 680
 
-const percentage = percent => (percent / 100) * width;
-const vPercentage = percent => (percent / 100) * height;
+const scale = (size) => (width / guidelineBaseWidth) * size
+const verticalScale = (size) => (height / guidelineBaseHeight) * size
+const moderateScale = (size, factor = 0.5) =>
+    size + (scale(size) - size) * factor
 
-export {scale, verticalScale, moderateScale, percentage, vPercentage};
+const percentage = (percent) => (percent / 100) * width
+const vPercentage = (percent) => (percent / 100) * height
+
+export { scale, verticalScale, moderateScale, percentage, vPercentage }
