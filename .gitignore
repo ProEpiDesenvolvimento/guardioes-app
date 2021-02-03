@@ -61,3 +61,5 @@ android/app/gds-upload-keystore.jks
 # CocoaPods
 /ios/Pods/
 
+# tests and quality
+coverage/

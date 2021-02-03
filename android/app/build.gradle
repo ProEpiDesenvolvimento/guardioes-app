@@ -132,8 +132,10 @@ android {
         applicationId "com.guardioesapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
-        versionName "2.2.2"
+        versionCode 38
+        versionName "3.1.1"
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -151,7 +153,7 @@ android {
             keyPassword 'android'
         }
         release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+            if(project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
                 storePassword MYAPP_UPLOAD_STORE_PASSWORD
                 keyAlias MYAPP_UPLOAD_KEY_ALIAS
@@ -189,6 +191,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-spinkit')
+    implementation project(':react-native-simple-shadow-view')
+    implementation project(':react-native-image-picker')
     implementation project(':rn-secure-storage')
     implementation project(':react-native-webview')
     implementation project(':@react-native-community_async-storage')
@@ -212,6 +217,10 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'Feather.ttf', 'SimpleLineIcons.ttf' ] // Name of the font files you want to copy
+]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
