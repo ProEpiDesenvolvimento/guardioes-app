@@ -10,7 +10,7 @@ export const Container = styled.View`
 `
 
 export const ButtonMapChange = styled(TouchableOpacity).attrs({
-    activeOpacity: 0.2
+    activeOpacity: 0.2,
 })`
     height: 5%;
     width: 50%;
