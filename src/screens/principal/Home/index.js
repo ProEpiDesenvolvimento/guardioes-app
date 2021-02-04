@@ -58,6 +58,7 @@ SimpleLineIcons.loadFont()
 const Home = ({ navigation }) => {
     const {
         isLoading,
+        isOffline,
         signOut,
         token,
         user,
@@ -81,6 +82,7 @@ const Home = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
+    const [alertTitle, setAlertTitle] = useState(null)
     const [alertMessage, setAlertMessage] = useState(null)
 
     const person = getCurrentUserInfo()
@@ -97,6 +99,10 @@ const Home = ({ navigation }) => {
         }, [surveys])
     )
 
+    useEffect(() => {
+        showOfflineAlert(isOffline)
+    }, [isOffline])
+
     const fetchData = async () => {
         await loadSecondaryData()
 
@@ -112,27 +118,6 @@ const Home = ({ navigation }) => {
         if (userPolicyTerms < currentPolicyTerms) {
             setShowTermsConsent(true)
         }
-    }
-
-    const showTermsPolicy = () => {
-        setShowTermsConsent(false)
-
-        Alert.alert(
-            terms.title,
-            terms.text,
-            [
-                {
-                    text: terms.disagree,
-                    onPress: () => signOut(),
-                    style: 'cancel',
-                },
-                {
-                    text: terms.agree,
-                    onPress: () => updateUserTermsConsent(),
-                },
-            ],
-            { cancelable: false }
-        )
     }
 
     const updateUserTermsConsent = async () => {
@@ -220,6 +205,45 @@ const Home = ({ navigation }) => {
         }
     }
 
+    const showTermsPolicy = () => {
+        setShowTermsConsent(false)
+
+        Alert.alert(
+            terms.title,
+            terms.text,
+            [
+                {
+                    text: terms.disagree,
+                    onPress: () => signOut(),
+                    style: 'cancel',
+                },
+                {
+                    text: terms.agree,
+                    onPress: () => updateUserTermsConsent(),
+                },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    const showOfflineAlert = (show) => {
+        if (show) {
+            setAlertTitle(
+                <Text>
+                    {translate('home.offlineTitle')} {emojis[2]}
+                </Text>
+            )
+            setAlertMessage(
+                `${translate('home.offlineMessage')}\n${translate(
+                    'home.offlineMessage2'
+                )}`
+            )
+            setShowAlert(true)
+        } else {
+            setShowAlert(false)
+        }
+    }
+
     const showLoadingAlert = () => {
         setAlertMessage(null)
         setShowAlert(true)
@@ -240,6 +264,11 @@ const Home = ({ navigation }) => {
         setAlertMessage(
             <Text>
                 {alertMessage} {emojis[0]}
+            </Text>
+        )
+        setAlertTitle(
+            <Text>
+                {translate('badReport.alertMessages.thanks')} {emojis[1]}
             </Text>
         )
         setShowProgressBar(false)
@@ -438,16 +467,9 @@ const Home = ({ navigation }) => {
                     show={showAlert}
                     showProgress={showProgressBar}
                     title={
-                        showProgressBar ? (
-                            translate('badReport.alertMessages.sending')
-                        ) : (
-                            <Text>
-                                {translate('badReport.alertMessages.thanks')}{' '}
-                                {emojis[1]}
-                                {emojis[1]}
-                                {emojis[1]}
-                            </Text>
-                        )
+                        showProgressBar
+                            ? translate('badReport.alertMessages.sending')
+                            : alertTitle
                     }
                     message={alertMessage}
                     closeOnTouchOutside={!showProgressBar}
@@ -456,7 +478,6 @@ const Home = ({ navigation }) => {
                     confirmText={translate(
                         'badReport.alertMessages.confirmText'
                     )}
-                    onCancelPressed={() => setShowAlert(false)}
                     onConfirmPressed={() => setShowAlert(false)}
                     onDismiss={() => setShowAlert(false)}
                 />
@@ -481,12 +502,16 @@ const styles = StyleSheet.create({
 })
 
 const emojis = [
-    <Emoji // Emoji heart up
+    <Emoji // Emoji heart
         name='heart'
         style={{ fontSize: scale(15) }}
     />,
-    <Emoji // Emoji tada up
+    <Emoji // Emoji tada
         name='tada'
+        style={{ fontSize: scale(15) }}
+    />,
+    <Emoji // Emoji cloud
+        name='cloud'
         style={{ fontSize: scale(15) }}
     />,
 ]

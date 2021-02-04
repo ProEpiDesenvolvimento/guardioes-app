@@ -165,7 +165,7 @@ export default {
       reportNotSent:
         'You have already sent a survey today. Thanks for your contribution.',
       seeADoctor: 'We recommend that you seek medical help!',
-      confirmText: 'Back',
+      confirmText: 'Confirm',
       covidSuspect:
         'Download the Guardiões da Saúde and contribute to coping with Covid-19, access:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=en\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=en&ls=1\n\nDownload the app Coronavírus-SUS, access:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=en\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinition of Close Contact: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
     },
@@ -208,6 +208,9 @@ export default {
     statusLast7DaysGood: 'You have been feeling well.',
     statusLast7DaysBad: 'You were not feeling well.',
     userHowYouFelling: 'How are you feeling today?',
+    offlineTitle: 'Offline Mode',
+    offlineMessage: 'You are not connected to the internet.',
+    offlineMessage2: 'The data may not be in sync and any changes you made will not be saved.',
   },
   profiles: {
     households: 'Relatives',

@@ -374,7 +374,7 @@ const BadReport = ({ navigation }) => {
                     )
                 }
                 message={alertMessage}
-                closeOnTouchOutside={showProgressBar}
+                closeOnTouchOutside={!showProgressBar}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={!showProgressBar}
                 confirmText={translate('badReport.alertMessages.button')}
@@ -386,11 +386,11 @@ const BadReport = ({ navigation }) => {
 }
 
 const emojis = [
-    <Emoji // Emoji heart up
+    <Emoji // Emoji heart
         name='heart'
         style={{ fontSize: scale(15) }}
     />,
-    <Emoji // Emoji tada up
+    <Emoji // Emoji tada
         name='heavy_check_mark'
         style={{ fontSize: scale(15) }}
     />,

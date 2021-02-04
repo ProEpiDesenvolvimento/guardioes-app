@@ -8,6 +8,7 @@ import React, {
 import { PermissionsAndroid, Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import Geolocation from 'react-native-geolocation-service'
+import NetInfo from '@react-native-community/netinfo'
 import OneSignal from 'react-native-onesignal'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import SplashScreen from 'react-native-splash-screen'
@@ -31,12 +32,21 @@ export const UserProvider = ({ children }) => {
     const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
 
-    const [isLoggedIn, setIsLoggedIn] = useState(true)
-    const [needSignIn, setNeedSignIn] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
+    const [isLoggedIn, setIsLoggedIn] = useState(true)
+    const [isOffline, setIsOffline] = useState(false)
+    const [needSignIn, setNeedSignIn] = useState(true)
 
     useEffect(() => {
         loadStoredData()
+
+        const internetState = NetInfo.addEventListener((state) => {
+            getCurrentConnection(state)
+        })
+
+        return () => {
+            internetState()
+        }
     }, [])
 
     const loadStoredData = useCallback(async () => {
@@ -182,8 +192,6 @@ export const UserProvider = ({ children }) => {
             setNeedSignIn(false)
         } else if (response.status === 401) {
             signOut()
-        } else {
-            setIsLoggedIn(false)
         }
     }
 
@@ -385,6 +393,16 @@ export const UserProvider = ({ children }) => {
         console.warn(`User score: ${newScore}`)
     }
 
+    const getCurrentConnection = (internet) => {
+        if (!internet.isConnected) {
+            setIsOffline(true)
+        } else if (internet.isInternetReachable) {
+            setIsOffline(false)
+        } else {
+            setIsOffline(true)
+        }
+    }
+
     return (
         <UserContext.Provider
             value={{
@@ -412,6 +430,7 @@ export const UserProvider = ({ children }) => {
                 isLoading,
                 isLoggedIn,
                 setIsLoggedIn,
+                isOffline,
                 needSignIn,
                 setNeedSignIn,
             }}

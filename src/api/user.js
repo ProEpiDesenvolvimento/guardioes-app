@@ -36,8 +36,9 @@ export const authUser = async (data) => {
 
     return {
         status: response.status,
-        token: response.headers.map.authorization,
-        body: await response.json(),
+        token:
+            response.status === 200 ? response.headers.map.authorization : null,
+        body: response.status === 200 ? await response.json() : null,
     }
 }
 
