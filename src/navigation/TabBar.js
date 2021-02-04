@@ -10,7 +10,7 @@ import Mapa from '../screens/principal/Mapa'
 import Noticias from '../screens/principal/Noticias'
 
 import translate from '../../locales/i18n'
-import { scale } from '../utils/scallingUtils'
+import { scale } from '../utils/scalling'
 
 const Tab = createBottomTabNavigator()
 Feather.loadFont()

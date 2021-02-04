@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 
 export const Logo = styled.Image`
     height: ${scale(105)}px;

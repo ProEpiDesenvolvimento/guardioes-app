@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Spinner from 'react-native-spinkit'
 
 import { Screen } from './styles'
-import { scale } from '../../utils/scallingUtils'
+import { scale } from '../../utils/scalling'
 
 const ScreenLoader = () => {
     return (

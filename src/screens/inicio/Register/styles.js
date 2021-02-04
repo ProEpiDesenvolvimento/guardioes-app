@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 
 export const PageTitle = styled.Text`
     font-family: 'ArgentumSans-SemiBold';

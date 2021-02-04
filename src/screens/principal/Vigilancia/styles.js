@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 
 export const Title = styled.Text`
     align-self: flex-start;

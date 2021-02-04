@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import LeftMenu from '../components/LeftMenu'
 import TabBar from './TabBar'
 
-import { scale } from '../utils/scallingUtils'
+import { scale } from '../utils/scalling'
 
 const Drawer = createDrawerNavigator()
 

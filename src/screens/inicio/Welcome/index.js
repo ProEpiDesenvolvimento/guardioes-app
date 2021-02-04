@@ -12,7 +12,7 @@ import { Container, Logo, WelcomeText } from './styles'
 
 import translate from '../../../../locales/i18n'
 import { GDSLogoES, GDSLogoBR } from '../../../img/imageConst'
-import { terms } from '../../../utils/constUtils'
+import { terms } from '../../../utils/consts'
 
 const Welcome = ({ navigation }) => {
     const showTerms = () => {

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import AwesomeAlert from 'react-native-awesome-alerts'
 
-import { scale } from '../utils/scallingUtils'
+import { scale } from '../utils/scalling'
 
 export const CoolAlert = styled(AwesomeAlert).attrs((props) => ({
     overlayStyle: {

@@ -14,7 +14,7 @@ import {
 } from './styles'
 
 import translate from '../../../../locales/i18n'
-import { Redirect } from '../../../utils/constUtils'
+import { redirectAlert } from '../../../utils/consts'
 
 const NoticiasComponent = ({ data }) => {
     const date = moment(new Date(data.created_at)).format('DD/MM/YY')
@@ -22,7 +22,7 @@ const NoticiasComponent = ({ data }) => {
     return (
         <Button
             onPress={() =>
-                Redirect(
+                redirectAlert(
                     translate('news.openBrowser'),
                     translate('news.twitter'),
                     `https://twitter.com/${data.screen_name}/status/${data.id_str}`

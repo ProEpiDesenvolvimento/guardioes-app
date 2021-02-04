@@ -19,8 +19,8 @@ import {
 } from './styles'
 
 import translate from '../../../locales/i18n'
-import { scale } from '../../utils/scallingUtils'
-import { getInitials, handleAvatar } from '../../utils/constUtils'
+import { scale } from '../../utils/scalling'
+import { getInitials, handleAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
 
 Feather.loadFont()

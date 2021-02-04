@@ -44,13 +44,13 @@ import {
 
 import translate from '../../../../locales/i18n'
 import { LocaleConfig } from '../../../utils/calendaryMonthNames'
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 import { HappyIcon, SadIcon } from '../../../img/imageConst'
 import {
     getNameParts,
     handleAvatar,
     getInitials,
-} from '../../../utils/constUtils'
+} from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUserSurveys } from '../../../api/surveys'
 

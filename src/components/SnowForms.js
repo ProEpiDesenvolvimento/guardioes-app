@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import ShadowView from 'react-native-simple-shadow-view'
 import Spinner from 'react-native-spinkit'
 
-import { scale, percentage } from '../utils/scallingUtils'
+import { scale, percentage } from '../utils/scalling'
 
 export const GradientBackground = styled(LinearGradient).attrs({
     colors: ['#5DD39E', '#348EAC'],

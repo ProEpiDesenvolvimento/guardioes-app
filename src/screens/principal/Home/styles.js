@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { TouchableOpacity } from 'react-native'
 import ShadowView from 'react-native-simple-shadow-view'
 
-import { scale, percentage } from '../../../utils/scallingUtils'
+import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;

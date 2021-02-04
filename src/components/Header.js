@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 
 import { TouchableOpacity } from 'react-native'
 
-import { scale, percentage } from '../utils/scallingUtils'
+import { scale, percentage } from '../utils/scalling'
 
 export const HeaderNavigator = styled.View`
     width: 100%;

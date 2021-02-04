@@ -44,9 +44,9 @@ import {
     getNameParts,
     handleAvatar,
     getInitials,
-} from '../../../utils/constUtils'
+} from '../../../utils/consts'
 import translate from '../../../../locales/i18n'
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { getUserHouseholds } from '../../../api/households'

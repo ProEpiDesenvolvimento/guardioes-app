@@ -36,7 +36,7 @@ export const handleAvatar = (image) => {
     return null
 }
 
-export const Redirect = (title, message, url) => {
+export const redirectAlert = (title, message, url) => {
     Alert.alert(`${title}`, `${message}`, [
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Ok', onPress: () => Linking.openURL(`${url}`) },

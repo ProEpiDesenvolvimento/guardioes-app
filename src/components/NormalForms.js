@@ -6,7 +6,7 @@ import DatePicker from 'react-native-datepicker'
 import { CheckBox } from 'react-native-elements'
 import ShadowView from 'react-native-simple-shadow-view'
 
-import { scale, percentage } from '../utils/scallingUtils'
+import { scale, percentage } from '../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;

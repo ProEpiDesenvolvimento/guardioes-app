@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import ShadowView from 'react-native-simple-shadow-view'
 
-import { scale, percentage } from '../../../utils/scallingUtils'
+import { scale, percentage } from '../../../utils/scalling'
 
 export const Help = styled.View`
     background-color: #f8f8f8;

@@ -5,7 +5,7 @@ import SwiperFlatList from 'react-native-swiper-flatlist'
 import ShadowView from 'react-native-simple-shadow-view'
 import { Calendar } from 'react-native-calendars'
 
-import { scale, percentage } from '../../../utils/scallingUtils'
+import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;

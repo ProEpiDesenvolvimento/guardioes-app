@@ -33,14 +33,14 @@ import {
 } from './styles'
 
 import translate from '../../../../locales/i18n'
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 import {
     getNameParts,
     handleAvatar,
     getInitials,
-    Redirect,
-} from '../../../utils/constUtils'
-import { countryChoices, localSymptom } from '../../../utils/selectorUtils'
+    redirectAlert,
+} from '../../../utils/consts'
+import { countryChoices, localSymptom } from '../../../utils/selector'
 import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
 import { useUser } from '../../../hooks/user'
 import { getAppSymptoms } from '../../../api/symptoms'
@@ -142,7 +142,7 @@ const BadReport = ({ navigation }) => {
                 {
                     text: translate('advices.moreInformations'),
                     onPress: () => {
-                        Redirect(
+                        redirectAlert(
                             'Ministerio da Saúde',
                             'Deseja ser redirecionado para o website do Ministério da Saúde?',
                             'https://coronavirus.saude.gov.br/sobre-a-doenca#se-eu-ficar-doente'

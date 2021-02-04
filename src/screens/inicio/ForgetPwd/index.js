@@ -18,7 +18,7 @@ import {
 import { ScreenView, PageTitle, LabelWrapper, TextLabel } from './styles'
 
 import translate from '../../../../locales/i18n'
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 import { CoolAlert } from '../../../components/CoolAlert'
 import { PasswordIcon } from '../../../img/imageConst'
 import { sendCode, confirmCode, resetPassword } from '../../../api/user'

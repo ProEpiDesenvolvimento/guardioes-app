@@ -36,14 +36,14 @@ import { PageTitle, FormLabel, FormTip } from './styles'
 import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 import { UserIcon } from '../../../img/imageConst'
-import { validatePerson, terms } from '../../../utils/constUtils'
+import { validatePerson, terms } from '../../../utils/consts'
 import {
     genderChoices,
     countryChoices,
     raceChoices,
-} from '../../../utils/selectorUtils'
+} from '../../../utils/selector'
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'

@@ -2,7 +2,7 @@ import styled from 'styled-components/native'
 
 import { TouchableOpacity } from 'react-native'
 
-import { scale } from '../../../utils/scallingUtils'
+import { scale } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;

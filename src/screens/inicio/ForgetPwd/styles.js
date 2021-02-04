@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { scale, percentage } from '../../../utils/scallingUtils'
+import { scale, percentage } from '../../../utils/scalling'
 
 export const ScreenView = styled.View`
     width: ${percentage(100)}px;

@@ -45,8 +45,8 @@ import {
     VirusIcon,
     WashIcon,
 } from '../../../img/imageConst'
-import { Redirect } from '../../../utils/constUtils'
-import { scale } from '../../../utils/scallingUtils'
+import { redirectAlert } from '../../../utils/consts'
+import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { getContents } from '../../../api/contents'
 
@@ -148,7 +148,7 @@ const Dicas = () => {
                                 key={content.id}
                                 onPress={() => {
                                     if (content.content_type === 'redirect') {
-                                        Redirect(
+                                        redirectAlert(
                                             advicesText.redirect.title,
                                             advicesText.redirect.text,
                                             content.source_link
@@ -213,7 +213,7 @@ const Dicas = () => {
 
                         <DetailsButton
                             onPress={() =>
-                                Redirect(
+                                redirectAlert(
                                     translate('advices.moreInformations'),
                                     translate('advices.redirectPermission'),
                                     contentSelected.source_link

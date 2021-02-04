@@ -5,7 +5,7 @@ import ShadowView from 'react-native-simple-shadow-view'
 import DatePicker from 'react-native-datepicker'
 import { CheckBox } from 'react-native-elements'
 
-import { scale, percentage } from '../../../utils/scallingUtils'
+import { scale, percentage } from '../../../utils/scalling'
 
 export const ScrollViewStyled = styled(ScrollView).attrs({
     contentContainerStyle: {
