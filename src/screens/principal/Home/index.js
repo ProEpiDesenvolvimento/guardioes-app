@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { StatusBar, Text, StyleSheet, Alert, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import AsyncStorage from '@react-native-community/async-storage'
 import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -70,6 +69,7 @@ const Home = ({ navigation }) => {
         householdAvatars,
         surveys,
         storeSurveys,
+        storeCacheData,
         updateUserScore,
         loadSecondaryData,
         selectUser,
@@ -201,7 +201,7 @@ const Home = ({ navigation }) => {
         updateUserScore()
 
         if (response.status === 200) {
-            await AsyncStorage.setItem('localPin', JSON.stringify(survey))
+            await storeCacheData('localPin', survey)
         }
     }
 

@@ -46,11 +46,7 @@ import translate from '../../../../locales/i18n'
 import { LocaleConfig } from '../../../utils/calendaryMonthNames'
 import { scale } from '../../../utils/scalling'
 import { HappyIcon, SadIcon } from '../../../img/imageConst'
-import {
-    getNameParts,
-    handleAvatar,
-    getInitials,
-} from '../../../utils/consts'
+import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUserSurveys } from '../../../api/surveys'
 
@@ -58,7 +54,16 @@ LocaleConfig.defaultLocale = translate('lang.code')
 Feather.loadFont()
 
 const Diario = () => {
-    const { token, user, surveys, storeSurveys, getCurrentUserInfo } = useUser()
+    const {
+        isOffline,
+        token,
+        user,
+        surveys,
+        storeSurveys,
+        getCacheData,
+        storeCacheData,
+        getCurrentUserInfo,
+    } = useUser()
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [personAge, setPersonAge] = useState(13)
@@ -78,7 +83,7 @@ const Diario = () => {
         useCallback(() => {
             getSurveys()
             getPersonAge()
-        }, [])
+        }, [isOffline])
     )
 
     useEffect(() => {
@@ -90,10 +95,21 @@ const Diario = () => {
     }, [daysMarked])
 
     const getSurveys = async () => {
-        const response = await getUserSurveys(user.id, token)
+        if (!isOffline) {
+            const response = await getUserSurveys(user.id, token)
 
-        if (response.status === 200) {
-            storeSurveys(response.body.surveys)
+            if (response.status === 200) {
+                storeSurveys(response.body.surveys)
+                setIsLoaded(true)
+
+                await storeCacheData('surveysData', response.body.surveys)
+            }
+        } else {
+            const surveysCache = await getCacheData('surveysData', false)
+
+            if (surveysCache) {
+                storeSurveys(surveysCache)
+            }
             setIsLoaded(true)
         }
     }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Text, Alert } from 'react-native'
 import moment from 'moment'
 
-import AsyncStorage from '@react-native-community/async-storage'
 import Emoji from 'react-native-emoji'
 import Share from 'react-native-share'
 import { Avatar } from 'react-native-elements'
@@ -56,6 +55,7 @@ const BadReport = ({ navigation }) => {
         getCurrentLocation,
         updateUserScore,
         getCurrentUserInfo,
+        storeCacheData,
     } = useUser()
 
     const [isLoaded, setIsLoaded] = useState(false)
@@ -221,7 +221,7 @@ const BadReport = ({ navigation }) => {
                 showConfirmation(response.body)
             }
 
-            // Save only import data for Map
+            // Save only important data for Map
             const localPin = {
                 ...survey,
                 household_id: undefined,
@@ -232,7 +232,7 @@ const BadReport = ({ navigation }) => {
                 symptom: ['symptom'],
             }
 
-            await AsyncStorage.setItem('localPin', JSON.stringify(localPin))
+            await storeCacheData('localPin', localPin)
         }
     }
 

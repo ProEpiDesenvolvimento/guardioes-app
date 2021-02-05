@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import AsyncStorage from '@react-native-community/async-storage'
 import { Marker } from 'react-native-maps'
 import { useFocusEffect } from '@react-navigation/native'
 
@@ -26,7 +25,13 @@ const initialRegion = {
 const CLUSTER_SIZE_DIVIDER = 4
 
 const Maps = () => {
-    const { token, location, getCurrentLocation } = useUser()
+    const {
+        token,
+        location,
+        getCurrentLocation,
+        getCacheData,
+        storeCacheData,
+    } = useUser()
 
     const [region, setRegion] = useState(initialRegion)
     const [showAlert, setShowAlert] = useState(false)
@@ -50,8 +55,8 @@ const Maps = () => {
             setShowUserLocation(true)
         }
 
-        const showMapTip = JSON.parse(await AsyncStorage.getItem('showMapTip'))
-        const localPin = JSON.parse(await AsyncStorage.getItem('localPin'))
+        const showMapTip = await getCacheData('showMapTip', false)
+        const localPin = await getCacheData('localPin', false)
 
         if (showMapTip === null) {
             setShowAlert(true)
@@ -77,7 +82,7 @@ const Maps = () => {
 
     const hideAlert = async () => {
         setShowAlert(false)
-        await AsyncStorage.setItem('showMapTip', JSON.stringify(false))
+        await storeCacheData('showMapTip', false)
     }
 
     const getSurveyPerState = async () => {

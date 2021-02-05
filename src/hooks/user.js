@@ -40,12 +40,18 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         loadStoredData()
 
-        const internetState = NetInfo.addEventListener((state) => {
-            getCurrentConnection(state)
+        const internetInfo = NetInfo.addEventListener((state) => {
+            if (!state.isConnected) {
+                setIsOffline(true)
+            } else if (state.isInternetReachable) {
+                setIsOffline(false)
+            } else {
+                setIsOffline(true)
+            }
         })
 
         return () => {
-            internetState()
+            internetInfo()
         }
     }, [])
 
@@ -204,13 +210,18 @@ export const UserProvider = ({ children }) => {
     }
 
     const signOut = async () => {
+        // Delete user credentials and cache data stored
         await AsyncStorage.multiRemove([
             'userData',
-            // 'userScore',
             // 'userAvatar',
+            // 'userScore',
             'selectedData',
             // 'householdAvatars',
             // 'lastReport',
+            'surveysData',
+            'contentsData',
+            'tweetsAppData',
+            'tweetsGroupData',
             'showMapTip',
         ])
 
@@ -393,14 +404,21 @@ export const UserProvider = ({ children }) => {
         console.warn(`User score: ${newScore}`)
     }
 
-    const getCurrentConnection = (internet) => {
-        if (!internet.isConnected) {
-            setIsOffline(true)
-        } else if (internet.isInternetReachable) {
-            setIsOffline(false)
+    const storeCacheData = async (key, data) => {
+        // Keep in mind that AsyncStorage space is only 6 MB on Android
+        if (typeof data === 'string') {
+            await AsyncStorage.setItem(key, data)
         } else {
-            setIsOffline(true)
+            await AsyncStorage.setItem(key, JSON.stringify(data))
         }
+    }
+
+    const getCacheData = async (key, string = true) => {
+        // This could be slow depending on size of data stored
+        if (string) {
+            return AsyncStorage.getItem(key)
+        }
+        return JSON.parse(await AsyncStorage.getItem(key))
     }
 
     return (
@@ -427,6 +445,8 @@ export const UserProvider = ({ children }) => {
                 lastReport,
                 score,
                 updateUserScore,
+                storeCacheData,
+                getCacheData,
                 isLoading,
                 isLoggedIn,
                 setIsLoggedIn,

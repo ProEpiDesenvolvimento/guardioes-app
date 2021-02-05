@@ -1,12 +1,12 @@
 import { Alert, Linking } from 'react-native'
 import translate from '../../locales/i18n'
 
-export const getNameParts = (fullName, firstandLast = false) => {
+export const getNameParts = (fullName, firstAndLast = false) => {
     if (typeof fullName === 'string') {
         const nameParts = fullName.split(' ')
         const { length } = nameParts
 
-        if (firstandLast && length > 1) {
+        if (firstAndLast && length > 1) {
             return `${nameParts[0]} ${nameParts[length - 1]}`
         }
         return nameParts[0]
@@ -37,9 +37,9 @@ export const handleAvatar = (image) => {
 }
 
 export const redirectAlert = (title, message, url) => {
-    Alert.alert(`${title}`, `${message}`, [
+    Alert.alert(title, message, [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Ok', onPress: () => Linking.openURL(`${url}`) },
+        { text: 'Ok', onPress: () => Linking.openURL(url) },
     ])
 }
 
