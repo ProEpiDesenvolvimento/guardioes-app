@@ -53,7 +53,7 @@ import { getContents } from '../../../api/contents'
 Feather.loadFont()
 
 const Dicas = () => {
-    const { token, app } = useUser()
+    const { isOffline, token, app, getCacheData, storeCacheData } = useUser()
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -63,7 +63,7 @@ const Dicas = () => {
     useFocusEffect(
         useCallback(() => {
             getAppContents()
-        }, [])
+        }, [isOffline])
     )
 
     const sortContents = (contents = []) => {
@@ -76,15 +76,27 @@ const Dicas = () => {
     }
 
     const getAppContents = async () => {
-        const response = await getContents(token)
+        if (!isOffline) {
+            const response = await getContents(token)
 
-        if (response.status === 200) {
-            const allContents = response.body.contents
-            const appContents = allContents.filter((c) => c.app.id === app.id)
-            setContents(sortContents(appContents))
+            if (response.status === 200) {
+                const appContents = response.body.contents.filter(
+                    (c) => c.app.id === app.id
+                )
+                const sortedContents = sortContents(appContents)
+                setContents(sortedContents)
+                setIsLoaded(true)
+
+                await storeCacheData('contentsData', sortedContents)
+            }
+        } else {
+            const contentsCache = await getCacheData('contentsData', false)
+
+            if (contentsCache) {
+                setContents(contentsCache)
+            }
+            setIsLoaded(true)
         }
-
-        setIsLoaded(true)
     }
 
     const getContentIcon = (icon) => {

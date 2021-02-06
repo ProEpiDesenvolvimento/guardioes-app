@@ -213,15 +213,13 @@ export const UserProvider = ({ children }) => {
         // Delete user credentials and cache data stored
         await AsyncStorage.multiRemove([
             'userData',
-            // 'userAvatar',
-            // 'userScore',
+            'userAvatar',
+            'userScore',
             'selectedData',
-            // 'householdAvatars',
-            // 'lastReport',
+            'householdAvatars',
+            'lastReport',
             'surveysData',
             'contentsData',
-            'tweetsAppData',
-            'tweetsGroupData',
             'showMapTip',
         ])
 
