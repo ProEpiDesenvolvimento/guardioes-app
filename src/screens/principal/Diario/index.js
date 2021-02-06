@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, View } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'

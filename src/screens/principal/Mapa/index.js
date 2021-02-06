@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, StyleSheet } from 'react-native'
 
 import { Marker } from 'react-native-maps'
 import { useFocusEffect } from '@react-navigation/native'

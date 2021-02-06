@@ -61,7 +61,7 @@ export const UserProvider = ({ children }) => {
         let password = ''
         let token = ''
 
-        RNSecureStorage.get('userEmail')
+        await RNSecureStorage.get('userEmail')
             .then((data) => {
                 email = data
             })
@@ -69,7 +69,7 @@ export const UserProvider = ({ children }) => {
                 console.log(err)
             })
 
-        RNSecureStorage.get('userPwd')
+        await RNSecureStorage.get('userPwd')
             .then((data) => {
                 password = data
             })
@@ -77,7 +77,7 @@ export const UserProvider = ({ children }) => {
                 console.log(err)
             })
 
-        RNSecureStorage.get('userToken')
+        await RNSecureStorage.get('userToken')
             .then((data) => {
                 token = data
             })

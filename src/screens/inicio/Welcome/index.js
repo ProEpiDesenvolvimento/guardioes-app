@@ -1,6 +1,5 @@
 import React from 'react'
-import { Alert, StatusBar } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Alert, SafeAreaView, StatusBar } from 'react-native'
 
 import {
     GradientBackground,

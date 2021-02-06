@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { TouchableOpacity, Modal } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, TouchableOpacity, Modal } from 'react-native'
 
 import { useFocusEffect } from '@react-navigation/native'
 
@@ -22,6 +21,7 @@ import {
     DetailsTitleWrapper,
     DetailsTitle,
     DetailsBodyText,
+    DetailsSeeMore,
     DetailsButton,
     DetailsButtonLabel,
 } from './styles'
@@ -223,19 +223,21 @@ const Dicas = () => {
                             </DetailsBodyText>
                         </Details>
 
-                        <DetailsButton
-                            onPress={() =>
-                                redirectAlert(
-                                    translate('advices.moreInformations'),
-                                    translate('advices.redirectPermission'),
-                                    contentSelected.source_link
-                                )
-                            }
-                        >
-                            <DetailsButtonLabel>
-                                {translate('advices.more')}
-                            </DetailsButtonLabel>
-                        </DetailsButton>
+                        <DetailsSeeMore>
+                            <DetailsButton
+                                onPress={() =>
+                                    redirectAlert(
+                                        translate('advices.moreInformations'),
+                                        translate('advices.redirectPermission'),
+                                        contentSelected.source_link
+                                    )
+                                }
+                            >
+                                <DetailsButtonLabel>
+                                    {translate('advices.more')}
+                                </DetailsButtonLabel>
+                            </DetailsButton>
+                        </DetailsSeeMore>
                     </SafeAreaView>
                 </Modal>
             </Container>

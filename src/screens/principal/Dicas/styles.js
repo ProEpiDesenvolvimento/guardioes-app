@@ -123,11 +123,14 @@ export const DetailsBodyText = styled.Text`
     height: 100%;
 `
 
+export const DetailsSeeMore = styled.View`
+    background-color: #ffffff;
+`
+
 export const DetailsButton = styled(TouchableOpacity).attrs({
     activeOpacity: 0.5,
 })`
     width: 100%;
-    position: absolute;
     bottom: 0px;
     background-color: #348eac;
 `

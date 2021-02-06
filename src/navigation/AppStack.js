@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Feather from 'react-native-vector-icons/Feather'

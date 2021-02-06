@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import NoticiasComponent from './NoticiasComponent'

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Alert, Keyboard } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Alert, Keyboard, SafeAreaView } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
 import {
@@ -52,12 +51,11 @@ const Login = ({ navigation }) => {
         })
 
         if (response.status === 200) {
-            setShowAlert(false)
-
             await storeUser(response.body.user, response.token, {
                 email,
                 password,
             })
+            setShowAlert(false)
 
             setNeedSignIn(false)
             setIsLoggedIn(true)

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { StatusBar, Text, StyleSheet, Alert, Modal } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, StatusBar, Text, StyleSheet, Alert, Modal } from 'react-native'
 
 import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
