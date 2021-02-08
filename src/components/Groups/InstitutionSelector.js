@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-import { API_URL } from 'react-native-dotenv'
 import {
     FormInlineCheck,
     FormGroup,
@@ -12,6 +11,12 @@ import {
 } from '../NormalForms'
 
 import translate from '../../../locales/i18n'
+import {
+    getAppRootGroup,
+    getAppGroup,
+    getAppGroupChildren,
+    getUserGroupPath,
+} from '../../api/groups'
 
 class InstitutionSelector extends Component {
     constructor(props) {
@@ -110,87 +115,68 @@ class InstitutionSelector extends Component {
         }
     }
 
-    getRootGroup(setAlert = true) {
+    async getRootGroup(setAlert = true) {
         if (setAlert) this.props.setAlert(true)
-        fetch(`${API_URL}/groups/root`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-        })
+
+        getAppRootGroup()
             .then((response) => {
                 if (response.status === 200) {
-                    return response.json()
+                    this.setState({ rootGroup: response.body.group })
+                    this.getChildren(response.body.group.id)
                 }
             })
-            .then((responseJson) => {
-                this.setState({ rootGroup: responseJson.group })
+            .then(() => {
                 if (setAlert) this.props.setAlert(false)
-                this.getChildren(responseJson.group.id)
             })
     }
 
-    // This builds the path of current users group
-    buildPath(id) {
-        this.props.setAlert(true)
-        fetch(`${API_URL}/groups/${id}/get_path`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-        })
+    async getGroup(id, setAlert = true) {
+        if (setAlert) this.props.setAlert(true)
+        this.setState({ idCodeInputShow: false })
+
+        getAppGroup(id)
             .then((response) => {
                 if (response.status === 200) {
-                    return response.json()
-                }
-            })
-            .then(async (responseJson) => {
-                const { groups } = responseJson
-                let i = 0
-                for (const group of groups) {
-                    await this.getChildren(group.id, false)
-                    this.state.selectionIndexes[i] = {
-                        label: group.description,
-                        key: group.id,
+                    this.setState({ selectedGroup: response.body.group })
+
+                    if (response.body.group.require_id) {
+                        this.setState({ idCodeInputShow: true })
+                    } else {
+                        this.setState({ userIdCode: null })
                     }
-                    i++
                 }
-                this.setState({ groupCheckbox: true })
             })
             .then(() => {
                 this.updateParent()
-                this.props.setAlert(false)
+                if (setAlert) this.props.setAlert(false)
             })
     }
 
-    getChildren(id, setAlert = true) {
+    async getChildren(id, setAlert = true) {
         if (setAlert) this.props.setAlert(true)
         this.setState({ idCodeInputShow: false })
-        return fetch(`${API_URL}/groups/${id}/get_children`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-        })
+
+        getAppGroupChildren(id)
             .then((response) => {
                 if (response.status === 200) {
-                    return response.json()
+                    if (response.body.is_child) {
+                        this.setState({ userGroup: id })
+                        this.getGroup(id, setAlert)
+                        return
+                    }
+
+                    const selectionIndexes = this.state.selectionIndexes.slice()
+                    selectionIndexes.push({
+                        label: translate('selector.label'),
+                        key: -1,
+                    })
+
+                    const groupList = this.state.groupList.slice()
+                    groupList.push(response.body)
+
+                    this.setState({ selectionIndexes })
+                    this.setState({ groupList })
                 }
-            })
-            .then((responseJson) => {
-                if (responseJson.is_child) {
-                    this.setState({ userGroup: id })
-                    this.getGroup(id, setAlert)
-                    return
-                }
-                this.state.selectionIndexes.push({
-                    label: translate('selector.label'),
-                    key: -1,
-                })
-                this.state.groupList.push(responseJson)
             })
             .then(() => {
                 this.updateParent()
@@ -200,30 +186,32 @@ class InstitutionSelector extends Component {
             })
     }
 
-    getGroup(id, setAlert = true) {
-        if (setAlert) this.props.setAlert(true)
-        this.setState({ idCodeInputShow: false })
-        return fetch(`${API_URL}/groups/${id}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
+    // This builds the path of current users group
+    async buildPath(id) {
+        this.props.setAlert(true)
+
+        getUserGroupPath(id)
+            .then(async (response) => {
                 if (response.status === 200) {
-                    return response.json()
+                    const { groups } = response.body
+                    const selectionIndexes = []
+
+                    groups.map(async (group) => {
+                        await this.getChildren(group.id, false)
+
+                        selectionIndexes.push({
+                            label: group.description,
+                            key: group.id,
+                        })
+                    })
+
+                    this.setState({ selectionIndexes })
+                    this.setState({ groupCheckbox: true })
                 }
             })
-            .then((responseJson) => {
-                this.setState({ selectedGroup: responseJson.group })
-                if (responseJson.group.require_id) {
-                    this.setState({ idCodeInputShow: true })
-                } else {
-                    this.setState({ userIdCode: null })
-                }
+            .then(() => {
                 this.updateParent()
-                if (setAlert) this.props.setAlert(false)
+                this.props.setAlert(false)
             })
     }
 
