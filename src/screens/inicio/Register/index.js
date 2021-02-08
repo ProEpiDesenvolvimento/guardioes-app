@@ -305,7 +305,7 @@ const Register = ({ navigation }) => {
 
                     <FormInlineCheck>
                         <CheckBoxStyled
-                            title='Você é um profissional da saúde'
+                            title={translate('register.healthProfessional')}
                             checked={isProfessional}
                             onPress={() => setIsProfessional(!isProfessional)}
                         />
@@ -313,7 +313,7 @@ const Register = ({ navigation }) => {
 
                     <FormInlineCheck>
                         <CheckBoxStyled
-                            title={translate('share.riskGroupLabel')}
+                            title={translate('register.riskGroupLabel')}
                             checked={riskGroup}
                             onPress={() => setRiskGroup(!riskGroup)}
                         />

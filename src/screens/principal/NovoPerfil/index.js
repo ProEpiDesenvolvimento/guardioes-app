@@ -206,7 +206,7 @@ const NovoPerfil = ({ navigation }) => {
 
                 <FormInlineCheck>
                     <CheckBoxStyled
-                        title={translate('share.riskGroupLabel')}
+                        title={translate('register.riskGroupLabel')}
                         checked={riskGroup}
                         onPress={() => setRiskGroup(!riskGroup)}
                     />

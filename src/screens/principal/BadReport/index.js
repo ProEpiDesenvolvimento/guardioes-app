@@ -54,6 +54,8 @@ const BadReport = ({ navigation }) => {
         location,
         getCurrentLocation,
         updateUserScore,
+        surveys,
+        storeSurveys,
         getCurrentUserInfo,
         storeCacheData,
     } = useUser()
@@ -204,6 +206,7 @@ const BadReport = ({ navigation }) => {
             went_to_hospital: wentToHospital,
             contact_with_symptom: contactWithSymptom,
             symptom: personSymptoms,
+            created_at: moment().format('YYYY-MM-DD'),
         }
 
         const response = await createSurvey(survey, user.id, token)
@@ -233,6 +236,10 @@ const BadReport = ({ navigation }) => {
             }
 
             await storeCacheData('localPin', localPin)
+
+            const newSurveys = surveys.slice()
+            newSurveys.push(survey)
+            storeSurveys(newSurveys)
         }
     }
 

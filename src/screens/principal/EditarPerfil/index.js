@@ -415,7 +415,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
                 <FormInlineCheck>
                     <CheckBoxStyled
-                        title={translate('share.riskGroupLabel')}
+                        title={translate('register.riskGroupLabel')}
                         checked={riskGroup}
                         onPress={() => setRiskGroup(!riskGroup)}
                     />

@@ -325,7 +325,7 @@ class InstitutionSelector extends Component {
             <>
                 <FormInlineCheck>
                     <CheckBoxStyled
-                        title={translate('share.educationalInstitution')}
+                        title={translate('register.educationalInstitution')}
                         checked={this.state.groupCheckbox}
                         onPress={async () => {
                             if (

@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaView, StatusBar, Text, StyleSheet, Alert, Modal } from 'react-native'
+import {
+    SafeAreaView,
+    StatusBar,
+    Text,
+    StyleSheet,
+    Alert,
+    Modal,
+} from 'react-native'
+import moment from 'moment'
 
 import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
@@ -48,7 +56,7 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { getUserHouseholds } from '../../../api/households'
-import { getUserSurveys, createSurvey } from '../../../api/surveys'
+import { createSurvey } from '../../../api/surveys'
 
 Feather.loadFont()
 SimpleLineIcons.loadFont()
@@ -68,6 +76,7 @@ const Home = ({ navigation }) => {
         householdAvatars,
         surveys,
         storeSurveys,
+        getCacheData,
         storeCacheData,
         updateUserScore,
         loadSecondaryData,
@@ -107,7 +116,7 @@ const Home = ({ navigation }) => {
 
         verifyUserTermsConsent()
         getCurrentLocation()
-        getSurveys()
+        getCacheSurveys()
     }
 
     const verifyUserTermsConsent = () => {
@@ -131,11 +140,11 @@ const Home = ({ navigation }) => {
         }
     }
 
-    const getSurveys = async () => {
-        const response = await getUserSurveys(user.id, token)
+    const getCacheSurveys = async () => {
+        const surveysCache = await getCacheData('surveysData', false)
 
-        if (response.status === 200) {
-            storeSurveys(response.body.surveys)
+        if (surveysCache) {
+            storeSurveys(surveysCache)
         }
     }
 
@@ -193,6 +202,7 @@ const Home = ({ navigation }) => {
             household_id: householdID,
             latitude: location.latitude,
             longitude: location.longitude,
+            created_at: moment().format('YYYY-MM-DD'),
         }
 
         const response = await createSurvey(survey, user.id, token)
@@ -201,6 +211,10 @@ const Home = ({ navigation }) => {
 
         if (response.status === 200) {
             await storeCacheData('localPin', survey)
+
+            const newSurveys = surveys.slice()
+            newSurveys.push(survey)
+            storeSurveys(newSurveys)
         }
     }
 
@@ -321,13 +335,21 @@ const Home = ({ navigation }) => {
                             {translate('home.userHowYouFelling')}
                         </TextStyle>
                         <StatusBemMal>
-                            <Bem onPress={() => sendSurvey()}>
+                            <Bem
+                                onPress={() => {
+                                    if (isOffline) return
+                                    sendSurvey()
+                                }}
+                            >
                                 <StatusText>
                                     {translate('report.goodChoice')}
                                 </StatusText>
                             </Bem>
                             <Mal
-                                onPress={() => navigation.navigate('BadReport')}
+                                onPress={() => {
+                                    if (isOffline) return
+                                    navigation.navigate('BadReport')
+                                }}
                             >
                                 <StatusText>
                                     {translate('report.badChoice')}

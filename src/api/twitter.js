@@ -16,6 +16,6 @@ export const getGroupTweets = async (data, token) => {
 
     return {
         status: response.status,
-        body: await response.json(),
+        body: response.status === 200 ? await response.json() : null,
     }
 }
