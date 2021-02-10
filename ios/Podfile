@@ -38,13 +38,6 @@ target 'guardioesapp' do
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
-  
-  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
-
-
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
-
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
   pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
 
