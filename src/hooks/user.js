@@ -41,13 +41,7 @@ export const UserProvider = ({ children }) => {
         loadStoredData()
 
         const internetInfo = NetInfo.addEventListener((state) => {
-            if (!state.isConnected) {
-                setIsOffline(true)
-            } else if (state.isInternetReachable) {
-                setIsOffline(false)
-            } else {
-                setIsOffline(true)
-            }
+            verifyInternetState(state)
         })
 
         return () => {
@@ -417,6 +411,17 @@ export const UserProvider = ({ children }) => {
             return AsyncStorage.getItem(key)
         }
         return JSON.parse(await AsyncStorage.getItem(key))
+    }
+
+    const verifyInternetState = (state) => {
+        console.warn(state)
+        if (!state.isConnected) {
+            setIsOffline(true)
+        } else if (state.isInternetReachable === null || state.isInternetReachable) {
+            setIsOffline(false)
+        } else {
+            setIsOffline(true)
+        }
     }
 
     return (

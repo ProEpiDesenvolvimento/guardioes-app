@@ -55,7 +55,6 @@ const Noticias = () => {
 
     // Get tweets to show
     const fetchTweets = async () => {
-        setIsLoaded(false)
         setLength(posts)
 
         const twitter = {
