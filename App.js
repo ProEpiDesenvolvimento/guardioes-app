@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import OneSignal from 'react-native-onesignal'
 
+import { enableScreens } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native'
 import AppProvider from './src/hooks'
 import Routes from './src/routes'
 
 import './src/config/ReactotronConfig'
+
+enableScreens()
 
 const Guardioes = () => {
     const onReceived = (notification) => {
