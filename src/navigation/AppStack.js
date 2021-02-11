@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import Feather from 'react-native-vector-icons/Feather'
 import {
+    Container,
     HeaderNavigator,
     BackButton,
     ScreenTitle,
@@ -38,19 +39,21 @@ const AppStack = () => {
                         <SafeAreaView
                             style={{ flex: 0, backgroundColor: '#348EAC' }}
                         />
-                        <HeaderNavigator>
-                            <BackButton onPress={() => navigation.goBack()}>
-                                <Feather
-                                    name='chevron-left'
-                                    size={scale(38)}
-                                    color='#ffffff'
-                                />
-                            </BackButton>
-                            <ScreenTitle>
-                                {scene.descriptor.options.title}
-                            </ScreenTitle>
-                            <Empty />
-                        </HeaderNavigator>
+                        <Container>
+                            <HeaderNavigator>
+                                <BackButton onPress={() => navigation.goBack()}>
+                                    <Feather
+                                        name='chevron-left'
+                                        size={scale(38)}
+                                        color='#ffffff'
+                                    />
+                                </BackButton>
+                                <ScreenTitle>
+                                    {scene.descriptor.options.title}
+                                </ScreenTitle>
+                                <Empty />
+                            </HeaderNavigator>
+                        </Container>
                     </>
                 ),
                 headerStyle: {
