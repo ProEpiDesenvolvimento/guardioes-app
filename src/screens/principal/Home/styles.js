@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { TouchableOpacity } from 'react-native'
 import ShadowView from 'react-native-simple-shadow-view'
 
-import { scale, percentage } from '../../../utils/scalling'
+import { scale, percentage, vPercentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;
@@ -23,8 +23,8 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
 export const Background = styled(LinearGradient).attrs({
     colors: ['#348eac', '#5DD39E'],
 })`
-    min-height: ${scale(45)}%;
-    min-width: 100%;
+    min-height: ${vPercentage(42)}px;
+    width: 100%;
     border-bottom-left-radius: ${scale(25)}px;
     border-bottom-right-radius: ${scale(25)}px;
 `
@@ -47,11 +47,15 @@ export const Button = styled(TouchableOpacity).attrs({
     justify-content: center;
 `
 
+const margin = scale(25)
+
 export const UserView = styled.View`
-    margin-top: ${scale(20)}%;
-    justify-content: space-between;
+    position: absolute;
+    height: ${100 - margin}%;
+    width: 100%;
     align-content: center;
     align-items: center;
+    justify-content: space-between;
     flex-direction: row;
     flex-wrap: wrap;
 `
@@ -77,7 +81,7 @@ export const AppName = styled.Text`
 
 export const StatusContainer = styled(ShadowView).attrs({})`
     width: 88%;
-    margin-top: ${scale(-25)}%;
+    margin-top: ${-margin}%;
     background: white;
     border-radius: ${scale(20)}px;
     padding-vertical: ${percentage(12)}px;
@@ -115,7 +119,7 @@ export const Bem = styled(TouchableOpacity).attrs({
     activeOpacity: 0.5,
 })`
     ${BemMal}
-    background: #348eac;
+    background: ${(props) => (props.disabled ? '#c4c4c4' : '#348eac')};
     border-bottom-left-radius: ${scale(18)}px;
     border-top-left-radius: ${scale(18)}px;
     margin-right: ${scale(2)}px;
@@ -126,7 +130,7 @@ export const Mal = styled(TouchableOpacity).attrs({
     activeOpacity: 0.5,
 })`
     ${BemMal}
-    background: #f18f01;
+    background: ${(props) => (props.disabled ? '#c4c4c4' : '#f18f01')};
     border-bottom-right-radius: ${scale(18)}px;
     border-top-right-radius: ${scale(18)}px;
     margin-left: ${scale(2)}px;

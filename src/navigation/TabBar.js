@@ -10,7 +10,7 @@ import Mapa from '../screens/principal/Mapa'
 import Noticias from '../screens/principal/Noticias'
 
 import translate from '../../locales/i18n'
-import { scale } from '../utils/scalling'
+import { scale, vPercentage } from '../utils/scalling'
 
 const Tab = createBottomTabNavigator()
 Feather.loadFont()
@@ -46,18 +46,15 @@ const TabBar = () => {
             tabBarOptions={{
                 activeTintColor: '#348eac',
                 inactiveTintColor: '#c4c4c4',
-                labelStyle: {
-                    fontFamily: 'ArgentumSans',
-                    fontSize: 12,
-                },
                 style: {
-                    height: '10%',
+                    height: vPercentage(9.8),
                     backgroundColor: '#ffffff',
                     borderTopWidth: 0,
                     borderTopLeftRadius: scale(20),
                     borderTopRightRadius: scale(20),
                     marginTop: -scale(20), // Same as border radius
-                    paddingTop: 5,
+                    paddingTop: scale(5),
+                    paddingBottom: scale(5),
                     justifyContent: 'flex-start',
                     shadowColor: '#000000',
                     shadowOffset: {
@@ -70,6 +67,10 @@ const TabBar = () => {
                 },
                 tabStyle: {
                     width: 'auto',
+                },
+                labelStyle: {
+                    fontFamily: 'ArgentumSans',
+                    fontSize: 12,
                 },
             }}
             initialRouteName='Home'

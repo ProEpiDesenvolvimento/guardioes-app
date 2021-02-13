@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import LinearGradient from 'react-native-linear-gradient'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import ShadowView from 'react-native-simple-shadow-view'
+import { TouchableOpacity } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
 import { scale, percentage } from '../../../utils/scalling'
@@ -90,10 +91,6 @@ export const UserChart = styled(ShadowView).attrs({})`
     shadow-offset: 0px 4px;
 `
 
-export const Chart = styled.View`
-    flex-direction: row;
-`
-
 export const ChartTitle = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(16)}px;
@@ -101,6 +98,10 @@ export const ChartTitle = styled.Text`
     margin: ${scale(10)}px;
     align-self: center;
 `
+
+export const Chart = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})``
 
 const chartlabels = `
     height: ${scale(14)}px;

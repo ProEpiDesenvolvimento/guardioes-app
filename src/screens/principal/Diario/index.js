@@ -28,6 +28,7 @@ import {
     ChartLabelGray,
     ChartLabel,
     ChartTitle,
+    Chart,
     CalendarStyled,
     UserReports,
     ReportsTitleWrapper,
@@ -309,15 +310,17 @@ const Diario = () => {
                                         <ChartTitle>
                                             {translate('diary.statisticsTitle')}
                                         </ChartTitle>
-                                        <PieChart
-                                            style={{
-                                                height: 170,
-                                                marginBottom: scale(12),
-                                            }}
-                                            outerRadius='100%'
-                                            innerRadius='15%'
-                                            data={chartData}
-                                        />
+                                        <Chart>
+                                            <PieChart
+                                                style={{
+                                                    height: 170,
+                                                    marginBottom: scale(12),
+                                                }}
+                                                outerRadius='100%'
+                                                innerRadius='15%'
+                                                data={chartData}
+                                            />
+                                        </Chart>
                                         <LabelContainer>
                                             <View>
                                                 <LabelWrapper>

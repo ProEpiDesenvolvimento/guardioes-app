@@ -68,6 +68,7 @@ const Home = ({ navigation }) => {
         signOut,
         token,
         user,
+        storeUser,
         avatar,
         location,
         getCurrentLocation,
@@ -137,6 +138,7 @@ const Home = ({ navigation }) => {
 
         if (response.status === 200) {
             console.warn(response.status)
+            storeUser(response.body.user)
         }
     }
 
@@ -336,20 +338,16 @@ const Home = ({ navigation }) => {
                         </TextStyle>
                         <StatusBemMal>
                             <Bem
-                                onPress={() => {
-                                    if (isOffline) return
-                                    sendSurvey()
-                                }}
+                                disabled={isOffline}
+                                onPress={() => sendSurvey()}
                             >
                                 <StatusText>
                                     {translate('report.goodChoice')}
                                 </StatusText>
                             </Bem>
                             <Mal
-                                onPress={() => {
-                                    if (isOffline) return
-                                    navigation.navigate('BadReport')
-                                }}
+                                disabled={isOffline}
+                                onPress={() => navigation.navigate('BadReport')}
                             >
                                 <StatusText>
                                     {translate('report.badChoice')}
@@ -377,102 +375,93 @@ const Home = ({ navigation }) => {
                             </StatusAlertText>
                         </StatusAlert>
                     </AlertContainer>
-
-                    <Modal
-                        animationType='fade'
-                        transparent
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible)
-                        }}
-                    >
-                        <Users>
-                            <UserSelector>
-                                <UserScroll>
-                                    <UserWrapper>
-                                        <Button
-                                            onPress={async () => {
-                                                setModalVisible(!modalVisible)
-                                                await selectUser(user)
-                                                getUserHealth()
-                                            }}
-                                        >
-                                            <Avatar
-                                                size={scale(60)}
-                                                source={handleAvatar(avatar)}
-                                                title={getInitials(
-                                                    user.user_name
-                                                )}
-                                                rounded
-                                            />
-                                            <UserName>
-                                                {getNameParts(
-                                                    user.user_name,
-                                                    true
-                                                )}
-                                            </UserName>
-                                        </Button>
-                                    </UserWrapper>
-                                    {households.map((household) => (
-                                        <UserWrapper key={household.id}>
-                                            <Button
-                                                onPress={async () => {
-                                                    setModalVisible(
-                                                        !modalVisible
-                                                    )
-                                                    await selectUser(household)
-                                                    getUserHealth()
-                                                }}
-                                            >
-                                                <Avatar
-                                                    size={scale(60)}
-                                                    source={handleAvatar(
-                                                        householdAvatars[
-                                                            household.id
-                                                        ]
-                                                    )}
-                                                    title={getInitials(
-                                                        household.description
-                                                    )}
-                                                    rounded
-                                                />
-                                                <UserName>
-                                                    {getNameParts(
-                                                        household.description,
-                                                        true
-                                                    )}
-                                                </UserName>
-                                            </Button>
-                                        </UserWrapper>
-                                    ))}
-                                    <UserWrapper>
-                                        <Button
-                                            onPress={() => {
-                                                setModalVisible(!modalVisible)
-                                                navigation.navigate(
-                                                    'NovoPerfil'
-                                                )
-                                            }}
-                                        >
-                                            <Feather
-                                                name='plus'
-                                                size={scale(60)}
-                                                color='#c4c4c4'
-                                            />
-                                            <UserName>
-                                                {translate('home.addProfile')}
-                                            </UserName>
-                                        </Button>
-                                    </UserWrapper>
-                                </UserScroll>
-                            </UserSelector>
-                        </Users>
-                    </Modal>
                 </ScrollViewStyled>
 
                 <MenuBars onPress={() => navigation.openDrawer()}>
                     <SimpleLineIcons name='menu' size={26} color='#ffffff' />
                 </MenuBars>
+
+                <Modal
+                    animationType='fade'
+                    transparent
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible)
+                    }}
+                >
+                    <Users>
+                        <UserSelector>
+                            <UserScroll>
+                                <UserWrapper>
+                                    <Button
+                                        onPress={async () => {
+                                            setModalVisible(!modalVisible)
+                                            await selectUser(user)
+                                            getUserHealth()
+                                        }}
+                                    >
+                                        <Avatar
+                                            size={scale(60)}
+                                            source={handleAvatar(avatar)}
+                                            title={getInitials(user.user_name)}
+                                            rounded
+                                        />
+                                        <UserName>
+                                            {getNameParts(user.user_name, true)}
+                                        </UserName>
+                                    </Button>
+                                </UserWrapper>
+                                {households.map((household) => (
+                                    <UserWrapper key={household.id}>
+                                        <Button
+                                            onPress={async () => {
+                                                setModalVisible(!modalVisible)
+                                                await selectUser(household)
+                                                getUserHealth()
+                                            }}
+                                        >
+                                            <Avatar
+                                                size={scale(60)}
+                                                source={handleAvatar(
+                                                    householdAvatars[
+                                                        household.id
+                                                    ]
+                                                )}
+                                                title={getInitials(
+                                                    household.description
+                                                )}
+                                                rounded
+                                            />
+                                            <UserName>
+                                                {getNameParts(
+                                                    household.description,
+                                                    true
+                                                )}
+                                            </UserName>
+                                        </Button>
+                                    </UserWrapper>
+                                ))}
+                                <UserWrapper>
+                                    <Button
+                                        onPress={() => {
+                                            setModalVisible(!modalVisible)
+                                            navigation.navigate('NovoPerfil')
+                                        }}
+                                    >
+                                        <Feather
+                                            name='plus'
+                                            size={scale(60)}
+                                            color='#c4c4c4'
+                                        />
+                                        <UserName>
+                                            {translate('home.addProfile')}
+                                        </UserName>
+                                    </Button>
+                                </UserWrapper>
+                            </UserScroll>
+                        </UserSelector>
+                    </Users>
+                </Modal>
 
                 <CoolAlert
                     show={showTermsConsent}
