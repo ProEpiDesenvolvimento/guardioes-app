@@ -54,7 +54,6 @@ const TabBar = () => {
                     borderTopRightRadius: scale(20),
                     marginTop: -scale(20), // Same as border radius
                     paddingTop: scale(5),
-                    paddingBottom: scale(5),
                     justifyContent: 'flex-start',
                     shadowColor: '#000000',
                     shadowOffset: {

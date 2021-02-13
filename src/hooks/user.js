@@ -302,19 +302,19 @@ export const UserProvider = ({ children }) => {
 
     const getCurrentLocation = async () => {
         try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: translate('locationRequest.permissionTitle'),
-                    message:
-                        translate('locationRequest.permissionMessage') +
-                        translate('locationRequest.permissionMessage2'),
-                    buttonNegative: translate('locationRequest.cancelText'),
-                    buttonPositive: translate('locationRequest.okText'),
-                }
-            )
-
             if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    {
+                        title: translate('locationRequest.permissionTitle'),
+                        message:
+                            translate('locationRequest.permissionMessage') +
+                            translate('locationRequest.permissionMessage2'),
+                        buttonNegative: translate('locationRequest.cancelText'),
+                        buttonPositive: translate('locationRequest.okText'),
+                    }
+                )
+
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     console.log('Location permission granted')
                 } else {
