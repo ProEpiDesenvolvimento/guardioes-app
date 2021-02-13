@@ -10,12 +10,12 @@ import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;
-    background-color: #f8f8f8;
+    background-color: #f4f4f4;
 `
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#f4f4f4',
         flexGrow: 1,
         paddingBottom: 20,
     },
@@ -87,7 +87,7 @@ export const UserChart = styled(ShadowView).attrs({})`
     padding-bottom: ${scale(10)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 
@@ -180,7 +180,7 @@ export const ReportsWell = styled(ShadowView).attrs({})`
     padding: ${scale(12)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 
@@ -193,7 +193,7 @@ export const ReportsIll = styled(ShadowView).attrs({})`
     padding: ${scale(12)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 

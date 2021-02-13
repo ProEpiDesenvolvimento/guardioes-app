@@ -13,8 +13,8 @@ export const Container = styled.View`
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#ffffff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        borderTopLeftRadius: scale(28),
+        borderTopRightRadius: scale(28),
         flexGrow: 1,
         paddingTop: percentage(6),
         paddingHorizontal: percentage(7),
@@ -62,8 +62,8 @@ export const Advice = styled(ShadowView).attrs({})`
     padding: ${scale(14)}px;
     shadow-color: #5dd39e;
     shadow-opacity: 0.4;
-    shadow-radius: 10px;
-    shadow-offset: 0px 4px;
+    shadow-radius: 6px;
+    shadow-offset: 0px 0px;
     height: ${scale(180)}px;
     justify-content: space-evenly;
     align-items: center;

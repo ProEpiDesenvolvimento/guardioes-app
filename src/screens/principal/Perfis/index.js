@@ -42,7 +42,7 @@ const Perfis = ({ navigation }) => {
         householdAvatars,
     } = useUser()
 
-    const [isLoaded, setIsLoaded] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         getFullUser()
@@ -55,7 +55,7 @@ const Perfis = ({ navigation }) => {
             storeHouseholds(response.body.user.households)
             storeUser(response.body.user)
 
-            setIsLoaded(true)
+            setIsLoading(false)
         }
     }
 
@@ -101,7 +101,7 @@ const Perfis = ({ navigation }) => {
         }
     }
 
-    if (!isLoaded) {
+    if (isLoading) {
         return <ScreenLoader />
     }
 

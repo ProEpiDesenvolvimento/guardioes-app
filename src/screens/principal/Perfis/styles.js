@@ -7,7 +7,7 @@ import { scale, percentage } from '../../../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#f4f4f4',
         flexGrow: 1,
         paddingTop: percentage(7),
         paddingHorizontal: percentage(7),
@@ -21,7 +21,7 @@ const Profile = `
     padding: ${scale(15)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 

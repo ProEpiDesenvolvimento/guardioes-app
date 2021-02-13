@@ -177,7 +177,7 @@ export default {
         moreInformations: 'Mas informaciones',
         redirectPermission:
             '¿Quieres ser redirigido a la fuente del contenido?',
-        title: 'Consejos de Salud',
+        title: 'Consejos',
         subtitle: 'Mantenga su salud al día',
         more: 'Sepa Mas',
         buttons: {
@@ -193,7 +193,7 @@ export default {
         years: ' años',
         participate: 'Participaciones',
         good: 'Bien',
-        bad: 'Apenas',
+        bad: 'Mal',
         report: ' dia',
         reports: ' dias',
         statisticsTitle: 'Estadísticas',
@@ -210,7 +210,7 @@ export default {
         statusLast7Days: 'Estado en los últimos 7 días:',
         statusLast7DaysGood: 'Te has sentido bien.',
         statusLast7DaysBad: 'Usted no estaba bien.',
-        userHowYouFelling: '¿Cómo se siente hoy?',
+        userHowYouFelling: '¿Cómo te sientes hoy?',
         offlineTitle: 'Modo Offline',
         offlineMessage: 'No tienes conexión a internet.',
         offlineMessage2:
@@ -237,12 +237,13 @@ export default {
     },
     news: {
         title: 'Noticias',
+        subtitle: 'Feed de tweets de Guardianes',
         openBrowser: '¿Quieres abrir el navegador?',
         twitter: 'Serás redirigido a twitter.com.',
     },
     report: {
         goodChoice: 'Bien',
-        badChoice: 'Malo',
+        badChoice: 'Mal',
     },
     faq: {
         title: 'FAQ',

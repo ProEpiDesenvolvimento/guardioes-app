@@ -24,7 +24,7 @@ export const User = styled(ShadowView).attrs({})`
     padding: ${scale(15)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 

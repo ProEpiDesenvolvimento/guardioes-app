@@ -55,7 +55,7 @@ Feather.loadFont()
 const Dicas = () => {
     const { isOffline, token, app, getCacheData, storeCacheData } = useUser()
 
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const [contents, setContents] = useState([])
     const [contentSelected, setContentSelected] = useState({})
@@ -85,7 +85,7 @@ const Dicas = () => {
                 )
                 const sortedContents = sortContents(appContents)
                 setContents(sortedContents)
-                setIsLoaded(true)
+                setIsLoading(false)
 
                 await storeCacheData('contentsData', sortedContents)
             }
@@ -95,7 +95,7 @@ const Dicas = () => {
             if (contentsCache) {
                 setContents(contentsCache)
             }
-            setIsLoaded(true)
+            setIsLoading(false)
         }
     }
 
@@ -140,7 +140,7 @@ const Dicas = () => {
         }
     }
 
-    if (!isLoaded) {
+    if (isLoading) {
         return <ScreenLoader />
     }
 

@@ -61,7 +61,7 @@ const AppStack = () => {
                     shadowOpacity: 0,
                 },
                 cardStyle: {
-                    backgroundColor: '#f8f8f8',
+                    backgroundColor: '#f4f4f4',
                 },
             })}
             initialRouteName='HomeDrawer'

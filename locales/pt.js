@@ -236,6 +236,7 @@ export default {
     },
     news: {
         title: 'Notícias',
+        subtitle: 'Feed de tweets do Guardiões',
         openBrowser: 'Deseja abrir o Navegador?',
         twitter: 'Você será redirecionado para twitter.com',
     },

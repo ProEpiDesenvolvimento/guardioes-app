@@ -6,7 +6,7 @@ import { scale } from '../utils/scalling'
 
 export const CoolAlert = styled(AwesomeAlert).attrs((props) => ({
     overlayStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
     },
     progressColor: '#348EAC',
     contentContainerStyle: {

@@ -60,7 +60,7 @@ const BadReport = ({ navigation }) => {
         storeCacheData,
     } = useUser()
 
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [symptoms, setSymptoms] = useState([])
 
     const [badSince, setBadSince] = useState(today)
@@ -186,7 +186,7 @@ const BadReport = ({ navigation }) => {
         if (response.status === 200) {
             const sortedSymptoms = sortSymptoms(response.body.symptoms)
             setSymptoms(sortedSymptoms)
-            setIsLoaded(true)
+            setIsLoading(false)
         }
     }
 
@@ -243,7 +243,7 @@ const BadReport = ({ navigation }) => {
         }
     }
 
-    if (!isLoaded) {
+    if (isLoading) {
         return <ScreenLoader />
     }
 

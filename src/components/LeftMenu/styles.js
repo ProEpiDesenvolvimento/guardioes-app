@@ -8,8 +8,9 @@ import { scale, percentage } from '../../utils/scalling'
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#ffffff',
-        borderTopRightRadius: scale(25),
-        borderBottomRightRadius: scale(25),
+        borderTopRightRadius: scale(28),
+        borderBottomWidth: scale(1),
+        borderColor: '#f4f4f4',
         flexGrow: 1,
     },
 })``
@@ -35,8 +36,8 @@ const option = `
   margin-right: ${scale(16)}px;
   margin-left: ${scale(16)}px;
   padding: ${scale(10)}px;
-  shadow-opacity: 0.2;
-  shadow-radius: 10px;
+  shadow-opacity: 0.4;
+  shadow-radius: 6px;
   shadow-offset: 0px 0px;
 `
 
@@ -83,7 +84,7 @@ export const RedeSocial = styled(ShadowView).attrs({})`
     background-color: #348eac;
     padding: ${scale(10)}px;
     shadow-color: #348eac;
-    shadow-opacity: 0.2;
-    shadow-radius: 10px;
+    shadow-opacity: 0.4;
+    shadow-radius: 6px;
     shadow-offset: 0px 0px;
 `

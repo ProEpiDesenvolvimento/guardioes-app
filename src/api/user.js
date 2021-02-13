@@ -125,7 +125,7 @@ export const sendCode = async (data) => {
 
     return {
         status: response.status,
-        body: await response.json(),
+        body: response.status === 200 ? await response.json() : null,
     }
 }
 

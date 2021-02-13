@@ -17,7 +17,7 @@ export const ButtonMapChange = styled(TouchableOpacity).attrs({
     align-items: center;
     justify-content: center;
     background-color: rgba(22, 107, 135, 0.25);
-    border-radius: 90px;
+    border-radius: 100px;
     border-color: rgba(22, 107, 135, 1);
     border-width: 1px;
     position: absolute;

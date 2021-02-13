@@ -201,7 +201,7 @@ export default {
     home: {
         title: 'Home',
         hello: 'Hi, ',
-        nowAGuardian: 'Guardião da Saúde',
+        nowAGuardian: 'Health Guardian',
         addProfile: 'Add a Profile',
         alerts: 'Alerts',
         statusLast7Days: 'Status in the last 7 days:',
@@ -233,6 +233,7 @@ export default {
     },
     news: {
         title: 'News',
+        subtitle: 'Tweets feed of Guardiões',
         openBrowser: 'Do you want to open the browser?',
         twitter: 'You will be redirected to twitter.com',
     },

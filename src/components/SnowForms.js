@@ -68,7 +68,7 @@ export const SnowButton = styled(ShadowView).attrs({})`
     justify-content: center;
     shadow-color: #ffffff;
     shadow-opacity: 0.4;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 0px;
 `
 

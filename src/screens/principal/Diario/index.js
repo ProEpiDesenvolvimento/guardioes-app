@@ -65,7 +65,7 @@ const Diario = () => {
         getCurrentUserInfo,
     } = useUser()
 
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [personAge, setPersonAge] = useState(13)
     const [allDatesMarked, setAllDatesMarked] = useState([])
     const [datesMarked, setDatesMarked] = useState([])
@@ -100,7 +100,7 @@ const Diario = () => {
 
             if (response.status === 200) {
                 storeSurveys(response.body.surveys)
-                setIsLoaded(true)
+                setIsLoading(false)
 
                 await storeCacheData('surveysData', response.body.surveys)
             }
@@ -110,7 +110,7 @@ const Diario = () => {
             if (surveysCache) {
                 storeSurveys(surveysCache)
             }
-            setIsLoaded(true)
+            setIsLoading(false)
         }
     }
 
@@ -221,7 +221,7 @@ const Diario = () => {
         return <Feather name='chevron-right' size={scale(25)} color='#c4c4c4' />
     }
 
-    if (!isLoaded) {
+    if (isLoading) {
         return <ScreenLoader />
     }
 

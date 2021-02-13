@@ -24,7 +24,7 @@ const posts = 10
 const Noticias = () => {
     const { token, user, app } = useUser()
 
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [groupTwitter, setGroupTwitter] = useState(null)
     const [twitterOption, setTwitterOption] = useState('')
     const [length, setLength] = useState(posts)
@@ -68,7 +68,7 @@ const Noticias = () => {
             setFilteredTweets(response.body.twitter_api.tweets.slice(0, posts))
         }
 
-        setIsLoaded(true)
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -81,7 +81,7 @@ const Noticias = () => {
         }
     }, [twitterOption])
 
-    if (!isLoaded) {
+    if (isLoading) {
         return <ScreenLoader />
     }
 
@@ -95,7 +95,7 @@ const Noticias = () => {
                             <NoticiasTitle>
                                 {translate('news.title')}
                             </NoticiasTitle>
-                            <FeedTitle>Feed RSS do Guardiões</FeedTitle>
+                            <FeedTitle>{translate('news.subtitle')}</FeedTitle>
 
                             {groupTwitter ? (
                                 <TwitterOption>

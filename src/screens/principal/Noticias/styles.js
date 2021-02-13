@@ -12,8 +12,8 @@ export const Container = styled.View`
 export const NoticiasList = styled.FlatList.attrs({
     contentContainerStyle: {
         backgroundColor: '#ffffff',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        borderTopLeftRadius: scale(28),
+        borderTopRightRadius: scale(28),
         flexGrow: 1,
         paddingTop: percentage(6),
         paddingHorizontal: percentage(7),
@@ -79,8 +79,8 @@ export const NoticiaContainer = styled(ShadowView).attrs({})`
     margin-bottom: ${percentage(7)}px;
     shadow-color: #5dd39e;
     shadow-opacity: 0.4;
-    shadow-radius: 4px;
-    shadow-offset: 0px 2px;
+    shadow-radius: 6px;
+    shadow-offset: 0px 0px;
 `
 
 export const Header = styled.View`

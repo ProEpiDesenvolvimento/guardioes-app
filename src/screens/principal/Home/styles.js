@@ -8,7 +8,7 @@ import { scale, percentage, vPercentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;
-    background-color: #f8f8f8;
+    background-color: #f4f4f4;
 `
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
@@ -88,7 +88,7 @@ export const StatusContainer = styled(ShadowView).attrs({})`
     align-items: center;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 
@@ -111,8 +111,8 @@ const BemMal = `
   align-items: center;
   justify-content: center;
   shadow-opacity: 0.4;
-  shadow-radius: 10px;
-  shadow-offset: 0px 2px;
+  shadow-radius: 6px;
+  shadow-offset: 0px 0px;
 `
 
 export const Bem = styled(TouchableOpacity).attrs({
@@ -163,7 +163,7 @@ export const AlertContainer = styled(ShadowView).attrs({})`
     margin-bottom: ${percentage(7)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
 `
 
@@ -190,7 +190,7 @@ export const StatusAlertText = styled.Text`
 
 export const Users = styled.View`
     flex: 1;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     align-items: center;
     justify-content: center;
 `
@@ -201,8 +201,8 @@ export const UserSelector = styled(ShadowView).attrs({})`
     border-radius: ${scale(20)}px;
     shadow-color: #000000;
     shadow-opacity: 0.2;
-    shadow-radius: 10px;
-    shadow-offset: 0px 0px;
+    shadow-radius: 6px;
+    shadow-offset: 0px 4px;
 `
 
 export const UserScroll = styled.ScrollView.attrs({

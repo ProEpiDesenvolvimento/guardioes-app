@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native'
 import { scale, percentage } from '../utils/scalling'
 
 export const Container = styled.View`
-    background-color: #f8f8f8;
+    background-color: #f4f4f4;
 `
 
 export const HeaderNavigator = styled.View`

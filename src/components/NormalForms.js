@@ -10,7 +10,7 @@ import { scale, percentage } from '../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;
-    background-color: #f8f8f8;
+    background-color: #f4f4f4;
 `
 
 export const KeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
@@ -197,7 +197,7 @@ export const SendContainer = styled(ShadowView).attrs({})`
     padding-horizontal: ${percentage(12)}px;
     shadow-color: #348eac;
     shadow-opacity: 0.4;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 0px;
 `
 
@@ -210,7 +210,7 @@ export const SendText = styled.Text`
 
 export const ModalContainer = styled.View`
     flex: 1;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
 `
@@ -225,8 +225,8 @@ export const ModalBox = styled(ShadowView).attrs({})`
     padding: ${scale(16)}px;
     shadow-color: #000000;
     shadow-opacity: 0.2;
-    shadow-radius: 10px;
-    shadow-offset: 0px 0px;
+    shadow-radius: 6px;
+    shadow-offset: 0px 4px;
 `
 
 export const ModalTitle = styled.Text`
