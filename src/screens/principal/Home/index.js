@@ -130,6 +130,8 @@ const Home = ({ navigation }) => {
     }
 
     const updateUserTermsConsent = async () => {
+        setShowTermsConsent(false)
+
         const policy = {
             policy_version: terms.version,
         }
@@ -221,8 +223,6 @@ const Home = ({ navigation }) => {
     }
 
     const showTermsPolicy = () => {
-        setShowTermsConsent(false)
-
         Alert.alert(
             terms.title,
             terms.text,

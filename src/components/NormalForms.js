@@ -96,6 +96,7 @@ export const Selector = styled(ModalSelector).attrs({
         color: '#32323B',
     },
     overlayStyle: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
         padding: '10%',
     },
     optionContainerStyle: {

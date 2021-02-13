@@ -25,6 +25,7 @@ const CLUSTER_SIZE_DIVIDER = 4
 
 const Maps = () => {
     const {
+        isOffline,
         token,
         location,
         getCurrentLocation,
@@ -32,7 +33,9 @@ const Maps = () => {
         storeCacheData,
     } = useUser()
 
+    const [isLoading, setIsLoading] = useState(true)
     const [region, setRegion] = useState(initialRegion)
+    const [mapKey, setMapKey] = useState(0)
     const [showAlert, setShowAlert] = useState(false)
     const [showUserLocation, setShowUserLocation] = useState(false)
     const [weekSurveys, setWeekSurveys] = useState([])
@@ -52,6 +55,7 @@ const Maps = () => {
         if (location.error === 0) {
             setRegion(location)
             setShowUserLocation(true)
+            setMapKey(mapKey + 1)
         }
 
         const showMapTip = await getCacheData('showMapTip', false)
@@ -60,8 +64,9 @@ const Maps = () => {
         if (showMapTip === null) {
             setShowAlert(true)
         }
-
-        await getSurveys(localPin)
+        if (!isOffline && isLoading) {
+            await getSurveys(localPin)
+        }
     }
 
     const getSurveys = async (localPin) => {
@@ -75,6 +80,7 @@ const Maps = () => {
                 setWeekSurveys(response.body.surveys)
             }
 
+            setIsLoading(false)
             // getSurveyPerState() // Logica que filtra casos de covid
         }
     }
@@ -188,6 +194,7 @@ const Maps = () => {
             <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
             <Container>
                 <ClusteredMapView
+                    key={mapKey} // Updates Map
                     showsUserLocation={showUserLocation}
                     style={styles.map}
                     data={coordsFilter()}
