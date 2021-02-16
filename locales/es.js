@@ -79,12 +79,14 @@ export default {
         genderRequired: 'Se debe completar la raza y el género',
         kinshipRequired: 'La relación debe completarse',
         geralError: 'Se produjo un error, inténtelo de nuevo más tarde.',
-        confirmDeleteUser: 'Borrar usuario',
-        confirmDeleteUser2: '¿Quieres eliminar este usuario?',
+        confirmDeleteUser: 'Borrar perfil',
+        confirmDeleteUser2: '¿Quieres eliminar este perfil?',
         selectImage: 'Seleccionar imagen de perfil',
         pickPhoto: 'Saque una foto',
         library: 'Seleccionar de la galería',
         removePhoto: 'Quitar foto',
+        updatedPhoto: 'Foto de perfil actualizada',
+        removedPhoto: 'Foto de perfil eliminada',
         fieldNotBlank: 'Los campos no pueden estar vacíos',
         fieldNotBlank2:
             'Correo electrónico\nContraseña\n\nNecesitamos esta información para completar su registro',
@@ -107,11 +109,6 @@ export default {
         riskGroupMessage:
             '\t Personas mayores de 60 años o personas de cualquier edad que tienen comorbilidades, como enfermedades cardíacas, diabetes, neumopatía, enfermedades neurológicas o renales, inmunodepresión, obesidad, asma y mujeres posparto.',
         riskGroupButton: 'Vuelve',
-    },
-    noInternet: {
-        noInternetConnection: 'Sin internet!',
-        ohNo: 'La verdad es que no hay internet, intenta de nuevo más tarde ok',
-        alertAllRightMessage: 'Ok, voy a intentarlo más tarde.',
     },
     ajuda: {
         title: 'Ayuda',
@@ -171,7 +168,6 @@ export default {
             covidSuspect:
                 'Para descargar la aplicación Guardians of Health y contribuir a hacer frente a Covid-19, visite:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara descargar la aplicación del Ministerio de Salud, visite:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinición de contacto cercano: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
         },
-        datePlaceHolder: 'Haga clic aquí para introducir la fecha!',
     },
     advices: {
         moreInformations: 'Mas informaciones',
@@ -179,6 +175,7 @@ export default {
             '¿Quieres ser redirigido a la fuente del contenido?',
         title: 'Consejos',
         subtitle: 'Mantenga su salud al día',
+        empty: 'Ningún consejo para su país',
         more: 'Sepa Mas',
         buttons: {
             messages: {

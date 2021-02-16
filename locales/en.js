@@ -69,12 +69,14 @@ export default {
         genderRequired: 'Race and gender must be filled in',
         kinshipRequired: 'Relationship must be completed',
         geralError: 'An error occurred, please try again later.',
-        confirmDeleteUser: 'Delete user',
-        confirmDeleteUser2: 'Do you want to delete this user?',
+        confirmDeleteUser: 'Delete profile',
+        confirmDeleteUser2: 'Do you want to delete this profile?',
         selectImage: 'Select profile image',
         pickPhoto: 'Take a picture',
         library: 'Select from Gallery',
         removePhoto: 'Remove photo',
+        updatedPhoto: 'Profile photo updated',
+        removedPhoto: 'Profile photo removed',
         fieldNotBlank: 'Fields cannot be empty',
         fieldNotBlank2:
             'Email\nPassword\n\nWe need this information to complete your registration',
@@ -105,12 +107,6 @@ export default {
         tryAgain: 'Try again',
         differentsPass: "Passwords don't match!",
         passwordChanged: 'Reset Password',
-    },
-    noInternet: {
-        noInternetConnection: 'No internet access.',
-        ohNo:
-            "Oh sorry, it seems that you don't have access to internet right now, try again soon, ok.",
-        alertAllRightMessage: "Ok, i'll try later.",
     },
     ajuda: {
         title: 'Help',
@@ -176,6 +172,7 @@ export default {
             'Do you want to be redirected to the source of the content?',
         title: 'Tips',
         subtitle: 'Keep your health up to date',
+        empty: 'No tips for your country',
         more: 'See More',
         buttons: {
             messages: {

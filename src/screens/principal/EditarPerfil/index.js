@@ -199,7 +199,7 @@ const EditarPerfil = ({ navigation, route }) => {
                 }
 
                 setAvatar(null)
-                Alert.alert('Foto de perfil removida.')
+                Alert.alert(translate('register.removedPhoto'))
             } else {
                 let source = response.uri
                 if (Platform.OS === 'android') {
@@ -213,7 +213,7 @@ const EditarPerfil = ({ navigation, route }) => {
                 }
 
                 setAvatar(source)
-                Alert.alert('Foto de perfil atualizada.')
+                Alert.alert(translate('register.updatedPhoto'))
             }
         })
     }
@@ -459,6 +459,7 @@ const imageOptions = {
     customButtons: [
         { name: 'remove', title: translate('register.removePhoto') },
     ],
+    cancelButtonTitle: translate('selector.cancelButton'),
     noData: true,
     quality: 0.5,
     storageOptions: {

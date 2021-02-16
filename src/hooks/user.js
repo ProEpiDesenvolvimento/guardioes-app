@@ -80,7 +80,6 @@ export const UserProvider = ({ children }) => {
             })
 
         const userData = JSON.parse(await AsyncStorage.getItem('userData'))
-
         const selectedData = JSON.parse(
             await AsyncStorage.getItem('selectedData')
         )
@@ -112,7 +111,6 @@ export const UserProvider = ({ children }) => {
         const avatar = await AsyncStorage.getItem('userAvatar')
         const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
-
         const householdAvatars = JSON.parse(
             await AsyncStorage.getItem('householdAvatars')
         )
@@ -414,10 +412,12 @@ export const UserProvider = ({ children }) => {
     }
 
     const verifyInternetState = (state) => {
-        console.warn(state)
         if (!state.isConnected) {
             setIsOffline(true)
-        } else if (state.isInternetReachable === null || state.isInternetReachable) {
+        } else if (
+            state.isInternetReachable === null ||
+            state.isInternetReachable
+        ) {
             setIsOffline(false)
         } else {
             setIsOffline(true)

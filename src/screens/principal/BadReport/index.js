@@ -267,7 +267,7 @@ const BadReport = ({ navigation }) => {
                 <DateSince>
                     <DateText>{translate('badReport.sickAge')}</DateText>
                     <DateSelector
-                        placeholder={translate('badReport.datePlaceHolder')}
+                        placeholder={translate('birthDetails.format')}
                         date={badSince}
                         format='DD-MM-YYYY'
                         minDate='01-01-2018'

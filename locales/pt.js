@@ -78,12 +78,14 @@ export default {
         genderRequired: 'A raça e gênero devem estar preenchidos',
         kinshipRequired: 'O parentesco deve estar preenchido',
         geralError: 'Ocorreu um erro, tente novamente depois.',
-        confirmDeleteUser: 'Deletar usuário',
-        confirmDeleteUser2: 'Deseja deletar esse usuário?',
-        selectImage: 'Selecione imagem de Perfil',
-        pickPhoto: 'Tire uma foto',
-        library: 'Selecione da Galeria',
+        confirmDeleteUser: 'Deletar perfil',
+        confirmDeleteUser2: 'Deseja deletar esse perfil?',
+        selectImage: 'Selecione imagem de perfil',
+        pickPhoto: 'Tirar uma foto',
+        library: 'Selecionar da Galeria',
         removePhoto: 'Remover foto',
+        updatedPhoto: 'Foto de perfil atualizada',
+        removedPhoto: 'Foto de perfil removida',
         fieldNotBlank: 'Campos não podem ficar em branco',
         fieldNotBlank2:
             'Email\nSenha\n\nPrecisamos dessas informações para completar seu cadastro',
@@ -105,12 +107,6 @@ export default {
         riskGroupMessage:
             '\t Pessoas acima de 60 anos ou pessoas de qualquer idade que tenham comorbidades, como cardiopatia, diabetes, pneumopatia, doença neurológica ou renal, imunodepressão, obesidade, asma e puérperas (fase pós-parto).',
         riskGroupButton: 'Voltar',
-    },
-    noInternet: {
-        noInternetConnection: 'Sem Internet!',
-        ohNo:
-            'Poxa parece que voce nao tem internet, tenta de novo mais tarde ok',
-        alertAllRightMessage: 'Ok, vou tentar mais tarde.',
     },
     ajuda: {
         title: 'Ajuda',
@@ -170,7 +166,6 @@ export default {
             covidSuspect:
                 'Para baixar o aplicativo Guardiões da Saúde e contribuir para o enfrentamento da Covid-19, acesse:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara baixar o aplicativo do Ministério da Saúde, acesse:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinição de contato próximo: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
         },
-        datePlaceHolder: 'Haga clic aquí para introducir la fecha!',
     },
     advices: {
         moreInformations: 'Mais Informações',
@@ -178,6 +173,7 @@ export default {
             'Deseja ser redirecionado para a fonte do conteúdo?',
         title: 'Dicas',
         subtitle: 'Mantenha a saúde em dia',
+        empty: 'Nenhuma dica para o seu país',
         more: 'Saiba Mais',
         buttons: {
             messages: {

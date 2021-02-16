@@ -185,6 +185,18 @@ const Dicas = () => {
                                 </Advice>
                             </Touch>
                         ))}
+                        {contents.length === 0 ? (
+                            <Touch>
+                                <Advice>
+                                    <AdviceTitle numberOfLines={3}>
+                                        {translate('advices.empty')}
+                                    </AdviceTitle>
+                                    <AdviceIcon>
+                                        {getContentIcon('virus')}
+                                    </AdviceIcon>
+                                </Advice>
+                            </Touch>
+                        ) : null}
                     </AdvicesView>
                 </ScrollViewStyled>
 
