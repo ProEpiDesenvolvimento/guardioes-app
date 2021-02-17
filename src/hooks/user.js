@@ -229,6 +229,7 @@ export const UserProvider = ({ children }) => {
             'householdAvatars',
             'selectedData',
             'userScore',
+            'score',
             'lastReport',
             'surveysData',
             'contentsData',
@@ -394,24 +395,16 @@ export const UserProvider = ({ children }) => {
                 setScore(newScore)
                 setLastReport(todayDate.toString())
                 console.warn('Reported the day before')
-
-                await AsyncStorage.setItem('userScore', newScore.toString())
-                await AsyncStorage.setItem(
-                    'lastReport',
-                    todayDate.toISOString()
-                )
                 break
             default:
                 setScore(newScore)
                 setLastReport(todayDate.toString())
                 console.warn('Did not report the day before')
-
-                await AsyncStorage.setItem('userScore', newScore.toString())
-                await AsyncStorage.setItem(
-                    'lastReport',
-                    todayDate.toISOString()
-                )
         }
+
+        await AsyncStorage.setItem('userScore', newScore.toString()) // Will be removed on next release
+        await AsyncStorage.setItem('score', newScore.toString())
+        await AsyncStorage.setItem('lastReport', todayDate.toISOString())
 
         OneSignal.sendTags({ score: newScore })
         console.warn(`User score: ${newScore}`)
@@ -437,12 +430,12 @@ export const UserProvider = ({ children }) => {
     return (
         <UserContext.Provider
             value={{
-                signOut,
                 token,
                 user,
                 loadSecondaryData,
                 storeUser,
                 selectUser,
+                signOut,
                 getCurrentUserInfo,
                 avatar,
                 updateUserAvatar,
