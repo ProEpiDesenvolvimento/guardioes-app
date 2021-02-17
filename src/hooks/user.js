@@ -111,6 +111,9 @@ export const UserProvider = ({ children }) => {
         const avatar = await AsyncStorage.getItem('userAvatar')
         const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
+        const householdsData = JSON.parse(
+            await AsyncStorage.getItem('householdsData')
+        )
         const householdAvatars = JSON.parse(
             await AsyncStorage.getItem('householdAvatars')
         )
@@ -124,11 +127,27 @@ export const UserProvider = ({ children }) => {
         if (lastReport) {
             setLastReport(lastReport)
         }
+        if (householdsData) {
+            setHouseholds(householdsData)
+        }
         if (householdAvatars) {
             setHouseholdAvatars(householdAvatars)
         }
         if (needSignIn) {
             await signIn(credentials)
+        }
+    }
+
+    const verifyInternetState = (state) => {
+        if (!state.isConnected) {
+            setIsOffline(true)
+        } else if (
+            state.isInternetReachable === null ||
+            state.isInternetReachable
+        ) {
+            setIsOffline(false)
+        } else {
+            setIsOffline(true)
         }
     }
 
@@ -206,9 +225,10 @@ export const UserProvider = ({ children }) => {
         await AsyncStorage.multiRemove([
             'userData',
             'userAvatar',
-            'userScore',
-            'selectedData',
+            'householdsData',
             'householdAvatars',
+            'selectedData',
+            'userScore',
             'lastReport',
             'surveysData',
             'contentsData',
@@ -274,14 +294,15 @@ export const UserProvider = ({ children }) => {
         }
     }
 
-    const storeHouseholds = (households) => {
+    const storeHouseholds = async (households) => {
         households.sort(
             (a, b) =>
                 new Date(b.created_at).getTime() -
                 new Date(a.created_at).getTime()
         )
-
         setHouseholds(households)
+
+        await AsyncStorage.setItem('householdsData', JSON.stringify(households))
     }
 
     const updateHouseholdAvatars = async (id, source) => {
@@ -296,6 +317,8 @@ export const UserProvider = ({ children }) => {
 
     const storeSurveys = (surveys) => {
         setSurveys(surveys)
+
+        AsyncStorage.setItem('surveysData', JSON.stringify(surveys))
     }
 
     const getCurrentLocation = async () => {
@@ -409,19 +432,6 @@ export const UserProvider = ({ children }) => {
             return AsyncStorage.getItem(key)
         }
         return JSON.parse(await AsyncStorage.getItem(key))
-    }
-
-    const verifyInternetState = (state) => {
-        if (!state.isConnected) {
-            setIsOffline(true)
-        } else if (
-            state.isInternetReachable === null ||
-            state.isInternetReachable
-        ) {
-            setIsOffline(false)
-        } else {
-            setIsOffline(true)
-        }
     }
 
     return (

@@ -61,7 +61,6 @@ const Diario = () => {
         surveys,
         storeSurveys,
         getCacheData,
-        storeCacheData,
         getCurrentUserInfo,
     } = useUser()
 
@@ -101,8 +100,6 @@ const Diario = () => {
             if (response.status === 200) {
                 storeSurveys(response.body.surveys)
                 setIsLoading(false)
-
-                await storeCacheData('surveysData', response.body.surveys)
             }
         } else {
             const surveysCache = await getCacheData('surveysData', false)

@@ -96,17 +96,17 @@ const Home = ({ navigation }) => {
 
     const person = getCurrentUserInfo()
 
-    useEffect(() => {
-        if (!isLoading) {
-            fetchData()
-        }
-    }, [isLoading])
-
     useFocusEffect(
         useCallback(() => {
             getUserHealth()
         }, [surveys])
     )
+
+    useEffect(() => {
+        if (!isLoading) {
+            fetchData()
+        }
+    }, [isLoading])
 
     useEffect(() => {
         showOfflineAlert(isOffline)
