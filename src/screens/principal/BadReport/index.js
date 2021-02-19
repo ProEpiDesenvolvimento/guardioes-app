@@ -192,7 +192,7 @@ const BadReport = ({ navigation }) => {
 
     const sendSurvey = async () => {
         // Send Survey BAD CHOICE
-        if (location.error !== 0 && personSymptoms.length === 0) return
+        if (location.error !== 0 || personSymptoms.length === 0) return
 
         showLoadingAlert()
         const householdID = person.is_household ? person.id : null
@@ -210,10 +210,9 @@ const BadReport = ({ navigation }) => {
         }
 
         const response = await createSurvey(survey, user.id, token)
+        updateUserScore()
 
-        if (response.status === 200) {
-            updateUserScore()
-
+        if (response.status === 200 || response.status === 201) {
             if (!response.body.errors && response.body.messages.top_3) {
                 if (response.body.messages.top_3[0]) {
                     showSyndromeAlert(response.body)
@@ -234,12 +233,13 @@ const BadReport = ({ navigation }) => {
                 contact_with_symptom: undefined,
                 symptom: ['symptom'],
             }
-
             await storeCacheData('localPin', localPin)
 
             const newSurveys = surveys.slice()
             newSurveys.push(survey)
             storeSurveys(newSurveys)
+        } else {
+            showConfirmation(response.body)
         }
     }
 

@@ -213,7 +213,7 @@ const Home = ({ navigation }) => {
         showConfirmation(response.body)
         updateUserScore()
 
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
             await storeCacheData('localPin', survey)
 
             const newSurveys = surveys.slice()

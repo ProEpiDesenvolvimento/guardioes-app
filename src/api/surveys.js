@@ -36,6 +36,11 @@ export const createSurvey = async (data, id, token) => {
                     household_id: data.household_id,
                     latitude: data.latitude,
                     longitude: data.longitude,
+                    bad_since: data.bad_since,
+                    traveled_to: data.traveled_to,
+                    went_to_hospital: data.went_to_hospital,
+                    contact_with_symptom: data.contact_with_symptom,
+                    symptom: data.symptom,
                 },
             }),
         })
