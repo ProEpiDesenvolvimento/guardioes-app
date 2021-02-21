@@ -226,7 +226,6 @@ const BadReport = ({ navigation }) => {
             // Save only important data for Map
             const localPin = {
                 ...survey,
-                household_id: undefined,
                 bad_since: undefined,
                 traveled_to: undefined,
                 went_to_hospital: undefined,
@@ -234,10 +233,6 @@ const BadReport = ({ navigation }) => {
                 symptom: ['symptom'],
             }
             await storeCacheData('localPin', localPin)
-
-            const newSurveys = surveys.slice()
-            newSurveys.push(survey)
-            storeSurveys(newSurveys)
         } else {
             showConfirmation(response.body)
         }

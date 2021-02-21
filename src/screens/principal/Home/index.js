@@ -206,6 +206,7 @@ const Home = ({ navigation }) => {
             household_id: householdID,
             latitude: location.latitude,
             longitude: location.longitude,
+            symptom: [],
             created_at: moment().format('YYYY-MM-DD'),
         }
 
@@ -215,10 +216,6 @@ const Home = ({ navigation }) => {
 
         if (response.status === 200 || response.status === 201) {
             await storeCacheData('localPin', survey)
-
-            const newSurveys = surveys.slice()
-            newSurveys.push(survey)
-            storeSurveys(newSurveys)
         }
     }
 
