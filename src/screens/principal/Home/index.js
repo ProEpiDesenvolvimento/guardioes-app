@@ -86,7 +86,6 @@ const Home = ({ navigation }) => {
     } = useUser()
 
     const [showTermsConsent, setShowTermsConsent] = useState(false)
-    const [userBadReports, setUserBadReports] = useState(0)
     const [hasBadReports, setHasBadReports] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
@@ -175,7 +174,7 @@ const Home = ({ navigation }) => {
         let badReports = 0
 
         if (userLastSurveys.length > 0) {
-            userLastSurveys.map((survey) => {
+            userLastSurveys.forEach((survey) => {
                 if (person.is_household) {
                     if (
                         survey.symptom.length > 0 &&
@@ -190,8 +189,7 @@ const Home = ({ navigation }) => {
             })
         }
 
-        setUserBadReports(badReports)
-        setHasBadReports(userBadReports > 2)
+        setHasBadReports(badReports > 2)
     }
 
     const sendSurvey = async () => {
@@ -216,6 +214,10 @@ const Home = ({ navigation }) => {
 
         if (response.status === 200 || response.status === 201) {
             await storeCacheData('localPin', survey)
+
+            const newSurveys = surveys.slice()
+            newSurveys.push(response.body.survey)
+            storeSurveys(newSurveys)
         }
     }
 

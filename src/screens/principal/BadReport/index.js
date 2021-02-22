@@ -233,6 +233,10 @@ const BadReport = ({ navigation }) => {
                 symptom: ['symptom'],
             }
             await storeCacheData('localPin', localPin)
+
+            const newSurveys = surveys.slice()
+            newSurveys.push(response.body.survey)
+            storeSurveys(newSurveys)
         } else {
             showConfirmation(response.body)
         }
