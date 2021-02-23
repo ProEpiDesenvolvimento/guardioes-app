@@ -22,6 +22,8 @@ export default {
         groupError: 'Você deve selecionar o grupo',
         codeError: 'Você deve colocar o codigo de identificação',
         codeFormatError: 'O código deve conter apenas digitos',
+        codeLengthError: 'O código deve conter exatamente ',
+        codeLengthError2: ' dígitos',
     },
     birthDetails: {
         format: 'DD-MM-AAAA',
@@ -64,6 +66,7 @@ export default {
         birth: 'Nascimento:',
         country: 'Pais de origem:',
         originCountry: ' é seu pais de residência?',
+        idCode: 'Código de identificação:',
         email: 'Email:',
         password: 'Senha:',
         passwordCondition: 'A senha deve conter no mínimo 8 caracteres',

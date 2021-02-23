@@ -22,6 +22,8 @@ export default {
         groupError: 'You must select the group',
         codeError: 'You must enter the identification code',
         codeFormatError: 'The code must contain only digits',
+        codeLengthError: 'The code must contain exactly ',
+        codeLengthError2: ' digits',
     },
     birthDetails: {
         format: 'DD-MM-YYYY',
@@ -55,6 +57,7 @@ export default {
         birth: 'Birthdate:',
         country: 'Birth country:',
         originCountry: ' is your home country?',
+        idCode: 'Identification code:',
         email: 'Email:',
         password: 'Password:',
         passwordCondition: 'Password must be at leats 8 characters long.',
