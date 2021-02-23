@@ -1,18 +1,18 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import ShadowView from 'react-native-simple-shadow-view';
-import { TouchableOpacity } from 'react-native';
+import ShadowView from 'react-native-simple-shadow-view'
+import { TouchableOpacity } from 'react-native'
 
-import { scale, percentage } from '../../../utils/scallingUtils';
+import { scale, percentage } from '../../../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#f4f4f4',
         flexGrow: 1,
         paddingTop: percentage(7),
         paddingHorizontal: percentage(7),
-    }
-})``;
+    },
+})``
 
 const Profile = `
     flex-direction: row;
@@ -21,30 +21,29 @@ const Profile = `
     padding: ${scale(15)}px;
     shadow-color: #000000;
     shadow-opacity: 0.1;
-    shadow-radius: 10px;
+    shadow-radius: 6px;
     shadow-offset: 0px 4px;
-`;
+`
 
-export const User = styled(ShadowView).attrs({
-})`
+export const User = styled(ShadowView).attrs({})`
     ${Profile}
     background-color: #348EAC;
-`;
+`
 
 export const AvatarWrapper = styled.View`
     justify-content: center;
     padding-right: ${percentage(4)}px;
-`;
+`
 
 export const InfoContainer = styled.View`
     flex: 1;
     flex-direction: row;
-`;
+`
 
 export const InfoWrapper = styled.View`
     flex: 1;
     justify-content: center;
-`;
+`
 
 export const Name = styled.Text`
     font-family: ArgentumSans-SemiBold;
@@ -52,51 +51,50 @@ export const Name = styled.Text`
     color: #ffffff;
     include-font-padding: false;
     margin-bottom: ${scale(5)}px;
-`;
+`
 
 export const Relation = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #ffffff;
     include-font-padding: false;
-`;
+`
 
 export const ButtonsWrapper = styled.View`
     justify-content: center;
-`;
+`
 
 export const Button = styled(TouchableOpacity).attrs({
-    activeOpacity: 0.2
-})``;
+    activeOpacity: 0.2,
+})``
 
 export const HouseholdWrapper = styled.View`
     padding-horizontal: ${scale(9)}px;
     margin-bottom: ${percentage(6)}px;
-`;
+`
 
 export const HouseholdTitle = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(16)}px;
-    color: #32323B;
-`;
+    color: #32323b;
+`
 
-export const Household = styled(ShadowView).attrs({
-})`
+export const Household = styled(ShadowView).attrs({})`
     ${Profile}
     background-color: #ffffff;
-`;
+`
 
 export const HouseholdName = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
-    color: #348EAC;
+    color: #348eac;
     include-font-padding: false;
     margin-bottom: ${scale(5)}px;
-`;
+`
 
 export const HouseholdRelation = styled.Text`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #c4c4c4;
     include-font-padding: false;
-`;
+`

@@ -1,53 +1,54 @@
-import AppProvider from "./src/hooks";
-import React, { Component } from 'react';
-import SplashScreen from 'react-native-splash-screen';
-import * as Navegar from './src/components/navigation/navigator';
-import OneSignal from 'react-native-onesignal'; // Import package from node modules
+import React, { useEffect } from 'react'
+import OneSignal from 'react-native-onesignal'
 
-import './src/config/ReactotronConfig';
+import { enableScreens } from 'react-native-screens'
+import { NavigationContainer } from '@react-navigation/native'
+import AppProvider from './src/hooks'
+import Routes from './src/routes'
 
-class Guardioes extends Component {
-  constructor(properties) {
-    super(properties);
-    OneSignal.init("61c9e02a-d703-4e1c-aff1-3bce49948818", {kOSSettingsKeyAutoPrompt : true});// set kOSSettingsKeyAutoPrompt to false prompting manually on iOS
-              
-    OneSignal.addEventListener('received', this.onReceived);
-    OneSignal.addEventListener('opened', this.onOpened);
-    OneSignal.addEventListener('ids', this.onIds);
-  }
+import './src/config/ReactotronConfig'
 
-  componentDidMount() {
-    SplashScreen.hide();
-  }
+enableScreens()
 
-  componentWillUnmount() {
-    OneSignal.removeEventListener('received', this.onReceived);
-    OneSignal.removeEventListener('opened', this.onOpened);
-    OneSignal.removeEventListener('ids', this.onIds);
-  }
+const Guardioes = () => {
+    const onReceived = (notification) => {
+        console.log('Notification received: ', notification)
+    }
 
-  onReceived(notification) {
-    console.log("Notification received: ", notification);
-  }
+    const onOpened = (openResult) => {
+        console.log('Message: ', openResult.notification.payload.body)
+        console.log('Data: ', openResult.notification.payload.additionalData)
+        console.log('isActive: ', openResult.notification.isAppInFocus)
+        console.log('openResult: ', openResult)
+    }
 
-  onOpened(openResult) {
-    console.log('Message: ', openResult.notification.payload.body);
-    console.log('Data: ', openResult.notification.payload.additionalData);
-    console.log('isActive: ', openResult.notification.isAppInFocus);
-    console.log('openResult: ', openResult);
-  }
+    const onIds = (device) => {
+        console.log('Device info: ', device)
+    }
 
-  onIds(device) {
-    console.log('Device info: ', device);
-  }
+    useEffect(() => {
+        OneSignal.init('61c9e02a-d703-4e1c-aff1-3bce49948818', {
+            kOSSettingsKeyAutoPrompt: true,
+        })
 
-  render() {
+        OneSignal.addEventListener('received', onReceived)
+        OneSignal.addEventListener('opened', onOpened)
+        OneSignal.addEventListener('ids', onIds)
+
+        return () => {
+            OneSignal.removeEventListener('received', onReceived)
+            OneSignal.removeEventListener('opened', onOpened)
+            OneSignal.removeEventListener('ids', onIds)
+        }
+    }, [])
+
     return (
-      //<AppProvider>
-        <Navegar.Authentication />
-      //</AppProvider>
-    );
-  }
+        <AppProvider>
+            <NavigationContainer>
+                <Routes />
+            </NavigationContainer>
+        </AppProvider>
+    )
 }
 
-export default Guardioes;
+export default Guardioes

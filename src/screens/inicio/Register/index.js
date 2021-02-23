@@ -1,502 +1,390 @@
-import React, {Component} from 'react';
-import {SafeAreaView, Keyboard, Alert, Modal} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { useRef, useState } from 'react'
+import { Keyboard, Alert, Modal, SafeAreaView } from 'react-native'
+import moment from 'moment'
 
+import Feather from 'react-native-vector-icons/Feather'
 import {
-  GradientBackground,
-  ButtonBack,
-  FormSeparator,
-  Touch,
-  SnowButton,
-  Label,
-} from '../../../components/SnowForms';
+    GradientBackground,
+    ButtonBack,
+    FormSeparator,
+    Touch,
+    SnowButton,
+    Label,
+} from '../../../components/SnowForms'
 import {
-  KeyboardScrollView,
-  FormInline,
-  NormalInput,
-  FormGroup,
-  FormGroupChild,
-} from '../../../components/NormalForms';
+    KeyboardScrollView,
+    FormInline,
+    NormalInput,
+    FormGroup,
+    FormGroupChild,
+    Selector,
+    DateSelector,
+    FormInlineCheck,
+    CheckBoxStyled,
+    Button,
+    CheckLabel,
+    ModalContainer,
+    ModalBox,
+    ModalTitle,
+    ModalText,
+    ModalButton,
+    ModalButtonText,
+} from '../../../components/NormalForms'
+import { PageTitle, FormLabel, FormTip } from './styles'
+
+import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
+import LoadingModal from '../../../components/Groups/LoadingModal'
+import translate from '../../../../locales/i18n'
+import { scale } from '../../../utils/scalling'
+import { UserIcon } from '../../../img/imageConst'
+import { validatePerson, terms } from '../../../utils/consts'
 import {
-  Selector,
-  DateSelector,
-  FormInlineCheck,
-  CheckBoxStyled,
-  Button,
-  CheckLabel,
-} from '../../../components/NormalForms';
-import {
-  ModalContainer,
-  ModalBox,
-  ModalTitle,
-  ModalText,
-  ModalButton,
-  ModalButtonText,
-} from '../../../components/NormalForms';
-import {PageTitle, FormLabel, FormTip} from './styles';
+    genderChoices,
+    countryChoices,
+    raceChoices,
+} from '../../../utils/selector'
+import { stateOptions, getCity } from '../../../utils/brasil'
+import { useUser } from '../../../hooks/user'
+import { createUser, authUser } from '../../../api/user'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
-import OneSignal from 'react-native-onesignal';
-import {UserIcon} from '../../../img/imageConst';
-import {scale} from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
-import {gender, country, race} from '../../../utils/selectorUtils';
-import {state, getCity} from '../../../utils/brasil';
-import InstitutionSelector from '../../../components/userData/InstitutionSelector';
-import LoadingModal from '../../../components/userData/LoadingModal';
+Feather.loadFont()
 
-Feather.loadFont();
+const Register = ({ navigation }) => {
+    const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [gender, setGender] = useState('')
+    const [country, setCountry] = useState('')
+    const [residence, setResidence] = useState(null)
+    const [state, setState] = useState('')
+    const [city, setCity] = useState('')
+    const [race, setRace] = useState('')
+    const [birth, setBirth] = useState('')
+    const [groupId, setGroupId] = useState(null)
+    const [idCode, setIdCode] = useState(null)
+    const [riskGroup, setRiskGroup] = useState(false)
+    const [isProfessional, setIsProfessional] = useState(false)
 
-// let today = y + "-" + m + "-" + d
-let minDate = d + '-' + m + '-' + (y - 13);
-// let tomorrow = y + "-" + m + "-" + (d + 1)
+    const [residenceCheckbox, setResidenceCheckbox] = useState(true)
+    const [modalRiskGroup, setModalRiskGroup] = useState(false)
+    const [institutionError, setInstituitionError] = useState(null)
+    const [loadingAlert, setLoadingAlert] = useState(false)
 
-class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isProfessional: false,
-      residence: null,
-      residenceCountryCheckbox: true,
-      userName: null,
-      userEmail: null,
-      userPwd: null,
-      userGender: null,
-      userCountry: null,
-      userState: null,
-      userCity: null,
-      userRace: null,
-      userBirth: null,
-      userGroup: null,
-      userIdCode: null,
-      userPicture: 'default',
-      riskGroup: null,
-      showAlert: false, //Custom Alerts
-      showProgressBar: false, //Custom Progress Bar
-      modalVisibleRiskGroup: false,
-    };
-  }
+    const passwordInput = useRef()
 
-  setRiskGroupModalVisible(visible) {
-    this.setState({modalVisibleRiskGroup: visible});
-  }
+    const loginAfterCreate = async () => {
+        const response = await authUser({
+            email,
+            password,
+        })
 
-  showAlert = () => {
-    this.setState({
-      showAlert: true,
-      showProgressBar: true,
-    });
-  };
+        if (response.status === 200) {
+            setLoadingAlert(false)
 
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-    });
-  };
+            await storeUser(response.body.user, response.token, {
+                email,
+                password,
+            })
 
-  setAlert = alert => {
-    this.setState({
-      showAlert: alert,
-    });
-  };
+            setNeedSignIn(false)
+            setIsLoggedIn(true)
+        } else {
+            setLoadingAlert(false)
+            Alert.alert(translate('register.geralError'))
+        }
+    }
 
-  setUserInstitutionCallback = (userIdCode, userGroup) => {
-    this.setState({
-      userIdCode: userIdCode,
-      userGroup: userGroup,
-    });
-  };
+    const handleCreate = async () => {
+        Keyboard.dismiss()
 
-  setInstituitionComponentError = error => {
-    this.state.instituitionComponentError = error;
-  };
+        const user = {
+            email,
+            password,
+            user_name: name,
+            birthdate: birth,
+            gender,
+            race,
+            country,
+            residence,
+            state,
+            city,
+            group_id: groupId,
+            identification_code: idCode,
+            is_professional: isProfessional,
+            risk_group: riskGroup,
+            policy_version: terms.version,
+        }
 
-  render() {
-    const {showAlert} = this.state;
+        if (!validatePerson(user, institutionError)) return
+        setLoadingAlert(true)
+
+        const response = await createUser(user)
+
+        if (response.status === 200) {
+            loginAfterCreate()
+        } else {
+            setLoadingAlert(false)
+            Alert.alert(`O email ${response.body.errors[0].detail.email}`)
+        }
+    }
+
+    const setUserInstitutionCallback = (idCode, groupId) => {
+        setIdCode(idCode)
+        setGroupId(groupId)
+    }
+
+    const setInstituitionComponentError = (error) => {
+        setInstituitionError(error)
+    }
 
     return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-        <GradientBackground>
-          <Modal //Modal View for Risk Group Message
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisibleRiskGroup}
-            onRequestClose={() => {
-              this.setRiskGroupModalVisible(!this.state.modalVisibleRiskGroup);
-            }}>
-            <ModalContainer>
-              <ModalBox>
-                <ModalTitle>{translate('register.riskGroupTitle')}</ModalTitle>
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+            <GradientBackground>
+                <Modal // Modal View for Risk Group Message
+                    animationType='fade'
+                    transparent
+                    visible={modalRiskGroup}
+                    onRequestClose={() => setModalRiskGroup(!modalRiskGroup)}
+                >
+                    <ModalContainer>
+                        <ModalBox>
+                            <ModalTitle>
+                                {translate('register.riskGroupTitle')}
+                            </ModalTitle>
 
-                <ModalText>{translate('register.riskGroupMessage')}</ModalText>
+                            <ModalText>
+                                {translate('register.riskGroupMessage')}
+                            </ModalText>
 
-                <Button
-                  onPress={() => {
-                    this.setRiskGroupModalVisible(
-                      !this.state.modalVisibleRiskGroup,
-                    );
-                  }}>
-                  <ModalButton>
-                    <ModalButtonText>
-                      {translate('register.riskGroupButton')}
-                    </ModalButtonText>
-                  </ModalButton>
-                </Button>
-              </ModalBox>
-            </ModalContainer>
-          </Modal>
+                            <Button onPress={() => setModalRiskGroup(false)}>
+                                <ModalButton>
+                                    <ModalButtonText>
+                                        {translate('register.riskGroupButton')}
+                                    </ModalButtonText>
+                                </ModalButton>
+                            </Button>
+                        </ModalBox>
+                    </ModalContainer>
+                </Modal>
 
-          <KeyboardScrollView keyboardShouldPersistTaps="always">
-            <UserIcon height={scale(68)} width={scale(68)} fill="#ffffff" />
-            <PageTitle>{translate('register.title')}</PageTitle>
+                <KeyboardScrollView keyboardShouldPersistTaps='always'>
+                    <UserIcon
+                        height={scale(68)}
+                        width={scale(68)}
+                        fill='#ffffff'
+                    />
+                    <PageTitle>{translate('register.title')}</PageTitle>
 
-            <FormInline>
-              <FormLabel>{translate('register.name')}</FormLabel>
-              <NormalInput
-                returnKeyType="next"
-                onChangeText={text => this.setState({userName: text})}
-              />
-            </FormInline>
+                    <FormInline>
+                        <FormLabel>{translate('register.name')}</FormLabel>
+                        <NormalInput
+                            returnKeyType='next'
+                            onChangeText={(text) => setName(text)}
+                        />
+                    </FormInline>
 
-            <FormGroup>
-              <FormGroupChild>
-                <FormLabel>{translate('register.gender')}</FormLabel>
-                <Selector
-                  data={gender}
-                  initValue={translate('selector.label')}
-                  cancelText={translate('selector.cancelButton')}
-                  onChange={option => this.setState({userGender: option.key})}
-                />
-              </FormGroupChild>
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>
+                                {translate('register.gender')}
+                            </FormLabel>
+                            <Selector
+                                data={genderChoices}
+                                initValue={translate('selector.label')}
+                                cancelText={translate('selector.cancelButton')}
+                                onChange={(option) => setGender(option.key)}
+                            />
+                        </FormGroupChild>
 
-              <FormGroupChild>
-                <FormLabel>{translate('register.race')}</FormLabel>
-                <Selector
-                  data={race}
-                  initValue={translate('selector.label')}
-                  cancelText={translate('selector.cancelButton')}
-                  onChange={option => this.setState({userRace: option.key})}
-                />
-              </FormGroupChild>
-            </FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>{translate('register.race')}</FormLabel>
+                            <Selector
+                                data={raceChoices}
+                                initValue={translate('selector.label')}
+                                cancelText={translate('selector.cancelButton')}
+                                onChange={(option) => setRace(option.key)}
+                            />
+                        </FormGroupChild>
+                    </FormGroup>
 
-            <FormGroup>
-              <FormGroupChild>
-                <FormLabel>{translate('register.birth')}</FormLabel>
-                <DateSelector
-                  placeholder={translate('birthDetails.format')}
-                  date={this.state.userBirth}
-                  format="DD-MM-YYYY"
-                  minDate="01-01-1918"
-                  maxDate={minDate}
-                  locale={'pt-BR'}
-                  confirmBtnText={translate('birthDetails.confirmButton')}
-                  cancelBtnText={translate('birthDetails.cancelButton')}
-                  onDateChange={date => this.setState({userBirth: date})}
-                />
-              </FormGroupChild>
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>{translate('register.birth')}</FormLabel>
+                            <DateSelector
+                                placeholder={translate('birthDetails.format')}
+                                date={birth}
+                                format='DD-MM-YYYY'
+                                minDate='01-01-1918'
+                                maxDate={moment()
+                                    .subtract(13, 'years')
+                                    .format('DD-MM-YYYY')}
+                                locale='pt-BR'
+                                confirmBtnText={translate(
+                                    'birthDetails.confirmButton'
+                                )}
+                                cancelBtnText={translate(
+                                    'birthDetails.cancelButton'
+                                )}
+                                onDateChange={(date) => setBirth(date)}
+                            />
+                        </FormGroupChild>
 
-              <FormGroupChild>
-                <FormLabel>{translate('register.country')}</FormLabel>
+                        <FormGroupChild>
+                            <FormLabel>
+                                {translate('register.country')}
+                            </FormLabel>
 
-                <Selector
-                  data={country}
-                  initValue={translate('selector.label')}
-                  cancelText={translate('selector.cancelButton')}
-                  onChange={option => this.setState({userCountry: option.key})}
-                />
-              </FormGroupChild>
-            </FormGroup>
+                            <Selector
+                                data={countryChoices}
+                                initValue={translate('selector.label')}
+                                cancelText={translate('selector.cancelButton')}
+                                onChange={(option) => setCountry(option.key)}
+                            />
+                        </FormGroupChild>
+                    </FormGroup>
 
-            {this.state.userCountry == 'Brazil' ? (
-              <FormGroup>
-                <FormGroupChild>
-                  <FormLabel>Estado:</FormLabel>
-                  <Selector
-                    data={state}
-                    initValue={translate('selector.label')}
-                    cancelText={translate('selector.cancelButton')}
-                    onChange={option => this.setState({userState: option.key})}
-                  />
-                </FormGroupChild>
+                    {country === 'Brazil' ? (
+                        <FormGroup>
+                            <FormGroupChild>
+                                <FormLabel>Estado:</FormLabel>
+                                <Selector
+                                    data={stateOptions}
+                                    initValue={translate('selector.label')}
+                                    cancelText={translate(
+                                        'selector.cancelButton'
+                                    )}
+                                    onChange={(option) => setState(option.key)}
+                                />
+                            </FormGroupChild>
 
-                <FormGroupChild>
-                  <FormLabel>Município:</FormLabel>
-                  <Selector
-                    data={getCity(this.state.userState)}
-                    initValue={
-                      this.state.userCity
-                        ? this.state.userCity
-                        : translate('selector.label')
-                    }
-                    cancelText={translate('selector.cancelButton')}
-                    onChange={option => this.setState({userCity: option.key})}
-                  />
-                </FormGroupChild>
-              </FormGroup>
-            ) : null}
+                            <FormGroupChild>
+                                <FormLabel>Município:</FormLabel>
+                                <Selector
+                                    data={getCity(state)}
+                                    initValue={
+                                        city || translate('selector.label')
+                                    }
+                                    cancelText={translate(
+                                        'selector.cancelButton'
+                                    )}
+                                    onChange={(option) => setCity(option.key)}
+                                />
+                            </FormGroupChild>
+                        </FormGroup>
+                    ) : null}
 
-            {this.state.userCountry != null ? (
-              <FormInlineCheck>
-                <CheckBoxStyled
-                  title={
-                    this.state.userCountry + translate('register.originCountry')
-                  }
-                  checked={this.state.residenceCountryCheckbox}
-                  onPress={() => {
-                    this.setState({residence: ''});
-                    this.setState({
-                      residenceCountryCheckbox: !this.state
-                        .residenceCountryCheckbox,
-                    });
-                  }}
-                />
-              </FormInlineCheck>
-            ) : null}
+                    {country !== '' ? (
+                        <FormInlineCheck>
+                            <CheckBoxStyled
+                                title={
+                                    country +
+                                    translate('register.originCountry')
+                                }
+                                checked={residenceCheckbox}
+                                onPress={() => {
+                                    setResidence('')
+                                    setResidenceCheckbox(!residenceCheckbox)
+                                }}
+                            />
+                        </FormInlineCheck>
+                    ) : null}
 
-            {!this.state.residenceCountryCheckbox ? (
-              <FormInline>
-                <Selector
-                  data={country}
-                  initValue={translate('selector.label')}
-                  cancelText={translate('selector.cancelButton')}
-                  onChange={option => this.setState({residence: option.key})}
-                />
-              </FormInline>
-            ) : null}
+                    {!residenceCheckbox ? (
+                        <FormInline>
+                            <Selector
+                                data={countryChoices}
+                                initValue={translate('selector.label')}
+                                cancelText={translate('selector.cancelButton')}
+                                onChange={(option) => setResidence(option.key)}
+                            />
+                        </FormInline>
+                    ) : null}
 
-            <FormInlineCheck>
-              <CheckBoxStyled
-                title={'Voce é um profissional da Saude'}
-                checked={this.state.isProfessional}
-                onPress={() => {
-                  this.setState({isProfessional: !this.state.isProfessional});
-                }}
-              />
-            </FormInlineCheck>
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={translate('register.healthProfessional')}
+                            checked={isProfessional}
+                            onPress={() => setIsProfessional(!isProfessional)}
+                        />
+                    </FormInlineCheck>
 
-            <FormInlineCheck>
-              <CheckBoxStyled
-                title={translate('share.riskGroupLabel')}
-                checked={this.state.riskGroup}
-                onPress={() => {
-                  this.setState({riskGroup: !this.state.riskGroup});
-                }}
-              />
-              <CheckLabel
-                onPress={() => {
-                  this.setRiskGroupModalVisible(true);
-                }}>
-                <Feather name="help-circle" size={scale(25)} color="#ffffff" />
-              </CheckLabel>
-            </FormInlineCheck>
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={translate('register.riskGroupLabel')}
+                            checked={riskGroup}
+                            onPress={() => setRiskGroup(!riskGroup)}
+                        />
+                        <CheckLabel onPress={() => setModalRiskGroup(true)}>
+                            <Feather
+                                name='help-circle'
+                                size={scale(25)}
+                                color='#ffffff'
+                            />
+                        </CheckLabel>
+                    </FormInlineCheck>
 
-            <InstitutionSelector
-              setUserInstitutionCallback={this.setUserInstitutionCallback}
-              setAlert={this.setAlert}
-              setErrorCallback={this.setInstituitionComponentError}
-              lightTheme={true}
-            />
+                    <InstitutionSelector
+                        setUserInstitutionCallback={setUserInstitutionCallback}
+                        setAlert={setLoadingAlert}
+                        setErrorCallback={setInstituitionComponentError}
+                        lightTheme
+                    />
 
-            <FormInline>
-              <FormLabel>{translate('register.email')}</FormLabel>
-              <NormalInput
-                autoCapitalize="none"
-                keyboardType="email-address"
-                multiline={false}
-                maxLength={100}
-                returnKeyType="next"
-                onChangeText={email => this.setState({userEmail: email})}
-                onSubmitEditing={() => this.passwordInput.focus()}
-              />
-            </FormInline>
+                    <FormInline>
+                        <FormLabel>{translate('register.email')}</FormLabel>
+                        <NormalInput
+                            autoCapitalize='none'
+                            keyboardType='email-address'
+                            multiline={false}
+                            maxLength={100}
+                            returnKeyType='next'
+                            onChangeText={(text) => setEmail(text)}
+                            onSubmitEditing={() =>
+                                passwordInput.current.focus()
+                            }
+                        />
+                    </FormInline>
 
-            <FormInline>
-              <FormLabel>{translate('register.password')}</FormLabel>
-              <NormalInput
-                autoCapitalize="none"
-                multiline={false}
-                maxLength={100}
-                secureTextEntry={true}
-                ref={input => (this.passwordInput = input)}
-                onChangeText={text => this.setState({userPwd: text})}
-              />
-              <FormTip>{translate('register.passwordCondition')}</FormTip>
-            </FormInline>
+                    <FormInline>
+                        <FormLabel>{translate('register.password')}</FormLabel>
+                        <NormalInput
+                            autoCapitalize='none'
+                            multiline={false}
+                            maxLength={100}
+                            secureTextEntry
+                            ref={passwordInput}
+                            onChangeText={(text) => setPassword(text)}
+                        />
+                        <FormTip>
+                            {translate('register.passwordCondition')}
+                        </FormTip>
+                    </FormInline>
 
-            <FormSeparator>
-              <Touch onPress={() => this.create()}>
-                <SnowButton>
-                  <Label>{translate('register.signupButton')}</Label>
-                </SnowButton>
-              </Touch>
-            </FormSeparator>
+                    <FormSeparator>
+                        <Touch onPress={() => handleCreate()}>
+                            <SnowButton>
+                                <Label>
+                                    {translate('register.signupButton')}
+                                </Label>
+                            </SnowButton>
+                        </Touch>
+                    </FormSeparator>
 
-            <ButtonBack onPress={() => this.props.navigation.goBack()}>
-              <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
-            </ButtonBack>
-          </KeyboardScrollView>
-          <LoadingModal show={showAlert} />
-        </GradientBackground>
-      </>
-    );
-  }
-
-  isUserDataValid = () => {
-    let error = false;
-    if (
-      this.state.userName == null ||
-      this.state.userName == '' ||
-      this.state.userEmail == null ||
-      this.state.userPwd == null
-    ) {
-      Alert.alert(
-        translate('register.fieldNotBlank'),
-        translate('register.fieldNotBlank2'),
-      );
-      error = true;
-    } else if (this.state.userBirth == null) {
-      Alert.alert(translate('register.emptyDate'));
-      error = true;
-    } else if (
-      this.state.userCountry == 'Brazil' &&
-      (this.state.userState == null || this.state.userCity == null)
-    ) {
-      Alert.alert(translate('register.emptyLocation'));
-      error = true;
-    } else if (this.state.userPwd.length < 8) {
-      Alert.alert(translate('register.shortPassword'));
-      error = true;
-    } else if (
-      this.state.instituitionComponentError != null &&
-      this.state.instituitionComponentError != undefined &&
-      this.state.instituitionComponentError.length > 0
-    ) {
-      Alert.alert(this.state.instituitionComponentError);
-      error = true;
-    } else if (this.state.userCountry == null) {
-      Alert.alert(
-        translate('register.nationalityRequired'),
-        translate('register.nationalityRequired2'),
-      );
-      error = true;
-    }
-    return !error;
-  };
-
-  create = () => {
-    if (!this.isUserDataValid()) {
-      return;
-    }
-    Keyboard.dismiss();
-    this.showAlert();
-    fetch(API_URL + '/user/signup', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: {
-          residence: this.state.residence,
-          user_name: this.state.userName,
-          email: this.state.userEmail,
-          password: this.state.userPwd,
-          gender: this.state.userGender,
-          country: this.state.userCountry,
-          state: this.state.userState,
-          city: this.state.userCity,
-          race: this.state.userRace,
-          birthdate: this.state.userBirth,
-          picture: this.state.userPicture,
-          identification_code: this.state.userIdCode,
-          group_id: this.state.userGroup,
-          is_professional: this.state.isProfessional,
-          risk_group: this.state.riskGroup,
-          policy_version: Terms.version,
-        },
-      }),
-    })
-      .then(response => {
-        if (response.status === 200) {
-          this.loginAfterCreate();
-        } else {
-          this.hideAlert();
-          return response.json();
-        }
-      })
-      .then(responseJson => {
-        Alert.alert('O email ' + responseJson.errors[0].detail.email);
-      });
-  };
-
-  //Login Function
-  loginAfterCreate = () => {
-    return fetch(API_URL + '/user/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: {
-          email: this.state.userEmail,
-          password: this.state.userPwd,
-        },
-      }),
-    })
-      .then(response => {
-        if (response.status == 200) {
-          this.setState({userToken: response.headers.map.authorization});
-          this.hideAlert();
-          return response.json();
-        } else {
-          alert('Algo deu errado');
-          this.hideAlert();
-        }
-      })
-      .then(responseJson => {
-        AsyncStorage.setItem('userID', responseJson.user.id.toString());
-        AsyncStorage.setItem('userName', responseJson.user.user_name);
-        AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
-        AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at);
-        AsyncStorage.setItem(
-          'isProfessional',
-          responseJson.user.is_professional.toString(),
-        );
-        AsyncStorage.setItem('userScore', '0');
-
-        RNSecureStorage.set('userToken', this.state.userToken, {
-          accessible: ACCESSIBLE.WHEN_UNLOCKED,
-        });
-        RNSecureStorage.set('userEmail', this.state.userEmail, {
-          accessible: ACCESSIBLE.WHEN_UNLOCKED,
-        });
-        RNSecureStorage.set('userPwd', this.state.userPwd, {
-          accessible: ACCESSIBLE.WHEN_UNLOCKED,
-        });
-
-        //Send User ID to Push Notification API
-        OneSignal.setExternalUserId(responseJson.user.id.toString());
-
-        this.props.navigation.navigate('Home', {
-          userTermsVersion: responseJson.user.policy_version,
-        });
-      });
-  };
+                    <ButtonBack onPress={() => navigation.goBack()}>
+                        <Feather
+                            name='chevron-left'
+                            size={scale(40)}
+                            color='#ffffff'
+                        />
+                    </ButtonBack>
+                </KeyboardScrollView>
+                <LoadingModal show={loadingAlert} />
+            </GradientBackground>
+        </>
+    )
 }
 
-const Terms = {
-  version: translate('useTerms.compilation'),
-};
-
-//make this component available to the app
-export default Register;
+export default Register

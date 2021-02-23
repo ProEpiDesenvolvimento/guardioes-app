@@ -1,5 +1,5 @@
 //Informação de Estados
-export const state = [
+export const stateOptions = [
      { key: 'ACRE', label: 'ACRE' },
      { key: 'ALAGOAS', label: 'ALAGOAS' },
      { key: 'AMAPÁ', label: 'AMAPÁ' },
@@ -5769,7 +5769,7 @@ export function getCity(city) {
                     { key: "XAMBIOÁ", label: "XAMBIOÁ" },
                ]
                break;
-          case null:
+          default:
                CITIES = [
 
                ]

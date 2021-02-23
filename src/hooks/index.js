@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 
-import { UserProvider } from "./user";
+import { UserProvider } from './user'
 
 const AppProvider = ({ children }) => {
-    return <UserProvider>{children}</UserProvider>;
+    return <UserProvider>{children}</UserProvider>
 }
 
-export default AppProvider;
+export default AppProvider
