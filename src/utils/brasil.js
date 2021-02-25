@@ -3330,7 +3330,7 @@ export function getCity(city) {
                ]
                break;
 
-          case "PERNANBUCO":
+          case "PERNAMBUCO":
                CITIES = [
                     { key: "ABREU E LIMA", label: "ABREU E LIMA" },
                     { key: "AFOGADOS DA INGAZEIRA", label: "AFOGADOS DA INGAZEIRA" },
