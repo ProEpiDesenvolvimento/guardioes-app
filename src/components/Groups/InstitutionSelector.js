@@ -69,6 +69,7 @@ class InstitutionSelector extends Component {
         }
 
         let isIdRightLength = true
+        /*
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
             isIdRightLength =
                 this.state.userIdCode.length ===
@@ -82,8 +83,10 @@ class InstitutionSelector extends Component {
                 })
             }
         }
+        */
 
         let codeIsNumber = true
+        /*
         if (
             doesTheSelectedGroupRequireID &&
             isIdPresentIfNeeded &&
@@ -96,6 +99,8 @@ class InstitutionSelector extends Component {
                 })
             }
         }
+        */
+
         if (
             isThereSelectedGroup &&
             isIdPresentIfNeeded &&
@@ -104,6 +109,7 @@ class InstitutionSelector extends Component {
         ) {
             this.setState({ currentError: '' })
         }
+
         return (
             isThereSelectedGroup &&
             isIdPresentIfNeeded &&
@@ -247,14 +253,18 @@ class InstitutionSelector extends Component {
                     initValue={this.state.selectionIndexes[index].label}
                     cancelText={translate('selector.cancelButton')}
                     onChange={(option) => {
-                        this.state.groupList = this.state.groupList.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.selectionIndexes = this.state.selectionIndexes.slice(
-                            0,
-                            index + 1
-                        )
+                        this.setState({
+                            groupList: this.state.groupList.slice(
+                                0,
+                                index + 1
+                            )
+                        })
+                        this.setState({
+                            selectionIndexes: this.state.selectionIndexes.slice(
+                                0,
+                                index + 1
+                            )
+                        })
                         this.setState({ idCodeInputShow: false })
                         this.getChildren(option.key)
 
@@ -288,7 +298,6 @@ class InstitutionSelector extends Component {
                 </FormLabel>
                 <NormalInput
                     returnKeyType='done'
-                    keyboardType='number-pad'
                     value={this.state.userIdCode}
                     onChangeText={async (text) => {
                         await this.setState({
