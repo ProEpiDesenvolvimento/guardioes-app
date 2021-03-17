@@ -39,9 +39,13 @@ const Noticias = () => {
             if (response.status === 200) {
                 setGroupTwitter(response.body.twitter)
 
-                if (response.body.twitter) {
+                if (
+                    response.body.twitter &&
+                    response.body.twitter !== app.twitter
+                ) {
                     setTwitterOption(response.body.twitter)
                 } else {
+                    setGroupTwitter(null)
                     setTwitterOption(app.twitter)
                 }
             } else {
