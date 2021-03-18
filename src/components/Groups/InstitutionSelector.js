@@ -159,6 +159,7 @@ class InstitutionSelector extends Component {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
+                        this.setState({ idCodeInputShow: false })
                     }
                 }
             })
