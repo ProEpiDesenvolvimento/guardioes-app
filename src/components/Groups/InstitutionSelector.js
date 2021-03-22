@@ -10,6 +10,8 @@ import {
     CheckBoxStyled,
 } from '../NormalForms'
 
+import { CoolAlert } from '../../components/CoolAlert'
+
 import translate from '../../../locales/i18n'
 import {
     getAppRootGroup,
@@ -32,6 +34,7 @@ class InstitutionSelector extends Component {
             selectedGroup: null,
             currentError: '',
             lightTheme: props.lightTheme || false,
+            showAlert: true,
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
@@ -222,42 +225,55 @@ class InstitutionSelector extends Component {
     }
 
     groupComponent(group, index) {
-        return (
-            <FormGroupChild key={index}>
-                <FormLabel light={this.state.lightTheme}>
-                    {this.capitalizeFirstWords(group.label)}:
-                </FormLabel>
-                <Selector
-                    data={group.children.map((x) => {
-                        return {
-                            key: x.id,
-                            label: x.description,
-                        }
-                    })}
-                    initValue={this.state.selectionIndexes[index].label}
-                    cancelText={translate('selector.cancelButton')}
-                    onChange={(option) => {
-                        this.state.groupList = this.state.groupList.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.selectionIndexes = this.state.selectionIndexes.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.showIdentificationCodeInput = false
-                        this.getChildren(option.key)
-                        this.state.selectionIndexes[index] = option
-                        if (!group.is_child) {
-                            this.state.userGroup = null
-                            this.state.selectedGroup = null
-                            this.state.userIdCode = null
-                            this.updateParent()
-                        }
-                    }}
+        if(group.children.length > 0){
+            return (
+                <FormGroupChild key={index}>
+                    <FormLabel light={this.state.lightTheme}>
+                        {this.capitalizeFirstWords(group.label)}:
+                    </FormLabel>
+                    <Selector
+                        data={group.children.map((x) => {
+                            return {
+                                key: x.id,
+                                label: x.description,
+                            }
+                        })}
+                        initValue={this.state.selectionIndexes[index].label}
+                        cancelText={translate('selector.cancelButton')}
+                        onChange={(option) => {
+                            this.state.groupList = this.state.groupList.slice(
+                                0,
+                                index + 1
+                            )
+                            this.state.selectionIndexes = this.state.selectionIndexes.slice(
+                                0,
+                                index + 1
+                            )
+                            this.state.showIdentificationCodeInput = false
+                            this.getChildren(option.key)
+                            this.state.selectionIndexes[index] = option
+                            if (!group.is_child) {
+                                this.state.userGroup = null
+                                this.state.selectedGroup = null
+                                this.state.userIdCode = null
+                                this.updateParent()
+                            }
+                        }}
+                    />
+                </FormGroupChild>
+            )
+        } else {
+            return (
+                <CoolAlert
+                    show={this.state.showAlert}
+                    title={"Não existem instuições de seu município cadastradas"}
+                    message={"Converse com os representantes de sua instituição e faça parte!"}
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={true}
+                    
                 />
-            </FormGroupChild>
-        )
+            )
+        }
     }
 
     identificationCodeInput(index) {

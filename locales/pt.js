@@ -102,7 +102,7 @@ export default {
         },
         healthProfessional: 'Você é um profissional da saúde',
         riskGroupLabel: 'Faz parte do grupo de risco?',
-        educationalInstitution: 'É integrante de alguma instituição de ensino?',
+        educationalInstitution: 'É integrante de alguma instituição?',
         riskGroupTitle: 'Grupos de Risco:',
         riskGroupMessage:
             '\t Pessoas acima de 60 anos ou pessoas de qualquer idade que tenham comorbidades, como cardiopatia, diabetes, pneumopatia, doença neurológica ou renal, imunodepressão, obesidade, asma e puérperas (fase pós-parto).',
