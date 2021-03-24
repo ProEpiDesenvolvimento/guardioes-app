@@ -159,7 +159,6 @@ class InstitutionSelector extends Component {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
-                        this.setState({ idCodeInputShow: false })
                     }
                 }
             })
@@ -255,18 +254,16 @@ class InstitutionSelector extends Component {
                     cancelText={translate('selector.cancelButton')}
                     onChange={(option) => {
                         this.setState({
-                            groupList: this.state.groupList.slice(
-                                0,
-                                index + 1
-                            )
+                            groupList: this.state.groupList.slice(0, index + 1),
                         })
                         this.setState({
                             selectionIndexes: this.state.selectionIndexes.slice(
                                 0,
                                 index + 1
-                            )
+                            ),
                         })
                         this.setState({ idCodeInputShow: false })
+
                         this.getChildren(option.key)
 
                         this.setState({
