@@ -192,8 +192,6 @@ export const UserProvider = ({ children }) => {
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
-            platform: Platform.OS,
-            platform_version: Platform.Version.toString(),
         })
     }
 
