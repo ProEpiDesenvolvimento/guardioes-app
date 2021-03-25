@@ -61,11 +61,11 @@ export default {
         signupButton: 'Sign up',
         editProfile: 'Edit Profile',
         emptyName: 'Name cannot be empty',
-        localRequired: 'State and City must be filled',
-        nationalityRequired: 'Nationality cannot be left blank',
+        emptyDate: 'Date of birth must be completed',
+        emptyLocation: 'State and City must be filled',
+        nationalityRequired: 'Birth country cannot be left blank',
         nationalityRequired2:
-            'We need your Nationality to show you information about your country',
-        nameRequired: 'Name and date of birth must be completed\n',
+            'We need your nationality to show you information about your country',
         kinshipRequired: 'Relationship must be completed',
         geralError: 'An error occurred, please try again later.',
         confirmDeleteUser: 'Delete profile',
@@ -76,11 +76,9 @@ export default {
         removePhoto: 'Remove photo',
         updatedPhoto: 'Profile photo updated',
         removedPhoto: 'Profile photo removed',
-        fieldNotBlank: 'Fields cannot be empty',
+        fieldNotBlank: 'Fields cannot be empty:',
         fieldNotBlank2:
             'Email\nPassword\n\nWe need this information to complete your registration',
-        emptyDate: 'Date of birth must be completed',
-        emptyLocation: 'State and City must be filled',
         shortPassword: 'Password must be at least 8 characters',
         awesomeAlert: {
             loading: 'Loading',

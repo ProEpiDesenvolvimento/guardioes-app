@@ -46,21 +46,11 @@ export const redirectAlert = (title, message, url) => {
 export const validatePerson = (person, instituitionComponentError) => {
     let valid = true
 
-    if (
-        person.user_name === '' ||
-        person.description === '' ||
-        person.birthdate === ''
-    ) {
-        Alert.alert(translate('register.nameRequired'))
+    if (person.user_name === '' || person.description === '') {
+        Alert.alert(translate('register.emptyName'))
         valid = false
-    } else if (person.email === '' || person.password === '') {
-        Alert.alert(
-            translate('register.fieldNotBlank'),
-            translate('register.fieldNotBlank2')
-        )
-        valid = false
-    } else if (person.password && person.password.length < 8) {
-        Alert.alert(translate('register.shortPassword'))
+    } else if (person.birthdate === '') {
+        Alert.alert(translate('register.emptyDate'))
         valid = false
     } else if (person.kinship === '') {
         Alert.alert(translate('register.kinshipRequired'))
@@ -74,15 +64,24 @@ export const validatePerson = (person, instituitionComponentError) => {
         valid = false
     } else if (person.country === '') {
         Alert.alert(
-            translate('nationalityRequired'),
-            translate('nationalityRequired2')
+            translate('register.nationalityRequired'),
+            translate('register.nationalityRequired2')
         )
         valid = false
     } else if (
         person.country === 'Brazil' &&
         (person.state === '' || person.city === '')
     ) {
-        Alert.alert(translate('register.localRequired'))
+        Alert.alert(translate('register.emptyLocation'))
+        valid = false
+    } else if (person.email === '' || person.password === '') {
+        Alert.alert(
+            translate('register.fieldNotBlank'),
+            translate('register.fieldNotBlank2')
+        )
+        valid = false
+    } else if (person.password && person.password.length < 8) {
+        Alert.alert(translate('register.shortPassword'))
         valid = false
     }
 

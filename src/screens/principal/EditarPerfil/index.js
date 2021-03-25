@@ -390,7 +390,7 @@ const EditarPerfil = ({ navigation, route }) => {
                         </FormGroupChild>
 
                         <FormGroupChild>
-                            <FormLabel>Cidade:</FormLabel>
+                            <FormLabel>Município:</FormLabel>
                             <Selector
                                 data={getCity(state)}
                                 initValue={city}
