@@ -66,7 +66,6 @@ export default {
         nationalityRequired2:
             'We need your Nationality to show you information about your country',
         nameRequired: 'Name and date of birth must be completed\n',
-        genderRequired: 'Race and gender must be filled in',
         kinshipRequired: 'Relationship must be completed',
         geralError: 'An error occurred, please try again later.',
         confirmDeleteUser: 'Delete profile',

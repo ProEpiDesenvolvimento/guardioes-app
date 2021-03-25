@@ -62,9 +62,6 @@ export const validatePerson = (person, instituitionComponentError) => {
     } else if (person.password && person.password.length < 8) {
         Alert.alert(translate('register.shortPassword'))
         valid = false
-    } else if (person.race === '' || person.gender === '') {
-        Alert.alert(translate('register.genderRequired'))
-        valid = false
     } else if (person.kinship === '') {
         Alert.alert(translate('register.kinshipRequired'))
         valid = false

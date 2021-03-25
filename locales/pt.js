@@ -75,7 +75,6 @@ export default {
         nationalityRequired2:
             'Precisamos da sua Nacionalidade para lhe mostar as informações referentes ao seu país',
         nameRequired: 'O nome e data de nascimento devem estar preenchidos\n',
-        genderRequired: 'A raça e gênero devem estar preenchidos',
         kinshipRequired: 'O parentesco deve estar preenchido',
         geralError: 'Ocorreu um erro, tente novamente depois.',
         confirmDeleteUser: 'Deletar perfil',
