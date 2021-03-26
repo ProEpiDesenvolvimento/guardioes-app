@@ -241,7 +241,10 @@ const Register = ({ navigation }) => {
                                 data={countryChoices}
                                 initValue={translate('selector.label')}
                                 cancelText={translate('selector.cancelButton')}
-                                onChange={(option) => {setResidence(option.key), setCountry(option.key)}}
+                                onChange={(option) => {
+                                    setResidence(option.key)
+                                    setCountry(option.key)
+                                }}
                             />
                         </FormGroupChild>
                     </FormGroup>
