@@ -52,8 +52,20 @@ export const validatePerson = (person, instituitionComponentError) => {
     } else if (person.birthdate === '') {
         Alert.alert(translate('register.emptyDate'))
         valid = false
-    } else if (person.kinship === '') {
-        Alert.alert(translate('register.kinshipRequired'))
+    } else if (person.residence === '') {
+        Alert.alert(
+            translate('register.emptyResidence'),
+            translate('register.emptyResidence2')
+        )
+        valid = false
+    } else if (
+        person.residence === 'Brazil' &&
+        (person.state === '' || person.city === '')
+    ) {
+        Alert.alert(translate('register.emptyLocation'))
+        valid = false
+    } else if (person.country === '') {
+        Alert.alert(translate('register.nationalityRequired'))
         valid = false
     } else if (
         instituitionComponentError !== null &&
@@ -62,17 +74,8 @@ export const validatePerson = (person, instituitionComponentError) => {
     ) {
         Alert.alert(instituitionComponentError)
         valid = false
-    } else if (person.country === '') {
-        Alert.alert(
-            translate('register.nationalityRequired'),
-            translate('register.nationalityRequired2')
-        )
-        valid = false
-    } else if (
-        person.country === 'Brazil' &&
-        (person.state === '' || person.city === '')
-    ) {
-        Alert.alert(translate('register.emptyLocation'))
+    } else if (person.kinship === '') {
+        Alert.alert(translate('register.kinshipRequired'))
         valid = false
     } else if (person.email === '' || person.password === '') {
         Alert.alert(

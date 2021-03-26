@@ -62,8 +62,8 @@ export default {
         gender: 'Gênero:',
         race: 'Raça:',
         birth: 'Nascimento:',
-        country: 'País de origem:',
-        originCountry: ' é seu pais de residência?',
+        country: 'País de residência:',
+        originCountry: ' é seu país de origem?',
         email: 'Email:',
         password: 'Senha:',
         passwordCondition: 'A senha deve conter no mínimo 8 caracteres',
@@ -72,9 +72,10 @@ export default {
         emptyName: 'Nome não pode ficar em branco',
         emptyDate: 'A data de nascimento deve estar preenchida',
         emptyLocation: 'Estado e Município devem estar preenchidos',
+        emptyResidence: 'País de residência não pode ficar em branco',
+        emptyResidence2:
+            'Precisamos do seu país de residência para lhe mostrar informações referentes a ele.',
         nationalityRequired: 'País de origem não pode ficar em branco',
-        nationalityRequired2:
-            'Precisamos da sua nacionalidade para lhe mostar as informações referentes ao seu país',
         kinshipRequired: 'O parentesco deve estar preenchido',
         geralError: 'Ocorreu um erro, tente novamente depois.',
         confirmDeleteUser: 'Deletar perfil',

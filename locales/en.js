@@ -53,8 +53,8 @@ export default {
         gender: 'Gender:',
         race: 'Race:',
         birth: 'Birthdate:',
-        country: 'Birth country:',
-        originCountry: ' is your home country?',
+        country: 'Home country:',
+        originCountry: ' is your birth country?',
         email: 'Email:',
         password: 'Password:',
         passwordCondition: 'Password must be at leats 8 characters long.',
@@ -63,9 +63,10 @@ export default {
         emptyName: 'Name cannot be empty',
         emptyDate: 'Date of birth must be completed',
         emptyLocation: 'State and City must be filled',
+        emptyResidence: 'Home country cannot be left blank',
+        emptyResidence2:
+            'We need your home country to show you information about it',
         nationalityRequired: 'Birth country cannot be left blank',
-        nationalityRequired2:
-            'We need your nationality to show you information about your country',
         kinshipRequired: 'Relationship must be completed',
         geralError: 'An error occurred, please try again later.',
         confirmDeleteUser: 'Delete profile',
