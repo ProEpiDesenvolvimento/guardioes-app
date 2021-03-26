@@ -62,8 +62,8 @@ export default {
         gender: 'Género:',
         race: 'Raza:',
         birth: 'Nacimiento:',
-        country: 'País de origen:',
-        originCountry: 'es su país de residencia?',
+        country: 'País de residencia:',
+        originCountry: 'es su país de origen?',
         email: 'Email:',
         password: 'Contraseña:',
         passwordCondition:

@@ -56,8 +56,8 @@ const Register = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [gender, setGender] = useState('')
-    const [country, setCountry] = useState('')
-    const [residence, setResidence] = useState(null)
+    const [country, setCountry] = useState(null)
+    const [residence, setResidence] = useState('')
     const [state, setState] = useState('')
     const [city, setCity] = useState('')
     const [race, setRace] = useState('')
@@ -67,7 +67,7 @@ const Register = ({ navigation }) => {
     const [riskGroup, setRiskGroup] = useState(false)
     const [isProfessional, setIsProfessional] = useState(false)
 
-    const [residenceCheckbox, setResidenceCheckbox] = useState(true)
+    const [countryCheckbox, setCountryCheckbox] = useState(true)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
@@ -241,12 +241,15 @@ const Register = ({ navigation }) => {
                                 data={countryChoices}
                                 initValue={translate('selector.label')}
                                 cancelText={translate('selector.cancelButton')}
-                                onChange={(option) => setCountry(option.key)}
+                                onChange={(option) => {
+                                    setResidence(option.key)
+                                    setCountry(option.key)
+                                }}
                             />
                         </FormGroupChild>
                     </FormGroup>
 
-                    {country === 'Brazil' ? (
+                    {residence === 'Brazil' ? (
                         <FormGroup>
                             <FormGroupChild>
                                 <FormLabel>Estado:</FormLabel>
@@ -276,29 +279,29 @@ const Register = ({ navigation }) => {
                         </FormGroup>
                     ) : null}
 
-                    {country !== '' ? (
+                    {residence !== '' ? (
                         <FormInlineCheck>
                             <CheckBoxStyled
                                 title={
-                                    country +
+                                    residence +
                                     translate('register.originCountry')
                                 }
-                                checked={residenceCheckbox}
+                                checked={countryCheckbox}
                                 onPress={() => {
-                                    setResidence('')
-                                    setResidenceCheckbox(!residenceCheckbox)
+                                    !countryCheckbox ? setCountry(residence) : null
+                                    setCountryCheckbox(!countryCheckbox)
                                 }}
                             />
                         </FormInlineCheck>
                     ) : null}
 
-                    {!residenceCheckbox ? (
+                    {!countryCheckbox ? (
                         <FormInline>
                             <Selector
                                 data={countryChoices}
                                 initValue={translate('selector.label')}
                                 cancelText={translate('selector.cancelButton')}
-                                onChange={(option) => setResidence(option.key)}
+                                onChange={(option) => setCountry(option.key)}
                             />
                         </FormInline>
                     ) : null}

@@ -82,7 +82,7 @@ export const validatePerson = (person, instituitionComponentError) => {
         )
         valid = false
     } else if (
-        person.country === 'Brazil' &&
+        person.residence === 'Brazil' &&
         (person.state === '' || person.city === '')
     ) {
         Alert.alert(translate('register.localRequired'))
