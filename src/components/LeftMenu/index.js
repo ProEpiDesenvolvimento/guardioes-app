@@ -153,7 +153,7 @@ const LeftMenu = ({ navigation }) => {
             <SocialContainer>
                 <Button
                     onPress={() =>
-                        Linking.openURL('https://twitter.com/guardioesunb')
+                        Linking.openURL('https://twitter.com/proepi_')
                     }
                 >
                     <RedeSocial>
@@ -167,9 +167,7 @@ const LeftMenu = ({ navigation }) => {
                 </Button>
                 <Button
                     onPress={() =>
-                        Linking.openURL(
-                            'https://www.instagram.com/guardioesdasaudeunb'
-                        )
+                        Linking.openURL('https://www.instagram.com/redeproepi')
                     }
                 >
                     <RedeSocial>
