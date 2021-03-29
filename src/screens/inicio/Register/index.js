@@ -234,7 +234,7 @@ const Register = ({ navigation }) => {
 
                         <FormGroupChild>
                             <FormLabel>
-                                {translate('register.country')}
+                                {translate('register.residence')}
                             </FormLabel>
 
                             <Selector
