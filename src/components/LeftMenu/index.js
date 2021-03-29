@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Linking, Platform, StyleSheet } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
@@ -22,13 +22,38 @@ import translate from '../../../locales/i18n'
 import { scale } from '../../utils/scalling'
 import { getInitials, handleAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
+import { getAppGroup } from '../../api/groups'
 
 Feather.loadFont()
 SimpleLineIcons.loadFont()
 
 const LeftMenu = ({ navigation }) => {
     const { user, avatar, households, householdAvatars, signOut } = useUser()
+
+    const [hasSurveillance, setHasSurveillance] = useState(false)
     let index = households.length
+
+    const getActiveSurveillance = async () => {
+        if (user.group_id) {
+            const response = await getAppGroup(user.group_id)
+
+            if (response.status === 200) {
+                const { group } = response.body
+
+                if (group.group_manager.vigilance_email) {
+                    setHasSurveillance(true)
+                } else {
+                    setHasSurveillance(false)
+                }
+            }
+        } else {
+            setHasSurveillance(false)
+        }
+    }
+
+    useEffect(() => {
+        getActiveSurveillance()
+    }, [user.group_id])
 
     return (
         <ScrollViewStyled>
@@ -91,7 +116,7 @@ const LeftMenu = ({ navigation }) => {
             </Button>
 
             <Aplicativo>{translate('drawer.app')}</Aplicativo>
-            {user.group_id ? (
+            {hasSurveillance ? (
                 <Button onPress={() => navigation.navigate('Vigilancia')}>
                     <UserOptionGreen>
                         <Feather

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 
 import ShadowView from 'react-native-simple-shadow-view'
-import { TouchableOpacity } from 'react-native'
+import { Platform, TouchableOpacity } from 'react-native'
 
 import { scale, percentage } from '../../utils/scalling'
 
@@ -9,7 +9,8 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#ffffff',
         borderTopRightRadius: scale(28),
-        borderBottomWidth: scale(1),
+        borderBottomRightRadius: Platform.OS === 'ios' ? scale(28) : 0,
+        borderBottomWidth: Platform.OS === 'ios' ? 0 : scale(1),
         borderColor: '#f4f4f4',
         flexGrow: 1,
     },
