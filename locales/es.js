@@ -65,8 +65,8 @@ export default {
         race: 'Raza:',
         birth: 'Nacimiento:',
         country: 'País de origen:',
-        originCountry: 'es su país de residencia?',
-        idCode: 'Código de identificación:',
+        residence: 'País de residencia:',
+        originCountry: 'es su país de origen?',
         email: 'Email:',
         password: 'Contraseña:',
         passwordCondition:
@@ -74,12 +74,12 @@ export default {
         signupButton: 'Registro',
         editProfile: 'Editar Perfil',
         emptyName: 'El nombre no puede estar vacío',
-        localRequired: 'Se deben completar el estado y la ciudad',
-        nationalityRequired: 'La nacionalidad no se puede dejar en blanco',
-        nationalityRequired2:
-            'Necesitamos su nacionalidad para mostrarle información sobre su país',
-        nameRequired: 'Se debe completar el nombre y la fecha de nacimiento.\n',
-        genderRequired: 'Se debe completar la raza y el género',
+        emptyDate: 'Se debe completar la fecha de nacimiento',
+        emptyLocation: 'Se deben completar el estado y la ciudad',
+        emptyResidence: 'Lo país de residencia no se puede dejar en blanco',
+        emptyResidence2:
+            'Necesitamos su país de residencia para mostrarle información al respecto',
+        nationalityRequired: 'Lo país de origen no se puede dejar en blanco',
         kinshipRequired: 'La relación debe completarse',
         geralError: 'Se produjo un error, inténtelo de nuevo más tarde.',
         confirmDeleteUser: 'Borrar perfil',
@@ -90,11 +90,9 @@ export default {
         removePhoto: 'Quitar foto',
         updatedPhoto: 'Foto de perfil actualizada',
         removedPhoto: 'Foto de perfil eliminada',
-        fieldNotBlank: 'Los campos no pueden estar vacíos',
+        fieldNotBlank: 'Los campos no pueden estar vacíos:',
         fieldNotBlank2:
             'Correo electrónico\nContraseña\n\nNecesitamos esta información para completar su registro',
-        emptyDate: 'Se debe completar la fecha de nacimiento',
-        emptyLocation: 'Se deben completar el estado y la ciudad',
         shortPassword: 'La contraseña debe tener al menos 8 caracteres',
         awesomeAlert: {
             loading: 'Cargando',

@@ -46,12 +46,36 @@ export const redirectAlert = (title, message, url) => {
 export const validatePerson = (person, instituitionComponentError) => {
     let valid = true
 
-    if (
-        person.user_name === '' ||
-        person.description === '' ||
-        person.birthdate === ''
+    if (person.user_name === '' || person.description === '') {
+        Alert.alert(translate('register.emptyName'))
+        valid = false
+    } else if (person.birthdate === '') {
+        Alert.alert(translate('register.emptyDate'))
+        valid = false
+    } else if (person.residence === '') {
+        Alert.alert(
+            translate('register.emptyResidence'),
+            translate('register.emptyResidence2')
+        )
+        valid = false
+    } else if (
+        person.residence === 'Brazil' &&
+        (person.state === '' || person.city === '')
     ) {
-        Alert.alert(translate('register.nameRequired'))
+        Alert.alert(translate('register.emptyLocation'))
+        valid = false
+    } else if (person.country === '') {
+        Alert.alert(translate('register.nationalityRequired'))
+        valid = false
+    } else if (
+        instituitionComponentError !== null &&
+        instituitionComponentError !== undefined &&
+        instituitionComponentError.length > 0
+    ) {
+        Alert.alert(instituitionComponentError)
+        valid = false
+    } else if (person.kinship === '') {
+        Alert.alert(translate('register.kinshipRequired'))
         valid = false
     } else if (person.email === '' || person.password === '') {
         Alert.alert(
@@ -61,31 +85,6 @@ export const validatePerson = (person, instituitionComponentError) => {
         valid = false
     } else if (person.password && person.password.length < 8) {
         Alert.alert(translate('register.shortPassword'))
-        valid = false
-    } else if (person.race === '' || person.gender === '') {
-        Alert.alert(translate('register.genderRequired'))
-        valid = false
-    } else if (person.kinship === '') {
-        Alert.alert(translate('register.kinshipRequired'))
-        valid = false
-    } else if (
-        instituitionComponentError !== null &&
-        instituitionComponentError !== undefined &&
-        instituitionComponentError.length > 0
-    ) {
-        Alert.alert(instituitionComponentError)
-        valid = false
-    } else if (person.country === '') {
-        Alert.alert(
-            translate('nationalityRequired'),
-            translate('nationalityRequired2')
-        )
-        valid = false
-    } else if (
-        person.country === 'Brazil' &&
-        (person.state === '' || person.city === '')
-    ) {
-        Alert.alert(translate('register.localRequired'))
         valid = false
     }
 
