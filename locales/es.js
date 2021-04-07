@@ -22,6 +22,8 @@ export default {
         groupError: 'Debes seleccionar el grupo',
         codeError: 'Debes ingresar el código de identificación',
         codeFormatError: 'El código debe contener solo dígitos',
+        codeLengthError: 'El código debe contener exactamente ',
+        codeLengthError2: ' dígitos',
     },
     birthDetails: {
         format: 'DD-MM-AAAA',

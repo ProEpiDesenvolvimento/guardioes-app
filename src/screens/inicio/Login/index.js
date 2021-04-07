@@ -57,8 +57,10 @@ const Login = ({ navigation }) => {
             })
             setShowAlert(false)
 
-            setNeedSignIn(false)
-            setIsLoggedIn(true)
+            setInterval(() => {
+                setNeedSignIn(false)
+                setIsLoggedIn(true)
+            }, 1000)
         } else if (response.status === 401) {
             setShowAlert(false)
             Alert.alert(translate('login.errorMessages.emailPwdWrong'))
