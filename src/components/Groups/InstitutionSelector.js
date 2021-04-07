@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 
 import {
     FormInlineCheck,
@@ -31,7 +32,7 @@ class InstitutionSelector extends Component {
             userIdCode: props.userIdCode || null,
             selectedGroup: null,
             currentError: '',
-            lightTheme: props.lightTheme || false,
+            lightTheme: props.lightTheme || false
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
@@ -238,7 +239,8 @@ class InstitutionSelector extends Component {
     }
 
     groupComponent(group, index) {
-        return (
+        if(group.children.length > 0){
+                    return (
             <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
@@ -286,6 +288,12 @@ class InstitutionSelector extends Component {
                 />
             </FormGroupChild>
         )
+        } else {
+            Alert.alert(
+                "Não possuimos instituições cadastradas nesse município",
+                "Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva."
+            )
+        }
     }
 
     idCodeComponent(index) {
