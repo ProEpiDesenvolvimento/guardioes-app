@@ -60,8 +60,8 @@ class InstitutionSelector extends Component {
             this.setState({ currentError: translate('selector.groupError') })
         }
 
-        const doesTheSelectedGroupRequireID = this.state.selectedGroup
-            .require_id
+        const doesTheSelectedGroupRequireID = this.state.selectedGroup.group_manager.require_id
+
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
             : true
@@ -156,7 +156,7 @@ class InstitutionSelector extends Component {
                 if (response.status === 200) {
                     this.setState({ selectedGroup: response.body.group })
 
-                    if (response.body.group.require_id) {
+                    if (response.body.group.group_manager.require_id) {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
