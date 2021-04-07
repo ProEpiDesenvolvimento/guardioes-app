@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 
 import {
     FormInlineCheck,
@@ -31,7 +32,7 @@ class InstitutionSelector extends Component {
             userIdCode: props.userIdCode || null,
             selectedGroup: null,
             currentError: '',
-            lightTheme: props.lightTheme || false,
+            lightTheme: props.lightTheme || false
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
@@ -222,42 +223,49 @@ class InstitutionSelector extends Component {
     }
 
     groupComponent(group, index) {
-        return (
-            <FormGroupChild key={index}>
-                <FormLabel light={this.state.lightTheme}>
-                    {this.capitalizeFirstWords(group.label)}:
-                </FormLabel>
-                <Selector
-                    data={group.children.map((x) => {
-                        return {
-                            key: x.id,
-                            label: x.description,
-                        }
-                    })}
-                    initValue={this.state.selectionIndexes[index].label}
-                    cancelText={translate('selector.cancelButton')}
-                    onChange={(option) => {
-                        this.state.groupList = this.state.groupList.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.selectionIndexes = this.state.selectionIndexes.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.showIdentificationCodeInput = false
-                        this.getChildren(option.key)
-                        this.state.selectionIndexes[index] = option
-                        if (!group.is_child) {
-                            this.state.userGroup = null
-                            this.state.selectedGroup = null
-                            this.state.userIdCode = null
-                            this.updateParent()
-                        }
-                    }}
-                />
-            </FormGroupChild>
-        )
+        if(group.children.length > 0){
+            return (
+                <FormGroupChild key={index}>
+                    <FormLabel light={this.state.lightTheme}>
+                        {this.capitalizeFirstWords(group.label)}:
+                    </FormLabel>
+                    <Selector
+                        data={group.children.map((x) => {
+                            return {
+                                key: x.id,
+                                label: x.description,
+                            }
+                        })}
+                        initValue={this.state.selectionIndexes[index].label}
+                        cancelText={translate('selector.cancelButton')}
+                        onChange={(option) => {
+                            this.state.groupList = this.state.groupList.slice(
+                                0,
+                                index + 1
+                            )
+                            this.state.selectionIndexes = this.state.selectionIndexes.slice(
+                                0,
+                                index + 1
+                            )
+                            this.state.showIdentificationCodeInput = false
+                            this.getChildren(option.key)
+                            this.state.selectionIndexes[index] = option
+                            if (!group.is_child) {
+                                this.state.userGroup = null
+                                this.state.selectedGroup = null
+                                this.state.userIdCode = null
+                                this.updateParent()
+                            }
+                        }}
+                    />
+                </FormGroupChild>
+            )
+        } else {
+            Alert.alert(
+                "Não possuimos instituições cadastradas nesse município",
+                "Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva."
+            )
+        }
     }
 
     identificationCodeInput(index) {
