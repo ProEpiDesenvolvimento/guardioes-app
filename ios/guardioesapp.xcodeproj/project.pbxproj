@@ -17,13 +17,13 @@
 		2DCD954D1E0B4F2C00145EB5 /* guardioesappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* guardioesappTests.m */; };
 		34303CF043E445098029B83E /* ArgentumSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */; };
 		34626235C98747C7A38CA4DF /* ArgentumSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */; };
+		372BB1CBAD6836B88E7A3856 /* libPods-guardioesapp-guardioesappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2712B1B9FA6B077519DCB84C /* libPods-guardioesapp-guardioesappTests.a */; };
+		3C7719CB261D3F1200F9C3D0 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7719CA261D3F1200F9C3D0 /* File.swift */; };
+		3C7719CC261D3F1200F9C3D0 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7719CA261D3F1200F9C3D0 /* File.swift */; };
 		3CD18F4C2432D1840042534C /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD18F4B2432D1840042534C /* NotificationService.m */; };
 		3CD18F502432D1840042534C /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3CD18F482432D1840042534C /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		4E9621BB8367B537E1C86D6A /* libPods-guardioesappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */; };
 		67DE0FF2FF69BF2513AD33B3 /* libPods-guardioesapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD232F028C384D36231E2F1 /* libPods-guardioesapp.a */; };
 		758D12E16561465F945FC656 /* ArgentumSans.otf in Resources */ = {isa = PBXBuildFile; fileRef = 492FCC4977C74530BBEE3120 /* ArgentumSans.otf */; };
-		8C9F85A9E256AEE03ED0D3D6 /* libPods-guardioesapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */; };
-		98693461100712AEC3C4F9AD /* libPods-guardioesapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */; };
 		A42466FF10C4B1A9EB62700C /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		CD2400D425AF9AE800DB428F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD2400D325AF9AE800DB428F /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -77,13 +77,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = guardioesapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = guardioesapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = guardioesapp/main.m; sourceTree = "<group>"; };
-		1F81F6ACA2D9B57C7742040C /* Pods-guardioesapp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOS/Pods-guardioesapp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		2712B1B9FA6B077519DCB84C /* libPods-guardioesapp-guardioesappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-guardioesappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BC55096F5C4780024F16D9F /* Pods-guardioesappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesappTests.release.xcconfig"; path = "Target Support Files/Pods-guardioesappTests/Pods-guardioesappTests.release.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* guardioesapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "guardioesapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* guardioesapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "guardioesapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32CC15A262775DD345BBC40C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		3C7719C9261D3F1100F9C3D0 /* guardioesappTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "guardioesappTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		3C7719CA261D3F1200F9C3D0 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		3CD18F432432D0AD0042534C /* Guardiões da Saúde.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Guardiões da Saúde.entitlements"; path = "guardioesapp/Guardiões da Saúde.entitlements"; sourceTree = "<group>"; };
 		3CD18F482432D1840042534C /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CD18F4A2432D1840042534C /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
@@ -91,17 +92,14 @@
 		3CD18F4D2432D1840042534C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		492FCC4977C74530BBEE3120 /* ArgentumSans.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = ArgentumSans.otf; path = ../src/fonts/ArgentumSans.otf; sourceTree = "<group>"; };
 		5F29C1279822AFAE02AC8156 /* Pods-guardioesapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp/Pods-guardioesapp.debug.xcconfig"; sourceTree = "<group>"; };
-		68E569044C4288A548F3E06C /* Pods-guardioesapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOSTests/Pods-guardioesapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B04BD81D3799B8FE5550FCE /* Pods-guardioesapp-guardioesappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-guardioesappTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-guardioesappTests/Pods-guardioesapp-guardioesappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A306153B06723EA25413F30B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		A40042D3B55C62135A62F45F /* Pods-guardioesapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp/Pods-guardioesapp.release.xcconfig"; sourceTree = "<group>"; };
 		A67D433A40394E788E855ACF /* ArgentumSans-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArgentumSans-SemiBold.otf"; path = "../src/fonts/ArgentumSans-SemiBold.otf"; sourceTree = "<group>"; };
 		AC092D86BB1F4E45A4D44945 /* Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-OneSignalNotificationServiceExtension/Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		B4042C4842586D83F36E0D77 /* Pods-guardioesapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOSTests/Pods-guardioesapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AE695926557158B53D4F13B4 /* Pods-guardioesapp-guardioesappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-guardioesappTests.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-guardioesappTests/Pods-guardioesapp-guardioesappTests.release.xcconfig"; sourceTree = "<group>"; };
 		BF5E8F8D1F664FB09C839C2B /* ArgentumSans-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArgentumSans-Medium.otf"; path = "../src/fonts/ArgentumSans-Medium.otf"; sourceTree = "<group>"; };
-		C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD2400D325AF9AE800DB428F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		CE5CFC927120A290716AB25B /* Pods-guardioesapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesapp-tvOS.release.xcconfig"; path = "Target Support Files/Pods-guardioesapp-tvOS/Pods-guardioesapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		D68B3371A2A7FA693CE8427C /* Pods-guardioesappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-guardioesappTests.debug.xcconfig"; path = "Target Support Files/Pods-guardioesappTests/Pods-guardioesappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DAD232F028C384D36231E2F1 /* libPods-guardioesapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-guardioesapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -114,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E9621BB8367B537E1C86D6A /* libPods-guardioesappTests.a in Frameworks */,
+				372BB1CBAD6836B88E7A3856 /* libPods-guardioesapp-guardioesappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,7 +128,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C9F85A9E256AEE03ED0D3D6 /* libPods-guardioesapp-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +135,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98693461100712AEC3C4F9AD /* libPods-guardioesapp-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,10 +187,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				DAD232F028C384D36231E2F1 /* libPods-guardioesapp.a */,
-				2F9B93780FA23289AAE46985 /* libPods-guardioesapp-tvOS.a */,
-				C1F777123B3D932281D79B9B /* libPods-guardioesapp-tvOSTests.a */,
-				8FF851633E16649CEE4E3D02 /* libPods-guardioesappTests.a */,
 				3150C126A3723397C082FD91 /* libPods-OneSignalNotificationServiceExtension.a */,
+				2712B1B9FA6B077519DCB84C /* libPods-guardioesapp-guardioesappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -229,6 +223,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3C7719CA261D3F1200F9C3D0 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* guardioesapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* guardioesappTests */,
@@ -237,6 +232,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				CFCD70F7AB983319EE5195FF /* Pods */,
 				5D06F3FFFC8B49FAB90A4884 /* Resources */,
+				3C7719C9261D3F1100F9C3D0 /* guardioesappTests-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -260,16 +256,14 @@
 			children = (
 				5F29C1279822AFAE02AC8156 /* Pods-guardioesapp.debug.xcconfig */,
 				A40042D3B55C62135A62F45F /* Pods-guardioesapp.release.xcconfig */,
-				1F81F6ACA2D9B57C7742040C /* Pods-guardioesapp-tvOS.debug.xcconfig */,
-				CE5CFC927120A290716AB25B /* Pods-guardioesapp-tvOS.release.xcconfig */,
-				B4042C4842586D83F36E0D77 /* Pods-guardioesapp-tvOSTests.debug.xcconfig */,
-				68E569044C4288A548F3E06C /* Pods-guardioesapp-tvOSTests.release.xcconfig */,
 				D68B3371A2A7FA693CE8427C /* Pods-guardioesappTests.debug.xcconfig */,
 				2BC55096F5C4780024F16D9F /* Pods-guardioesappTests.release.xcconfig */,
 				AC092D86BB1F4E45A4D44945 /* Pods-guardioesapp-OneSignalNotificationServiceExtension.debug.xcconfig */,
 				FF6A2478D0E4BD62330DD59A /* Pods-guardioesapp-OneSignalNotificationServiceExtension.release.xcconfig */,
 				A306153B06723EA25413F30B /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
 				32CC15A262775DD345BBC40C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				7B04BD81D3799B8FE5550FCE /* Pods-guardioesapp-guardioesappTests.debug.xcconfig */,
+				AE695926557158B53D4F13B4 /* Pods-guardioesapp-guardioesappTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -285,6 +279,8 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				44EBC8DBAA0C4805EFBF6C5C /* [CP] Embed Pods Frameworks */,
+				F0D061A9BB45AE8FE9F5E00E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -308,6 +304,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				23E08F696E801C0333B5196E /* [CP] Copy Pods Resources */,
 				3CD18F542432D1840042534C /* Embed App Extensions */,
+				233C4A32A54BC02CB9A902C7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -323,7 +320,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "guardioesapp-tvOS" */;
 			buildPhases = (
-				C564F727E0DE979295F445E0 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -343,7 +339,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "guardioesapp-tvOSTests" */;
 			buildPhases = (
-				6992ACDA93B40216DE2B0574 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -387,10 +382,12 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 1240;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 594JXPP866;
+						LastSwiftMigration = 1240;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -490,6 +487,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		233C4A32A54BC02CB9A902C7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-guardioesapp/Pods-guardioesapp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-guardioesapp/Pods-guardioesapp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		23E08F696E801C0333B5196E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -513,6 +528,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -532,6 +548,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -552,26 +569,22 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		6992ACDA93B40216DE2B0574 /* [CP] Check Pods Manifest.lock */ = {
+		44EBC8DBAA0C4805EFBF6C5C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-guardioesapp-guardioesappTests/Pods-guardioesapp-guardioesappTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-guardioesapp-tvOSTests-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-guardioesapp-guardioesappTests/Pods-guardioesapp-guardioesappTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B7C679CF45C0511613C18E11 /* [CP] Check Pods Manifest.lock */ = {
@@ -589,29 +602,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-guardioesappTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C564F727E0DE979295F445E0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-guardioesapp-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-guardioesapp-guardioesappTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -662,6 +653,56 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F0D061A9BB45AE8FE9F5E00E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-guardioesapp-guardioesappTests/Pods-guardioesapp-guardioesappTests-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-guardioesapp-guardioesappTests/Pods-guardioesapp-guardioesappTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -708,6 +749,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* guardioesappTests.m in Sources */,
+				3C7719CC261D3F1200F9C3D0 /* File.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +758,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				3C7719CB261D3F1200F9C3D0 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -768,9 +811,11 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D68B3371A2A7FA693CE8427C /* Pods-guardioesappTests.debug.xcconfig */;
+			baseConfigurationReference = 7B04BD81D3799B8FE5550FCE /* Pods-guardioesapp-guardioesappTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -785,15 +830,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "guardioesappTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Guardiões da Saúde.app/Guardiões da Saúde";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2BC55096F5C4780024F16D9F /* Pods-guardioesappTests.release.xcconfig */;
+			baseConfigurationReference = AE695926557158B53D4F13B4 /* Pods-guardioesapp-guardioesappTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = guardioesappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -805,6 +855,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "guardioesappTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Guardiões da Saúde.app/Guardiões da Saúde";
 			};
 			name = Release;
@@ -814,6 +866,7 @@
 			baseConfigurationReference = 5F29C1279822AFAE02AC8156 /* Pods-guardioesapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "guardioesapp/Guardiões da Saúde.entitlements";
 				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = NO;
@@ -828,6 +881,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.guardioesapp;
 				PRODUCT_NAME = "Guardiões da Saúde";
+				SWIFT_OBJC_BRIDGING_HEADER = "guardioesapp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -837,6 +893,7 @@
 			baseConfigurationReference = A40042D3B55C62135A62F45F /* Pods-guardioesapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "guardioesapp/Guardiões da Saúde.entitlements";
 				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 594JXPP866;
@@ -850,13 +907,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.guardioesapp;
 				PRODUCT_NAME = "Guardiões da Saúde";
+				SWIFT_OBJC_BRIDGING_HEADER = "guardioesapp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F81F6ACA2D9B57C7742040C /* Pods-guardioesapp-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -884,7 +942,6 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE5CFC927120A290716AB25B /* Pods-guardioesapp-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -912,7 +969,6 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4042C4842586D83F36E0D77 /* Pods-guardioesapp-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -939,7 +995,6 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68E569044C4288A548F3E06C /* Pods-guardioesapp-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1051,6 +1106,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1104,6 +1160,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
