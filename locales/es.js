@@ -104,8 +104,8 @@ export default {
         },
         healthProfessional: 'Eres un profesional de la salud',
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
-        educationalInstitution:
-            '¿Eres miembro de alguna institución educativa?',
+        institution: '¿Eres miembro de alguna institución?',
+        idCode: 'Código da identificación:',
         riskGroupTitle: 'Grupos de Riesgo:',
         riskGroupMessage:
             '\t Personas mayores de 60 años o personas de cualquier edad que tienen comorbilidades, como enfermedades cardíacas, diabetes, neumopatía, enfermedades neurológicas o renales, inmunodepresión, obesidad, asma y mujeres posparto.',

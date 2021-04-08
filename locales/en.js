@@ -94,7 +94,8 @@ export default {
         },
         healthProfessional: 'You are a health professional',
         riskGroupLabel: 'Is part of the risk group?',
-        educationalInstitution: 'Is a member of any educational institution?',
+        institution: 'Is a member of any institution?',
+        idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
             '\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.',

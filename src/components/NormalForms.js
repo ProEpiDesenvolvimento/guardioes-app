@@ -89,6 +89,7 @@ export const Selector = styled(ModalSelector).attrs({
         backgroundColor: '#ffffff',
         borderRadius: scale(12),
         borderWidth: 0,
+        paddingVertical: scale(10),
     },
     selectTextStyle: {
         fontFamily: 'ArgentumSans',

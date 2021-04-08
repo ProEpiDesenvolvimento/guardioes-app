@@ -8,11 +8,12 @@ import { scale, percentage, vPercentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;
-    background-color: #f4f4f4;
+    background-color: #348eac;
 `
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
+        backgroundColor: '#f4f4f4',
         flexGrow: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -123,7 +124,7 @@ export const Bem = styled(TouchableOpacity).attrs({
     border-bottom-left-radius: ${scale(18)}px;
     border-top-left-radius: ${scale(18)}px;
     margin-right: ${scale(2)}px;
-    shadow-color: #348eac;
+    shadow-color: ${(props) => (props.disabled ? '#c4c4c4' : '#348eac')};
 `
 
 export const Mal = styled(TouchableOpacity).attrs({
@@ -134,7 +135,7 @@ export const Mal = styled(TouchableOpacity).attrs({
     border-bottom-right-radius: ${scale(18)}px;
     border-top-right-radius: ${scale(18)}px;
     margin-left: ${scale(2)}px;
-    shadow-color: #f18f01;
+    shadow-color: ${(props) => (props.disabled ? '#c4c4c4' : '#f18f01')};
 `
 
 export const StatusText = styled.Text`

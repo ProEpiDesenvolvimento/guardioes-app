@@ -10,7 +10,7 @@ import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
     flex: 1;
-    background-color: #f4f4f4;
+    background-color: #348eac;
 `
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
