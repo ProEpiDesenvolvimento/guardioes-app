@@ -98,9 +98,9 @@ const NovoPerfil = ({ navigation }) => {
         }
     }
 
-    const setUserInstitutionCallback = (idCode, groupId) => {
-        setIdCode(idCode)
+    const setUserInstitutionCallback = (groupId, idCode) => {
         setGroupId(groupId)
+        setIdCode(idCode)
     }
 
     const setInstituitionComponentError = (error) => {

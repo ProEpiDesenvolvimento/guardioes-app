@@ -80,6 +80,8 @@ const EditarPerfil = ({ navigation, route }) => {
     const [kinship, setKinship] = useState(person.kinship)
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
+    const [vigilance, setVigilance] = useState(person.is_vigilance)
+    const [phone, setPhone] = useState(person.phone)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
@@ -162,6 +164,8 @@ const EditarPerfil = ({ navigation, route }) => {
             city: isBrazil ? city : null,
             group_id: groupId,
             identification_code: idCode,
+            is_vigilance: vigilance,
+            phone,
             risk_group: riskGroup,
         }
 
@@ -242,9 +246,11 @@ const EditarPerfil = ({ navigation, route }) => {
         )
     }
 
-    const setUserInstitutionCallback = (idCode, groupId) => {
-        setIdCode(idCode)
+    const setUserInstitutionCallback = (groupId, idCode, vigilance, phone) => {
         setGroupId(groupId)
+        setIdCode(idCode)
+        setVigilance(vigilance)
+        setPhone(phone)
     }
 
     const setInstituitionComponentError = (error) => {
@@ -437,6 +443,8 @@ const EditarPerfil = ({ navigation, route }) => {
                     setAlert={setLoadingAlert}
                     userGroup={groupId}
                     userIdCode={idCode}
+                    userVigilance={vigilance}
+                    userPhone={phone}
                     setErrorCallback={setInstituitionComponentError}
                 />
 

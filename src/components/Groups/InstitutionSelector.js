@@ -29,6 +29,8 @@ class InstitutionSelector extends Component {
             idCodeInputShow: false,
             userGroup: props.userGroup || null,
             userIdCode: props.userIdCode || null,
+            userVigilance: props.userVigilance || false,
+            userPhone: props.userPhone || null,
             selectedGroup: null,
             currentError: '',
             lightTheme: props.lightTheme || false,
@@ -104,11 +106,18 @@ class InstitutionSelector extends Component {
 
     updateParent() {
         if (!this.state.groupCheckbox || this.isInputValid()) {
+            const group = this.state.groupCheckbox ? this.state.userGroup : null
             const idCode = this.state.groupCheckbox
                 ? this.state.userIdCode
                 : null
-            const group = this.state.groupCheckbox ? this.state.userGroup : null
-            this.props.setUserInstitutionCallback(idCode, group)
+            const vigilance = this.state.groupCheckbox && this.state.userVigilance
+            const phone = vigilance ? this.state.userPhone : null
+            this.props.setUserInstitutionCallback(
+                group,
+                idCode,
+                vigilance,
+                phone
+            )
             this.props.setErrorCallback('')
         } else {
             this.props.setErrorCallback(this.state.currentError)
