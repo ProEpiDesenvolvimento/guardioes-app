@@ -194,16 +194,20 @@ const Home = ({ navigation }) => {
 
     const sendSurvey = async () => {
         // Send Survey GOOD CHOICE
-        await getCurrentLocation()
-        if (location.error !== 0) return
-
         showLoadingAlert()
-        const householdID = person.is_household ? person.id : null
 
+        let local = {}
+        if (location.error !== 0) {
+            local = await getCurrentLocation()
+        } else {
+            local = location
+        }
+
+        const householdID = person.is_household ? person.id : null
         const survey = {
             household_id: householdID,
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: local.latitude,
+            longitude: local.longitude,
             symptom: [],
             created_at: moment().format('YYYY-MM-DD'),
         }
