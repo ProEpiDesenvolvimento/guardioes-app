@@ -366,6 +366,7 @@ const Register = ({ navigation }) => {
                         />
                     </ButtonBack>
                 </KeyboardScrollView>
+
                 <LoadingModal show={loadingAlert} />
             </GradientBackground>
         </>

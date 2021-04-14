@@ -4,7 +4,6 @@ import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
 
-import { CoolAlert } from '../../../components/CoolAlert'
 import {
     ModalContainer,
     ModalBox,
@@ -29,7 +28,6 @@ import {
     SendText,
 } from '../../../components/NormalForms'
 
-import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -54,20 +52,10 @@ const NovoPerfil = ({ navigation }) => {
     const [race, setRace] = useState('')
     const [birth, setBirth] = useState('')
     const [kinship, setKinship] = useState('')
-    const [groupId, setGroupId] = useState(null)
-    const [idCode, setIdCode] = useState(null)
     const [riskGroup, setRiskGroup] = useState(false)
 
-    const [showAlert, setShowAlert] = useState(false)
-    const [showProgressBar, setShowProgressBar] = useState(false)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
-    const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
-
-    const showLoadingAlert = () => {
-        setShowAlert(true)
-        setShowProgressBar(true)
-    }
 
     const handleCreate = async () => {
         const household = {
@@ -77,34 +65,23 @@ const NovoPerfil = ({ navigation }) => {
             gender,
             race,
             kinship,
-            identification_code: idCode,
-            group_id: groupId,
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(household, institutionError)) return
-        showLoadingAlert()
+        if (!validatePerson(household, null)) return
+        setLoadingAlert(true)
 
         const response = await createHousehold(household, user.id, token)
 
         if (response.status === 201) {
             console.warn(response.status)
-            setShowAlert(false)
+            setLoadingAlert(false)
             navigation.navigate('Home')
         } else {
             console.warn(response)
             Alert.alert('Ocorreu um erro, tente novamente depois.')
-            setShowAlert(false)
+            setLoadingAlert(false)
         }
-    }
-
-    const setUserInstitutionCallback = (groupId, idCode) => {
-        setGroupId(groupId)
-        setIdCode(idCode)
-    }
-
-    const setInstituitionComponentError = (error) => {
-        setInstituitionError(error)
     }
 
     return (
@@ -219,12 +196,6 @@ const NovoPerfil = ({ navigation }) => {
                     </CheckLabel>
                 </FormInlineCheck>
 
-                <InstitutionSelector
-                    setUserInstitutionCallback={setUserInstitutionCallback}
-                    setAlert={setLoadingAlert}
-                    setErrorCallback={setInstituitionComponentError}
-                />
-
                 <FormInline>
                     <FormLabel>Parentesco:</FormLabel>
                     <Selector
@@ -242,18 +213,6 @@ const NovoPerfil = ({ navigation }) => {
                 </Button>
             </KeyboardScrollView>
 
-            <CoolAlert
-                show={showAlert}
-                showProgress={showProgressBar}
-                title={
-                    showProgressBar
-                        ? translate('register.awesomeAlert.registering')
-                        : null
-                }
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                showConfirmButton={!showProgressBar}
-            />
             <LoadingModal show={loadingAlert} />
         </Container>
     )
