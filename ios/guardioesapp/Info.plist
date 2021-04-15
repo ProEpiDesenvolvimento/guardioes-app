@@ -58,6 +58,8 @@
 	<string>A sua camera será usada para fotografia do avatar.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>A sua camera será usada para fotografia do avatar.</string>
+	<key>OneSignal_app_groups_key</key>
+	<string>group.com.guardioesapp.onesignal</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ArgentumSans-Medium.otf</string>

@@ -11,6 +11,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <OneSignal/OneSignal.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -27,6 +29,23 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  //Remove this method to stop OneSignal Debugging
+  [OneSignal setLogLevel:ONE_S_LL_VERBOSE visualLevel:ONE_S_LL_NONE];
+  
+  //START OneSignal initialization code
+  [OneSignal initWithLaunchOptions:launchOptions
+   appId:@"61c9e02a-d703-4e1c-aff1-3bce49948818"
+   handleNotificationAction:nil
+   settings:@{kOSSettingsKeyAutoPrompt: @false, kOSSettingsKeyInAppLaunchURL: @false}];
+  OneSignal.inFocusDisplayType = OSNotificationDisplayTypeNotification;
+
+  // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 6)
+  [OneSignal promptForPushNotificationsWithUserResponse:^(BOOL accepted) {
+    NSLog(@"User accepted notifications: %d", accepted);
+  }];
+  //END OneSignal initializataion code
+  
   return YES;
 }
 
