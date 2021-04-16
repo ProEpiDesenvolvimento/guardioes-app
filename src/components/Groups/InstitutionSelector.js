@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 
 import {
     FormInlineCheck,
@@ -33,7 +34,7 @@ class InstitutionSelector extends Component {
             userPhone: props.userPhone || null,
             selectedGroup: null,
             currentError: '',
-            lightTheme: props.lightTheme || false,
+            lightTheme: props.lightTheme || false
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
@@ -43,6 +44,7 @@ class InstitutionSelector extends Component {
         }
     }
 
+    // eslint-disable-next-line react/sort-comp
     isInputValid() {
         if (this.state.groupCheckbox === false) {
             return true
@@ -51,51 +53,66 @@ class InstitutionSelector extends Component {
             this.state.selectedGroup === null ||
             this.state.selectedGroup === undefined
         ) {
-            this.state.currentError = translate('selector.groupError')
+            this.setState({ currentError: translate('selector.groupError') })
             return false
         }
+
         const isThereSelectedGroup = this.state.selectedGroup !== null
         if (!isThereSelectedGroup) {
-            this.state.currentError = translate('selector.groupError')
+            this.setState({ currentError: translate('selector.groupError') })
         }
-        const doesTheSelectedGroupRequireID = this.state.selectedGroup
-            .require_id
+
+        const doesTheSelectedGroupRequireID = this.state.selectedGroup.group_manager.require_id
+
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
             : true
         if (!isIdPresentIfNeeded) {
-            this.state.currentError = translate('selector.codeError')
+            this.setState({ currentError: translate('selector.codeError') })
         }
-        const isIdRightLength = true
 
-        // This checks if the id length of code is correct, as of know, this will not be implemented
-
-        // if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
-        //     isIdRightLength = this.state.userIdCode.length === this.state.selectedGroup.id_code_length
-        //     if (!isIdRightLength) {
-        //         this.state.currentError = 'O código deve conter exatamente ' + this.state.selectedGroup.id_code_length.toString() + ' digitos'
-        //     }
-        // }
+        let isIdRightLength = true
+        /*
+        if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
+            isIdRightLength =
+                this.state.userIdCode.length ===
+                this.state.selectedGroup.id_code_length
+            if (!isIdRightLength) {
+                this.setState({
+                    currentError:
+                        translate('selector.codeLengthError') +
+                        this.state.selectedGroup.id_code_length.toString() +
+                        translate('selector.codeLengthError2'),
+                })
+            }
+        }
+        */
 
         let codeIsNumber = true
+        /*
         if (
             doesTheSelectedGroupRequireID &&
             isIdPresentIfNeeded &&
             isIdRightLength
         ) {
-            codeIsNumber = !isNaN(this.state.userIdCode)
+            codeIsNumber = !Number.isNaN(this.state.userIdCode)
             if (!codeIsNumber) {
-                this.state.currentError = translate('selector.codeFormatError')
+                this.setState({
+                    currentError: translate('selector.codeFormatError'),
+                })
             }
         }
+        */
+
         if (
             isThereSelectedGroup &&
             isIdPresentIfNeeded &&
             isIdRightLength &&
             codeIsNumber
         ) {
-            this.state.currentError = ''
+            this.setState({ currentError: '' })
         }
+
         return (
             isThereSelectedGroup &&
             isIdPresentIfNeeded &&
@@ -148,7 +165,7 @@ class InstitutionSelector extends Component {
                 if (response.status === 200) {
                     this.setState({ selectedGroup: response.body.group })
 
-                    if (response.body.group.require_id) {
+                    if (response.body.group.group_manager.require_id) {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
@@ -224,14 +241,15 @@ class InstitutionSelector extends Component {
             })
     }
 
-    capitalizeFirstWords(str) {
-        return str.replace(/\w\S*/g, function (txt) {
+    capitalizeFirstWords = (str) => {
+        return str.replace(/\w\S*/g, (txt) => {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
         })
     }
 
     groupComponent(group, index) {
-        return (
+        if(group.children.length > 0){
+                    return (
             <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
@@ -246,38 +264,55 @@ class InstitutionSelector extends Component {
                     initValue={this.state.selectionIndexes[index].label}
                     cancelText={translate('selector.cancelButton')}
                     onChange={(option) => {
-                        this.state.groupList = this.state.groupList.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.selectionIndexes = this.state.selectionIndexes.slice(
-                            0,
-                            index + 1
-                        )
-                        this.state.showIdentificationCodeInput = false
+                        this.setState({
+                            groupList: this.state.groupList.slice(0, index + 1),
+                        })
+                        this.setState({
+                            selectionIndexes: this.state.selectionIndexes.slice(
+                                0,
+                                index + 1
+                            ),
+                        })
+                        this.setState({ idCodeInputShow: false })
+
                         this.getChildren(option.key)
-                        this.state.selectionIndexes[index] = option
+
+                        this.setState({
+                            selectionIndexes: [
+                                ...this.state.selectionIndexes.slice(0, index),
+                                option,
+                                ...this.state.selectionIndexes.slice(index + 1),
+                            ],
+                        })
+
                         if (!group.is_child) {
-                            this.state.userGroup = null
-                            this.state.selectedGroup = null
-                            this.state.userIdCode = null
+                            this.setState({
+                                userGroup: null,
+                                selectedGroup: null,
+                                userIdCode: null,
+                            })
                             this.updateParent()
                         }
                     }}
                 />
             </FormGroupChild>
         )
+        } else {
+            Alert.alert(
+                "Não possuimos instituições cadastradas nesse município",
+                "Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva."
+            )
+        }
     }
 
-    identificationCodeInput(index) {
+    idCodeComponent(index) {
         return (
             <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
-                    Nº de Identificação:
+                    {translate('register.idCode')}
                 </FormLabel>
                 <NormalInput
                     returnKeyType='done'
-                    keyboardType='number-pad'
                     value={this.state.userIdCode}
                     onChangeText={async (text) => {
                         await this.setState({
@@ -290,9 +325,10 @@ class InstitutionSelector extends Component {
         )
     }
 
-    rowElements(el1, el2) {
+    rowElements = (el1, el2, index) => {
+        const key = index + 100
         return (
-            <FormGroup>
+            <FormGroup key={key}>
                 {el1}
                 {el2}
             </FormGroup>
@@ -300,30 +336,31 @@ class InstitutionSelector extends Component {
     }
 
     groupItemsManager() {
-        const elements = this.state.groupList.map((x, i) =>
-            this.groupComponent(x, i)
+        const elements = this.state.groupList.map((g, i) =>
+            this.groupComponent(g, i)
         )
 
         if (this.state.idCodeInputShow) {
-            elements.push(this.identificationCodeInput(elements.length))
+            elements.push(this.idCodeComponent(elements.length))
         }
         if (elements.length === 0) {
             return null
         }
 
-        const rowedElements = []
         let pair = null
-        for (const el of elements) {
+        const rowedElements = []
+
+        elements.forEach((el, index) => {
             if (pair === null) {
                 pair = el
             } else {
-                rowedElements.push(this.rowElements(pair, el))
+                rowedElements.push(this.rowElements(pair, el, index))
                 pair = null
             }
-        }
+        })
 
         if (pair !== null) {
-            rowedElements.push(this.rowElements(pair, null))
+            rowedElements.push(this.rowElements(pair, null, elements.length))
         }
 
         return rowedElements
@@ -334,7 +371,7 @@ class InstitutionSelector extends Component {
             <>
                 <FormInlineCheck>
                     <CheckBoxStyled
-                        title={translate('register.educationalInstitution')}
+                        title={translate('register.institution')}
                         checked={this.state.groupCheckbox}
                         onPress={async () => {
                             if (
