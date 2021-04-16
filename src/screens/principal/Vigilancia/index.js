@@ -27,6 +27,7 @@ import translate from '../../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
 import { scale } from '../../../utils/scalling'
 import { updateUser } from '../../../api/user'
+import { CoolAlert } from '../../../components/CoolAlert'
 
 Feather.loadFont()
 
@@ -35,10 +36,14 @@ const Vigilancia = ({ navigation }) => {
 
     const [showModalTerms, setShowModalTerms] = useState(false)
     const [acceptedTerms, setAcceptedTerms] = useState(user.is_vigilance)
-    const [phone, setPhone] = useState(user.phone)
+    const [phone, setPhone] = useState(user.phone)    
 
     const handleEdit = async () => {
-        if (!acceptedTerms) return false
+        if (!acceptedTerms) {
+            Alert.alert("Campos obrigatórios não-preenchidos",
+            "É necessário preencher os campo de Telefone e confirmar a leitura das informações para prosseguir com o cadastro")
+            return false
+        }
 
         const vigilance = {
             is_vigilance: !user.is_vigilance,
