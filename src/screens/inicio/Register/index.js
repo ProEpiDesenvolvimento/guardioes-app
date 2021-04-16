@@ -88,8 +88,10 @@ const Register = ({ navigation }) => {
                 password,
             })
 
-            setNeedSignIn(false)
-            setIsLoggedIn(true)
+            setInterval(() => {
+                setNeedSignIn(false)
+                setIsLoggedIn(true)
+            }, 1000)
         } else {
             setLoadingAlert(false)
             Alert.alert(translate('register.geralError'))

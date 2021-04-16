@@ -22,6 +22,8 @@ export default {
         groupError: 'You must select the group',
         codeError: 'You must enter the identification code',
         codeFormatError: 'The code must contain only digits',
+        codeLengthError: 'The code must contain exactly ',
+        codeLengthError2: ' digits',
     },
     birthDetails: {
         format: 'DD-MM-YYYY',
@@ -92,7 +94,8 @@ export default {
         },
         healthProfessional: 'You are a health professional',
         riskGroupLabel: 'Is part of the risk group?',
-        educationalInstitution: 'Is a member of any educational institution?',
+        institution: 'Is a member of any institution?',
+        idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
             '\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.',
