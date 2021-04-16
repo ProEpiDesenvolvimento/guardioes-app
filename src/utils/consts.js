@@ -43,7 +43,7 @@ export const redirectAlert = (title, message, url) => {
     ])
 }
 
-export const validatePerson = (person, instituitionComponentError) => {
+export const validatePerson = (person, institutionComponentError) => {
     let valid = true
 
     if (person.user_name === '' || person.description === '') {
@@ -68,11 +68,11 @@ export const validatePerson = (person, instituitionComponentError) => {
         Alert.alert(translate('register.nationalityRequired'))
         valid = false
     } else if (
-        instituitionComponentError !== null &&
-        instituitionComponentError !== undefined &&
-        instituitionComponentError.length > 0
+        institutionComponentError !== null &&
+        institutionComponentError !== undefined &&
+        institutionComponentError.length > 0
     ) {
-        Alert.alert(instituitionComponentError)
+        Alert.alert(institutionComponentError)
         valid = false
     } else if (person.kinship === '') {
         Alert.alert(translate('register.kinshipRequired'))
