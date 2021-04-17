@@ -19,6 +19,7 @@ import {
     getUserGroupPath,
 } from '../../api/groups'
 
+/* eslint-disable */
 class InstitutionSelector extends Component {
     constructor(props) {
         super(props)
@@ -27,24 +28,21 @@ class InstitutionSelector extends Component {
             groupList: [],
             selectionIndexes: [],
             rootGroup: null,
-            idCodeInputShow: false,
-            userGroup: props.userGroup || null,
-            userIdCode: props.userIdCode || null,
-            userVigilance: props.userVigilance || false,
-            userPhone: props.userPhone || null,
             selectedGroup: null,
+            idCodeInputShow: false,
             currentError: '',
+            userGroupId: props.userGroupId || null,
+            userIdCode: props.userIdCode || null,
             lightTheme: props.lightTheme || false
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
-        if (props.userGroup !== null && props.userGroup !== undefined) {
+        if (props.userGroupId !== null && props.userGroupId !== undefined) {
             this.getRootGroup(false)
-            this.buildPath(props.userGroup)
+            this.buildPath(props.userGroupId)
         }
     }
 
-    // eslint-disable-next-line react/sort-comp
     isInputValid() {
         if (this.state.groupCheckbox === false) {
             return true
@@ -123,18 +121,26 @@ class InstitutionSelector extends Component {
 
     updateParent() {
         if (!this.state.groupCheckbox || this.isInputValid()) {
-            const group = this.state.groupCheckbox ? this.state.userGroup : null
+            let group = ''
+            if (this.state.groupCheckbox) {
+                this.state.selectionIndexes.forEach((selection, index) => {
+                    if (selection.key !== -1) {
+                        if (index === 0) {
+                            group += selection.label
+                        } else {
+                            group += `/${selection.label}`
+                        }
+                    }
+                })
+            } else {
+                group = null
+            }
+
+            const groupId = this.state.groupCheckbox ? this.state.userGroupId : null
             const idCode = this.state.groupCheckbox
                 ? this.state.userIdCode
                 : null
-            const vigilance = this.state.groupCheckbox && this.state.userVigilance
-            const phone = vigilance ? this.state.userPhone : null
-            this.props.setUserInstitutionCallback(
-                group,
-                idCode,
-                vigilance,
-                phone
-            )
+            this.props.setInstitutionCallback(group, groupId, idCode)
             this.props.setErrorCallback('')
         } else {
             this.props.setErrorCallback(this.state.currentError)
@@ -186,7 +192,7 @@ class InstitutionSelector extends Component {
             .then((response) => {
                 if (response.status === 200) {
                     if (response.body.is_child) {
-                        this.setState({ userGroup: id })
+                        this.setState({ userGroupId: id })
                         this.getGroup(id, setAlert)
                         return
                     }
@@ -248,8 +254,15 @@ class InstitutionSelector extends Component {
     }
 
     groupComponent(group, index) {
-        if(group.children.length > 0){
-                    return (
+        if (group.children.length === 0) {
+            Alert.alert(
+                'Não possuímos instituições cadastradas nesse município',
+                'Mostre o aplicativo para sua instituição e faça parte dessa iniciativa.'
+            )
+            return null
+        }
+
+        return (
             <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
@@ -287,8 +300,8 @@ class InstitutionSelector extends Component {
 
                         if (!group.is_child) {
                             this.setState({
-                                userGroup: null,
                                 selectedGroup: null,
+                                userGroupId: null,
                                 userIdCode: null,
                             })
                             this.updateParent()
@@ -297,12 +310,6 @@ class InstitutionSelector extends Component {
                 />
             </FormGroupChild>
         )
-        } else {
-            Alert.alert(
-                "Não possuimos instituições cadastradas nesse município",
-                "Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva."
-            )
-        }
     }
 
     idCodeComponent(index) {
@@ -339,10 +346,10 @@ class InstitutionSelector extends Component {
         const elements = this.state.groupList.map((g, i) =>
             this.groupComponent(g, i)
         )
-
         if (this.state.idCodeInputShow) {
             elements.push(this.idCodeComponent(elements.length))
         }
+
         if (elements.length === 0) {
             return null
         }
@@ -371,7 +378,7 @@ class InstitutionSelector extends Component {
             <>
                 <FormInlineCheck>
                     <CheckBoxStyled
-                        title={translate('register.institution')}
+                        title={translate('register.institutionCheckbox')}
                         checked={this.state.groupCheckbox}
                         onPress={async () => {
                             if (

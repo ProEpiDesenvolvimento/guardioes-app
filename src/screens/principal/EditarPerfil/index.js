@@ -30,9 +30,8 @@ import {
     SendContainer,
     SendText,
 } from '../../../components/NormalForms'
-import { Delete } from './styles'
+import { Delete, ButtonInput, ButtonInputLabel } from './styles'
 
-import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -68,6 +67,12 @@ const EditarPerfil = ({ navigation, route }) => {
 
     const isHousehold = person.is_household
     const id = person.id
+    const group = person.group
+    const groupId = person.group_id
+    const idCode = person.identification_code
+    const vigilance = person.is_vigilance
+    const phone = person.phone
+
     const [avatar, setAvatar] = useState(person.avatar)
     const [name, setName] = useState(person.name)
     const [email, setEmail] = useState(person.email)
@@ -78,14 +83,9 @@ const EditarPerfil = ({ navigation, route }) => {
     const [race, setRace] = useState(person.race)
     const [birth, setBirth] = useState(person.birthdate)
     const [kinship, setKinship] = useState(person.kinship)
-    const [groupId, setGroupId] = useState(person.group_id)
-    const [idCode, setIdCode] = useState(person.identification_code)
-    const [vigilance, setVigilance] = useState(person.is_vigilance)
-    const [phone, setPhone] = useState(person.phone)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
-    const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
 
     const removeHousehold = async () => {
@@ -121,12 +121,13 @@ const EditarPerfil = ({ navigation, route }) => {
             gender,
             race,
             kinship,
+            group,
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(newHousehold, institutionError)) return
+        if (!validatePerson(newHousehold, null)) return
         setLoadingAlert(true)
 
         const response = await updateHousehold(newHousehold, user.id, token)
@@ -162,6 +163,7 @@ const EditarPerfil = ({ navigation, route }) => {
             country,
             state: isBrazil ? state : null,
             city: isBrazil ? city : null,
+            group,
             group_id: groupId,
             identification_code: idCode,
             is_vigilance: vigilance,
@@ -169,7 +171,7 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(newUser, institutionError)) return
+        if (!validatePerson(newUser, null)) return
         setLoadingAlert(true)
 
         const response = await updateUser(newUser, user.id, token)
@@ -244,17 +246,6 @@ const EditarPerfil = ({ navigation, route }) => {
             ],
             { cancelable: false }
         )
-    }
-
-    const setUserInstitutionCallback = (groupId, idCode, vigilance, phone) => {
-        setGroupId(groupId)
-        setIdCode(idCode)
-        setVigilance(vigilance)
-        setPhone(phone)
-    }
-
-    const setInstituitionComponentError = (error) => {
-        setInstituitionError(error)
     }
 
     return (
@@ -407,18 +398,6 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormGroup>
                 ) : null}
 
-                {isHousehold ? (
-                    <FormInline>
-                        <FormLabel>Parentesco:</FormLabel>
-                        <Selector
-                            data={householdChoices}
-                            initValue={kinship}
-                            cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setKinship(option.key)}
-                        />
-                    </FormInline>
-                ) : null}
-
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={translate('register.riskGroupLabel')}
@@ -438,15 +417,32 @@ const EditarPerfil = ({ navigation, route }) => {
                     </CheckLabel>
                 </FormInlineCheck>
 
-                <InstitutionSelector
-                    setUserInstitutionCallback={setUserInstitutionCallback}
-                    setAlert={setLoadingAlert}
-                    userGroup={groupId}
-                    userIdCode={idCode}
-                    userVigilance={vigilance}
-                    userPhone={phone}
-                    setErrorCallback={setInstituitionComponentError}
-                />
+                <FormInline>
+                    <FormLabel>{translate('register.institution')}</FormLabel>
+                    <ButtonInput
+                        onPress={() => {
+                            navigation.navigate('EditarGrupo', { person })
+                        }}
+                    >
+                        <ButtonInputLabel>
+                            {group
+                                ? group.split('/')[3]
+                                : translate('register.institutionNone')}
+                        </ButtonInputLabel>
+                    </ButtonInput>
+                </FormInline>
+
+                {isHousehold ? (
+                    <FormInline>
+                        <FormLabel>Parentesco:</FormLabel>
+                        <Selector
+                            data={householdChoices}
+                            initValue={kinship}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setKinship(option.key)}
+                        />
+                    </FormInline>
+                ) : null}
 
                 <Button onPress={() => handleEdit()}>
                     <SendContainer>

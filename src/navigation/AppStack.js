@@ -15,6 +15,7 @@ import HomeDrawer from './HomeDrawer'
 import Ajuda from '../screens/principal/Ajuda'
 import BadReport from '../screens/principal/BadReport'
 import EditarPerfil from '../screens/principal/EditarPerfil'
+import EditarGrupo from '../screens/principal/EditarGrupo'
 import FAQ from '../screens/principal/FAQ'
 import NovoPerfil from '../screens/principal/NovoPerfil'
 import Perfis from '../screens/principal/Perfis'
@@ -95,6 +96,11 @@ const AppStack = () => {
                 name='EditarPerfil'
                 component={EditarPerfil}
                 options={{ title: translate('register.editProfile') }}
+            />
+            <Stack.Screen
+                name='EditarGrupo'
+                component={EditarGrupo}
+                options={{ title: translate('register.editGroup') }}
             />
             <Stack.Screen
                 name='Vigilancia'

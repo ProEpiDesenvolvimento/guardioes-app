@@ -41,8 +41,8 @@ export const NormalInput = styled.TextInput`
     width: 100%;
     min-height: ${scale(36)}px;
     background-color: #ffffff;
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(14)}px;
+    font-family: ArgentumSans;
+    font-size: ${scale(13)}px;
     color: #32323b;
     border-radius: ${scale(12)}px;
     padding-vertical: 0px;
@@ -50,8 +50,8 @@ export const NormalInput = styled.TextInput`
 `
 
 export const ReadOnlyInput = styled.Text`
-    font-family: ArgentumSans-Medium;
-    font-size: ${scale(14)}px;
+    font-family: ArgentumSans;
+    font-size: ${scale(13)}px;
     color: #c4c4c4;
     text-align: center;
 `
@@ -86,10 +86,13 @@ export const Selector = styled(ModalSelector).attrs({
     },
     touchableActiveOpacity: 0.5,
     selectStyle: {
+        minHeight: scale(36),
+        justifyContent: 'center',
         backgroundColor: '#ffffff',
         borderRadius: scale(12),
         borderWidth: 0,
-        paddingVertical: scale(10),
+        paddingVertical: scale(6),
+        paddingHorizontal: scale(12),
     },
     selectTextStyle: {
         fontFamily: 'ArgentumSans',
@@ -135,6 +138,9 @@ export const DateSelector = styled(DatePicker).attrs({
     showIcon: false,
     androidMode: 'spinner',
     customStyles: {
+        dateTouchBody: {
+            height: scale(36),
+        },
         dateInput: {
             borderWidth: 0,
         },

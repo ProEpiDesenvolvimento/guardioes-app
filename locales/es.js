@@ -73,6 +73,7 @@ export default {
             'La contraseña debe contener un mínimo de 8 caracteres',
         signupButton: 'Registro',
         editProfile: 'Editar Perfil',
+        editGroup: 'Editar Grupo',
         emptyName: 'El nombre no puede estar vacío',
         emptyDate: 'Se debe completar la fecha de nacimiento',
         emptyLocation: 'Se deben completar el estado y la ciudad',
@@ -90,7 +91,7 @@ export default {
         removePhoto: 'Quitar foto',
         updatedPhoto: 'Foto de perfil actualizada',
         removedPhoto: 'Foto de perfil eliminada',
-        fieldNotBlank: 'Los campos no pueden estar vacíos:',
+        fieldNotBlank: 'Los campos no pueden estar vacíos',
         fieldNotBlank2:
             'Correo electrónico\nContraseña\n\nNecesitamos esta información para completar su registro',
         shortPassword: 'La contraseña debe tener al menos 8 caracteres',
@@ -104,7 +105,9 @@ export default {
         },
         healthProfessional: 'Eres un profesional de la salud',
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
-        institution: '¿Eres miembro de alguna institución?',
+        institution: 'Institución / Grupo:',
+        institutionNone: 'Sin grupos',
+        institutionCheckbox: '¿Eres miembro de alguna institución?',
         idCode: 'Código da identificación:',
         riskGroupTitle: 'Grupos de Riesgo:',
         riskGroupMessage:

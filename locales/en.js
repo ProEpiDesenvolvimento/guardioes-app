@@ -63,6 +63,7 @@ export default {
         passwordCondition: 'Password must be at leats 8 characters long.',
         signupButton: 'Sign up',
         editProfile: 'Edit Profile',
+        editGroup: 'Edit Group',
         emptyName: 'Name cannot be empty',
         emptyDate: 'Date of birth must be completed',
         emptyLocation: 'State and City must be filled',
@@ -80,7 +81,7 @@ export default {
         removePhoto: 'Remove photo',
         updatedPhoto: 'Profile photo updated',
         removedPhoto: 'Profile photo removed',
-        fieldNotBlank: 'Fields cannot be empty:',
+        fieldNotBlank: 'Fields cannot be empty',
         fieldNotBlank2:
             'Email\nPassword\n\nWe need this information to complete your registration',
         shortPassword: 'Password must be at least 8 characters',
@@ -94,7 +95,9 @@ export default {
         },
         healthProfessional: 'You are a health professional',
         riskGroupLabel: 'Is part of the risk group?',
-        institution: 'Is a member of any institution?',
+        institution: 'Institution / Group:',
+        institutionNone: 'No group',
+        institutionCheckbox: 'Is a member of any institution?',
         idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
