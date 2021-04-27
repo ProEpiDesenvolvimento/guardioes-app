@@ -5,6 +5,7 @@ import AwesomeAlert from 'react-native-awesome-alerts'
 import { scale } from '../utils/scalling'
 
 export const CoolAlert = styled(AwesomeAlert).attrs((props) => ({
+    useNativeDriver: true,
     overlayStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
     },
