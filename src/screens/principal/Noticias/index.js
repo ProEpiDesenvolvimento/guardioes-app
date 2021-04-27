@@ -77,7 +77,7 @@ const Noticias = () => {
 
     useEffect(() => {
         getGroupTwitter()
-    }, [user.group_id])
+    }, [user.group_id, app.twitter])
 
     useEffect(() => {
         if (twitterOption !== '') {

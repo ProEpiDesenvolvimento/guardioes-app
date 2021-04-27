@@ -32,7 +32,7 @@ import { CoolAlert } from '../../../components/CoolAlert'
 Feather.loadFont()
 
 const Vigilancia = ({ navigation }) => {
-    const { token, user } = useUser()
+    const { token, user, storeUser } = useUser()
 
     const [showModalTerms, setShowModalTerms] = useState(false)
     const [acceptedTerms, setAcceptedTerms] = useState(user.is_vigilance)
@@ -54,6 +54,7 @@ const Vigilancia = ({ navigation }) => {
         console.warn(response.status)
 
         if (response.status === 200) {
+            storeUser(response.body.user)
             navigation.goBack()
         } else {
             Alert.alert(translate('register.geralError'))
