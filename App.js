@@ -43,11 +43,11 @@ const Guardioes = () => {
     }, [])
 
     return (
-        <AppProvider>
-            <NavigationContainer>
+        <NavigationContainer>
+            <AppProvider>
                 <Routes />
-            </NavigationContainer>
-        </AppProvider>
+            </AppProvider>
+        </NavigationContainer>
     )
 }
 
