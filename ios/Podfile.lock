@@ -60,7 +60,7 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - glog (0.3.5)
   - libevent (2.1.12)
-  - OneSignal (2.15.4)
+  - OneSignal (3.4.3)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -263,8 +263,8 @@ PODS:
     - React
   - react-native-netinfo (5.9.10):
     - React-Core
-  - react-native-onesignal (3.9.2):
-    - OneSignal (= 2.15.4)
+  - react-native-onesignal (4.0.8):
+    - OneSignal (= 3.4.3)
     - React (< 1.0.0, >= 0.13.0)
   - react-native-safe-area-context (3.1.9):
     - React-Core
@@ -387,7 +387,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (~> 0.75.1)
   - FlipperKit/SKIOSNetworkPlugin (~> 0.75.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - OneSignal (< 3.0, >= 2.9.3)
+  - OneSignal (< 4.0, >= 3.0.0)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -554,7 +554,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
-  FBReactNativeSpec: f4c36fd59f2077a5b15d162a997ba866db0e720c
+  FBReactNativeSpec: 2549d16cd39a66d00ab81d7826770b177251eeac
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: f7a3caafbd74bda4827954fd7a6e000e36355489
@@ -564,7 +564,7 @@ SPEC CHECKSUMS:
   FlipperKit: 8a20b5c5fcf9436cac58551dc049867247f64b00
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  OneSignal: 6647275955d0f06d9e17c90dc93af9d85ecfd2b9
+  OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 2f8cb5b7533219bf4218a045f92768129cf7050a
@@ -581,7 +581,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
-  react-native-onesignal: ab5bd48dfc62d6f502ee2087cef317cd1c2b72f7
+  react-native-onesignal: 50b047c674b79ba700218338fdefb45220da4db5
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -611,6 +611,6 @@ SPEC CHECKSUMS:
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 4fa613b39924003214f0c5cbcbc1e79b3666280a
+PODFILE CHECKSUM: 5c45df9535ccf4c47a6ca0641c2c15a25961c723
 
 COCOAPODS: 1.10.1

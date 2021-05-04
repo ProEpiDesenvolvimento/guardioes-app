@@ -18,7 +18,7 @@ target 'guardioesapp' do
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
   
-  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+  pod 'OneSignal', '>= 3.0.0', '< 4.0'
 
   target 'guardioesappTests' do
     inherit! :complete
@@ -36,5 +36,5 @@ target 'guardioesapp' do
 end
 
 target 'OneSignalNotificationServiceExtension' do
-  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+  pod 'OneSignal', '>= 3.0.0', '< 4.0'
 end

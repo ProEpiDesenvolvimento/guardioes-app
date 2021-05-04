@@ -6237,10 +6237,10 @@ react-native-modal-selector@^2.0.3:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-onesignal@^3.9.2:
-  version "3.9.2"
-  resolved "https://registry.npmjs.org/react-native-onesignal/-/react-native-onesignal-3.9.2.tgz"
-  integrity sha512-tir7cDYzB7lGvy9f3iLTuVOC53fQzOexdLOei6oGuklVTJbwni3rrB9JP/Jw23TbbfgDDpTaTkPhvyZL4A6b5A==
+react-native-onesignal@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-4.0.8.tgz#258d8f0e394257c6368b19bd77e0677b6a1f9433"
+  integrity sha512-N80+WopFz/ztclF+a0RpSGEu+hArlWLOKSSLv/YvYvIttcXUSIr9CpRj9a4Zq6Sc75ns97HHJZ28xXGY88JFTg==
   dependencies:
     invariant "^2.2.2"
 

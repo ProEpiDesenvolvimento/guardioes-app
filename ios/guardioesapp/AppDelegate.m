@@ -30,21 +30,18 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  //Remove this method to stop OneSignal Debugging
+  // Remove this method to stop OneSignal Debugging  
   [OneSignal setLogLevel:ONE_S_LL_VERBOSE visualLevel:ONE_S_LL_NONE];
   
-  //START OneSignal initialization code
-  [OneSignal initWithLaunchOptions:launchOptions
-   appId:@"61c9e02a-d703-4e1c-aff1-3bce49948818"
-   handleNotificationAction:nil
-   settings:@{kOSSettingsKeyAutoPrompt: @false, kOSSettingsKeyInAppLaunchURL: @false}];
-  OneSignal.inFocusDisplayType = OSNotificationDisplayTypeNotification;
+  // OneSignal initialization
+  [OneSignal initWithLaunchOptions:launchOptions];
+  [OneSignal setAppId:@"61c9e02a-d703-4e1c-aff1-3bce49948818"];
 
-  // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 6)
+  // promptForPushNotifications will show the native iOS notification permission prompt.
+  // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
   [OneSignal promptForPushNotificationsWithUserResponse:^(BOOL accepted) {
     NSLog(@"User accepted notifications: %d", accepted);
   }];
-  //END OneSignal initializataion code
   
   return YES;
 }
