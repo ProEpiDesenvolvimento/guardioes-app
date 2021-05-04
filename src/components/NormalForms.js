@@ -157,15 +157,19 @@ export const DateSelector = styled(DatePicker).attrs({
     background-color: #ffffff;
 `
 
-export const CheckBoxStyled = styled(CheckBox).attrs({
+export const CheckBoxStyled = styled(CheckBox).attrs((props) => ({
     containerStyle: {
         flex: 1,
+        width: props.full ? '100%' : 'auto',
         alignSelf: 'center',
         backgroundColor: '#ffffff',
         borderRadius: scale(15),
         borderWidth: 0,
         marginLeft: 0,
         marginRight: 0,
+    },
+    wrapperStyle: {
+        width: '95%',
     },
     textStyle: {
         fontFamily: 'ArgentumSans',
@@ -178,7 +182,7 @@ export const CheckBoxStyled = styled(CheckBox).attrs({
     checkedColor: '#348EAC',
     uncheckedColor: '#c4c4c4',
     size: scale(25),
-})``
+}))``
 
 export const CheckLabel = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
