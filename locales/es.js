@@ -322,6 +322,11 @@ export default {
             '4. Modificação da política de privacidade e proteção de dados\n\n' +
             'O App Guardião da Saúde reserva se ao direito de modificar a presente política para adaptá-la para futuros desenvolvimentos legislativos ou jurisprudenciais. Qualquer mudança que não derivam de adaptação às alterações legislativas ou jurisprudenciais será anunciada no aplicativo ou, se significativas, comunicada por e-mail para os usuários.',
     },
+    biosecurity: {
+        title: 'Bioseguridad',
+        titleError: 'Algunas preguntas no han sido respondidas',
+        messageError: 'Por favor, responda todas las preguntas.',
+    },
     drawer: {
         reportRumor: 'Informar Rumor',
         toEdit: 'Editar perfiles',

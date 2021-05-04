@@ -1,0 +1,156 @@
+import React, { useEffect, useState } from 'react'
+import { Alert } from 'react-native'
+
+import Feather from 'react-native-vector-icons/Feather'
+
+import ScreenLoader from '../../../components/ScreenLoader'
+import {
+    Container,
+    KeyboardScrollView,
+    FormInline,
+    FormLabel,
+    CheckBoxStyled,
+    Button,
+    SendContainer,
+    SendText,
+} from '../../../components/NormalForms'
+
+import LoadingModal from '../../../components/Groups/LoadingModal'
+import translate from '../../../../locales/i18n'
+import { useUser } from '../../../hooks/user'
+import { getForm, sendFormAnswers } from '../../../api/forms'
+
+Feather.loadFont()
+
+const BioSeguranca = ({ navigation, route }) => {
+    const { token, user } = useUser()
+    const { form } = route.params
+
+    const [isLoading, setIsLoading] = useState(true)
+    const [questions, setQuestions] = useState([])
+    const [answers, setAnswers] = useState([])
+
+    const [loadingAlert, setLoadingAlert] = useState(false)
+
+    const getBioSecurityForm = async () => {
+        const response = await getForm(form.id, token)
+
+        if (response.status === 200) {
+            const { form } = response.body
+            setQuestions(form.form_questions)
+            setIsLoading(false)
+        }
+    }
+
+    const sendBioSecurityForm = async () => {
+        if (questions.length > answers.length) {
+            Alert.alert(
+                translate('biosecurity.titleError'),
+                translate('biosecurity.messageError')
+            )
+            return
+        }
+
+        setLoadingAlert(true)
+
+        const response = await sendFormAnswers(answers, token)
+
+        if (response.status === 201) {
+            setLoadingAlert(false)
+            navigation.navigate('Home')
+        } else {
+            console.warn(response.status)
+            Alert.alert(translate('register.geralError'))
+            setLoadingAlert(false)
+        }
+    }
+
+    const isQuestionAnswered = (option) => {
+        const answered = answers.filter(
+            (ans) => ans.form_question_id === option.form_question_id
+        )
+
+        if (answered.length > 0) {
+            return true
+        }
+        return false
+    }
+
+    const isOptionSelected = (option) => {
+        const selected = answers.filter(
+            (ans) => ans.form_option_id === option.id
+        )
+
+        if (selected.length > 0) {
+            return true
+        }
+        return false
+    }
+
+    const handleAnswer = (question, option) => {
+        const answer = {
+            form_id: form.id,
+            form_question_id: question.id,
+            form_option_id: option.id,
+            user_id: user.id,
+        }
+
+        if (isQuestionAnswered(option)) {
+            const newAnswers = answers.filter(
+                (ans) => ans.form_question_id !== option.form_question_id
+            )
+
+            setAnswers([...newAnswers, answer])
+        } else if (isOptionSelected(option)) {
+            const newAnswers = answers.filter(
+                (ans) => ans.form_option_id !== option.id
+            )
+
+            setAnswers(newAnswers)
+        } else {
+            setAnswers([...answers, answer])
+        }
+    }
+
+    useEffect(() => {
+        getBioSecurityForm()
+    }, [])
+
+    if (isLoading) {
+        return <ScreenLoader />
+    }
+
+    return (
+        <Container>
+            <KeyboardScrollView keyboardShouldPersistTaps='always'>
+                {questions.map((question, index) => (
+                    <FormInline key={question.id}>
+                        <FormLabel>
+                            {index + 1}. {question.text}
+                        </FormLabel>
+
+                        {question.form_options.map((option) => (
+                            <CheckBoxStyled
+                                key={option.id}
+                                title={option.text}
+                                checked={isOptionSelected(option)}
+                                onPress={() => handleAnswer(question, option)}
+                                full
+                            />
+                        ))}
+                    </FormInline>
+                ))}
+
+                <Button onPress={() => sendBioSecurityForm()}>
+                    <SendContainer>
+                        <SendText>Enviar</SendText>
+                    </SendContainer>
+                </Button>
+            </KeyboardScrollView>
+
+            <LoadingModal show={loadingAlert} />
+        </Container>
+    )
+}
+
+export default BioSeguranca
