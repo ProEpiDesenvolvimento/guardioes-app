@@ -55,6 +55,7 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^7.10.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.12.0",
