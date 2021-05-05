@@ -1,4 +1,5 @@
 # Guardiões da Saúde App
+
 Repositório do aplicativo [Guardiões da Saúde](https://linktr.ee/guardioesdasaude).
 
 ## Como baixar a última versão do app
@@ -57,6 +58,10 @@ $ npx react-native run-ios
 Caso a sua máquina não possa rodar a aplicação, nesse [link](https://reactnative.dev/docs/running-on-device) tem uma tutorial de como usar seu celular como plataforma para rodar o aplicativo.
 
 ## Possíveis erros:
+
+### Node:
+
+Se certifique que a sua versão do **node** e do **npm** estão atualizadas. Neste [link](https://nodejs.org/pt-br/download/releases/) você poderá ver as relações entre as versões do node e do npm. 
 
 ### NPM:
 
