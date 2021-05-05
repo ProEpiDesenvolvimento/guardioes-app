@@ -22,9 +22,8 @@ import { getForm, sendFormAnswers } from '../../../api/forms'
 
 Feather.loadFont()
 
-const BioSeguranca = ({ navigation, route }) => {
-    const { token, user } = useUser()
-    const { form } = route.params
+const BioSeguranca = ({ navigation }) => {
+    const { token, user, group, storeLastForm } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [questions, setQuestions] = useState([])
@@ -33,7 +32,7 @@ const BioSeguranca = ({ navigation, route }) => {
     const [loadingAlert, setLoadingAlert] = useState(false)
 
     const getBioSecurityForm = async () => {
-        const response = await getForm(form.id, token)
+        const response = await getForm(group.form_id, token)
 
         if (response.status === 200) {
             const { form } = response.body
@@ -43,6 +42,9 @@ const BioSeguranca = ({ navigation, route }) => {
     }
 
     const sendBioSecurityForm = async () => {
+        const lastFormDate = new Date()
+        lastFormDate.setHours(0, 0, 0, 0)
+
         if (questions.length > answers.length) {
             Alert.alert(
                 translate('biosecurity.titleError'),
@@ -56,6 +58,7 @@ const BioSeguranca = ({ navigation, route }) => {
         const response = await sendFormAnswers(answers, token)
 
         if (response.status === 201) {
+            storeLastForm(lastFormDate)
             setLoadingAlert(false)
             navigation.navigate('Home')
         } else {
@@ -89,7 +92,7 @@ const BioSeguranca = ({ navigation, route }) => {
 
     const handleAnswer = (question, option) => {
         const answer = {
-            form_id: form.id,
+            form_id: group.form_id,
             form_question_id: question.id,
             form_option_id: option.id,
             user_id: user.id,

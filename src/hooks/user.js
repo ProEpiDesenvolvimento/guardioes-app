@@ -28,9 +28,11 @@ export const UserProvider = ({ children }) => {
     const [selected, setSelected] = useState({})
     const [surveys, setSurveys] = useState([])
     const [location, setLocation] = useState({})
+    const [group, setGroup] = useState({})
     const [app, setApp] = useState({})
     const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
+    const [lastForm, setLastForm] = useState('')
 
     const [isLoading, setIsLoading] = useState(true)
     const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -111,6 +113,7 @@ export const UserProvider = ({ children }) => {
         const avatar = await AsyncStorage.getItem('userAvatar')
         const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
+        const lastForm = await AsyncStorage.getItem('lastForm')
         const householdsData = JSON.parse(
             await AsyncStorage.getItem('householdsData')
         )
@@ -126,6 +129,9 @@ export const UserProvider = ({ children }) => {
         }
         if (lastReport) {
             setLastReport(lastReport)
+        }
+        if (lastForm) {
+            setLastForm(lastForm)
         }
         if (householdsData) {
             setHouseholds(householdsData)
@@ -316,7 +322,6 @@ export const UserProvider = ({ children }) => {
 
     const storeSurveys = (surveys) => {
         setSurveys(surveys)
-
         AsyncStorage.setItem('surveysData', JSON.stringify(surveys))
     }
 
@@ -375,6 +380,12 @@ export const UserProvider = ({ children }) => {
                 }
             )
         )
+    }
+
+    const storeLastForm = async (lastForm) => {
+        lastForm = lastForm.toISOString()
+        setLastForm(lastForm)
+        AsyncStorage.setItem('lastForm', lastForm)
     }
 
     const updateUserScore = async () => {
@@ -451,8 +462,12 @@ export const UserProvider = ({ children }) => {
                 storeSurveys,
                 location,
                 getCurrentLocation,
+                group,
+                setGroup,
                 app,
                 lastReport,
+                lastForm,
+                storeLastForm,
                 score,
                 updateUserScore,
                 storeCacheData,
