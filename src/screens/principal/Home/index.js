@@ -174,6 +174,8 @@ const Home = ({ navigation }) => {
 
         if (!lastForm || lastFormDate.getTime() < lastWeek.getTime()) {
             setHasForm(true)
+        } else {
+            setHasForm(false)
         }
 
         const userLastSurveys = surveys.filter(
