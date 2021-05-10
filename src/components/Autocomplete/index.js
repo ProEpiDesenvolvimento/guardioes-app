@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Modal, Pressable, TextInput, Button } from "react-native"
-import { ModalView, TextModalView } from "./styles"
+import { View, TextInput } from "react-native"
+import {
+  AutocompleteModal,
+  CancelButton,
+  ModalView,
+  TextModalView,
+  AutocompleteButton,
+} from "./styles"
 
 
 const Autocomplete = (props) => {
@@ -9,16 +15,14 @@ const Autocomplete = (props) => {
 
   return (
     <View>
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <AutocompleteModal
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
       >
         <ModalView>
-          <TextInput onChangeText={setValue} value={value}/>
+          <TextInput onChangeText={setValue} value={value} />
           {props.data.filter((data) => {
             return !(data.toLowerCase().indexOf(value.toLowerCase()) === -1);
           }).map((data, index) => {
@@ -32,14 +36,15 @@ const Autocomplete = (props) => {
             )
           })}
         </ModalView>
-        <Button
+        <CancelButton
           onPress={() => setModalVisible(false)}
           title="Cancelar"
         />
-      </Modal>
-      <Pressable onPress={() => setModalVisible(true)}>
-        <Text>{props.value.toUpperCase()}</Text>
-      </Pressable>
+        <AutocompleteButton
+          title={props.value}
+          onPress={() => setModalVisible(true)}
+        />
+      </AutocompleteModal>
     </View>
   )
 }
