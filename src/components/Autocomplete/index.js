@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, Modal, Pressable, TextInput, Button } from "react-native"
-import { useSafeArea } from "react-native-safe-area-context";
-import { ModalView } from "./styles"
+import { ModalView, TextModalView } from "./styles"
 
 
-Autocomplete = (props) => {
+const Autocomplete = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState(props.value)
 
@@ -19,19 +18,17 @@ Autocomplete = (props) => {
         }}
       >
         <ModalView>
-          <Text>{value}</Text>
-          <TextInput onChangeText={setValue} value={value}></TextInput>
+          <TextInput onChangeText={setValue} value={value}/>
           {props.data.filter((data) => {
-            return !(data.indexOf(value) === -1);
+            return !(data.toLowerCase().indexOf(value.toLowerCase()) === -1);
           }).map((data, index) => {
             return (
-              <Pressable key={index} onPress={() => {
-                setModalVisible(true)
-                setValue(data)
+              <TextModalView key={index} onPress={() => {
+                props.onChange(data)
                 setModalVisible(false)
               }}>
-                <Text>{data}</Text>
-              </Pressable>
+                {data.toUpperCase()}
+              </TextModalView>
             )
           })}
         </ModalView>
@@ -41,7 +38,7 @@ Autocomplete = (props) => {
         />
       </Modal>
       <Pressable onPress={() => setModalVisible(true)}>
-        <Text>Pressione aqui!!</Text>
+        <Text>{props.value.toUpperCase()}</Text>
       </Pressable>
     </View>
   )
