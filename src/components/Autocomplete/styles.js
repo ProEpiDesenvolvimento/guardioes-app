@@ -40,12 +40,9 @@ export const TextModalView = styled.Text`
     text-align: center;
 `
 
-export const CancelButton = styled.Text`
+export const CancelText = styled.Text`
     background-color: #348eac;
     color: white;
-    padding: ${scale(10)}px;
-    borderRadius: ${scale(14)}px;
-    marginTop: ${scale(10)}px;
     width: 100%
     font-family: 'ArgentumSans';
     text-align: center;
@@ -64,4 +61,17 @@ export const AutocompleteText = styled.Text`
     height: ${scale(30)}px;
     text-align: center;
     width: 90%;
+`
+
+export const CancelTouch = styled.TouchableOpacity.attrs({
+    activeOpacity: 0.5,
+})`
+    background-color: #348eac;
+    color: white;
+    padding: ${scale(10)}px;
+    borderRadius: ${scale(14)}px;
+    marginTop: ${scale(10)}px;
+    width: 100%
+    font-family: 'ArgentumSans';
+    text-align: center;
 `

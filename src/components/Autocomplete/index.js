@@ -1,35 +1,33 @@
 import React, { useState } from "react";
-import { View } from "react-native"
+import { View, Text } from "react-native"
 import translate from '../../../locales/i18n'
 import {
   AutocompleteModal,
-  CancelButton,
+  CancelText,
   ModalView,
   TextModalView,
   AutocompleteText,
   TextInputModal,
   ScrollModalView,
   ModalFade,
+  CancelTouch,
 } from "./styles"
 
 
 const Autocomplete = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState(props.value);
-  const [data, setData] = useState(props.data.filter((data) => {
+  const data = props.data.filter((data) => {
     return !(data.label === undefined)
-  }))
-  const textCancel = (props.textCancel? props.textCancel : translate('selector.cancelButton'));
-  const placeholder = (props.placeholder? props.placeholder : translate('autocomplete.searchBar'))
+  })
+  const textCancel = (props.textCancel ? props.textCancel : translate('selector.cancelButton'));
+  const placeholder = (props.placeholder ? props.placeholder : translate('autocomplete.searchBar'))
 
   return (
     <View>
       <AutocompleteModal
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
+        onRequestClose={() => { setModalVisible(!modalVisible); }}>
         <ModalFade>
           <ModalView>
             <TextInputModal onChangeText={setValue} value={value} placeholder={placeholder} />
@@ -48,9 +46,9 @@ const Autocomplete = (props) => {
                 )
               })}
             </ScrollModalView>
-            <CancelButton
-              onPress={() => setModalVisible(false)}
-            >{textCancel}</CancelButton>
+            <CancelTouch onPress={() => setModalVisible(false)}>
+              <CancelText>{textCancel}</CancelText>
+            </CancelTouch>
           </ModalView>
         </ModalFade>
       </AutocompleteModal>
