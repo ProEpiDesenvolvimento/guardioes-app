@@ -51,6 +51,7 @@ import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
+import Autocomplete from '../../../components/Autocomplete'
 
 Feather.loadFont()
 
@@ -85,6 +86,10 @@ const EditarPerfil = ({ navigation, route }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+
+    // Apagar Depois
+    const [testValue, setTestValue] = useState("Algo")
+    const testData = ["a", "b", "ab", "aa"]
 
     const removeHousehold = async () => {
         const household = {
@@ -309,6 +314,8 @@ const EditarPerfil = ({ navigation, route }) => {
                     )}
                 </FormInline>
 
+                <Autocomplete value={testValue} data={testData} onChange={setTestValue}/>
+
                 {!isHousehold ? (
                     <FormInline>
                         <FormLabel>{translate('register.email')}</FormLabel>
@@ -368,12 +375,19 @@ const EditarPerfil = ({ navigation, route }) => {
 
                     <FormGroupChild>
                         <FormLabel>{translate('register.country')}</FormLabel>
-                        <Selector
+                        <Autocomplete 
                             data={countryChoices}
-                            initValue={country}
-                            cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setCountry(option.key)}
+                            value={country}
+                            onChange={setCountry}
                         />
+                        {
+                        //<Selector
+                        //    data={countryChoices}
+                        //    initValue={country}
+                        //    cancelText={translate('selector.cancelButton')}
+                        //    onChange={(option) => setCountry(option.key)}
+                        //>
+                        }
                     </FormGroupChild>
                 </FormGroup>
 

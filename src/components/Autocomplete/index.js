@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Button } from "react-native";
-import { ScrollView } from "react-native";
-import { Pressable } from "react-native";
-import { View, TextInput, StyleSheet, Text } from "react-native"
+import { View } from "react-native"
+import translate from '../../../locales/i18n'
 import {
   AutocompleteModal,
   CancelButton,
@@ -21,6 +19,9 @@ const Autocomplete = (props) => {
   const [data, setData] = useState(props.data.filter((data) => {
     return !(data.label === undefined)
   }))
+  const textCancel = (props.textCancel? props.textCancel : translate('selector.cancelButton'));
+  const placeholder = (props.placeholder? props.placeholder : translate('autocomplete.searchBar'))
+
   return (
     <View>
       <AutocompleteModal
@@ -30,9 +31,8 @@ const Autocomplete = (props) => {
         }}
       >
         <ModalFade>
-
           <ModalView>
-            <TextInputModal onChangeText={setValue} value={value} placeholder="Pesquisa" />
+            <TextInputModal onChangeText={setValue} value={value} placeholder={placeholder} />
             <ScrollModalView>
               {data.filter((data) => {
                 if (data.label === undefined) return false
@@ -50,7 +50,7 @@ const Autocomplete = (props) => {
             </ScrollModalView>
             <CancelButton
               onPress={() => setModalVisible(false)}
-            >{props.cancelText}</CancelButton>
+            >{textCancel}</CancelButton>
           </ModalView>
         </ModalFade>
       </AutocompleteModal>

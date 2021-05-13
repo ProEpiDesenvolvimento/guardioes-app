@@ -368,4 +368,7 @@ export default {
             shortPwd: 'Password must be at least 8 characters long',
         },
     },
+    autocomplete: {
+        searchBar: 'Type here...'
+    },
 }
