@@ -87,10 +87,6 @@ const EditarPerfil = ({ navigation, route }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
 
-    // Apagar Depois
-    const [testValue, setTestValue] = useState("Algo")
-    const testData = ["a", "b", "ab", "aa"]
-
     const removeHousehold = async () => {
         const household = {
             id,
@@ -314,8 +310,6 @@ const EditarPerfil = ({ navigation, route }) => {
                     )}
                 </FormInline>
 
-                <Autocomplete value={testValue} data={testData} onChange={setTestValue}/>
-
                 {!isHousehold ? (
                     <FormInline>
                         <FormLabel>{translate('register.email')}</FormLabel>
@@ -380,14 +374,6 @@ const EditarPerfil = ({ navigation, route }) => {
                             value={country}
                             onChange={setCountry}
                         />
-                        {
-                        //<Selector
-                        //    data={countryChoices}
-                        //    initValue={country}
-                        //    cancelText={translate('selector.cancelButton')}
-                        //    onChange={(option) => setCountry(option.key)}
-                        //>
-                        }
                     </FormGroupChild>
                 </FormGroup>
 
@@ -395,21 +381,19 @@ const EditarPerfil = ({ navigation, route }) => {
                     <FormGroup>
                         <FormGroupChild>
                             <FormLabel>Estado:</FormLabel>
-                            <Selector
+                            <Autocomplete
                                 data={stateOptions}
-                                initValue={state}
-                                cancelText={translate('selector.cancelButton')}
-                                onChange={(option) => setState(option.key)}
+                                value={state}
+                                onChange={setState}
                             />
                         </FormGroupChild>
 
                         <FormGroupChild>
                             <FormLabel>Município:</FormLabel>
-                            <Selector
+                            <Autocomplete
                                 data={getCity(state)}
-                                initValue={city}
-                                cancelText={translate('selector.cancelButton')}
-                                onModalClose={(option) => setCity(option.key)}
+                                value={city}
+                                onChange={setCity}
                             />
                         </FormGroupChild>
                     </FormGroup>

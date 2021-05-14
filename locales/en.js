@@ -369,6 +369,6 @@ export default {
         },
     },
     autocomplete: {
-        searchBar: 'Type here...'
+        searchBar: 'Type here'
     },
 }

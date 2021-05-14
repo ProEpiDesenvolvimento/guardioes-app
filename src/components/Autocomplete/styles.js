@@ -1,6 +1,11 @@
 import styled from 'styled-components/native'
 import { scale } from '../../utils/scalling'
 
+export const Container = styled.View`
+    width: 100%
+    align-items: center;
+`
+
 export const ModalView = styled.View`
     margin: auto;
     backgroundColor: transparent;
@@ -16,7 +21,9 @@ export const ModalFade = styled.View`
     height: 100%;
 `
 
-export const TextInputModal = styled.TextInput`
+export const TextInputModal = styled.TextInput.attrs({
+    autoFocus: true,
+})`
     background-color: white;
     fontFamily: 'ArgentumSans';
     borderRadius: ${scale(12)}px;
@@ -41,7 +48,6 @@ export const TextModalView = styled.Text`
 `
 
 export const CancelText = styled.Text`
-    background-color: #348eac;
     color: white;
     width: 100%
     font-family: 'ArgentumSans';
@@ -54,13 +60,21 @@ export const AutocompleteModal = styled.Modal.attrs({
 })`
 `
 
-export const AutocompleteText = styled.Text`
+export const AutocompleteButton = styled.TouchableOpacity`
     background-color: white;
-    font-family: 'ArgentumSans';
     border-radius: ${scale(14)}px;
-    height: ${scale(30)}px;
+    align-items: center;
+    min-height: ${scale(36)}px;
+    border-radius: ${scale(12)}px;
+    width: 100%;
+`
+
+export const AutocompleteText = styled.Text`
+    width: 100%
+    font-family: 'ArgentumSans';
     text-align: center;
-    width: 90%;
+    fontSize: ${scale(14)}px;
+    padding-vertical: ${scale(10)}px;
 `
 
 export const CancelTouch = styled.TouchableOpacity.attrs({

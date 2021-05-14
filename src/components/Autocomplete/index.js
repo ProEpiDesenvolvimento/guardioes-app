@@ -7,8 +7,10 @@ import {
   ModalView,
   TextModalView,
   AutocompleteText,
+  AutocompleteButton,
   TextInputModal,
   ScrollModalView,
+  Container,
   ModalFade,
   CancelTouch,
 } from "./styles"
@@ -24,7 +26,7 @@ const Autocomplete = (props) => {
   const placeholder = (props.placeholder ? props.placeholder : translate('autocomplete.searchBar'))
 
   return (
-    <View>
+    <Container>
       <AutocompleteModal
         visible={modalVisible}
         onRequestClose={() => { setModalVisible(!modalVisible); }}>
@@ -52,10 +54,10 @@ const Autocomplete = (props) => {
           </ModalView>
         </ModalFade>
       </AutocompleteModal>
-      <AutocompleteText
-        onPress={() => setModalVisible(true)}
-      >{props.value}</AutocompleteText>
-    </View>
+      <AutocompleteButton onPress={() => setModalVisible(true)}>
+        <AutocompleteText>{props.value}</AutocompleteText>
+      </AutocompleteButton>
+    </Container>
   )
 }
 

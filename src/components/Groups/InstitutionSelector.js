@@ -10,6 +10,7 @@ import {
     Selector,
     CheckBoxStyled,
 } from '../NormalForms'
+import Autocomplete from '../Autocomplete'
 
 import translate from '../../../locales/i18n'
 import {
@@ -245,15 +246,14 @@ class InstitutionSelector extends Component {
                 <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
                 </FormLabel>
-                <Selector
+                <Autocomplete
                     data={group.children.map((x) => {
                         return {
                             key: x.id,
                             label: x.description,
                         }
                     })}
-                    initValue={this.state.selectionIndexes[index].label}
-                    cancelText={translate('selector.cancelButton')}
+                    value={this.state.selectionIndexes[index].label}
                     onChange={(option) => {
                         this.setState({
                             groupList: this.state.groupList.slice(0, index + 1),
@@ -266,7 +266,7 @@ class InstitutionSelector extends Component {
                         })
                         this.setState({ idCodeInputShow: false })
 
-                        this.getChildren(option.key)
+                        this.getChildren(option)
 
                         this.setState({
                             selectionIndexes: [
