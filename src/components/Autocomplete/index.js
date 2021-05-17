@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native"
 import translate from '../../../locales/i18n'
 import {
   AutocompleteModal,
@@ -18,12 +17,17 @@ import {
 
 const Autocomplete = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState('');
   const data = props.data.filter((data) => {
     return !(data.label === undefined)
   })
   const textCancel = (props.textCancel ? props.textCancel : translate('selector.cancelButton'));
   const placeholder = (props.placeholder ? props.placeholder : translate('autocomplete.searchBar'))
+
+  function closeModal(){
+    setValue('')
+    setModalVisible(false)
+  }
 
   return (
     <Container>
@@ -40,15 +44,15 @@ const Autocomplete = (props) => {
               }).map((data, index) => {
                 return (
                   <TextModalView key={index} onPress={() => {
-                    props.onChange(data.label)
-                    setModalVisible(false)
+                    props.onChange(data)
+                    closeModal()
                   }}>
                     {data.label.toUpperCase()}
                   </TextModalView>
                 )
               })}
             </ScrollModalView>
-            <CancelTouch onPress={() => setModalVisible(false)}>
+            <CancelTouch onPress={() => closeModal()}>
               <CancelText>{textCancel}</CancelText>
             </CancelTouch>
           </ModalView>

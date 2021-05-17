@@ -10,7 +10,6 @@ import {
     Selector,
     CheckBoxStyled,
 } from '../NormalForms'
-import Autocomplete from '../Autocomplete'
 
 import translate from '../../../locales/i18n'
 import {
@@ -19,6 +18,8 @@ import {
     getAppGroupChildren,
     getUserGroupPath,
 } from '../../api/groups'
+
+import Autocomplete from '../Autocomplete'
 
 class InstitutionSelector extends Component {
     constructor(props) {
@@ -266,7 +267,7 @@ class InstitutionSelector extends Component {
                         })
                         this.setState({ idCodeInputShow: false })
 
-                        this.getChildren(option)
+                        this.getChildren(option.key)
 
                         this.setState({
                             selectionIndexes: [

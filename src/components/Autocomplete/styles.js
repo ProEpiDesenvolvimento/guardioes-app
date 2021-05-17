@@ -6,7 +6,7 @@ export const Container = styled.View`
     align-items: center;
 `
 
-export const ModalView = styled.View`
+export const ModalView = styled.SafeAreaView`
     margin: auto;
     backgroundColor: transparent;
     borderRadius: ${scale(12)}px;
@@ -21,9 +21,7 @@ export const ModalFade = styled.View`
     height: 100%;
 `
 
-export const TextInputModal = styled.TextInput.attrs({
-    autoFocus: true,
-})`
+export const TextInputModal = styled.TextInput`
     background-color: white;
     fontFamily: 'ArgentumSans';
     borderRadius: ${scale(12)}px;

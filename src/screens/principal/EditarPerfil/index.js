@@ -372,7 +372,7 @@ const EditarPerfil = ({ navigation, route }) => {
                         <Autocomplete 
                             data={countryChoices}
                             value={country}
-                            onChange={setCountry}
+                            onChange={(option) => setCountry(option.label)}
                         />
                     </FormGroupChild>
                 </FormGroup>
