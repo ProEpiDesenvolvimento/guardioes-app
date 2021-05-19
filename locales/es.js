@@ -364,6 +364,12 @@ export default {
             'Si no aparece en su cuadro de mensaje principal, verifique su Spam.',
         inputVerificationCode: 'Código',
     },
+    surveilanceInvite: {
+        title: 'Invitación a vigilancia',
+        message: 'No participa en la vigilancia. ¿Te gustaría participar?',
+        cancelButton: 'Cancelar',
+        redirectButton: 'Aceptar invitación',
+    },
     changePwd: {
         title: 'Redefinir contraseña',
         newPwd: 'Nueva contraseña',
