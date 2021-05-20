@@ -373,5 +373,6 @@ export default {
     },
     autocomplete: {
         searchBar: 'Pesquise aqui',
+        noResult: 'Sem resultados',
     }
 }

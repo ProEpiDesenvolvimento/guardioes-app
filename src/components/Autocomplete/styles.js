@@ -46,7 +46,7 @@ export const ScrollToView = styled.View`
     maxHeight: 70%;
 `
 
-export const ScrollModalView = styled.ScrollView`
+export const FlatModalView = styled.FlatList`
     background-color: white;
     width: 100%;
     margin-top: ${scale(10)}px;
@@ -102,5 +102,14 @@ export const CancelTouch = styled.TouchableOpacity.attrs({
     marginTop: ${scale(10)}px;
     width: 100%
     font-family: 'ArgentumSans';
+    text-align: center;
+`
+
+export const NoResultText = styled.Text`
+    fontFamily: 'ArgentumSans';
+    color: #32323B;
+    padding: ${scale(10)}px;
+    fontSize: ${scale(14)}px;
+    max-height: ${scale(60)}px;
     text-align: center;
 `

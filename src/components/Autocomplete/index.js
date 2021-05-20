@@ -9,14 +9,16 @@ import {
   AutocompleteText,
   AutocompleteButton,
   TextInputModal,
-  ScrollModalView,
   Container,
   ModalFade,
   CancelTouch,
   TextInputView,
   TextInputIcon,
   ScrollToView,
+  FlatModalView,
+  NoResultText,
 } from "./styles"
+import { FlatList } from "react-native";
 
 Feather.loadFont()
 
@@ -42,11 +44,6 @@ const Autocomplete = (props) => {
         onRequestClose={() => { setModalVisible(!modalVisible); }}>
         <ModalFade>
           <ModalView>
-            {/*<TextInputModal
-              onChangeText={setValue}
-              value={value}
-              placeholder={placeholder}
-            />*/}
             <TextInputView>
               <TextInputIcon />
               <TextInputModal
@@ -56,21 +53,24 @@ const Autocomplete = (props) => {
               />
             </TextInputView>
             <ScrollToView>
-              <ScrollModalView>
-                {data.filter((data) => {
-                  if (data.label === undefined) return false
+              <FlatModalView
+                data={data.filter((data) => {
                   return !(data.label.toLowerCase().indexOf(value.toLowerCase()) === -1);
-                }).map((data, index) => {
-                  return (
-                    <TextModalView key={index} onPress={() => {
-                      props.onChange(data)
-                      closeModal()
-                    }}>
-                      {data.label.toUpperCase()}
-                    </TextModalView>
-                  )
                 })}
-              </ScrollModalView>
+                renderItem={({ item, index, separator }) => (
+                  <TextModalView key={index} onPress={() => {
+                    props.onChange(item)
+                    closeModal()
+                  }}>
+                    {item.label.toUpperCase()}
+                  </TextModalView>
+                )}
+                ListEmptyComponent={() => (
+                  <NoResultText >
+                    {translate('autocomplete.noResult').toUpperCase()}
+                  </NoResultText>
+                )}
+              />
             </ScrollToView>
             <CancelTouch onPress={() => closeModal()}>
               <CancelText>{textCancel}</CancelText>
