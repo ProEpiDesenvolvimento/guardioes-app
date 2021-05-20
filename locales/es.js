@@ -374,9 +374,6 @@ export default {
         },
     },
     autocomplete: {
-        searchBar: 'Digite aquí',
-        placeholder: {
-            country: 'Digite aquí su país'
-        }
+        searchBar: 'Pesquise aquí',
     },
 }
