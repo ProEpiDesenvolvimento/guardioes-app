@@ -369,6 +369,9 @@ export default {
         },
     },
     autocomplete: {
-        searchBar: 'Type here'
+        searchBar: 'Type here',
+        placeholder: {
+            country: 'Type your country here',
+        }
     },
 }

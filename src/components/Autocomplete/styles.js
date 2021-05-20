@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import { scale } from '../../utils/scalling'
+import Feather from 'react-native-vector-icons/Feather'
 
 export const Container = styled.View`
     width: 100%
@@ -9,11 +10,10 @@ export const Container = styled.View`
 export const ModalView = styled.SafeAreaView`
     margin: auto;
     backgroundColor: transparent;
-    borderRadius: ${scale(12)}px;
     width: 90%;
-    alignItems: center;
-    color: #32323B;
-    height: auto;
+    flex: 1;
+    flexDirection: column;
+    justifyContent: center;
 `
 
 export const ModalFade = styled.View`
@@ -22,11 +22,28 @@ export const ModalFade = styled.View`
 `
 
 export const TextInputModal = styled.TextInput`
-    background-color: white;
     fontFamily: 'ArgentumSans';
+    width: 80%;
+    text-align: left; 
+`
+export const TextInputIcon = styled(Feather).attrs({
+    name: 'search',
+    size: 30,
+    color: 'rgba(0, 0, 0, 0.6)'
+})`
+    padding: 10px
+`
+export const TextInputView = styled.View`
+    background-color: white;
+    flex: 1;
+    flexDirection: row;
     borderRadius: ${scale(12)}px;
-    width: 100%;
-    text-align: center; 
+    width: 100%; 
+    maxHeight: ${scale(50)}px;
+`
+
+export const ScrollToView = styled.View`    
+    maxHeight: 70%;
 `
 
 export const ScrollModalView = styled.ScrollView`
@@ -34,7 +51,6 @@ export const ScrollModalView = styled.ScrollView`
     width: 100%;
     margin-top: ${scale(10)}px;
     borderRadius: ${scale(12)}px;
-    max-height: 70%
 `
 
 export const TextModalView = styled.Text`
@@ -42,6 +58,7 @@ export const TextModalView = styled.Text`
     color: #32323B;
     padding: ${scale(10)}px;
     fontSize: ${scale(14)}px;
+    max-height: ${scale(60)}px;
     text-align: center;
 `
 

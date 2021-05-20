@@ -373,6 +373,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             data={countryChoices}
                             value={country}
                             onChange={(option) => setCountry(option.label)}
+                            placeholder={translate('autocomplete.placeholder.country')}
                         />
                     </FormGroupChild>
                 </FormGroup>
