@@ -168,7 +168,7 @@ const Home = ({ navigation }) => {
 
         const userLastSurveys = surveys.filter(
             (survey) =>
-                survey && new Date(survey.created_at).getTime() >= lastWeek.getTime()
+                new Date(survey.created_at).getTime() >= lastWeek.getTime()
         )
 
         let badReports = 0
