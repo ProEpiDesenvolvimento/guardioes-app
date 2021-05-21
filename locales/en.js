@@ -360,10 +360,10 @@ export default {
         inputVerificationCode: 'Code',
     },
     surveilanceInvite: {
-        title: 'Surveilance invite',
-        message: 'You don\'t participate of surveilance. Would you like participate?',
-        cancelButton: 'Cancel',
-        redirectButton: 'Accept invite',
+        title: 'Be part of active surveilance',
+        message: 'you are not yet an active watchman. Do you want to participate?',
+        cancelButton: 'No',
+        redirectButton: 'Yes, I\'ll be part',
     },
     changePwd: {
         title: 'Reset Password',

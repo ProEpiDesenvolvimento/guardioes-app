@@ -365,10 +365,10 @@ export default {
         inputVerificationCode: 'Código',
     },
     surveilanceInvite: {
-        title: 'Invitación a vigilancia',
-        message: 'No participa en la vigilancia. ¿Te gustaría participar?',
-        cancelButton: 'Cancelar',
-        redirectButton: 'Aceptar invitación',
+        title: 'Sea parte de la vigilancia activa',
+        message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
+        cancelButton: 'No',
+        redirectButton: 'Si, seré parte',
     },
     changePwd: {
         title: 'Redefinir contraseña',

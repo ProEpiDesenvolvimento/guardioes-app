@@ -45,30 +45,8 @@ import { useUser } from '../../../hooks/user'
 import { getAppSymptoms } from '../../../api/symptoms'
 import { createSurvey } from '../../../api/surveys'
 
-/*
 import { API_URL } from 'react-native-dotenv'
 
-const DeleteSurveys = async (id, token, surveyId) => {
-    let response = {}
-
-    try {
-        response = await fetch(`${API_URL}/users/${id}/surveys/${surveyId}`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-                Authorization: token,
-            },
-            method: 'DELETE'
-        })
-    } catch (err) {
-        console.warn(err)
-    }
-
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
-}
-*/
 const today = moment().format('DD-MM-YYYY')
 
 const BadReport = ({ navigation }) => {
@@ -159,15 +137,16 @@ const BadReport = ({ navigation }) => {
         )
     }
 
-    const showSurveilanceInvite = (response) => {
+    const showSurveilanceInvite = (response, func) => {
         const title = translate('surveilanceInvite.title')
+        const message = user.user_name + ', ' + translate('surveilanceInvite.message');
         Alert.alert(
             title,
-            translate('surveilanceInvite.message'),
+            message,
             [
                 {
                     text: translate('surveilanceInvite.cancelButton'),
-                    onPress: () => showWhatsappAlert(response)
+                    onPress: () => func(response)
                 },
                 {
                     text: translate('surveilanceInvite.redirectButton'),
@@ -196,16 +175,26 @@ const BadReport = ({ navigation }) => {
                     text: 'Ok',
                     onPress: () => {
                         if (user.is_vigilance) {
-                            showWhatsappAlert(response)
+                            return showWhatsappAlert(response)
                         }
                         else {
-                            showSurveilanceInvite(response)
+                            return showSurveilanceInvite(response, showWhatsappAlert)
                         }
                     },
                 },
             ]
         } else {
-            alert = [{ text: 'Ok', onPress: () => showConfirmation(response) }]
+            alert = [{
+                text: 'Ok', 
+                onPress: () => {
+                    if (user.is_vigilance) {
+                        showConfirmation(response)
+                    }
+                    else {
+                        showSurveilanceInvite(response, showConfirmation)
+                    }
+                },
+            }]
         }
 
         Alert.alert(
@@ -241,8 +230,6 @@ const BadReport = ({ navigation }) => {
     const sendSurvey = async () => {
         // Send Survey BAD CHOICE
         showLoadingAlert()
-
-        // DeleteSurveys(8, token, 16)
 
         let local = {}
         if (location.error !== 0) {

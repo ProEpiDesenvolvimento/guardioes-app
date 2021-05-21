@@ -363,10 +363,10 @@ export default {
         inputVerificationCode: 'Código',
     },
     surveilanceInvite: {
-        title: 'Convite para vigilância',
-        message: 'Você não participa da vigilância. Gostaria de participar?',
-        cancelButton: 'Cancelar',
-        redirectButton: 'Aceitar convite',
+        title: 'Faça parte da vigilância ativa',
+        message: 'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
+        cancelButton: 'Não',
+        redirectButton: 'Sim, vou fazer parte',
     },
     changePwd: {
         title: 'Redefinir senha',
