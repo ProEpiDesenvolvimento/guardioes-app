@@ -371,4 +371,8 @@ export default {
             shortPwd: 'A senha precisa ter no mínimo 8 caracteres',
         },
     },
+    autocomplete: {
+        searchBar: 'Pesquise aqui',
+        noResult: 'Sem resultados',
+    }
 }

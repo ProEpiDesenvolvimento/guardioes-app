@@ -19,6 +19,8 @@ import {
     getUserGroupPath,
 } from '../../api/groups'
 
+import Autocomplete from '../Autocomplete'
+
 class InstitutionSelector extends Component {
     constructor(props) {
         super(props)
@@ -245,15 +247,14 @@ class InstitutionSelector extends Component {
                 <FormLabel light={this.state.lightTheme}>
                     {this.capitalizeFirstWords(group.label)}:
                 </FormLabel>
-                <Selector
+                <Autocomplete
                     data={group.children.map((x) => {
                         return {
                             key: x.id,
                             label: x.description,
                         }
                     })}
-                    initValue={this.state.selectionIndexes[index].label}
-                    cancelText={translate('selector.cancelButton')}
+                    value={this.state.selectionIndexes[index].label}
                     onChange={(option) => {
                         this.setState({
                             groupList: this.state.groupList.slice(0, index + 1),
