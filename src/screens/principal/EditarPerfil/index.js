@@ -51,6 +51,7 @@ import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
+import Autocomplete from '../../../components/Autocomplete'
 
 Feather.loadFont()
 
@@ -368,11 +369,10 @@ const EditarPerfil = ({ navigation, route }) => {
 
                     <FormGroupChild>
                         <FormLabel>{translate('register.country')}</FormLabel>
-                        <Selector
+                        <Autocomplete 
                             data={countryChoices}
-                            initValue={country}
-                            cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setCountry(option.key)}
+                            value={country}
+                            onChange={(option) => setCountry(option.label)}
                         />
                     </FormGroupChild>
                 </FormGroup>
@@ -381,21 +381,19 @@ const EditarPerfil = ({ navigation, route }) => {
                     <FormGroup>
                         <FormGroupChild>
                             <FormLabel>Estado:</FormLabel>
-                            <Selector
+                            <Autocomplete
                                 data={stateOptions}
-                                initValue={state}
-                                cancelText={translate('selector.cancelButton')}
-                                onChange={(option) => setState(option.key)}
+                                value={state}
+                                onChange={setState}
                             />
                         </FormGroupChild>
 
                         <FormGroupChild>
                             <FormLabel>Município:</FormLabel>
-                            <Selector
+                            <Autocomplete
                                 data={getCity(state)}
-                                initValue={city}
-                                cancelText={translate('selector.cancelButton')}
-                                onModalClose={(option) => setCity(option.key)}
+                                value={city}
+                                onChange={setCity}
                             />
                         </FormGroupChild>
                     </FormGroup>

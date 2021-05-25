@@ -380,4 +380,8 @@ export default {
             shortPwd: 'La contraseña debe tener al menos 8 caracteres',
         },
     },
+    autocomplete: {
+        searchBar: 'Pesquise aquí',
+        noResult: 'No hay resultados',
+    },
 }
