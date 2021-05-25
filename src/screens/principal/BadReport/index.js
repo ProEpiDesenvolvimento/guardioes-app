@@ -44,6 +44,7 @@ import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
 import { useUser } from '../../../hooks/user'
 import { getAppSymptoms } from '../../../api/symptoms'
 import { createSurvey } from '../../../api/surveys'
+import { getAppGroup } from '../../../api/groups'
 
 import { API_URL } from 'react-native-dotenv'
 
@@ -77,16 +78,37 @@ const BadReport = ({ navigation }) => {
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertMessage, setAlertMessage] = useState(null)
 
+    const [inviteSurveilance, setInviteSurveilance] = useState(false)
+
     const person = getCurrentUserInfo()
 
     useEffect(() => {
         getSymptoms()
     }, [])
 
+    useEffect(() => {
+        getActiveSurveillance()
+    }, [])
+
     const showLoadingAlert = () => {
         setAlertMessage(null)
         setShowAlert(true)
         setShowProgressBar(true)
+    }
+
+    const getActiveSurveillance = async () => {
+        if (user.group_id && !user.is_vigilance) {
+            const response = await getAppGroup(user.group_id)
+
+            if (response.status === 200) {
+                const { group } = response.body
+
+                if (group.group_manager.vigilance_email) {
+                    setInviteSurveilance(true)
+                }
+            }
+            setIsLoading(false)
+        }
     }
 
     const showConfirmation = (response) => {
@@ -154,6 +176,7 @@ const BadReport = ({ navigation }) => {
                 },
             ]
         )
+        setIsLoading(false)
     }
 
     const showSyndromeAlert = (response) => {
@@ -174,11 +197,11 @@ const BadReport = ({ navigation }) => {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        if (user.is_vigilance) {
-                            return showWhatsappAlert(response)
+                        if (!inviteSurveilance) {
+                            showWhatsappAlert(response)
                         }
                         else {
-                            return showSurveilanceInvite(response, showWhatsappAlert)
+                            showSurveilanceInvite(response, showWhatsappAlert)
                         }
                     },
                 },
@@ -187,7 +210,7 @@ const BadReport = ({ navigation }) => {
             alert = [{
                 text: 'Ok', 
                 onPress: () => {
-                    if (user.is_vigilance) {
+                    if (!inviteSurveilance) {
                         showConfirmation(response)
                     }
                     else {
