@@ -154,8 +154,13 @@ export const Alerts = styled.Text`
     margin-left: ${scale(20)}px;
 `
 
-export const AlertContainer = styled(ShadowView).attrs({})`
+export const AlertButton = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})`
     width: 88%;
+`
+
+export const AlertContainer = styled(ShadowView).attrs({})`
     align-items: center;
     background-color: ${(props) => (props.alert ? '#f18f01' : '#5DD39E')};
     border-radius: ${scale(18)}px;

@@ -204,8 +204,10 @@ export default {
         addProfile: 'Add a Profile',
         alerts: 'Alerts',
         statusLast7Days: 'Status in the last 7 days:',
-        statusLast7DaysGood: 'You have been feeling well.',
-        statusLast7DaysBad: 'You were not feeling well.',
+        statusLast7DaysGood: 'You have been feeling well',
+        statusLast7DaysBad: 'You were not feeling well',
+        bioSecurity: 'Biosecurity:',
+        bioSecurityQuestions: 'Answer questions about your institution',
         userHowYouFelling: 'How are you feeling today?',
         offlineTitle: 'Offline Mode',
         offlineMessage: 'You are not connected to the internet.',
@@ -318,6 +320,11 @@ export default {
             'Esses direitos podem ser feitos através da própria configuração do aplicativo.\n\n' +
             '4. Modificação da política de privacidade e proteção de dados\n\n' +
             'O App Guardião da Saúde reserva se ao direito de modificar a presente política para adaptá-la para futuros desenvolvimentos legislativos ou jurisprudenciais. Qualquer mudança que não derivam de adaptação às alterações legislativas ou jurisprudenciais será anunciada no aplicativo ou, se significativas, comunicada por e-mail para os usuários.',
+    },
+    biosecurity: {
+        title: 'Biosecurity',
+        titleError: 'Some questions have not been answered',
+        messageError: 'Please, answer all questions.',
     },
     drawer: {
         reportRumor: 'Report Rumor',
