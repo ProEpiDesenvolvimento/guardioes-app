@@ -46,8 +46,6 @@ import { getAppSymptoms } from '../../../api/symptoms'
 import { createSurvey } from '../../../api/surveys'
 import { getAppGroup } from '../../../api/groups'
 
-import { API_URL } from 'react-native-dotenv'
-
 const today = moment().format('DD-MM-YYYY')
 
 const BadReport = ({ navigation }) => {
