@@ -25,7 +25,7 @@ const Sobre = () => {
                 >
                     <Image
                         source={ProEpiLogo}
-                        style={{ height: scale(60), width: scale(60) }}
+                        style={{ height: scale(70), width: scale(70) }}
                     />
                 </TouchableOpacity>
 
