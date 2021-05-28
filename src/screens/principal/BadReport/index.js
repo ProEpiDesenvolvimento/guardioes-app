@@ -85,28 +85,15 @@ const BadReport = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        getActiveSurveillance()
+        if (user.group_vigilance_email && !user.is_vigilance) {
+            setInviteSurveilance(true)
+        }
     }, [])
 
     const showLoadingAlert = () => {
         setAlertMessage(null)
         setShowAlert(true)
         setShowProgressBar(true)
-    }
-
-    const getActiveSurveillance = async () => {
-        if (user.group_id && !user.is_vigilance) {
-            const response = await getAppGroup(user.group_id)
-
-            if (response.status === 200) {
-                const { group } = response.body
-
-                if (group.group_manager.vigilance_email) {
-                    setInviteSurveilance(true)
-                }
-            }
-        }
-        setShowProgressBar(false)
     }
 
     const showConfirmation = (response) => {

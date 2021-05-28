@@ -28,7 +28,7 @@ Feather.loadFont()
 SimpleLineIcons.loadFont()
 
 const LeftMenu = ({ navigation }) => {
-    const { user, avatar, households, householdAvatars, signOut } = useUser()
+    const { user, avatar, households, householdAvatars, signOut, storeUser } = useUser()
 
     const [hasSurveillance, setHasSurveillance] = useState(false)
     let index = households.length
@@ -42,6 +42,10 @@ const LeftMenu = ({ navigation }) => {
 
                 if (group.group_manager.vigilance_email) {
                     setHasSurveillance(true)
+                    await storeUser({
+                        ...user, 
+                        group_vigilance_email: group.group_manager.vigilance_email,
+                    })
                 } else {
                     setHasSurveillance(false)
                 }
