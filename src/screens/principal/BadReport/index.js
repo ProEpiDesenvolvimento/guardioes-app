@@ -105,8 +105,8 @@ const BadReport = ({ navigation }) => {
                     setInviteSurveilance(true)
                 }
             }
-            setIsLoading(false)
         }
+        setShowProgressBar(false)
     }
 
     const showConfirmation = (response) => {
@@ -174,7 +174,7 @@ const BadReport = ({ navigation }) => {
                 },
             ]
         )
-        setIsLoading(false)
+        setShowProgressBar(false)
     }
 
     const showSyndromeAlert = (response) => {
