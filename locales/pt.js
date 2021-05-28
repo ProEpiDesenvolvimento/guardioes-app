@@ -205,8 +205,10 @@ export default {
         addProfile: 'Adicionar Perfil',
         alerts: 'Alertas',
         statusLast7Days: 'Status nos últimos 7 dias:',
-        statusLast7DaysGood: 'Você tem se sentido bem.',
-        statusLast7DaysBad: 'Você não esteve bem.',
+        statusLast7DaysGood: 'Você tem se sentido bem',
+        statusLast7DaysBad: 'Você não esteve bem',
+        bioSecurity: 'Biossegurança:',
+        bioSecurityQuestions: 'Responda perguntas sobre sua Instituição',
         userHowYouFelling: 'Como está se sentindo hoje?',
         offlineTitle: 'Modo Offline',
         offlineMessage: 'Você está sem conexão com a internet.',
@@ -321,6 +323,11 @@ export default {
             '4. Modificação da política de privacidade e proteção de dados\n\n' +
             'O App Guardião da Saúde reserva se ao direito de modificar a presente política para adaptá-la para futuros desenvolvimentos legislativos ou jurisprudenciais. Qualquer mudança que não derivam de adaptação às alterações legislativas ou jurisprudenciais será anunciada no aplicativo ou, se significativas, comunicada por e-mail para os usuários.',
     },
+    biosecurity: {
+        title: 'Biossegurança',
+        titleError: 'Algumas perguntas não foram respondidas',
+        messageError: 'Por favor, responda todas as perguntas.',
+    },
     drawer: {
         reportRumor: 'Reportar Rumor',
         toEdit: 'Editar perfis',
@@ -377,4 +384,8 @@ export default {
             shortPwd: 'A senha precisa ter no mínimo 8 caracteres',
         },
     },
+    autocomplete: {
+        searchBar: 'Pesquise aqui',
+        noResult: 'Sem resultados',
+    }
 }

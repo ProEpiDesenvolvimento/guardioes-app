@@ -1,5 +1,6 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import LeftMenu from '../components/LeftMenu'
 import TabBar from './TabBar'

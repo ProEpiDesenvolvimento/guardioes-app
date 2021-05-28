@@ -34,7 +34,8 @@ const LeftMenu = ({ navigation }) => {
         households, 
         householdAvatars, 
         signOut, 
-        storeUser 
+        storeUser,
+        setGroup,
     } = useUser()
 
     const [hasSurveillance, setHasSurveillance] = useState(false)
@@ -46,6 +47,7 @@ const LeftMenu = ({ navigation }) => {
 
             if (response.status === 200) {
                 const { group } = response.body
+                setGroup(group)
 
                 if (group.group_manager.vigilance_email) {
                     setHasSurveillance(true)

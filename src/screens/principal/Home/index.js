@@ -34,6 +34,7 @@ import {
     Bem,
     Mal,
     Alerts,
+    AlertButton,
     AlertContainer,
     StatusAlert,
     StatusTitle,
@@ -72,11 +73,13 @@ const Home = ({ navigation }) => {
         avatar,
         location,
         getCurrentLocation,
+        group,
         households,
         storeHouseholds,
         householdAvatars,
         surveys,
         storeSurveys,
+        lastForm,
         getCacheData,
         storeCacheData,
         updateUserScore,
@@ -86,6 +89,7 @@ const Home = ({ navigation }) => {
     } = useUser()
 
     const [showTermsConsent, setShowTermsConsent] = useState(false)
+    const [hasForm, setHasForm] = useState(false)
     const [hasBadReports, setHasBadReports] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
@@ -97,8 +101,8 @@ const Home = ({ navigation }) => {
 
     useFocusEffect(
         useCallback(() => {
-            getUserHealth()
-        }, [surveys])
+            getUserAlerts()
+        }, [surveys, lastForm])
     )
 
     useEffect(() => {
@@ -159,12 +163,20 @@ const Home = ({ navigation }) => {
         }
     }
 
-    const getUserHealth = () => {
+    const getUserAlerts = () => {
         const todayDate = new Date()
         const lastWeek = new Date()
 
         lastWeek.setDate(todayDate.getDate() - 7)
         lastWeek.setHours(0, 0, 0, 0)
+
+        const lastFormDate = new Date(lastForm)
+
+        if (!lastForm || lastFormDate.getTime() < lastWeek.getTime()) {
+            setHasForm(true)
+        } else {
+            setHasForm(false)
+        }
 
         const userLastSurveys = surveys.filter(
             (survey) =>
@@ -361,23 +373,47 @@ const Home = ({ navigation }) => {
 
                     <Alerts>{translate('home.alerts')}</Alerts>
 
-                    <AlertContainer alert={hasBadReports}>
-                        <SimpleLineIcons
-                            name={hasBadReports ? 'exclamation' : 'check'}
-                            size={48}
-                            color='#ffffff'
-                        />
-                        <StatusAlert>
-                            <StatusTitle>
-                                {translate('home.statusLast7Days')}
-                            </StatusTitle>
-                            <StatusAlertText>
-                                {hasBadReports
-                                    ? translate('home.statusLast7DaysBad')
-                                    : translate('home.statusLast7DaysGood')}
-                            </StatusAlertText>
-                        </StatusAlert>
-                    </AlertContainer>
+                    {hasForm && group.form_id ? (
+                        <AlertButton
+                            onPress={() => navigation.navigate('BioSeguranca')}
+                        >
+                            <AlertContainer alert>
+                                <SimpleLineIcons
+                                    name='bubble'
+                                    size={48}
+                                    color='#ffffff'
+                                />
+                                <StatusAlert>
+                                    <StatusTitle>
+                                        {translate('home.bioSecurity')}
+                                    </StatusTitle>
+                                    <StatusAlertText>
+                                        {translate('home.bioSecurityQuestions')}
+                                    </StatusAlertText>
+                                </StatusAlert>
+                            </AlertContainer>
+                        </AlertButton>
+                    ) : null}
+
+                    <AlertButton>
+                        <AlertContainer alert={hasBadReports}>
+                            <SimpleLineIcons
+                                name={hasBadReports ? 'exclamation' : 'check'}
+                                size={48}
+                                color='#ffffff'
+                            />
+                            <StatusAlert>
+                                <StatusTitle>
+                                    {translate('home.statusLast7Days')}
+                                </StatusTitle>
+                                <StatusAlertText>
+                                    {hasBadReports
+                                        ? translate('home.statusLast7DaysBad')
+                                        : translate('home.statusLast7DaysGood')}
+                                </StatusAlertText>
+                            </StatusAlert>
+                        </AlertContainer>
+                    </AlertButton>
                 </ScrollViewStyled>
 
                 <MenuBars onPress={() => navigation.openDrawer()}>
@@ -400,7 +436,7 @@ const Home = ({ navigation }) => {
                                         onPress={async () => {
                                             setModalVisible(!modalVisible)
                                             await selectUser(user)
-                                            getUserHealth()
+                                            getUserAlerts()
                                         }}
                                     >
                                         <Avatar
@@ -420,7 +456,7 @@ const Home = ({ navigation }) => {
                                             onPress={async () => {
                                                 setModalVisible(!modalVisible)
                                                 await selectUser(household)
-                                                getUserHealth()
+                                                getUserAlerts()
                                             }}
                                         >
                                             <Avatar

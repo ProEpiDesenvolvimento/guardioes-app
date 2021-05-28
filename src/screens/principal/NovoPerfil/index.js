@@ -93,7 +93,7 @@ const NovoPerfil = ({ navigation }) => {
             navigation.navigate('Home')
         } else {
             console.warn(response)
-            Alert.alert('Ocorreu um erro, tente novamente depois.')
+            Alert.alert(translate('register.geralError'))
             setShowAlert(false)
         }
     }
