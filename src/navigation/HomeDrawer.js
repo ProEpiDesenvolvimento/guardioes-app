@@ -6,7 +6,6 @@ import LeftMenu from '../components/LeftMenu'
 import TabBar from './TabBar'
 
 import { scale } from '../utils/scalling'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 const Drawer = createDrawerNavigator()
 
