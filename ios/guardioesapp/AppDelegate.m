@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -29,6 +30,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
   
   // Remove this method to stop OneSignal Debugging  
   [OneSignal setLogLevel:ONE_S_LL_VERBOSE visualLevel:ONE_S_LL_NONE];
@@ -43,6 +45,9 @@
     NSLog(@"User accepted notifications: %d", accepted);
   }];
   
+
+  [RNSplashScreen show];
+
   return YES;
 }
 

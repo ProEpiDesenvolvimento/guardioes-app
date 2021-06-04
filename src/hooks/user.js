@@ -28,9 +28,11 @@ export const UserProvider = ({ children }) => {
     const [selected, setSelected] = useState({})
     const [surveys, setSurveys] = useState([])
     const [location, setLocation] = useState({})
+    const [group, setGroup] = useState({})
     const [app, setApp] = useState({})
     const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
+    const [lastForm, setLastForm] = useState('')
 
     const [isLoading, setIsLoading] = useState(true)
     const [isLoggedIn, setIsLoggedIn] = useState(true)
@@ -111,6 +113,7 @@ export const UserProvider = ({ children }) => {
         const avatar = await AsyncStorage.getItem('userAvatar')
         const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
+        const lastForm = await AsyncStorage.getItem('lastForm')
         const householdsData = JSON.parse(
             await AsyncStorage.getItem('householdsData')
         )
@@ -126,6 +129,9 @@ export const UserProvider = ({ children }) => {
         }
         if (lastReport) {
             setLastReport(lastReport)
+        }
+        if (lastForm) {
+            setLastForm(lastForm)
         }
         if (householdsData) {
             setHouseholds(householdsData)
@@ -316,7 +322,6 @@ export const UserProvider = ({ children }) => {
 
     const storeSurveys = (surveys) => {
         setSurveys(surveys)
-
         AsyncStorage.setItem('surveysData', JSON.stringify(surveys))
     }
 
@@ -345,30 +350,42 @@ export const UserProvider = ({ children }) => {
             console.warn(err)
         }
 
-        Geolocation.getCurrentPosition(
-            (position) => {
-                setLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    latitudeDelta: 0.06,
-                    longitudeDelta: 0.06,
-                    error: 0,
-                })
-            },
-            (error) => {
-                setLocation({
-                    latitude: 0,
-                    longitude: 0,
-                    latitudeDelta: 0.06,
-                    longitudeDelta: 0.06,
-                    error: error.code,
-                })
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 50000,
-            }
+        return new Promise((resolve) =>
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    const local = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.06,
+                        longitudeDelta: 0.06,
+                        error: 0,
+                    }
+                    setLocation(local)
+                    resolve(local)
+                },
+                (error) => {
+                    const local = {
+                        latitude: 0,
+                        longitude: 0,
+                        latitudeDelta: 0.06,
+                        longitudeDelta: 0.06,
+                        error: error.code,
+                    }
+                    setLocation(local)
+                    resolve(local)
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 50000,
+                }
+            )
         )
+    }
+
+    const storeLastForm = async (lastForm) => {
+        lastForm = lastForm.toISOString()
+        setLastForm(lastForm)
+        AsyncStorage.setItem('lastForm', lastForm)
     }
 
     const updateUserScore = async () => {
@@ -445,8 +462,12 @@ export const UserProvider = ({ children }) => {
                 storeSurveys,
                 location,
                 getCurrentLocation,
+                group,
+                setGroup,
                 app,
                 lastReport,
+                lastForm,
+                storeLastForm,
                 score,
                 updateUserScore,
                 storeCacheData,

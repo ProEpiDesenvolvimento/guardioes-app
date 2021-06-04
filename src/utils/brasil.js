@@ -1,4 +1,4 @@
-//Informação de Estados
+// Informação de Estados
 export const stateOptions = [
      { key: 'ACRE', label: 'ACRE' },
      { key: 'ALAGOAS', label: 'ALAGOAS' },
@@ -29,10 +29,9 @@ export const stateOptions = [
      { key: 'TOCANTINS', label: 'TOCANTINS' },
 ]
 
-//Informcação de Municipios
-
+// Informação de Municipios
 export function getCity(city) {
-     //console.warn(city)
+     let CITIES = []
      switch (city) {
           case "ACRE":
                CITIES = [

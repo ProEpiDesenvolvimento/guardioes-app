@@ -45,7 +45,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-swiper-flatlist": "^2.0.4",
     "react-native-vector-icons": "6.6.0",
-    "react-native-webview": "^10.10.2",
+    "react-native-webview": "^11.4.3",
     "rn-secure-storage": "^2.0.7",
     "styled-components": "^5.2.0"
   },
@@ -55,6 +55,7 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^7.10.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.12.0",

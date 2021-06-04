@@ -78,7 +78,6 @@ const BadReport = ({ navigation }) => {
     const person = getCurrentUserInfo()
 
     useEffect(() => {
-        getCurrentLocation()
         getSymptoms()
     }, [])
 
@@ -192,15 +191,22 @@ const BadReport = ({ navigation }) => {
 
     const sendSurvey = async () => {
         // Send Survey BAD CHOICE
-        if (location.error !== 0 || personSymptoms.length === 0) return
-
         showLoadingAlert()
-        const householdID = person.is_household ? person.id : null
 
+        let local = {}
+        if (location.error !== 0) {
+            local = await getCurrentLocation()
+        } else {
+            local = location
+        }
+
+        if (personSymptoms.length === 0) return
+
+        const householdID = person.is_household ? person.id : null
         const survey = {
             household_id: householdID,
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: local.latitude,
+            longitude: local.longitude,
             bad_since: badSince,
             traveled_to: hasTraveled,
             went_to_hospital: wentToHospital,
