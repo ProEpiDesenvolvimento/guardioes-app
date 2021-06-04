@@ -27,5 +27,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>NotificationService</string>
 	</dict>
+	<key>OneSignal_app_groups_key</key>
+	<string>group.com.guardioesapp.onesignal</string>
 </dict>
 </plist>
