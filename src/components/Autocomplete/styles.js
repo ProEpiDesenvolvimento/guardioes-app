@@ -1,6 +1,8 @@
 import styled from 'styled-components/native'
-import { scale } from '../../utils/scalling'
+
 import Feather from 'react-native-vector-icons/Feather'
+
+import { scale } from '../../utils/scalling'
 
 export const Container = styled.View`
     width: 100%
@@ -9,11 +11,11 @@ export const Container = styled.View`
 
 export const ModalView = styled.SafeAreaView`
     margin: auto;
-    backgroundColor: transparent;
+    background-color: transparent;
     width: 90%;
     flex: 1;
-    flexDirection: column;
-    justifyContent: center;
+    flex-direction: column;
+    justify-content: center;
 `
 
 export const ModalFade = styled.View`
@@ -22,42 +24,40 @@ export const ModalFade = styled.View`
 `
 
 export const TextInputModal = styled.TextInput`
-    fontFamily: 'ArgentumSans';
+    font-family: 'ArgentumSans';
     width: 80%;
-    text-align: left; 
+    text-align: left;
 `
 export const TextInputIcon = styled(Feather).attrs({
     name: 'search',
-    size: 30,
-    color: 'rgba(0, 0, 0, 0.6)'
+    size: scale(28),
+    color: 'rgba(0, 0, 0, 0.6)',
 })`
-    padding: 10px
+    padding: 10px;
 `
 export const TextInputView = styled.View`
     background-color: white;
-    flex: 1;
-    flexDirection: row;
-    borderRadius: ${scale(12)}px;
-    width: 100%; 
-    maxHeight: ${scale(50)}px;
+    flex-direction: row;
+    border-radius: ${scale(12)}px;
+    width: 100%;
 `
 
-export const ScrollToView = styled.View`    
-    maxHeight: 70%;
+export const ScrollToView = styled.View`
+    max-height: 70%;
 `
 
 export const FlatModalView = styled.FlatList`
     background-color: white;
     width: 100%;
     margin-top: ${scale(10)}px;
-    borderRadius: ${scale(12)}px;
+    border-radius: ${scale(12)}px;
 `
 
 export const TextModalView = styled.Text`
-    fontFamily: 'ArgentumSans';
-    color: #32323B;
+    font-family: 'ArgentumSans';
+    color: #32323b;
     padding: ${scale(10)}px;
-    fontSize: ${scale(14)}px;
+    font-size: ${scale(14)}px;
     max-height: ${scale(60)}px;
     text-align: center;
 `
@@ -70,10 +70,9 @@ export const CancelText = styled.Text`
 `
 
 export const AutocompleteModal = styled.Modal.attrs({
-    animationType: "slide",
+    animationType: 'slide',
     transparent: true,
-})`
-`
+})``
 
 export const AutocompleteButton = styled.TouchableOpacity`
     background-color: white;
@@ -88,8 +87,8 @@ export const AutocompleteText = styled.Text`
     width: 100%
     font-family: 'ArgentumSans';
     text-align: center;
-    fontSize: ${scale(14)}px;
-    padding-vertical: ${scale(10)}px;
+    font-size: ${scale(14)}px;
+    padding: ${scale(10)}px;
 `
 
 export const CancelTouch = styled.TouchableOpacity.attrs({
@@ -98,18 +97,18 @@ export const CancelTouch = styled.TouchableOpacity.attrs({
     background-color: #348eac;
     color: white;
     padding: ${scale(10)}px;
-    borderRadius: ${scale(14)}px;
-    marginTop: ${scale(10)}px;
+    border-radius: ${scale(14)}px;
+    margin-top: ${scale(10)}px;
     width: 100%
     font-family: 'ArgentumSans';
     text-align: center;
 `
 
 export const NoResultText = styled.Text`
-    fontFamily: 'ArgentumSans';
-    color: #32323B;
+    font-family: 'ArgentumSans';
+    color: #32323b;
     padding: ${scale(10)}px;
-    fontSize: ${scale(14)}px;
+    font-size: ${scale(14)}px;
     max-height: ${scale(60)}px;
     text-align: center;
 `
