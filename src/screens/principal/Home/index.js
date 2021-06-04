@@ -317,6 +317,13 @@ const Home = ({ navigation }) => {
                 <ScrollViewStyled>
                     <Background>
                         <UserView>
+                            <MenuBars onPress={() => navigation.openDrawer()}>
+                                <SimpleLineIcons
+                                    name='menu'
+                                    size={26}
+                                    color='#ffffff'
+                                />
+                            </MenuBars>
                             <NamesContainer>
                                 <TextName>
                                     {translate('home.hello') +
@@ -415,10 +422,6 @@ const Home = ({ navigation }) => {
                         </AlertContainer>
                     </AlertButton>
                 </ScrollViewStyled>
-
-                <MenuBars onPress={() => navigation.openDrawer()}>
-                    <SimpleLineIcons name='menu' size={26} color='#ffffff' />
-                </MenuBars>
 
                 <Modal
                     animationType='fade'
