@@ -57,7 +57,7 @@ const Login = ({ navigation }) => {
             })
             setShowAlert(false)
 
-            setInterval(() => {
+            setTimeout(() => {
                 setNeedSignIn(false)
                 setIsLoggedIn(true)
             }, 1000)

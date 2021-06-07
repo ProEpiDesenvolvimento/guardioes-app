@@ -88,7 +88,7 @@ const Register = ({ navigation }) => {
                 password,
             })
 
-            setInterval(() => {
+            setTimeout(() => {
                 setNeedSignIn(false)
                 setIsLoggedIn(true)
             }, 1000)

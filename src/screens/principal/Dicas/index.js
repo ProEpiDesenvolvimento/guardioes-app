@@ -53,7 +53,7 @@ import { getContents } from '../../../api/contents'
 Feather.loadFont()
 
 const Dicas = () => {
-    const { isOffline, token, app, getCacheData, storeCacheData } = useUser()
+    const { isOffline, token, getCacheData, storeCacheData } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
@@ -80,14 +80,11 @@ const Dicas = () => {
             const response = await getContents(token)
 
             if (response.status === 200) {
-                const appContents = response.body.contents.filter(
-                    (c) => c.app.id === app.id
-                )
-                const sortedContents = sortContents(appContents)
-                setContents(sortedContents)
+                const appContents = sortContents(response.body.contents)
+                setContents(appContents)
                 setIsLoading(false)
 
-                await storeCacheData('contentsData', sortedContents)
+                await storeCacheData('contentsData', appContents)
             }
         } else {
             const contentsCache = await getCacheData('contentsData', false)
