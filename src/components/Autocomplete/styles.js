@@ -24,7 +24,9 @@ export const ModalFade = styled.View`
 `
 
 export const TextInputModal = styled.TextInput`
-    font-family: 'ArgentumSans';
+    font-family: ArgentumSans-Medium;
+    font-size: ${scale(14)}px;
+    color: #32323b;
     width: 80%;
     text-align: left;
 `
@@ -54,8 +56,8 @@ export const FlatModalView = styled.FlatList`
 `
 
 export const TextModalView = styled.Text`
-    font-family: 'ArgentumSans';
-    color: #32323b;
+    font-family: ArgentumSans;
+    color: #348eac;
     padding: ${scale(10)}px;
     font-size: ${scale(14)}px;
     max-height: ${scale(60)}px;
@@ -65,7 +67,8 @@ export const TextModalView = styled.Text`
 export const CancelText = styled.Text`
     color: white;
     width: 100%
-    font-family: 'ArgentumSans';
+    font-family: ArgentumSans-Medium;
+    font-size: ${scale(14)}px;
     text-align: center;
 `
 
@@ -85,9 +88,10 @@ export const AutocompleteButton = styled.TouchableOpacity`
 
 export const AutocompleteText = styled.Text`
     width: 100%
-    font-family: 'ArgentumSans';
+    font-family: ArgentumSans;
     text-align: center;
     font-size: ${scale(14)}px;
+    color: #32323b;
     padding: ${scale(10)}px;
 `
 
@@ -99,13 +103,12 @@ export const CancelTouch = styled.TouchableOpacity.attrs({
     padding: ${scale(10)}px;
     border-radius: ${scale(14)}px;
     margin-top: ${scale(10)}px;
-    width: 100%
-    font-family: 'ArgentumSans';
+    width: 100%;
     text-align: center;
 `
 
 export const NoResultText = styled.Text`
-    font-family: 'ArgentumSans';
+    font-family: ArgentumSans;
     color: #32323b;
     padding: ${scale(10)}px;
     font-size: ${scale(14)}px;

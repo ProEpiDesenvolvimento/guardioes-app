@@ -17,7 +17,7 @@ import translate from '../../../../locales/i18n'
 import { redirectAlert } from '../../../utils/consts'
 
 const NoticiasComponent = ({ data }) => {
-    const date = moment(new Date(data.created_at)).format('DD/MM/YY')
+    const date = moment(data.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY').format('DD/MM/YY')
 
     return (
         <Button
