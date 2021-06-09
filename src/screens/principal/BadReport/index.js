@@ -199,8 +199,20 @@ const BadReport = ({ navigation }) => {
         } else {
             local = location
         }
+        
+        if (personSymptoms.length === 0) {
+            Alert.alert(
+                translate('badReport.reportWithoutSymptom.title'),
+                translate('badReport.reportWithoutSymptom.message'),
+                [
+                    text="OK",
+                ]
+            )
+            setShowProgressBar(false)
+            setShowAlert(false)
 
-        if (personSymptoms.length === 0) return
+            return
+        }
 
         const householdID = person.is_household ? person.id : null
         const survey = {
