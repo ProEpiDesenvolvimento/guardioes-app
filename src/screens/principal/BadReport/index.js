@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, Alert } from 'react-native'
 import moment from 'moment'
+import { CommonActions } from '@react-navigation/native'
 
 import Emoji from 'react-native-emoji'
 import Share from 'react-native-share'
@@ -44,7 +45,6 @@ import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
 import { useUser } from '../../../hooks/user'
 import { getAppSymptoms } from '../../../api/symptoms'
 import { createSurvey } from '../../../api/surveys'
-import { getAppGroup } from '../../../api/groups'
 
 const today = moment().format('DD-MM-YYYY')
 
@@ -97,6 +97,7 @@ const BadReport = ({ navigation }) => {
     }
 
     const showConfirmation = (response) => {
+        showLoadingAlert()
         let alertMessage = ''
 
         if (response && !response.errors) {
@@ -153,11 +154,25 @@ const BadReport = ({ navigation }) => {
             [
                 {
                     text: translate('surveilanceInvite.cancelButton'),
-                    onPress: () => func(response)
+                    onPress: () => {
+                        func(response)
+                    }
                 },
                 {
                     text: translate('surveilanceInvite.redirectButton'),
-                    onPress: () => navigation.navigate('Vigilancia')
+                    onPress: () => {
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 1,
+                                routes: [
+                                    { name: 'HomeDrawer' },
+                                    {
+                                        name: 'Vigilancia',
+                                    },
+                                ],
+                            })
+                        );
+                    }
                 },
             ]
         )
@@ -237,7 +252,6 @@ const BadReport = ({ navigation }) => {
 
     const sendSurvey = async () => {
         // Send Survey BAD CHOICE
-        showLoadingAlert()
 
         let local = {}
         if (location.error !== 0) {
