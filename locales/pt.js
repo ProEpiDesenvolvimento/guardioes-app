@@ -168,6 +168,10 @@ export default {
             covidSuspect:
                 'Para baixar o aplicativo Guardiões da Saúde e contribuir para o enfrentamento da Covid-19, acesse:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara baixar o aplicativo do Ministério da Saúde, acesse:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinição de contato próximo: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
         },
+        reportWithoutSymptom: {
+            title: 'Não foi possível enviar',
+            message: 'Selecione ao menos 1 sintoma',
+        }
     },
     advices: {
         moreInformations: 'Mais Informações',

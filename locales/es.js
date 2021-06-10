@@ -169,6 +169,10 @@ export default {
             covidSuspect:
                 'Para descargar la aplicación Guardians of Health y contribuir a hacer frente a Covid-19, visite:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=pt\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=pt&ls=1\n\nPara descargar la aplicación del Ministerio de Salud, visite:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=pt_BR\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinición de contacto cercano: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
         },
+        reportWithoutSymptom: {
+            title: 'No es posible enviar',
+            message: 'Seleccione al menos 1 síntoma',
+        }
     },
     advices: {
         moreInformations: 'Mas informaciones',
