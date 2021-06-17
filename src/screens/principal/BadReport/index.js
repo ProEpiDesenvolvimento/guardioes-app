@@ -257,13 +257,13 @@ const BadReport = ({ navigation }) => {
             created_at: moment().format('YYYY-MM-DD'),
         }
 
-        let response = await createSurvey(survey, user.id, token)
+        const response = await createSurvey(survey, user.id, token)
         setShowProgressBar(false)
 
         // Wait page re-render
         const delay = ms => new Promise(res => setTimeout(res, ms));
         await delay(50)
-        
+
         updateUserScore()
         if (response.status === 200 || response.status === 201) {
             if (!response.body.errors && response.body.messages.top_3) {
