@@ -258,10 +258,13 @@ const BadReport = ({ navigation }) => {
         }
 
         let response = await createSurvey(survey, user.id, token)
-    
-        updateUserScore()
         setShowProgressBar(false)
 
+        // Wait page re-render
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        await delay(50)
+        
+        updateUserScore()
         if (response.status === 200 || response.status === 201) {
             if (!response.body.errors && response.body.messages.top_3) {
                 if (response.body.messages.top_3[0]) {
@@ -431,9 +434,9 @@ const BadReport = ({ navigation }) => {
                     </Text>
                 )}
                 message={alertMessage}
-                closeOnTouchOutside={!showProgressBar}
+                closeOnTouchOutside={true}
                 closeOnHardwareBackPress={false}
-                showConfirmButton={!showProgressBar}
+                showConfirmButton={true}
                 confirmText={translate('badReport.alertMessages.button')}
                 onConfirmPressed={() => navigation.navigate('Mapa')}
                 onDismiss={() => navigation.navigate('Mapa')}
