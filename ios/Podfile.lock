@@ -59,8 +59,10 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - glog (0.3.5)
+  - hermes-engine (0.7.2)
   - libevent (2.1.12)
   - OneSignal (3.4.3)
+  - OneSignalXCFramework (3.4.4)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -71,6 +73,11 @@ PODS:
     - boost-for-react-native
     - DoubleConversion
     - glog
+  - RCT-Folly/Futures (2020.01.13.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+    - libevent
   - RCTRequired (0.64.1)
   - RCTTypeSafety (0.64.1):
     - FBLazyVector (= 0.64.1)
@@ -126,6 +133,16 @@ PODS:
     - React-jsi (= 0.64.1)
     - React-jsiexecutor (= 0.64.1)
     - React-jsinspector (= 0.64.1)
+    - React-perflogger (= 0.64.1)
+    - Yoga
+  - React-Core/Hermes (0.64.1):
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2020.01.13.00)
+    - RCT-Folly/Futures
+    - React-cxxreact (= 0.64.1)
+    - React-jsi (= 0.64.1)
+    - React-jsiexecutor (= 0.64.1)
     - React-perflogger (= 0.64.1)
     - Yoga
   - React-Core/RCTActionSheetHeaders (0.64.1):
@@ -263,8 +280,8 @@ PODS:
     - React
   - react-native-netinfo (5.9.10):
     - React-Core
-  - react-native-onesignal (4.0.8):
-    - OneSignal (= 3.4.3)
+  - react-native-onesignal (4.1.1):
+    - OneSignalXCFramework (= 3.4.4)
     - React (< 1.0.0, >= 0.13.0)
   - react-native-safe-area-context (3.1.9):
     - React-Core
@@ -346,35 +363,8 @@ PODS:
     - React
   - RNI18n (2.0.15):
     - React
-  - RNReanimated (2.1.0):
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
-    - glog
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React
-    - React-callinvoker
+  - RNReanimated (1.13.3):
     - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
-    - React-RCTVibration
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNScreens (2.16.1):
     - React-Core
   - RNSecureStorage (1.0.82):
@@ -414,6 +404,8 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (~> 0.75.1)
   - FlipperKit/SKIOSNetworkPlugin (~> 0.75.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - hermes-engine (~> 0.7.2)
+  - libevent (~> 2.1.12)
   - OneSignal (< 4.0, >= 3.0.0)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -422,6 +414,7 @@ DEPENDENCIES:
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Core (from `../node_modules/react-native/`)
   - React-Core/DevSupport (from `../node_modules/react-native/`)
+  - React-Core/Hermes (from `../node_modules/react-native/`)
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -472,8 +465,10 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - hermes-engine
     - libevent
     - OneSignal
+    - OneSignalXCFramework
     - OpenSSL-Universal
     - YogaKit
 
@@ -590,8 +585,10 @@ SPEC CHECKSUMS:
   Flipper-RSocket: 127954abe8b162fcaf68d2134d34dc2bd7076154
   FlipperKit: 8a20b5c5fcf9436cac58551dc049867247f64b00
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a
+  OneSignalXCFramework: eaf286b7438aa1f030f03e5fa9f1c79ede5d8f04
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: ec2ebc96b7bfba3ca5c32740f5a0c6a014a274d2
@@ -608,7 +605,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 32d1ad2c0024ca36161ae0d5c2117e2d6c441f11
   react-native-maps: 6e1cf14d0aabefe59966da6dad7cb662251d3d83
   react-native-netinfo: 52cf0ee8342548a485e28f4b09e56b477567244d
-  react-native-onesignal: 9fdf8cf885105266960a75567a38823bd824a22b
+  react-native-onesignal: 9ec377a898663829f9c96997b73e77cb5bab05de
   react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -629,7 +626,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
-  RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
+  RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
   RNShare: 7e22ba3bf66294ff7c122a1f2da8a8ec642091a0
@@ -638,6 +635,6 @@ SPEC CHECKSUMS:
   Yoga: a7de31c64fe738607e7a3803e3f591a4b1df7393
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5c45df9535ccf4c47a6ca0641c2c15a25961c723
+PODFILE CHECKSUM: 0e48b91f91dc7c8331e8673737658bc3951e473e
 
 COCOAPODS: 1.10.1
