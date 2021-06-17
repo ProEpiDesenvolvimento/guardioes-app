@@ -90,14 +90,9 @@ const BadReport = ({ navigation }) => {
         }
     }, [])
 
-    const showLoadingAlert = () => {
-        setAlertMessage(null)
-        setShowAlert(true)
-        setShowProgressBar(true)
-    }
-
     const showConfirmation = (response) => {
-        showLoadingAlert()
+        setShowAlert(true)
+
         let alertMessage = ''
 
         if (response && !response.errors) {
@@ -114,11 +109,11 @@ const BadReport = ({ navigation }) => {
                 {translate('badReport.alertMessages.seeADoctor')}
             </Text>
         )
-        setShowProgressBar(false)
         console.log(alertMessage)
     }
 
     const showWhatsappAlert = (response) => {
+
         Alert.alert(
             translate('map.alert'),
             translate('map.share'),
@@ -164,19 +159,13 @@ const BadReport = ({ navigation }) => {
                         navigation.dispatch(
                             CommonActions.reset({
                                 index: 1,
-                                routes: [
-                                    { name: 'HomeDrawer' },
-                                    {
-                                        name: 'Vigilancia',
-                                    },
-                                ],
+                                routes: [ { name: 'HomeDrawer' }, { name: 'Vigilancia' } ],
                             })
                         );
                     }
                 },
             ]
         )
-        setShowProgressBar(false)
     }
 
     const showSyndromeAlert = (response) => {
@@ -197,12 +186,8 @@ const BadReport = ({ navigation }) => {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        if (!inviteSurveilance) {
-                            showWhatsappAlert(response)
-                        }
-                        else {
-                            showSurveilanceInvite(response, showWhatsappAlert)
-                        }
+                        if (!inviteSurveilance) showWhatsappAlert(response)
+                        else showSurveilanceInvite(response, showWhatsappAlert)
                     },
                 },
             ]
@@ -210,12 +195,8 @@ const BadReport = ({ navigation }) => {
             alert = [{
                 text: 'Ok', 
                 onPress: () => {
-                    if (!inviteSurveilance) {
-                        showConfirmation(response)
-                    }
-                    else {
-                        showSurveilanceInvite(response, showConfirmation)
-                    }
+                    if (!inviteSurveilance) showConfirmation(response)
+                    else showSurveilanceInvite(response, showConfirmation)
                 },
             }]
         }
@@ -252,6 +233,7 @@ const BadReport = ({ navigation }) => {
 
     const sendSurvey = async () => {
         // Send Survey BAD CHOICE
+        setShowProgressBar(true)
 
         let local = {}
         if (location.error !== 0) {
@@ -275,8 +257,10 @@ const BadReport = ({ navigation }) => {
             created_at: moment().format('YYYY-MM-DD'),
         }
 
-        const response = await createSurvey(survey, user.id, token)
+        let response = await createSurvey(survey, user.id, token)
+    
         updateUserScore()
+        setShowProgressBar(false)
 
         if (response.status === 200 || response.status === 201) {
             if (!response.body.errors && response.body.messages.top_3) {
@@ -433,18 +417,19 @@ const BadReport = ({ navigation }) => {
             </ScrollViewStyled>
 
             <CoolAlert
+                show={showProgressBar}
+                showProgress={true}
+                title={translate('badReport.alertMessages.sending')}
+            />
+
+            <CoolAlert
                 show={showAlert}
-                showProgress={showProgressBar}
-                title={
-                    showProgressBar ? (
-                        translate('badReport.alertMessages.sending')
-                    ) : (
-                        <Text>
-                            {translate('badReport.alertMessages.thanks')}{' '}
-                            {emojis[1]}
-                        </Text>
-                    )
-                }
+                title={(
+                    <Text>
+                        {translate('badReport.alertMessages.thanks')}{' '}
+                        {emojis[1]}
+                    </Text>
+                )}
                 message={alertMessage}
                 closeOnTouchOutside={!showProgressBar}
                 closeOnHardwareBackPress={false}
