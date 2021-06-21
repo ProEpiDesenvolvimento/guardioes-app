@@ -28,13 +28,14 @@ Feather.loadFont()
 SimpleLineIcons.loadFont()
 
 const LeftMenu = ({ navigation }) => {
-    const {
-        user,
-        avatar,
-        households,
-        householdAvatars,
+    const { 
+        user, 
+        avatar, 
+        households, 
+        householdAvatars, 
+        signOut, 
+        storeUser,
         setGroup,
-        signOut,
     } = useUser()
 
     const [hasSurveillance, setHasSurveillance] = useState(false)
@@ -50,6 +51,8 @@ const LeftMenu = ({ navigation }) => {
 
                 if (group.group_manager.vigilance_email) {
                     setHasSurveillance(true)
+                    return group.group_manager.vigilance_email
+                    
                 } else {
                     setHasSurveillance(false)
                 }
@@ -59,8 +62,12 @@ const LeftMenu = ({ navigation }) => {
         }
     }
 
-    useEffect(() => {
-        getActiveSurveillance()
+    useEffect(async () => {
+        const group_vigilance_email = getActiveSurveillance()
+        await storeUser({
+            ...user,
+            group_vigilance_email: group_vigilance_email,
+        })
     }, [user.group_id])
 
     return (

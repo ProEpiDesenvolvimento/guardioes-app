@@ -370,6 +370,12 @@ export default {
             "In case you don't find the email, make sure to check the spam folder.",
         inputVerificationCode: 'Code',
     },
+    surveilanceInvite: {
+        title: 'Be part of active surveilance',
+        message: 'you are not yet an active watchman. Do you want to participate?',
+        cancelButton: 'No',
+        redirectButton: 'Yes, I\'ll be part',
+    },
     changePwd: {
         title: 'Reset Password',
         newPwd: 'New password',

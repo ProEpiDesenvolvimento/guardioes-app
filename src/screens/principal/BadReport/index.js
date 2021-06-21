@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Text, Alert } from 'react-native'
 import moment from 'moment'
+import { CommonActions } from '@react-navigation/native'
 
 import Emoji from 'react-native-emoji'
 import Share from 'react-native-share'
@@ -75,19 +76,23 @@ const BadReport = ({ navigation }) => {
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertMessage, setAlertMessage] = useState(null)
 
+    const [inviteSurveilance, setInviteSurveilance] = useState(false)
+
     const person = getCurrentUserInfo()
 
     useEffect(() => {
         getSymptoms()
     }, [])
 
-    const showLoadingAlert = () => {
-        setAlertMessage(null)
-        setShowAlert(true)
-        setShowProgressBar(true)
-    }
+    useEffect(() => {
+        if (user.group_vigilance_email && !user.is_vigilance) {
+            setInviteSurveilance(true)
+        }
+    }, [])
 
     const showConfirmation = (response) => {
+        setShowAlert(true)
+
         let alertMessage = ''
 
         if (response && !response.errors) {
@@ -104,11 +109,11 @@ const BadReport = ({ navigation }) => {
                 {translate('badReport.alertMessages.seeADoctor')}
             </Text>
         )
-        setShowProgressBar(false)
         console.log(alertMessage)
     }
 
     const showWhatsappAlert = (response) => {
+
         Alert.alert(
             translate('map.alert'),
             translate('map.share'),
@@ -135,6 +140,34 @@ const BadReport = ({ navigation }) => {
         )
     }
 
+    const showSurveilanceInvite = (response, func) => {
+        const title = translate('surveilanceInvite.title')
+        const message = user.user_name + ', ' + translate('surveilanceInvite.message');
+        Alert.alert(
+            title,
+            message,
+            [
+                {
+                    text: translate('surveilanceInvite.cancelButton'),
+                    onPress: () => {
+                        func(response)
+                    }
+                },
+                {
+                    text: translate('surveilanceInvite.redirectButton'),
+                    onPress: () => {
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 1,
+                                routes: [ { name: 'HomeDrawer' }, { name: 'Vigilancia' } ],
+                            })
+                        );
+                    }
+                },
+            ]
+        )
+    }
+
     const showSyndromeAlert = (response) => {
         let alert = []
 
@@ -152,11 +185,20 @@ const BadReport = ({ navigation }) => {
                 },
                 {
                     text: 'Ok',
-                    onPress: () => showWhatsappAlert(response),
+                    onPress: () => {
+                        if (!inviteSurveilance) showWhatsappAlert(response)
+                        else showSurveilanceInvite(response, showWhatsappAlert)
+                    },
                 },
             ]
         } else {
-            alert = [{ text: 'Ok', onPress: () => showConfirmation(response) }]
+            alert = [{
+                text: 'Ok', 
+                onPress: () => {
+                    if (!inviteSurveilance) showConfirmation(response)
+                    else showSurveilanceInvite(response, showConfirmation)
+                },
+            }]
         }
 
         Alert.alert(
@@ -191,7 +233,7 @@ const BadReport = ({ navigation }) => {
 
     const sendSurvey = async () => {
         // Send Survey BAD CHOICE
-        showLoadingAlert()
+        setShowProgressBar(true)
 
         let local = {}
         if (location.error !== 0) {
@@ -228,8 +270,13 @@ const BadReport = ({ navigation }) => {
         }
 
         const response = await createSurvey(survey, user.id, token)
-        updateUserScore()
+        setShowProgressBar(false)
 
+        // Wait page re-render
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        await delay(50)
+
+        updateUserScore()
         if (response.status === 200 || response.status === 201) {
             if (!response.body.errors && response.body.messages.top_3) {
                 if (response.body.messages.top_3[0]) {
@@ -385,22 +432,23 @@ const BadReport = ({ navigation }) => {
             </ScrollViewStyled>
 
             <CoolAlert
+                show={showProgressBar}
+                showProgress={true}
+                title={translate('badReport.alertMessages.sending')}
+            />
+
+            <CoolAlert
                 show={showAlert}
-                showProgress={showProgressBar}
-                title={
-                    showProgressBar ? (
-                        translate('badReport.alertMessages.sending')
-                    ) : (
-                        <Text>
-                            {translate('badReport.alertMessages.thanks')}{' '}
-                            {emojis[1]}
-                        </Text>
-                    )
-                }
+                title={(
+                    <Text>
+                        {translate('badReport.alertMessages.thanks')}{' '}
+                        {emojis[1]}
+                    </Text>
+                )}
                 message={alertMessage}
-                closeOnTouchOutside={!showProgressBar}
+                closeOnTouchOutside={true}
                 closeOnHardwareBackPress={false}
-                showConfirmButton={!showProgressBar}
+                showConfirmButton={true}
                 confirmText={translate('badReport.alertMessages.button')}
                 onConfirmPressed={() => navigation.navigate('Mapa')}
                 onDismiss={() => navigation.navigate('Mapa')}
