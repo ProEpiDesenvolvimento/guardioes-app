@@ -36,8 +36,8 @@ export const MenuBars = styled(TouchableOpacity).attrs({
     align-items: center;
     justify-content: center;
     position: absolute;
-    left: 4%;
-    top: 1%;
+    left: 6%;
+    top: 6%;
     padding: 2%;
 `
 

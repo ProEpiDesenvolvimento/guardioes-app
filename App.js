@@ -1,45 +1,83 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Alert } from 'react-native'
 import OneSignal from 'react-native-onesignal'
 
 import { enableScreens } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native'
+
 import AppProvider from './src/hooks'
 import Routes from './src/routes'
-
 import './src/config/ReactotronConfig'
 
 enableScreens()
 
 const Guardioes = () => {
-    const onReceived = (notification) => {
-        console.log('Notification received: ', notification)
-    }
-
-    const onOpened = (openResult) => {
-        console.log('Message: ', openResult.notification.payload.body)
-        console.log('Data: ', openResult.notification.payload.additionalData)
-        console.log('isActive: ', openResult.notification.isAppInFocus)
-        console.log('openResult: ', openResult)
-    }
-
-    const onIds = (device) => {
-        console.log('Device info: ', device)
-    }
+    const [isSubscribed, setIsSubscribed] = useState(null)
 
     useEffect(() => {
-        OneSignal.init('61c9e02a-d703-4e1c-aff1-3bce49948818', {
-            kOSSettingsKeyAutoPrompt: true,
-        })
+        const initOneSignal = async () => {
+            /* ONESIGNAL SETUP */
+            OneSignal.setAppId('61c9e02a-d703-4e1c-aff1-3bce49948818')
+            OneSignal.setLogLevel(6, 0)
+            OneSignal.setRequiresUserPrivacyConsent(false)
+            OneSignal.promptForPushNotificationsWithUserResponse((response) => {
+                console.log('Prompt response:', response)
+            })
 
-        OneSignal.addEventListener('received', onReceived)
-        OneSignal.addEventListener('opened', onOpened)
-        OneSignal.addEventListener('ids', onIds)
+            /* ONESIGNAL HANDLERS */
+            OneSignal.setNotificationWillShowInForegroundHandler(
+                (notifReceivedEvent) => {
+                    console.log(
+                        'OneSignal: notification will show in foreground:',
+                        notifReceivedEvent
+                    )
+                    const notif = notifReceivedEvent.getNotification()
 
-        return () => {
-            OneSignal.removeEventListener('received', onReceived)
-            OneSignal.removeEventListener('opened', onOpened)
-            OneSignal.removeEventListener('ids', onIds)
+                    const button1 = {
+                        text: 'Cancel',
+                        onPress: () => {
+                            notifReceivedEvent.complete()
+                        },
+                        style: 'cancel',
+                    }
+
+                    const button2 = {
+                        text: 'Complete',
+                        onPress: () => {
+                            notifReceivedEvent.complete(notif)
+                        },
+                    }
+
+                    Alert.alert(
+                        'Complete notification?',
+                        'Test',
+                        [button1, button2],
+                        { cancelable: true }
+                    )
+                }
+            )
+            OneSignal.setNotificationOpenedHandler((notification) => {
+                console.log('OneSignal: notification opened:', notification)
+            })
+            OneSignal.setInAppMessageClickHandler((event) => {
+                console.log('OneSignal IAM clicked:', event)
+            })
+            OneSignal.addEmailSubscriptionObserver((event) => {
+                console.log('OneSignal: email subscription changed: ', event)
+            })
+            OneSignal.addSubscriptionObserver((event) => {
+                console.log('OneSignal: subscription changed:', event)
+                setIsSubscribed(event.to.isSubscribed)
+            })
+            OneSignal.addPermissionObserver((event) => {
+                console.log('OneSignal: permission changed:', event)
+            })
+
+            const deviceState = await OneSignal.getDeviceState()
+            setIsSubscribed(deviceState.isSubscribed)
         }
+
+        initOneSignal()
     }, [])
 
     return (

@@ -33,6 +33,9 @@
     // NSLog(@"Running NotificationServiceExtension");
     // self.bestAttemptContent.body = [@"[Modified] " stringByAppendingString:self.bestAttemptContent.body];
     
+    // Uncomment this line to set the default log level of NSE to VERBOSE so we get all logs from NSE logic
+    //[OneSignal setLogLevel:ONE_S_LL_VERBOSE visualLevel:ONE_S_LL_NONE];
+    
     self.contentHandler(self.bestAttemptContent);
 }
 

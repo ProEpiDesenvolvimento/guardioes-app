@@ -372,7 +372,7 @@ const EditarPerfil = ({ navigation, route }) => {
                         <Autocomplete 
                             data={countryChoices}
                             value={country}
-                            onChange={(option) => setCountry(option.label)}
+                            onChange={(option) => setCountry(option.key)}
                         />
                     </FormGroupChild>
                 </FormGroup>
@@ -384,7 +384,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             <Autocomplete
                                 data={stateOptions}
                                 value={state}
-                                onChange={setState}
+                                onChange={(option) => setState(option.key)}
                             />
                         </FormGroupChild>
 
@@ -393,7 +393,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             <Autocomplete
                                 data={getCity(state)}
                                 value={city}
-                                onChange={setCity}
+                                onChange={(option) => setCity(option.key)}
                             />
                         </FormGroupChild>
                     </FormGroup>

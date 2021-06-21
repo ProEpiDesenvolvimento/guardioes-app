@@ -129,8 +129,9 @@ const Noticias = () => {
                     keyExtractor={(tweet) => tweet.id_str}
                     renderItem={({ item }) => <NoticiasComponent data={item} />}
                     onEndReached={() => {
-                        setLength(length + 2)
-                        setFilteredTweets(tweets.slice(0, length))
+                        const newLenght = length + 4
+                        setLength(newLenght)
+                        setFilteredTweets(tweets.slice(0, newLenght))
                     }}
                     onEndReachedThreshold={0.9}
                 />

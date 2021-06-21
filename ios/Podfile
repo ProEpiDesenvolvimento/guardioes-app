@@ -9,7 +9,7 @@ target 'guardioesapp' do
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
-    :hermes_enabled => false
+    :hermes_enabled => true
   )
 
   #NEW PODS
@@ -17,6 +17,8 @@ target 'guardioesapp' do
   pod 'RNI18n', :path => '../node_modules/react-native-i18n'
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
+  
+  pod 'OneSignal', '>= 3.0.0', '< 4.0'
 
   target 'guardioesappTests' do
     inherit! :complete
@@ -34,5 +36,5 @@ target 'guardioesapp' do
 end
 
 target 'OneSignalNotificationServiceExtension' do
-  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+  pod 'OneSignal', '>= 3.0.0', '< 4.0'
 end

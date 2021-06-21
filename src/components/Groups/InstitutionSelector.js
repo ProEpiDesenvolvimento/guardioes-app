@@ -7,9 +7,9 @@ import {
     FormGroupChild,
     FormLabel,
     NormalInput,
-    Selector,
     CheckBoxStyled,
 } from '../NormalForms'
+import Autocomplete from '../Autocomplete'
 
 import translate from '../../../locales/i18n'
 import {
@@ -18,8 +18,6 @@ import {
     getAppGroupChildren,
     getUserGroupPath,
 } from '../../api/groups'
-
-import Autocomplete from '../Autocomplete'
 
 class InstitutionSelector extends Component {
     constructor(props) {
@@ -34,7 +32,7 @@ class InstitutionSelector extends Component {
             userIdCode: props.userIdCode || null,
             selectedGroup: null,
             currentError: '',
-            lightTheme: props.lightTheme || false
+            lightTheme: props.lightTheme || false,
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
@@ -62,7 +60,8 @@ class InstitutionSelector extends Component {
             this.setState({ currentError: translate('selector.groupError') })
         }
 
-        const doesTheSelectedGroupRequireID = this.state.selectedGroup.group_manager.require_id
+        const doesTheSelectedGroupRequireID = this.state.selectedGroup
+            .group_manager.require_id
 
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
@@ -241,60 +240,62 @@ class InstitutionSelector extends Component {
     }
 
     groupComponent(group, index) {
-        if(group.children.length > 0){
-                    return (
-            <FormGroupChild key={index}>
-                <FormLabel light={this.state.lightTheme}>
-                    {this.capitalizeFirstWords(group.label)}:
-                </FormLabel>
-                <Autocomplete
-                    data={group.children.map((x) => {
-                        return {
-                            key: x.id,
-                            label: x.description,
-                        }
-                    })}
-                    value={this.state.selectionIndexes[index].label}
-                    onChange={(option) => {
-                        this.setState({
-                            groupList: this.state.groupList.slice(0, index + 1),
-                        })
-                        this.setState({
-                            selectionIndexes: this.state.selectionIndexes.slice(
-                                0,
-                                index + 1
-                            ),
-                        })
-                        this.setState({ idCodeInputShow: false })
-
-                        this.getChildren(option.key)
-
-                        this.setState({
-                            selectionIndexes: [
-                                ...this.state.selectionIndexes.slice(0, index),
-                                option,
-                                ...this.state.selectionIndexes.slice(index + 1),
-                            ],
-                        })
-
-                        if (!group.is_child) {
-                            this.setState({
-                                userGroup: null,
-                                selectedGroup: null,
-                                userIdCode: null,
-                            })
-                            this.updateParent()
-                        }
-                    }}
-                />
-            </FormGroupChild>
-        )
-        } else {
+        if (group.children.length === 0) {
             Alert.alert(
-                "Não possuimos instituições cadastradas nesse município",
-                "Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva."
+                'Não possuimos instituições cadastradas nesse município',
+                'Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva.'
+            )
+            return null
+        }
+
+        if (this.state.selectionIndexes[index]) {
+            return (
+                <FormGroupChild key={index}>
+                    <FormLabel light={this.state.lightTheme}>
+                        {this.capitalizeFirstWords(group.label)}:
+                    </FormLabel>
+                    <Autocomplete
+                        data={group.children.map((x) => {
+                            return {
+                                key: x.id,
+                                label: x.description,
+                            }
+                        })}
+                        value={this.state.selectionIndexes[index].label}
+                        onChange={(option) => {
+                            this.setState({
+                                groupList: this.state.groupList.slice(0, index + 1),
+                            })
+                            this.setState({
+                                selectionIndexes: this.state.selectionIndexes.slice(0, index + 1),
+                            })
+                            this.setState({ idCodeInputShow: false })
+
+                            this.getChildren(option.key)
+
+                            this.setState({
+                                selectionIndexes: [
+                                    ...this.state.selectionIndexes.slice(0, index),
+                                    option,
+                                    ...this.state.selectionIndexes.slice(index + 1),
+                                ],
+                            })
+
+                            if (!group.is_child) {
+                                this.setState({
+                                    userGroup: null,
+                                    selectedGroup: null,
+                                    userIdCode: null,
+                                })
+                                this.updateParent()
+                            }
+                        }}
+                    />
+                </FormGroupChild>
             )
         }
+
+        return null
     }
 
     idCodeComponent(index) {
