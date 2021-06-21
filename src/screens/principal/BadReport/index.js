@@ -1,568 +1,476 @@
-import React, {Component} from 'react';
-import {Text, View, NetInfo, Alert, Platform} from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Text, Alert } from 'react-native'
+import moment from 'moment'
+import { CommonActions } from '@react-navigation/native'
 
-import ScreenLoader from '../../../components/ScreenLoader';
+import Emoji from 'react-native-emoji'
+import Share from 'react-native-share'
+import { Avatar } from 'react-native-elements'
+
+import ScreenLoader from '../../../components/ScreenLoader'
+import { CoolAlert } from '../../../components/CoolAlert'
 import {
-  ScrollViewStyled,
-  User,
-  IconWrapper,
-  InfoWrapper,
-  Name,
-  DateSince,
-  DateText,
-  DateSelector,
-} from './styles';
-import {FormTitleWrapper, FormTitle, CheckBoxStyled, Button} from './styles';
+    Container,
+    FormInline,
+    FormLabel,
+    Selector,
+    SendContainer,
+    SendText,
+} from '../../../components/NormalForms'
 import {
-  Container,
-  FormInline,
-  FormLabel,
-  Selector,
-  SendContainer,
-  SendText,
-} from '../../../components/NormalForms';
-import {CoolAlert} from '../../../components/CoolAlert';
+    ScrollViewStyled,
+    User,
+    IconWrapper,
+    InfoWrapper,
+    Name,
+    DateSince,
+    DateText,
+    DateSelector,
+    FormTitleWrapper,
+    FormTitle,
+    CheckBoxStyled,
+    Button,
+} from './styles'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import Emoji from 'react-native-emoji';
-import {scale} from '../../../utils/scallingUtils';
-import {API_URL} from 'react-native-dotenv';
-import translate from '../../../../locales/i18n';
-import {Avatar} from 'react-native-elements';
+import translate from '../../../../locales/i18n'
+import { scale } from '../../../utils/scalling'
 import {
-  getNameParts,
-  handleAvatar,
-  getInitials,
-} from '../../../utils/constUtils';
-import {PermissionsAndroid} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import {country, localSymptom} from '../../../utils/selectorUtils';
-import {Redirect} from '../../../utils/constUtils';
-import Share from 'react-native-share';
-import {cardWhatsapp} from '../../../img/cardWhatsapp/cardWhatsapp_base64';
-import OneSignal from 'react-native-onesignal';
+    getNameParts,
+    handleAvatar,
+    getInitials,
+    redirectAlert,
+} from '../../../utils/consts'
+import { countryChoices, localSymptom } from '../../../utils/selector'
+import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
+import { useUser } from '../../../hooks/user'
+import { getAppSymptoms } from '../../../api/symptoms'
+import { createSurvey } from '../../../api/surveys'
 
-let data = new Date();
-let d = data.getDate();
-let m = data.getMonth() + 1;
-let y = data.getFullYear();
+const today = moment().format('DD-MM-YYYY')
 
-let today = d + '-' + m + '-' + y;
+const BadReport = ({ navigation }) => {
+    const {
+        token,
+        user,
+        location,
+        getCurrentLocation,
+        updateUserScore,
+        surveys,
+        storeSurveys,
+        getCurrentUserInfo,
+        storeCacheData,
+    } = useUser()
 
-const shareOptions = {
-  message: translate('badReport.alertMessages.covidSuspect'),
-  url: cardWhatsapp,
-};
+    const [isLoading, setIsLoading] = useState(true)
+    const [symptoms, setSymptoms] = useState([])
 
-class BadReport extends Component {
-  static navigationOptions = {
-    title: translate('badReport.title'),
-  };
+    const [badSince, setBadSince] = useState(today)
+    const [personSymptoms, setPersonSymptoms] = useState([])
+    const [hasContactWithSymptoms, setHasContactWithSymptoms] = useState(false)
+    const [contactWithSymptom, setContactWithSymptom] = useState(null)
+    const [hasTraveled, setHasTraveled] = useState(false)
+    const [traveledTo, setTraveledTo] = useState('Brazil')
+    const [wentToHospital, setWentToHospital] = useState(false)
 
-  constructor(props) {
-    super(props);
-    this.getLocation();
-    this.props.navigation.addListener('willFocus', payload => {
-      this.fetchData();
-    });
-    this.state = {
-      isLoading: true,
-      country: 'Brazil',
-      contactWithSymptomCheckbox: false,
-      contactWithSymptom: null,
-      lookedForHospital: false,
-      hadTraveled: false,
-      symptoms: [],
-      today_date: today,
-      showAlert: false, //Custom Alerts
-      progressBarAlert: false, //Custom Progress Bar
-      alertMessage: null,
-    };
-  }
+    const [showAlert, setShowAlert] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
+    const [alertMessage, setAlertMessage] = useState(null)
 
-  showAlert = responseJson => {
-    let alertMessage = '';
-    if (responseJson !== null && !responseJson.errors) {
-      alertMessage = responseJson.feedback_message
-        ? responseJson.feedback_message
-        : translate('badReport.alertMessages.reportSent');
-    } else {
-      alertMessage = translate('badReport.alertMessages.reportNotSent');
-    }
-    this.setState({
-      alertMessage: (
-        <Text>
-          {alertMessage} {emojis[0]}
-          {'\n'}
-          {translate('badReport.alertMessages.seeADoctor')}
-        </Text>
-      ),
-      progressBarAlert: false,
-    });
-    console.warn(alertMessage);
-  };
+    const [inviteSurveilance, setInviteSurveilance] = useState(false)
 
-  showLoadingAlert = () => {
-    this.setState({
-      alertMessage: null,
-      showAlert: true,
-      progressBarAlert: true,
-    });
-  };
+    const person = getCurrentUserInfo()
 
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-      progressBarAlert: true,
-    });
-  };
+    useEffect(() => {
+        getSymptoms()
+    }, [])
 
-  _isconnected = () => {
-    NetInfo.isConnected.fetch().then(isConnected => {
-      isConnected
-        ? this.verifyLocalization()
-        : Alert.alert(
-            translate('noInternet.noInternetConnection'),
-            translate('noInternet.ohNo'),
-            [
-              {
-                text: translate('noInternet.alertAllRightMessage'),
-                onPress: () => null,
-              },
-            ],
-          );
-    });
-  };
-
-  getLocation() {
-    this.requestFineLocationPermission();
-    Geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          userLatitude: position.coords.latitude,
-          userLongitude: position.coords.longitude,
-          error: null,
-        });
-      },
-      error => this.setState({error: error.message}),
-      {enableHighAccuracy: true, timeout: 50000},
-    );
-  }
-
-  getSymptoms = () => {
-    //Get Symptoms
-    return fetch(`${API_URL}/symptoms`, {
-      headers: {
-        Accept: 'application/vnd.api+json',
-        Authorization: `${this.state.userToken}`,
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        const alfabetica = responseJson.symptoms.sort(function(a, b) {
-          return a.description > b.description
-            ? 1
-            : b.description > a.description
-            ? -1
-            : 0;
-        });
-        this.setState({
-          dataSource: alfabetica,
-          isLoading: false,
-        });
-      });
-  };
-
-  fetchData = async () => {
-    //Get user info
-    const userID = await AsyncStorage.getItem('userID');
-    const userName = await AsyncStorage.getItem('userName');
-    const userSelected = await AsyncStorage.getItem('userSelected');
-    const avatarSelected = await AsyncStorage.getItem('avatarSelected');
-    const userToken = await RNSecureStorage.get('userToken');
-    this.setState({userName, userSelected, avatarSelected, userID, userToken});
-
-    //Para não dar BO de variavel nula no IOS -- So puxa o async quando é um household
-    if (this.state.userSelected === this.state.userName) {
-      this.setState({householdID: null});
-    } else {
-      const householdID = await AsyncStorage.getItem('householdID');
-      this.setState({householdID});
-    }
-    this.getSymptoms();
-  };
-
-  verifyLocalization = async () => {
-    if (
-      this.state.userLatitude == 0 ||
-      this.state.userLongitude == 0 ||
-      this.state.userLatitude == null ||
-      this.state.userLongitude == null
-    ) {
-      this.requestLocalization();
-    } else {
-      this.sendSurvey();
-    }
-  };
-
-  async requestFineLocationPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: translate('locationRequest.requestLocationMessageTitle'),
-          message: translate('locationRequest.requestLocationMessageMessage'),
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-      } else {
-        console.warn(translate('locationRequest.requestDenied'));
-
-        if (Platform.OS === 'android') {
-          this.props.navigation.navigate('Home');
+    useEffect(() => {
+        if (user.group_vigilance_email && !user.is_vigilance) {
+            setInviteSurveilance(true)
         }
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
+    }, [])
 
-  requestLocalization = () => {
-    Alert.alert(
-      translate('home.locationError'),
-      translate('home.locationError'),
-      [
-        {
-          text: translate('selector.cancelButton'),
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'permitir', onPress: () => this.requestFineLocationPermission()},
-      ],
-      {cancelable: false},
-    );
-  };
+    const showConfirmation = (response) => {
+        setShowAlert(true)
 
-  showSyndromeAlert = responseJson => {
-    let data = [];
-    if (responseJson.messages.top_3[0].name === 'Síndrome Gripal') {
-      data = [
-        {
-          text: translate('advices.moreInformations'),
-          onPress: () => {
-            Redirect(
-              'Ministerio da Saúde',
-              'Deseja ser redirecionado para o website do Ministério da Saúde?',
-              'https://coronavirus.saude.gov.br/sobre-a-doenca#se-eu-ficar-doente',
-            );
-          },
-        },
-        {text: 'Ok', onPress: () => this.showWhatsappAlert(responseJson)},
-      ];
-    } else {
-      data = [{text: 'Ok', onPress: () => this.showAlert(responseJson)}];
-    }
-    Alert.alert(
-      responseJson.messages.top_syndrome_message.title,
-      responseJson.messages.top_syndrome_message.warning_message,
-      data,
-      {cancelable: false},
-    );
-  };
+        let alertMessage = ''
 
-  showWhatsappAlert = responseJson => {
-    Alert.alert(
-      translate('map.alert'),
-      translate('map.share'),
-      [
-        {
-          text: translate('map.noAlert'),
-          onPress: () => this.showAlert(responseJson),
-        },
-        {
-          text: translate('badReport.yes'),
-          onPress: () => {
-            Share.open(shareOptions)
-              .then(res => {
-                console.log(res);
-              })
-              .catch(err => {
-                err && console.log(err);
-              });
-            this.showAlert(responseJson);
-          },
-        },
-      ],
-      {cancelable: false},
-    );
-  };
-
-  countUserScore = async () => {
-    const lastReport = await AsyncStorage.getItem('lastReport');
-    const userScore = parseInt(await AsyncStorage.getItem('userScore'));
-
-    this.setState({lastReport, userScore});
-
-    let dt1 = new Date(this.state.lastReport);
-    let dt2 = new Date(); // Today
-
-    let auxCount = Math.floor(
-      (Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
-        Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /
-        (1000 * 60 * 60 * 24),
-    );
-
-    switch (auxCount) {
-      case 1:
-        // Acrescenta um dia na contagem e atualiza o lastReport
-        console.warn('reportou no dia anterior');
-        this.setState({userScore: this.state.userScore + 1});
-        AsyncStorage.setItem('lastReport', dt2.toString());
-        AsyncStorage.setItem('userScore', this.state.userScore.toString());
-        break;
-      case 0:
-        // Nada acontece
-        console.warn('Já reportou hoje');
-        break;
-      default:
-        // Zera a contagem e atualiza o lastReport
-        console.warn('Não reportou no dia anterior');
-        this.setState({userScore: 0});
-        AsyncStorage.setItem('lastReport', dt2.toString());
-        AsyncStorage.setItem('userScore', this.state.userScore.toString());
-        break;
-    }
-    console.warn('User Score: ' + this.state.userScore);
-    OneSignal.sendTags({score: this.state.userScore});
-  };
-
-  sendSurvey = async () => {
-    this.showLoadingAlert();
-
-    let currentPin = {
-      household_id: this.state.householdID,
-      latitude: this.state.userLatitude,
-      longitude: this.state.userLongitude,
-      symptom: this.state.symptoms,
-    };
-
-    return fetch(`${API_URL}/users/${this.state.userID}/surveys`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-        Authorization: `${this.state.userToken}`,
-      },
-      body: JSON.stringify({
-        survey: {
-          household_id: this.state.householdID,
-          latitude: this.state.userLatitude,
-          longitude: this.state.userLongitude,
-          bad_since: this.state.today_date,
-          traveled_to: this.state.hadTraveled,
-          went_to_hospital: this.state.lookedForHospital,
-          contact_with_symptom: this.state.contactWithSymptom,
-          symptom: this.state.symptoms,
-        },
-      }),
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.countUserScore();
-        AsyncStorage.setItem('localpin', JSON.stringify(currentPin));
-
-        if (
-          responseJson &&
-          !responseJson.errors &&
-          responseJson.messages.top_3
-        ) {
-          if (responseJson.messages.top_3[0]) {
-            this.showSyndromeAlert(responseJson);
-          } else this.showAlert(responseJson);
+        if (response && !response.errors) {
+            alertMessage = response.feedback_message
+                ? response.feedback_message
+                : translate('badReport.alertMessages.reportSent')
         } else {
-          this.showAlert(responseJson);
+            alertMessage = translate('badReport.alertMessages.reportNotSent')
         }
-      });
-  };
 
-  render() {
-    const {showAlert} = this.state;
-    const symptomsData = this.state.dataSource;
-
-    if (this.state.isLoading) {
-      return <ScreenLoader />;
+        setAlertMessage(
+            <Text>
+                {alertMessage} {emojis[0]} {'\n'}
+                {translate('badReport.alertMessages.seeADoctor')}
+            </Text>
+        )
+        console.log(alertMessage)
     }
 
-    const traveled = (
-      <FormInline>
-        <FormLabel>{translate('badReport.checkboxes.fourth')}</FormLabel>
-        <Selector
-          initValue={translate('selector.label')}
-          cancelText={translate('selector.cancelButton')}
-          data={country}
-          onChange={option => this.setState({country: option.key})}
-        />
-      </FormInline>
-    );
+    const showWhatsappAlert = (response) => {
 
-    let traveledTrue;
-    if (this.state.hadTraveled == true) {
-      traveledTrue = traveled;
+        Alert.alert(
+            translate('map.alert'),
+            translate('map.share'),
+            [
+                {
+                    text: translate('map.noAlert'),
+                    onPress: () => showConfirmation(response),
+                },
+                {
+                    text: translate('badReport.yes'),
+                    onPress: () => {
+                        Share.open(shareOptions)
+                            .then((res) => {
+                                console.log(res)
+                            })
+                            .catch((err) => {
+                                err && console.log(err)
+                            })
+                        showConfirmation(response)
+                    },
+                },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    const showSurveilanceInvite = (response, func) => {
+        const title = translate('surveilanceInvite.title')
+        const message = user.user_name + ', ' + translate('surveilanceInvite.message');
+        Alert.alert(
+            title,
+            message,
+            [
+                {
+                    text: translate('surveilanceInvite.cancelButton'),
+                    onPress: () => {
+                        func(response)
+                    }
+                },
+                {
+                    text: translate('surveilanceInvite.redirectButton'),
+                    onPress: () => {
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 1,
+                                routes: [ { name: 'HomeDrawer' }, { name: 'Vigilancia' } ],
+                            })
+                        );
+                    }
+                },
+            ]
+        )
+    }
+
+    const showSyndromeAlert = (response) => {
+        let alert = []
+
+        if (response.messages.top_3[0].name === 'Síndrome Gripal') {
+            alert = [
+                {
+                    text: translate('advices.moreInformations'),
+                    onPress: () => {
+                        redirectAlert(
+                            'Ministerio da Saúde',
+                            'Deseja ser redirecionado para o website do Ministério da Saúde?',
+                            'https://coronavirus.saude.gov.br/sobre-a-doenca#se-eu-ficar-doente'
+                        )
+                    },
+                },
+                {
+                    text: 'Ok',
+                    onPress: () => {
+                        if (!inviteSurveilance) showWhatsappAlert(response)
+                        else showSurveilanceInvite(response, showWhatsappAlert)
+                    },
+                },
+            ]
+        } else {
+            alert = [{
+                text: 'Ok', 
+                onPress: () => {
+                    if (!inviteSurveilance) showConfirmation(response)
+                    else showSurveilanceInvite(response, showConfirmation)
+                },
+            }]
+        }
+
+        Alert.alert(
+            response.messages.top_syndrome_message.title,
+            response.messages.top_syndrome_message.warning_message,
+            alert,
+            { cancelable: false }
+        )
+    }
+
+    const sortSymptoms = (symptoms = []) => {
+        // Sort in alphabetical order
+        symptoms.sort((a, b) => {
+            return a.description !== b.description
+                ? a.description < b.description
+                    ? -1
+                    : 1
+                : 0
+        })
+        return symptoms
+    }
+
+    const getSymptoms = async () => {
+        const response = await getAppSymptoms(token)
+
+        if (response.status === 200) {
+            const sortedSymptoms = sortSymptoms(response.body.symptoms)
+            setSymptoms(sortedSymptoms)
+            setIsLoading(false)
+        }
+    }
+
+    const sendSurvey = async () => {
+        // Send Survey BAD CHOICE
+        setShowProgressBar(true)
+
+        let local = {}
+        if (location.error !== 0) {
+            local = await getCurrentLocation()
+        } else {
+            local = location
+        }
+        
+        if (personSymptoms.length === 0) {
+            Alert.alert(
+                translate('badReport.reportWithoutSymptom.title'),
+                translate('badReport.reportWithoutSymptom.message'),
+                [
+                    text="OK",
+                ]
+            )
+            setShowProgressBar(false)
+            setShowAlert(false)
+
+            return
+        }
+
+        const householdID = person.is_household ? person.id : null
+        const survey = {
+            household_id: householdID,
+            latitude: local.latitude,
+            longitude: local.longitude,
+            bad_since: badSince,
+            traveled_to: hasTraveled,
+            went_to_hospital: wentToHospital,
+            contact_with_symptom: contactWithSymptom,
+            symptom: personSymptoms,
+            created_at: moment().format('YYYY-MM-DD'),
+        }
+
+        const response = await createSurvey(survey, user.id, token)
+        setShowProgressBar(false)
+
+        // Wait page re-render
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        await delay(50)
+
+        updateUserScore()
+        if (response.status === 200 || response.status === 201) {
+            if (!response.body.errors && response.body.messages.top_3) {
+                if (response.body.messages.top_3[0]) {
+                    showSyndromeAlert(response.body)
+                } else {
+                    showConfirmation(response.body)
+                }
+            } else {
+                showConfirmation(response.body)
+            }
+
+            // Save only important data for Map
+            const localPin = {
+                ...survey,
+                bad_since: undefined,
+                traveled_to: undefined,
+                went_to_hospital: undefined,
+                contact_with_symptom: undefined,
+                symptom: ['symptom'],
+            }
+            await storeCacheData('localPin', localPin)
+
+            const newSurveys = surveys.slice()
+            newSurveys.push(response.body.survey)
+            storeSurveys(newSurveys)
+        } else {
+            showConfirmation(response.body)
+        }
+    }
+
+    if (isLoading) {
+        return <ScreenLoader />
     }
 
     return (
-      <Container>
-        <ScrollViewStyled>
-          <User>
-            <IconWrapper>
-              <Avatar
-                size={scale(58)}
-                source={handleAvatar(this.state.avatarSelected)}
-                title={getInitials(this.state.userSelected)}
-                rounded
-              />
-            </IconWrapper>
-            <InfoWrapper>
-              <Name>{getNameParts(this.state.userSelected, true)}</Name>
-            </InfoWrapper>
-          </User>
+        <Container>
+            <ScrollViewStyled>
+                <User>
+                    <IconWrapper>
+                        <Avatar
+                            size={scale(58)}
+                            source={handleAvatar(person.avatar)}
+                            title={getInitials(person.name)}
+                            rounded
+                        />
+                    </IconWrapper>
+                    <InfoWrapper>
+                        <Name>{getNameParts(person.name, true)}</Name>
+                    </InfoWrapper>
+                </User>
 
-          <DateSince>
-            <DateText>{translate('badReport.sickAge')}</DateText>
-            <DateSelector
-              placeholder={translate('badReport.datePlaceHolder')}
-              date={this.state.today_date}
-              format="DD-MM-YYYY"
-              minDate="01-01-2018"
-              maxDate={today}
-              locale={'pt-BR'}
-              confirmBtnText={translate('birthDetails.confirmButton')}
-              cancelBtnText={translate('birthDetails.cancelButton')}
-              onDateChange={date => {
-                this.setState({today_date: date});
-              }}
+                <DateSince>
+                    <DateText>{translate('badReport.sickAge')}</DateText>
+                    <DateSelector
+                        placeholder={translate('birthDetails.format')}
+                        date={badSince}
+                        format='DD-MM-YYYY'
+                        minDate='01-01-2018'
+                        maxDate={moment().format('DD-MM-YYYY')}
+                        locale='pt-BR'
+                        confirmBtnText={translate('birthDetails.confirmButton')}
+                        cancelBtnText={translate('birthDetails.cancelButton')}
+                        onDateChange={(date) => setBadSince(date)}
+                    />
+                </DateSince>
+
+                <FormTitleWrapper>
+                    <FormTitle>{translate('badReport.symptoms')}</FormTitle>
+                </FormTitleWrapper>
+
+                {symptoms.map((symptom) => (
+                    <CheckBoxStyled
+                        key={symptom.id}
+                        title={symptom.description}
+                        checked={personSymptoms.includes(symptom.code)}
+                        onPress={() => {
+                            if (personSymptoms.includes(symptom.code)) {
+                                const newSymptoms = personSymptoms.filter(
+                                    (code) => code !== symptom.code
+                                )
+
+                                setPersonSymptoms(newSymptoms)
+                                // console.warn(newSymptoms)
+                            } else {
+                                const newSymptoms = personSymptoms.slice()
+                                newSymptoms.push(symptom.code)
+
+                                setPersonSymptoms(newSymptoms)
+                                // console.warn(newSymptoms)
+                            }
+                        }}
+                    />
+                ))}
+
+                <FormTitleWrapper>
+                    <FormTitle>
+                        {translate('badReport.answerQuestions')}
+                    </FormTitle>
+                </FormTitleWrapper>
+
+                <CheckBoxStyled
+                    title={translate('badReport.checkboxes.third')}
+                    checked={hasTraveled}
+                    onPress={() => setHasTraveled(!hasTraveled)}
+                />
+                {/*
+                {hasTraveled ? (
+                    <FormInline>
+                        <FormLabel>{translate('badReport.checkboxes.fourth')}</FormLabel>
+                        <Selector
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            data={countryChoices}
+                            onChange={(option) => setTraveledTo(option.key)}
+                        />
+                    </FormInline>
+                ) : null}
+                */}
+
+                <CheckBoxStyled
+                    title={translate('badReport.checkboxes.first')}
+                    checked={hasContactWithSymptoms}
+                    onPress={() =>
+                        setHasContactWithSymptoms(!hasContactWithSymptoms)
+                    }
+                />
+                {hasContactWithSymptoms ? (
+                    <FormInline>
+                        <FormLabel>Local onde ocorreu o contato:</FormLabel>
+                        <Selector
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            data={localSymptom}
+                            onChange={(option) =>
+                                setContactWithSymptom(option.key)
+                            }
+                        />
+                    </FormInline>
+                ) : null}
+
+                <CheckBoxStyled
+                    title={translate('badReport.checkboxes.second')}
+                    checked={wentToHospital}
+                    onPress={() => setWentToHospital(!wentToHospital)}
+                />
+                <Button onPress={() => sendSurvey()}>
+                    <SendContainer>
+                        <SendText>
+                            {translate('badReport.checkboxConfirm')}
+                        </SendText>
+                    </SendContainer>
+                </Button>
+            </ScrollViewStyled>
+
+            <CoolAlert
+                show={showProgressBar}
+                showProgress={true}
+                title={translate('badReport.alertMessages.sending')}
             />
-          </DateSince>
 
-          <FormTitleWrapper>
-            <FormTitle>{translate('badReport.symptoms')}</FormTitle>
-          </FormTitleWrapper>
-          {symptomsData != null
-            ? symptomsData.map((symptom, index) => {
-                return (
-                  <CheckBoxStyled
-                    key={index}
-                    title={symptom.description}
-                    checked={this.state[symptom.code]}
-                    onPress={async () => {
-                      await this.setState({
-                        [symptom.code]: !this.state[symptom.code],
-                      });
-                      if (this.state[symptom.code] == true) {
-                        let symptomsClone = this.state.symptoms.slice(); //creates the clone of the state
-                        symptomsClone[index] = symptom.code;
-                        await this.setState({symptoms: symptomsClone});
-                        //console.warn(symptom.description + ": " + this.state[symptom.code])
-                      } else {
-                        let symptomsClone = this.state.symptoms.slice(); //creates the clone of the state
-                        symptomsClone[index] = null;
-                        await this.setState({symptoms: symptomsClone});
-                        //console.warn(symptom.description + ": " + this.state[symptom.code])
-                      }
-                    }}
-                  />
-                );
-              })
-            : null}
-
-          <FormTitleWrapper>
-            <FormTitle>{translate('badReport.answerQuestions')}</FormTitle>
-          </FormTitleWrapper>
-          <CheckBoxStyled
-            title={translate('badReport.checkboxes.third')}
-            checked={this.state.hadTraveled}
-            onPress={async () =>
-              await this.setState({hadTraveled: !this.state.hadTraveled})
-            }
-          />
-          {/*traveledTrue*/}
-          <CheckBoxStyled
-            title={translate('badReport.checkboxes.first')}
-            checked={this.state.contactWithSymptomCheckbox}
-            onPress={async () =>
-              await this.setState({
-                contactWithSymptomCheckbox: !this.state
-                  .contactWithSymptomCheckbox,
-              })
-            }
-          />
-          {this.state.contactWithSymptomCheckbox ? (
-            <FormInline>
-              <FormLabel>Local onde ocorreu o contato:</FormLabel>
-              <Selector
-                initValue={translate('selector.label')}
-                cancelText={translate('selector.cancelButton')}
-                data={localSymptom}
-                onChange={option =>
-                  this.setState({contactWithSymptom: option.key})
-                }
-              />
-            </FormInline>
-          ) : null}
-          <CheckBoxStyled
-            title={translate('badReport.checkboxes.second')}
-            checked={this.state.lookedForHospital}
-            onPress={async () =>
-              await this.setState({
-                lookedForHospital: !this.state.lookedForHospital,
-              })
-            }
-          />
-
-          <Button onPress={() => this.verifyLocalization()}>
-            <SendContainer>
-              <SendText>{translate('badReport.checkboxConfirm')}</SendText>
-            </SendContainer>
-          </Button>
-        </ScrollViewStyled>
-
-        <CoolAlert
-          show={showAlert}
-          showProgress={this.state.progressBarAlert}
-          title={
-            this.state.progressBarAlert ? (
-              translate('badReport.alertMessages.sending')
-            ) : (
-              <Text>
-                {translate('badReport.alertMessages.thanks')} {emojis[1]}
-              </Text>
-            )
-          }
-          message={this.state.alertMessage}
-          closeOnTouchOutside={this.state.progressBarAlert}
-          closeOnHardwareBackPress={false}
-          showConfirmButton={this.state.progressBarAlert ? false : true}
-          confirmText={translate('badReport.alertMessages.button')}
-          onConfirmPressed={() => this.props.navigation.navigate('Mapa')}
-          onDismiss={() => this.props.navigation.navigate('Mapa')}
-        />
-      </Container>
-    );
-  }
+            <CoolAlert
+                show={showAlert}
+                title={(
+                    <Text>
+                        {translate('badReport.alertMessages.thanks')}{' '}
+                        {emojis[1]}
+                    </Text>
+                )}
+                message={alertMessage}
+                closeOnTouchOutside={true}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={true}
+                confirmText={translate('badReport.alertMessages.button')}
+                onConfirmPressed={() => navigation.navigate('Mapa')}
+                onDismiss={() => navigation.navigate('Mapa')}
+            />
+        </Container>
+    )
 }
 
 const emojis = [
-  <Emoji //Emoji heart up
-    name="heart"
-    style={{fontSize: scale(15)}}
-  />,
-  <Emoji //Emoji tada up
-    name="heavy_check_mark"
-    style={{fontSize: scale(15)}}
-  />,
-];
+    <Emoji // Emoji heart
+        name='heart'
+        style={{ fontSize: scale(15) }}
+    />,
+    <Emoji // Emoji tada
+        name='heavy_check_mark'
+        style={{ fontSize: scale(15) }}
+    />,
+]
 
-//make this component available to the app
-export default BadReport;
+const shareOptions = {
+    message: translate('badReport.alertMessages.covidSuspect'),
+    url: cardWhatsapp,
+}
+
+export default BadReport

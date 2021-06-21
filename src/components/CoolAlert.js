@@ -1,17 +1,18 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import AwesomeAlert from 'react-native-awesome-alerts';
+import AwesomeAlert from 'react-native-awesome-alerts'
 
-import { scale } from '../utils/scallingUtils';
+import { scale } from '../utils/scalling'
 
-export const CoolAlert = styled(AwesomeAlert).attrs(props => ({
+export const CoolAlert = styled(AwesomeAlert).attrs((props) => ({
+    useNativeDriver: true,
     overlayStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.4)'
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
     },
     progressColor: '#348EAC',
     contentContainerStyle: {
         borderRadius: scale(18),
-        padding: scale(16)
+        padding: scale(16),
     },
     titleStyle: {
         fontFamily: 'ArgentumSans-SemiBold',
@@ -30,20 +31,20 @@ export const CoolAlert = styled(AwesomeAlert).attrs(props => ({
     confirmButtonStyle: {
         borderRadius: scale(10),
         paddingHorizontal: scale(10),
-        paddingVertical: scale(8)
+        paddingVertical: scale(8),
     },
     confirmButtonTextStyle: {
         fontFamily: 'ArgentumSans-Medium',
-        fontSize: scale(14)
+        fontSize: scale(14),
     },
     cancelButtonColor: '#F18F01',
     cancelButtonStyle: {
         borderRadius: scale(10),
         paddingHorizontal: scale(10),
-        paddingVertical: scale(8)
+        paddingVertical: scale(8),
     },
     cancelButtonTextStyle: {
         fontFamily: 'ArgentumSans-Medium',
-        fontSize: scale(14)
-    }
-}))``;
+        fontSize: scale(14),
+    },
+}))``

@@ -1,23 +1,19 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native'
 
-import { Screen, Loading } from './styles'
+import Spinner from 'react-native-spinkit'
 
-class ScreenLoader extends PureComponent {
-    constructor(props) {
-        super(props)
-    }
+import { Screen } from './styles'
+import { scale } from '../../utils/scalling'
 
-    render() {
-        return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#348EAC'}}>
-                <Screen>
-                    <Loading />
-                </Screen>
-            </SafeAreaView>
-        )
-    }
+const ScreenLoader = () => {
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#348EAC' }}>
+            <Screen>
+                <Spinner type='ThreeBounce' size={scale(72)} color='#348EAC' />
+            </Screen>
+        </SafeAreaView>
+    )
 }
 
-//make this component available to the app
 export default ScreenLoader

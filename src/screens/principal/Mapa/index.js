@@ -1,289 +1,244 @@
-import React, {Component} from 'react';
-import {SafeAreaView, View, StyleSheet} from 'react-native';
+import React, { useCallback, useState } from 'react'
+import { SafeAreaView, StyleSheet } from 'react-native'
 
-import {Container} from './styles';
-import {CoolAlert} from '../../../components/CoolAlert';
-import mapStyle from '../../../utils/MarkerClustering/mapStyle';
+import { Marker } from 'react-native-maps'
+import { useFocusEffect } from '@react-navigation/native'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage from 'rn-secure-storage';
-import ClusteredMapView from '../../../utils/MarkerClustering';
-import {API_URL} from 'react-native-dotenv';
-import translate from '../../../../locales/i18n';
-import Geolocation from 'react-native-geolocation-service';
-import poligonoBR from '../../../utils/DF.json';
-import {Marker} from 'react-native-maps';
-import {greenMarker, redMarker} from '../../../img/imageConst';
+import mapStyle from '../../../utils/MarkerClustering/mapStyle'
+import { CoolAlert } from '../../../components/CoolAlert'
+import { Container, ButtonMapChange, TextMapChange } from './styles'
 
-const CLUSTER_SIZE_DIVIDER = 4;
+import ClusteredMapView from '../../../utils/MarkerClustering'
+import translate from '../../../../locales/i18n'
+import { greenMarker, redMarker } from '../../../img/imageConst'
+import { useUser } from '../../../hooks/user'
+import { getWeekSurveys } from '../../../api/surveys'
 
-class Maps extends Component {
-  static navigationOptions = {
-    title: translate('maps.title'),
-  };
-
-  constructor(props) {
-    super(props);
-    this.props.navigation.addListener('didFocus', payload => {
-      this.fetchData();
-    });
-    this.state = {
-      dataSource: [],
-      dataFilterd: [],
-      polygonState: 'Federal District',
-      mapViewPolygon: false,
-      showAlert: false,
-      initialRegion: {
-        latitude: -15.8194724,
-        longitude: -47.924146,
-        latitudeDelta: 0.3,
-        longitudeDelta: 0.3,
-      },
-      showUserLocation: false,
-      mapKey: 0,
-    };
-    this.getLocation();
-  }
-
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-    });
-
-    AsyncStorage.setItem('showMapTip', JSON.stringify(false));
-  };
-
-  componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData = async () => {
-    const userToken = await RNSecureStorage.get('userToken');
-
-    let showAlert = JSON.parse(await AsyncStorage.getItem('showMapTip'));
-    if (showAlert == null) {
-      showAlert = true;
-    }
-
-    this.setState({userToken, showAlert});
-    this.getSurvey();
-  };
-
-  getSurvey = async () => {
-    //Get Survey
-    let localpin = JSON.parse(await AsyncStorage.getItem('localpin'));
-    return fetch(`${API_URL}/surveys/week`, {
-      headers: {
-        Accept: 'application/vnd.api+json',
-        Authorization: `${this.state.userToken}`,
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (localpin !== null) {
-          this.setState({
-            dataSource: [...responseJson.surveys, localpin],
-          });
-        } else {
-          this.setState({
-            dataSource: responseJson.surveys,
-          });
-        }
-        //this.getSurveyPerState() //Lógica que filtra casos de covid
-      });
-  };
-
-  getSurveyPerState = async () => {
-    let dataFilterd = [];
-    let reportsInState = 0;
-    let badReportsInState = 0;
-    let covidCasesInState = 0;
-
-    this.state.dataSource.map(data => {
-      if (data.state == this.state.polygonState) {
-        reportsInState = reportsInState + 1;
-        if (data.symptom && data.symptom.length) {
-          badReportsInState = badReportsInState + 1;
-          if (
-            data.symptom.includes('Febre') &&
-            (data.symptom.includes('DordeGarganta') ||
-              data.symptom.includes('DificuldadeParaRespirar') ||
-              data.symptom.includes('Tosse') ||
-              data.symptom.includes('Cansaco') ||
-              data.symptom.includes('Mal-estar'))
-          ) {
-            dataFilterd.push(data);
-            covidCasesInState = covidCasesInState + 1;
-          }
-        }
-      }
-    });
-
-    this.setState({
-      dataFilterd: dataFilterd,
-      reportsInState: reportsInState,
-      badReportsInState: badReportsInState,
-      covidCasesInState: covidCasesInState,
-    });
-  };
-
-  getLocation() {
-    Geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          initialRegion: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.06,
-            longitudeDelta: 0.06,
-          },
-          showUserLocation: true,
-          error: null,
-          mapKey: this.state.mapKey + 1, // This forces the map component to remount with the new initial region
-        });
-      },
-      error => {},
-      {enableHighAccuracy: true, timeout: 50000},
-    );
-  }
-
-  CoordInsidePolygon(point, vs) {
-    // ray-casting algorithm based on
-    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-
-    let x = point[0];
-    let y = point[1];
-
-    let inside = false;
-    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-      let xi = vs[i][0],
-        yi = vs[i][1];
-      let xj = vs[j][0],
-        yj = vs[j][1];
-
-      let intersect =
-        yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
-      if (intersect) inside = !inside;
-    }
-
-    return inside;
-  }
-
-  PolygonColor(numCase, maxCase) {
-    let colorR = 0;
-    let colorG = 0;
-
-    if (numCase == 0) {
-      fillColor = `rgba(0, 0, 0, 0.0)`;
-    } else {
-      if (numCase <= maxCase / 2) {
-        colorR = (255 * numCase) / (maxCase / 2);
-        fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.5)`;
-      } else {
-        colorG = 255 - (255 * numCase) / maxCase;
-        fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.5)`;
-      }
-    }
-    return fillColor;
-  }
-
-  coordsFilter() {
-    const markers = [];
-    this.state.dataSource.map(mark => {
-      markers.push({
-        location: {
-          latitude: mark.latitude,
-          longitude: mark.longitude,
-        },
-        symptoms: mark.symptom && mark.symptom.length > 0,
-      });
-    });
-    return markers;
-  }
-
-  renderBadMarker = data => (
-    <Marker
-      key={data.id || Math.random()}
-      coordinate={data.location}
-      image={redMarker}
-      tracksViewChanges={false}
-    />
-  );
-  renderGoodMarker = data => (
-    <Marker
-      key={data.id || Math.random()}
-      coordinate={data.location}
-      image={greenMarker}
-      tracksViewChanges={false}
-    />
-  );
-
-  render() {
-    const {showAlert} = this.state;
-    return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-        <Container>
-          <ClusteredMapView
-            key={this.state.mapKey}
-            showsUserLocation={this.state.showUserLocation}
-            style={styles.map}
-            data={this.coordsFilter()}
-            initialRegion={this.state.initialRegion}
-            customMapStyle={mapStyle}
-            renderMarker={{
-              good: this.renderGoodMarker,
-              bad: this.renderBadMarker,
-            }}
-            CLUSTER_SIZE_DIVIDER={CLUSTER_SIZE_DIVIDER} // The log of number of points in cluster by this constant's base defines cluster image size
-            screenSizeClusterPercentage={0.13} // Cluster occupies 13% of screen
-          />
-          <CoolAlert
-            show={showAlert}
-            message={translate(`maps.guide`)}
-            closeOnTouchOutside={true}
-            closeOnHardwareBackPress={false}
-            showConfirmButton={true}
-            confirmText="Entendido!"
-            onConfirmPressed={() => this.hideAlert()}
-          />
-          {/*<TouchableOpacity style={styles.mapChange}
-                    onPress={() => { this.state.mapViewPolygon == false ? this.setState({ mapViewPolygon: true }) : this.setState({ mapViewPolygon: false }) }}>
-                    <Text style={styles.textButton}>Visualizar {this.state.mapViewPolygon == false ? "Poligonos" : "Mapa"}</Text>
-                </TouchableOpacity>*/}
-        </Container>
-      </>
-    );
-  }
+const initialRegion = {
+    latitude: -15.8194724,
+    longitude: -47.924146,
+    latitudeDelta: 0.3,
+    longitudeDelta: 0.3,
 }
 
-// define your styles
-const styles = StyleSheet.create({
-  map: {
-    flex: 1,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  mapChange: {
-    position: 'absolute',
-    bottom: '2%',
-    left: '25%',
-    width: '50%',
-    height: '5%',
-    borderRadius: 90,
-    backgroundColor: 'rgba(22, 107, 135, 0.25)',
-    borderColor: 'rgba(22, 107, 135, 1)',
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textButton: {
-    fontWeight: 'bold',
-    fontSize: 15,
-    color: 'rgba(22, 107, 135, 1)',
-  },
-});
+const CLUSTER_SIZE_DIVIDER = 4
 
-//make this component available to the app
-export default Maps;
+const Maps = () => {
+    const {
+        isOffline,
+        token,
+        location,
+        getCurrentLocation,
+        getCacheData,
+        storeCacheData,
+    } = useUser()
+
+    const [isLoading, setIsLoading] = useState(true)
+    const [region, setRegion] = useState(initialRegion)
+    const [mapKey, setMapKey] = useState(0)
+    const [showAlert, setShowAlert] = useState(false)
+    const [showUserLocation, setShowUserLocation] = useState(false)
+    const [weekSurveys, setWeekSurveys] = useState([])
+    const [filteredSurveys, setFilteredSurveys] = useState([])
+    const [showPolygon, setShowPolygon] = useState(false)
+    const [polygonState, setPolygonState] = useState('Federal District')
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchData()
+        }, [])
+    )
+
+    const fetchData = async () => {
+        await getCurrentLocation()
+
+        if (location.error === 0) {
+            setRegion(location)
+            setShowUserLocation(true)
+            setMapKey(mapKey + 1)
+        }
+
+        const showMapTip = await getCacheData('showMapTip', false)
+        const localPin = await getCacheData('localPin', false)
+
+        if (showMapTip === null) {
+            setShowAlert(true)
+        }
+        if (!isOffline && isLoading) {
+            await getSurveys(localPin)
+        }
+    }
+
+    const getSurveys = async (localPin) => {
+        // Get Week Surveys
+        const response = await getWeekSurveys(token)
+
+        if (response.status === 200) {
+            if (localPin) {
+                setWeekSurveys([...response.body.surveys, localPin])
+            } else {
+                setWeekSurveys(response.body.surveys)
+            }
+
+            setIsLoading(false)
+            // getSurveyPerState() // Logica que filtra casos de covid
+        }
+    }
+
+    const hideAlert = async () => {
+        setShowAlert(false)
+        await storeCacheData('showMapTip', false)
+    }
+
+    const getSurveyPerState = async () => {
+        const dataFilterd = []
+        let reportsInState = 0
+        let badReportsInState = 0
+        let covidCasesInState = 0
+
+        weekSurveys.map((data) => {
+            if (data.state === polygonState) {
+                reportsInState += 1
+                if (data.symptom && data.symptom.length) {
+                    badReportsInState += 1
+                    if (
+                        data.symptom.includes('Febre') &&
+                        (data.symptom.includes('DordeGarganta') ||
+                            data.symptom.includes('DificuldadeParaRespirar') ||
+                            data.symptom.includes('Tosse') ||
+                            data.symptom.includes('Cansaco') ||
+                            data.symptom.includes('Mal-estar'))
+                    ) {
+                        dataFilterd.push(data)
+                        covidCasesInState += 1
+                    }
+                }
+            }
+        })
+
+        setFilteredSurveys(dataFilterd)
+    }
+
+    const CoordInsidePolygon = (point, vs) => {
+        // ray-casting algorithm based on
+        // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+
+        const x = point[0]
+        const y = point[1]
+
+        let inside = false
+        for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+            const xi = vs[i][0]
+            const yi = vs[i][1]
+            const xj = vs[j][0]
+            const yj = vs[j][1]
+
+            const intersect =
+                yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi
+            if (intersect) inside = !inside
+        }
+
+        return inside
+    }
+
+    const PolygonColor = (numCase, maxCase) => {
+        let colorR = 0
+        let colorG = 0
+
+        if (numCase === 0) {
+            fillColor = `rgba(0, 0, 0, 0.0)`
+        } else if (numCase <= maxCase / 2) {
+            colorR = (255 * numCase) / (maxCase / 2)
+            fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.5)`
+        } else {
+            colorG = 255 - (255 * numCase) / maxCase
+            fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.5)`
+        }
+        return fillColor
+    }
+
+    const coordsFilter = () => {
+        const markers = []
+        weekSurveys.map((mark) => {
+            markers.push({
+                location: {
+                    latitude: mark.latitude,
+                    longitude: mark.longitude,
+                },
+                symptoms: mark.symptom && mark.symptom.length > 0,
+            })
+        })
+        return markers
+    }
+
+    const renderGoodMarker = (data) => (
+        <Marker
+            key={data.id || Math.random()}
+            coordinate={data.location}
+            image={greenMarker}
+            tracksViewChanges={false}
+        />
+    )
+
+    const renderBadMarker = (data) => (
+        <Marker
+            key={data.id || Math.random()}
+            coordinate={data.location}
+            image={redMarker}
+            tracksViewChanges={false}
+        />
+    )
+
+    return (
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+            <Container>
+                <ClusteredMapView
+                    key={mapKey} // Updates Map
+                    showsUserLocation={showUserLocation}
+                    style={styles.map}
+                    data={coordsFilter()}
+                    initialRegion={region}
+                    customMapStyle={mapStyle}
+                    renderMarker={{
+                        good: renderGoodMarker,
+                        bad: renderBadMarker,
+                    }}
+                    CLUSTER_SIZE_DIVIDER={CLUSTER_SIZE_DIVIDER} // The log of number of points in cluster by this constant's base defines cluster image size
+                    screenSizeClusterPercentage={0.13} // Cluster occupies 13% of screen
+                />
+                <CoolAlert
+                    show={showAlert}
+                    message={translate('maps.guide')}
+                    showConfirmButton
+                    confirmText={translate('maps.confirmGuide')}
+                    onConfirmPressed={() => hideAlert()}
+                />
+                {/*
+                <ButtonMapChange
+                    onPress={() => {
+                        !showPolygon
+                            ? setShowPolygon(true)
+                            : setShowPolygon(false)
+                    }}
+                >
+                    <TextMapChange>
+                        Visualizar {!showPolygon ? 'Poligonos' : 'Mapa'}
+                    </TextMapChange>
+                </ButtonMapChange>
+                */}
+            </Container>
+        </>
+    )
+}
+
+const styles = StyleSheet.create({
+    map: {
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+    },
+})
+
+export default Maps

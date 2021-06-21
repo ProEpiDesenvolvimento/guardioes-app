@@ -6,10 +6,13 @@
  */
 
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+
+#import <OneSignal/OneSignal.h>
 
 @implementation AppDelegate
 
@@ -27,6 +30,24 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  
+  // Remove this method to stop OneSignal Debugging  
+  [OneSignal setLogLevel:ONE_S_LL_VERBOSE visualLevel:ONE_S_LL_NONE];
+  
+  // OneSignal initialization
+  [OneSignal initWithLaunchOptions:launchOptions];
+  [OneSignal setAppId:@"61c9e02a-d703-4e1c-aff1-3bce49948818"];
+
+  // promptForPushNotifications will show the native iOS notification permission prompt.
+  // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 8)
+  [OneSignal promptForPushNotificationsWithUserResponse:^(BOOL accepted) {
+    NSLog(@"User accepted notifications: %d", accepted);
+  }];
+  
+
+  [RNSplashScreen show];
+
   return YES;
 }
 

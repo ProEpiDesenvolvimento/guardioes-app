@@ -1,5 +1,5 @@
-//Informação de Estados
-export const state = [
+// Informação de Estados
+export const stateOptions = [
      { key: 'ACRE', label: 'ACRE' },
      { key: 'ALAGOAS', label: 'ALAGOAS' },
      { key: 'AMAPÁ', label: 'AMAPÁ' },
@@ -29,10 +29,9 @@ export const state = [
      { key: 'TOCANTINS', label: 'TOCANTINS' },
 ]
 
-//Informcação de Municipios
-
+// Informação de Municipios
 export function getCity(city) {
-     //console.warn(city)
+     let CITIES = []
      switch (city) {
           case "ACRE":
                CITIES = [
@@ -870,12 +869,11 @@ export function getCity(city) {
           case "DISTRITO FEDERAL":
                CITIES = [
                     { key: "ÁGUAS CLARAS", label: "ÁGUAS CLARAS" },
-                    { key: "BRASÍLIA", label: "BRASÍLIA" },
+                    { key: "ARNIQUEIRA", label: "ARNIQUEIRA" },
                     { key: "BRAZLÂNDIA", label: "BRAZLÂNDIA" },
                     { key: "CANDANGOLÂNDIA", label: "CANDANGOLÂNDIA" },
                     { key: "CEILÂNDIA", label: "CEILÂNDIA" },
                     { key: "CRUZEIRO", label: "CRUZEIRO" },
-                    { key: "ESTRUTURAL", label: "ESTRUTURAL" },
                     { key: "FERCAL", label: "FERCAL" },
                     { key: "GAMA", label: "GAMA" },
                     { key: "GUARÁ", label: "GUARÁ" },
@@ -894,9 +892,11 @@ export function getCity(city) {
                     { key: "SAMAMBAIA", label: "SAMAMBAIA" },
                     { key: "SANTA MARIA", label: "SANTA MARIA" },
                     { key: "SÃO SEBASTIÃO", label: "SÃO SEBASTIÃO" },
+                    { key: "SCIA/ESTRUTURAL", label: "SCIA/ESTRUTURAL" },
                     { key: "SIA", label: "SIA" },
                     { key: "SOBRADINHO", label: "SOBRADINHO" },
                     { key: "SOBRADINHO II", label: "SOBRADINHO II" },
+                    { key: "SOL NASCENTE E POR DO SOL", label: "SOL NASCENTE E POR DO SOL" },
                     { key: "SUDOESTE/OCTOGONAL", label: "SUDOESTE/OCTOGONAL" },
                     { key: "TAGUATINGA", label: "TAGUATINGA" },
                     { key: "VARJÃO", label: "VARJÃO" },
@@ -3329,7 +3329,7 @@ export function getCity(city) {
                ]
                break;
 
-          case "PERNANBUCO":
+          case "PERNAMBUCO":
                CITIES = [
                     { key: "ABREU E LIMA", label: "ABREU E LIMA" },
                     { key: "AFOGADOS DA INGAZEIRA", label: "AFOGADOS DA INGAZEIRA" },
@@ -5769,7 +5769,7 @@ export function getCity(city) {
                     { key: "XAMBIOÁ", label: "XAMBIOÁ" },
                ]
                break;
-          case null:
+          default:
                CITIES = [
 
                ]

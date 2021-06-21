@@ -1,263 +1,264 @@
-import React, {Component} from 'react';
-import {SafeAreaView, TouchableOpacity, ScrollView, Modal} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { useCallback, useState } from 'react'
+import { SafeAreaView, TouchableOpacity, Modal } from 'react-native'
 
-import ScreenLoader from '../../../components/ScreenLoader';
+import { useFocusEffect } from '@react-navigation/native'
+
+import Feather from 'react-native-vector-icons/Feather'
+import ScreenLoader from '../../../components/ScreenLoader'
 import {
-  Container,
-  ScrollViewStyled,
-  TitleWrapper,
-  Title,
-  SubTitle,
-  AdvicesView,
-  Touch,
-  Advice,
-  AdviceTitle,
-  AdviceIcon,
-  Details,
-  DetailsIcon,
-  DetailsTitleWrapper,
-  DetailsTitle,
-  DetailsBodyText,
-  DetailsButton,
-  DetailsButtonLabel,
-} from './styles';
+    Container,
+    ScrollViewStyled,
+    TitleWrapper,
+    Title,
+    SubTitle,
+    AdvicesView,
+    Touch,
+    Advice,
+    AdviceTitle,
+    AdviceIcon,
+    Details,
+    DetailsIcon,
+    DetailsTitleWrapper,
+    DetailsTitle,
+    DetailsBodyText,
+    DetailsSeeMore,
+    DetailsButton,
+    DetailsButtonLabel,
+} from './styles'
 
-import RNSecureStorage from 'rn-secure-storage';
-import {Redirect} from '../../../utils/constUtils';
+import translate from '../../../../locales/i18n'
 import {
-  BedIcon,
-  DoctorIcon,
-  GermIcon,
-  HelplineIcon,
-  HomeworkIcon,
-  HospitalIcon,
-  InsectIcon,
-  MaskIcon,
-} from '../../../img/imageConst';
-import {
-  NoFlightIcon,
-  ProtectionIcon,
-  SickIcon,
-  TentIcon,
-  ThermometerIcon,
-  VaccineIcon,
-  VirusIcon,
-  WashIcon,
-} from '../../../img/imageConst';
-import {scale} from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
-import {API_URL, APP_ID} from 'react-native-dotenv';
+    BedIcon,
+    DoctorIcon,
+    GermIcon,
+    HelplineIcon,
+    HomeworkIcon,
+    HospitalIcon,
+    InsectIcon,
+    MaskIcon,
+    NoFlightIcon,
+    ProtectionIcon,
+    SickIcon,
+    TentIcon,
+    ThermometerIcon,
+    VaccineIcon,
+    VirusIcon,
+    WashIcon,
+} from '../../../img/imageConst'
+import { redirectAlert } from '../../../utils/consts'
+import { scale } from '../../../utils/scalling'
+import { useUser } from '../../../hooks/user'
+import { getContents } from '../../../api/contents'
 
-Feather.loadFont();
+Feather.loadFont()
 
-class Dicas extends Component {
-  static navigationOptions = {
-    title: translate('advices.title'),
-  };
-  constructor(props) {
-    super(props);
-    this.props.navigation.addListener('willFocus', payload => {
-      this.fetchData();
-    });
-    this.state = {
-      modalVisible: false,
-      isLoading: true,
-      dataSource: [],
-    };
-  }
+const Dicas = () => {
+    const { isOffline, token, getCacheData, storeCacheData } = useUser()
 
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
+    const [isLoading, setIsLoading] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [contents, setContents] = useState([])
+    const [contentSelected, setContentSelected] = useState({})
 
-  fetchData = async () => {
-    //Get user info
-    const userToken = await RNSecureStorage.get('userToken');
-    this.setState({userToken});
-    this.getContents();
-  };
+    useFocusEffect(
+        useCallback(() => {
+            getAppContents()
+        }, [isOffline])
+    )
 
-  getContents = () => {
-    return fetch(`${API_URL}/contents/`, {
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
-        Authorization: `${this.state.userToken}`,
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        const sortedContents = this.sortContents(responseJson.contents);
-
-        if (sortedContents) {
-          this.setState({dataSource: sortedContents});
-        }
-
-        this.setState({isLoading: false});
-      });
-  };
-
-  sortContents = (contents = []) => {
-    contents.sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-    );
-    return contents;
-  };
-
-  getContentIcon = icon => {
-    const size = scale(50);
-
-    switch (icon) {
-      case 'bed':
-        return <BedIcon height={size} width={size} />;
-      case 'doctor':
-        return <DoctorIcon height={size} width={size} />;
-      case 'germ':
-        return <GermIcon height={size} width={size} />;
-      case 'helpline':
-        return <HelplineIcon height={size} width={size} />;
-      case 'homework':
-        return <HomeworkIcon height={size} width={size} />;
-      case 'hospital':
-        return <HospitalIcon height={size} width={size} />;
-      case 'insect':
-        return <InsectIcon height={size} width={size} />;
-      case 'mask':
-        return <MaskIcon height={size} width={size} />;
-      case 'no-flight':
-        return <NoFlightIcon height={size} width={size} />;
-      case 'protection':
-        return <ProtectionIcon height={size} width={size} />;
-      case 'sick':
-        return <SickIcon height={size} width={size} />;
-      case 'tent':
-        return <TentIcon height={size} width={size} />;
-      case 'thermometer':
-        return <ThermometerIcon height={size} width={size} />;
-      case 'vaccine':
-        return <VaccineIcon height={size} width={size} />;
-      case 'virus':
-        return <VirusIcon height={size} width={size} />;
-      case 'wash':
-        return <WashIcon height={size} width={size} />;
+    const sortContents = (contents = []) => {
+        contents.sort(
+            (a, b) =>
+                new Date(b.updated_at).getTime() -
+                new Date(a.updated_at).getTime()
+        )
+        return contents
     }
 
-    return <SickIcon height={size} width={size} />;
-  };
+    const getAppContents = async () => {
+        if (!isOffline) {
+            const response = await getContents(token)
 
-  render() {
-    const contentsData = this.state.dataSource;
+            if (response.status === 200) {
+                const appContents = sortContents(response.body.contents)
+                setContents(appContents)
+                setIsLoading(false)
 
-    if (this.state.isLoading) {
-      return <ScreenLoader />;
+                await storeCacheData('contentsData', appContents)
+            }
+        } else {
+            const contentsCache = await getCacheData('contentsData', false)
+
+            if (contentsCache) {
+                setContents(contentsCache)
+            }
+            setIsLoading(false)
+        }
+    }
+
+    const getContentIcon = (icon) => {
+        const size = scale(50)
+
+        switch (icon) {
+            case 'bed':
+                return <BedIcon height={size} width={size} />
+            case 'doctor':
+                return <DoctorIcon height={size} width={size} />
+            case 'germ':
+                return <GermIcon height={size} width={size} />
+            case 'helpline':
+                return <HelplineIcon height={size} width={size} />
+            case 'homework':
+                return <HomeworkIcon height={size} width={size} />
+            case 'hospital':
+                return <HospitalIcon height={size} width={size} />
+            case 'insect':
+                return <InsectIcon height={size} width={size} />
+            case 'mask':
+                return <MaskIcon height={size} width={size} />
+            case 'no-flight':
+                return <NoFlightIcon height={size} width={size} />
+            case 'protection':
+                return <ProtectionIcon height={size} width={size} />
+            case 'sick':
+                return <SickIcon height={size} width={size} />
+            case 'tent':
+                return <TentIcon height={size} width={size} />
+            case 'thermometer':
+                return <ThermometerIcon height={size} width={size} />
+            case 'vaccine':
+                return <VaccineIcon height={size} width={size} />
+            case 'virus':
+                return <VirusIcon height={size} width={size} />
+            case 'wash':
+                return <WashIcon height={size} width={size} />
+            default:
+                return <SickIcon height={size} width={size} />
+        }
+    }
+
+    if (isLoading) {
+        return <ScreenLoader />
     }
 
     return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#348EAC'}} />
-        <Container>
-          <ScrollViewStyled>
-            <TitleWrapper>
-              <Title>{translate('advices.title')}</Title>
-              <SubTitle>{translate('advices.subtitle')}</SubTitle>
-            </TitleWrapper>
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+            <Container>
+                <ScrollViewStyled>
+                    <TitleWrapper>
+                        <Title>{translate('advices.title')}</Title>
+                        <SubTitle>{translate('advices.subtitle')}</SubTitle>
+                    </TitleWrapper>
 
-            <AdvicesView>
-              {contentsData != null
-                ? contentsData.map(content => {
-                      return (
-                        <Touch
-                          key={content.id}
-                          onPress={() => {
-                            if (content.content_type === 'redirect') {
-                              Redirect(
-                                advicesText.redirect.title,
-                                advicesText.redirect.text,
-                                content.source_link,
-                              );
-                            } else {
-                              this.setModalVisible(true);
-                              this.setState({
-                                contentTitle: content.title,
-                                contentBody: content.body,
-                                contentSource: content.source_link,
-                              });
-                            }
-                          }}>
-                          <Advice>
-                            <AdviceTitle numberOfLines={3}>
-                              {content.title}
-                            </AdviceTitle>
-                            <AdviceIcon>
-                              {this.getContentIcon(content.icon)}
-                            </AdviceIcon>
-                          </Advice>
-                        </Touch>
-                      );
-                  })
-                : null}
-            </AdvicesView>
-          </ScrollViewStyled>
+                    <AdvicesView>
+                        {contents.map((content) => (
+                            <Touch
+                                key={content.id}
+                                onPress={() => {
+                                    if (content.content_type === 'redirect') {
+                                        redirectAlert(
+                                            advicesText.redirect.title,
+                                            advicesText.redirect.text,
+                                            content.source_link
+                                        )
+                                    } else {
+                                        setContentSelected({
+                                            title: content.title,
+                                            body: content.body,
+                                            source_link: content.source_link,
+                                        })
+                                        setModalVisible(true)
+                                    }
+                                }}
+                            >
+                                <Advice>
+                                    <AdviceTitle numberOfLines={3}>
+                                        {content.title}
+                                    </AdviceTitle>
+                                    <AdviceIcon>
+                                        {getContentIcon(content.icon)}
+                                    </AdviceIcon>
+                                </Advice>
+                            </Touch>
+                        ))}
+                        {contents.length === 0 ? (
+                            <Touch>
+                                <Advice>
+                                    <AdviceTitle numberOfLines={3}>
+                                        {translate('advices.empty')}
+                                    </AdviceTitle>
+                                    <AdviceIcon>
+                                        {getContentIcon('virus')}
+                                    </AdviceIcon>
+                                </Advice>
+                            </Touch>
+                        ) : null}
+                    </AdvicesView>
+                </ScrollViewStyled>
 
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={
-              () => this.setModalVisible(!this.state.modalVisible) //Exit to modal view
-            }>
-            <SafeAreaView style={{flex: 1}}>
-              <Details>
-                <DetailsIcon>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.setModalVisible(!this.state.modalVisible)
-                    }>
-                    <Feather
-                      name="arrow-left-circle"
-                      size={scale(35)}
-                      color="#5DD39E"
-                    />
-                  </TouchableOpacity>
-                </DetailsIcon>
+                <Modal
+                    animationType='fade'
+                    transparent
+                    visible={modalVisible}
+                    onRequestClose={
+                        () => setModalVisible(!modalVisible) // Exit to modal view
+                    }
+                >
+                    <SafeAreaView
+                        style={{ flex: 1, backgroundColor: '#348EAC' }}
+                    >
+                        <Details>
+                            <DetailsIcon>
+                                <TouchableOpacity
+                                    onPress={() => setModalVisible(false)}
+                                >
+                                    <Feather
+                                        name='arrow-left-circle'
+                                        size={scale(35)}
+                                        color='#348eac'
+                                    />
+                                </TouchableOpacity>
+                            </DetailsIcon>
 
-                <DetailsTitleWrapper>
-                  <DetailsTitle>{this.state.contentTitle}</DetailsTitle>
-                </DetailsTitleWrapper>
+                            <DetailsTitleWrapper>
+                                <DetailsTitle>
+                                    {contentSelected.title}
+                                </DetailsTitle>
+                            </DetailsTitleWrapper>
 
-                <ScrollView>
-                  <DetailsBodyText>{this.state.contentBody}</DetailsBodyText>
-                </ScrollView>
+                            <DetailsBodyText>
+                                {contentSelected.body}
+                            </DetailsBodyText>
+                        </Details>
 
-                <DetailsButton
-                  onPress={() =>
-                    Redirect(
-                      translate('advices.moreInformations'),
-                      translate('advices.redirectPermission'),
-                      this.state.contentSource,
-                    )
-                  }>
-                  <DetailsButtonLabel>
-                    {translate('advices.more')}
-                  </DetailsButtonLabel>
-                </DetailsButton>
-              </Details>
-            </SafeAreaView>
-          </Modal>
-        </Container>
-      </>
-    );
-  }
+                        <DetailsSeeMore>
+                            <DetailsButton
+                                onPress={() =>
+                                    redirectAlert(
+                                        translate('advices.moreInformations'),
+                                        translate('advices.redirectPermission'),
+                                        contentSelected.source_link
+                                    )
+                                }
+                            >
+                                <DetailsButtonLabel>
+                                    {translate('advices.more')}
+                                </DetailsButtonLabel>
+                            </DetailsButton>
+                        </DetailsSeeMore>
+                    </SafeAreaView>
+                </Modal>
+            </Container>
+        </>
+    )
 }
 
 const advicesText = {
-  redirect: {
-    title: translate('advices.buttons.messages.title'),
-    text: translate('advices.buttons.messages.subtitle'),
-  },
-};
+    redirect: {
+        title: translate('advices.buttons.messages.title'),
+        text: translate('advices.buttons.messages.subtitle'),
+    },
+}
 
-//make this component available to the app
-export default Dicas;
+export default Dicas

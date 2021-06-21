@@ -1,217 +1,150 @@
-import React, {Component} from 'react';
-import {SafeAreaView, Alert, Keyboard, NetInfo} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import React, { useRef, useState } from 'react'
+import { Alert, Keyboard, SafeAreaView } from 'react-native'
 
-import {GradientBackground, KeyboardScrollView} from '../../../components/SnowForms';
+import Feather from 'react-native-vector-icons/Feather'
 import {
-  ButtonBack,
-  FormSeparator,
-  SnowInput,
-  Touch,
-  SnowButton,
-  Label,
-  TransparentButton,
-} from '../../../components/SnowForms';
-import {Logo, PageTitle, LabelVisible} from './styles';
-import {CoolAlert} from '../../../components/CoolAlert';
+    GradientBackground,
+    KeyboardScrollView,
+    ButtonBack,
+    FormSeparator,
+    SnowInput,
+    Touch,
+    SnowButton,
+    Label,
+    TransparentButton,
+} from '../../../components/SnowForms'
+import { CoolAlert } from '../../../components/CoolAlert'
+import { Logo, PageTitle, LabelVisible } from './styles'
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
-import {GDSLogoES, GDSLogoBR} from '../../../img/imageConst';
-import {scale} from '../../../utils/scallingUtils';
-import translate from '../../../../locales/i18n';
-import {API_URL} from 'react-native-dotenv';
-import OneSignal from 'react-native-onesignal';
+import translate from '../../../../locales/i18n'
+import { GDSLogoES, GDSLogoBR } from '../../../img/imageConst'
+import { scale } from '../../../utils/scalling'
+import { useUser } from '../../../hooks/user'
+import { authUser } from '../../../api/user'
 
-Feather.loadFont();
+Feather.loadFont()
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userToken: null,
-      userEmail: null,
-      userPwd: null,
-      showAlert: false, //Custom Alerts
-      showProgressBar: false, //Custom Progress Bar
-    };
-  }
+const Login = ({ navigation }) => {
+    const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
 
-  showAlert = () => {
-    this.setState({
-      showAlert: true,
-      showProgressBar: true,
-    });
-  };
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [showAlert, setShowAlert] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
 
-  hideAlert = () => {
-    this.setState({
-      showAlert: false,
-    });
-  };
+    const passwordInput = useRef()
 
-  _isconnected = () => {
-    let validation = false;
-    this.state.userEmail && this.state.userPwd
-      ? (validation = true)
-      : (validation = false);
-    NetInfo.isConnected.fetch().then(isConnected => {
-      isConnected
-        ? validation
-          ? this.login()
-          : Alert.alert(
-              translate('login.errorMessages.emailPwdWrong'),
-              translate('login.errorMessages.emailPwdCantBeBlank'),
-            )
-        : Alert.alert(
-            translate('login.noInternet.noInternetConnection'),
-            translate('login.noInternet.ohNo'),
-            [
-              {
-                text: translate('login.noInternet.alertAllRightMessage'),
-                onPress: () => null,
-              },
-            ],
-          );
-    });
-  };
+    const handleLogin = async () => {
+        Keyboard.dismiss()
 
-  render() {
-    const {navigate} = this.props.navigation;
-    const {showAlert} = this.state;
+        if (email === '' || password === '') {
+            Alert.alert(translate('register.fieldNotBlank'))
+            return
+        }
 
-    let LogoType;
+        setShowProgressBar(true)
+        setShowAlert(true)
+
+        const response = await authUser({
+            email,
+            password,
+        })
+
+        if (response.status === 200) {
+            await storeUser(response.body.user, response.token, {
+                email,
+                password,
+            })
+            setShowAlert(false)
+
+            setTimeout(() => {
+                setNeedSignIn(false)
+                setIsLoggedIn(true)
+            }, 1000)
+        } else if (response.status === 401) {
+            setShowAlert(false)
+            Alert.alert(translate('login.errorMessages.emailPwdWrong'))
+        } else {
+            setShowAlert(false)
+            Alert.alert(translate('register.geralError'))
+        }
+    }
+
+    let LogoType = GDSLogoBR
+
     if (translate('lang.code') === 'es') {
-      LogoType = GDSLogoES;
-    } else {
-      LogoType = GDSLogoBR;
+        LogoType = GDSLogoES
     }
 
     return (
-      <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#5DD39E'}} />
-        <GradientBackground>
-          <KeyboardScrollView>
-            <Logo source={LogoType} />
-            <PageTitle>{translate('login.title')}</PageTitle>
+        <>
+            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+            <GradientBackground>
+                <KeyboardScrollView>
+                    <Logo source={LogoType} />
+                    <PageTitle>{translate('login.title')}</PageTitle>
 
-            <FormSeparator>
-              <SnowInput
-                placeholder={translate('login.email')}
-                returnKeyType="next"
-                keyboardType="email-address"
-                maxLength={100}
-                onChangeText={text => this.setState({userEmail: text})}
-                onSubmitEditing={() => this.passwordInput.focus()}
-              />
-              <SnowInput
-                placeholder={translate('login.password')}
-                secureTextEntry={true}
-                maxLength={100}
-                ref={input => (this.passwordInput = input)}
-                onChangeText={text => this.setState({userPwd: text})}
-                onSubmitEditing={() => this.login()}
-              />
-            </FormSeparator>
+                    <FormSeparator>
+                        <SnowInput
+                            placeholder={translate('login.email')}
+                            keyboardType='email-address'
+                            returnKeyType='next'
+                            maxLength={100}
+                            onChangeText={(text) => setEmail(text)}
+                            onSubmitEditing={() =>
+                                passwordInput.current.focus()
+                            }
+                        />
+                        <SnowInput
+                            placeholder={translate('login.password')}
+                            secureTextEntry
+                            maxLength={100}
+                            ref={passwordInput}
+                            onChangeText={(text) => setPassword(text)}
+                            onSubmitEditing={() => handleLogin()}
+                        />
+                    </FormSeparator>
 
-            <FormSeparator>
-              <Touch onPress={() => this.login()}>
-                <SnowButton>
-                  <Label>{translate('login.loginbutton')}</Label>
-                </SnowButton>
-              </Touch>
-            </FormSeparator>
+                    <FormSeparator>
+                        <Touch onPress={() => handleLogin()}>
+                            <SnowButton>
+                                <Label>{translate('login.loginbutton')}</Label>
+                            </SnowButton>
+                        </Touch>
+                    </FormSeparator>
 
-            <TransparentButton onPress={() => navigate('ForgetPwd')}>
-              <LabelVisible>{translate('login.forgetbutton')}</LabelVisible>
-            </TransparentButton>
+                    <TransparentButton
+                        onPress={() => navigation.navigate('ForgetPwd')}
+                    >
+                        <LabelVisible>
+                            {translate('login.forgetbutton')}
+                        </LabelVisible>
+                    </TransparentButton>
 
-            <ButtonBack onPress={() => this.props.navigation.goBack()}>
-              <Feather name="chevron-left" size={scale(40)} color="#ffffff" />
-            </ButtonBack>
-          </KeyboardScrollView>
+                    <ButtonBack onPress={() => navigation.goBack()}>
+                        <Feather
+                            name='chevron-left'
+                            size={scale(40)}
+                            color='#ffffff'
+                        />
+                    </ButtonBack>
+                </KeyboardScrollView>
 
-          <CoolAlert
-            show={showAlert}
-            showProgress={this.state.showProgressBar}
-            title={
-              this.state.showProgressBar
-                ? translate('login.awesomeAlert.accessing')
-                : null
-            }
-            closeOnTouchOutside={this.state.showProgressBar ? false : true}
-            closeOnHardwareBackPress={false}
-            showConfirmButton={this.state.showProgressBar ? false : true}
-          />
-        </GradientBackground>
-      </>
-    );
-  }
-
-  //Login Function
-  login = async () => {
-    if (this.state.userEmail == null || this.state.userPwd == null) {
-      Alert.alert(translate('register.fieldNotBlank'));
-    } else {
-      Keyboard.dismiss();
-      this.showAlert();
-      return fetch(`${API_URL}/user/login`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/vnd.api+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user: {
-            email: this.state.userEmail,
-            password: this.state.userPwd,
-          },
-        }),
-      })
-        .then(response => {
-          if (response.status == 200) {
-            this.setState({userToken: response.headers.map.authorization});
-            this.hideAlert();
-            return response.json();
-          } else if (response.status == 401) {
-            Alert.alert(translate('login.errorMessages.emailPwdWrong'));
-            this.hideAlert();
-          } else {
-            Alert.alert(translate('register.geralError'));
-            this.hideAlert();
-          }
-        })
-        .then(responseJson => {
-          AsyncStorage.setItem('userID', responseJson.user.id.toString());
-          AsyncStorage.setItem('userName', responseJson.user.user_name);
-          AsyncStorage.setItem('userBirth', responseJson.user.birthdate);
-          AsyncStorage.setItem('userCreatedAt', responseJson.user.created_at);
-          AsyncStorage.setItem(
-            'isProfessional',
-            responseJson.user.is_professional.toString(),
-          );
-          AsyncStorage.setItem('userScore', '0');
-
-          RNSecureStorage.set('userToken', this.state.userToken, {
-            accessible: ACCESSIBLE.WHEN_UNLOCKED,
-          });
-          RNSecureStorage.set('userEmail', this.state.userEmail, {
-            accessible: ACCESSIBLE.WHEN_UNLOCKED,
-          });
-          RNSecureStorage.set('userPwd', this.state.userPwd, {
-            accessible: ACCESSIBLE.WHEN_UNLOCKED,
-          });
-
-          //Send User ID to Push Notification API
-          OneSignal.setExternalUserId(responseJson.user.id.toString());
-
-          this.props.navigation.navigate('Home', {
-            userTermsVersion: responseJson.user.policy_version,
-          });
-        });
-    }
-  };
+                <CoolAlert
+                    show={showAlert}
+                    showProgress={showProgressBar}
+                    title={
+                        showProgressBar
+                            ? translate('login.awesomeAlert.accessing')
+                            : null
+                    }
+                    closeOnTouchOutside={!showProgressBar}
+                    closeOnHardwareBackPress={false}
+                    showConfirmButton={!showProgressBar}
+                />
+            </GradientBackground>
+        </>
+    )
 }
 
-//make this component available to the app
-export default Login;
+export default Login

@@ -1,21 +1,13 @@
-import React, {PureComponent} from 'react';
+import React from 'react'
+import { WebView } from 'react-native-webview'
 
-import {WebView} from 'react-native-webview';
-import translate from '../../../../locales/i18n';
-
-class FAQ extends PureComponent {
-  static navigationOptions = {
-    title: translate('faq.title'),
-  };
-
-  render() {
+const FAQ = () => {
     return (
-      <WebView
-        source={{uri: 'https://proepi.org.br/faq-gds/'}}
-        startInLoadingState={true}
-      />
-    );
-  }
+        <WebView
+            source={{ uri: 'https://proepi.org.br/faq-gds/' }}
+            startInLoadingState
+        />
+    )
 }
 
-export default FAQ;
+export default FAQ
