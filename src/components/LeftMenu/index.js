@@ -51,8 +51,6 @@ const LeftMenu = ({ navigation }) => {
 
                 if (group.group_manager.vigilance_email) {
                     setHasSurveillance(true)
-                    return group.group_manager.vigilance_email
-                    
                 } else {
                     setHasSurveillance(false)
                 }
@@ -63,11 +61,7 @@ const LeftMenu = ({ navigation }) => {
     }
 
     useEffect(async () => {
-        const group_vigilance_email = getActiveSurveillance()
-        await storeUser({
-            ...user,
-            group_vigilance_email: group_vigilance_email,
-        })
+        getActiveSurveillance()
     }, [user.group_id])
 
     return (
