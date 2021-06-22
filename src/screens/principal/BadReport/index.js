@@ -52,6 +52,7 @@ const BadReport = ({ navigation }) => {
     const {
         token,
         user,
+        group,
         location,
         getCurrentLocation,
         updateUserScore,
@@ -85,7 +86,11 @@ const BadReport = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        if (user.group_vigilance_email && !user.is_vigilance) {
+        if (
+            !user.is_vigilance &&
+            group.group_manager &&
+            group.group_manager.vigilance_email
+        ) {
             setInviteSurveilance(true)
         }
     }, [])
@@ -113,7 +118,6 @@ const BadReport = ({ navigation }) => {
     }
 
     const showWhatsappAlert = (response) => {
-
         Alert.alert(
             translate('map.alert'),
             translate('map.share'),
@@ -142,30 +146,30 @@ const BadReport = ({ navigation }) => {
 
     const showSurveilanceInvite = (response, func) => {
         const title = translate('surveilanceInvite.title')
-        const message = user.user_name + ', ' + translate('surveilanceInvite.message');
-        Alert.alert(
-            title,
-            message,
-            [
-                {
-                    text: translate('surveilanceInvite.cancelButton'),
-                    onPress: () => {
-                        func(response)
-                    }
+        const message = `${user.user_name}, ${translate('surveilanceInvite.message')}`
+
+        Alert.alert(title, message, [
+            {
+                text: translate('surveilanceInvite.cancelButton'),
+                onPress: () => {
+                    func(response)
                 },
-                {
-                    text: translate('surveilanceInvite.redirectButton'),
-                    onPress: () => {
-                        navigation.dispatch(
-                            CommonActions.reset({
-                                index: 1,
-                                routes: [ { name: 'HomeDrawer' }, { name: 'Vigilancia' } ],
-                            })
-                        );
-                    }
+            },
+            {
+                text: translate('surveilanceInvite.redirectButton'),
+                onPress: () => {
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [
+                                { name: 'HomeDrawer' },
+                                { name: 'Vigilancia' },
+                            ],
+                        })
+                    )
                 },
-            ]
-        )
+            },
+        ])
     }
 
     const showSyndromeAlert = (response) => {
@@ -192,13 +196,15 @@ const BadReport = ({ navigation }) => {
                 },
             ]
         } else {
-            alert = [{
-                text: 'Ok', 
-                onPress: () => {
-                    if (!inviteSurveilance) showConfirmation(response)
-                    else showSurveilanceInvite(response, showConfirmation)
+            alert = [
+                {
+                    text: 'Ok',
+                    onPress: () => {
+                        if (!inviteSurveilance) showConfirmation(response)
+                        else showSurveilanceInvite(response, showConfirmation)
+                    },
                 },
-            }]
+            ]
         }
 
         Alert.alert(
@@ -241,14 +247,12 @@ const BadReport = ({ navigation }) => {
         } else {
             local = location
         }
-        
+
         if (personSymptoms.length === 0) {
             Alert.alert(
                 translate('badReport.reportWithoutSymptom.title'),
                 translate('badReport.reportWithoutSymptom.message'),
-                [
-                    text="OK",
-                ]
+                [(text = 'OK')]
             )
             setShowProgressBar(false)
             setShowAlert(false)
@@ -273,7 +277,7 @@ const BadReport = ({ navigation }) => {
         setShowProgressBar(false)
 
         // Wait page re-render
-        const delay = ms => new Promise(res => setTimeout(res, ms));
+        const delay = (ms) => new Promise((res) => setTimeout(res, ms))
         await delay(50)
 
         updateUserScore()
@@ -433,22 +437,22 @@ const BadReport = ({ navigation }) => {
 
             <CoolAlert
                 show={showProgressBar}
-                showProgress={true}
+                showProgress
                 title={translate('badReport.alertMessages.sending')}
             />
 
             <CoolAlert
                 show={showAlert}
-                title={(
+                title={
                     <Text>
                         {translate('badReport.alertMessages.thanks')}{' '}
                         {emojis[1]}
                     </Text>
-                )}
+                }
                 message={alertMessage}
-                closeOnTouchOutside={true}
+                closeOnTouchOutside
                 closeOnHardwareBackPress={false}
-                showConfirmButton={true}
+                showConfirmButton
                 confirmText={translate('badReport.alertMessages.button')}
                 onConfirmPressed={() => navigation.navigate('Mapa')}
                 onDismiss={() => navigation.navigate('Mapa')}

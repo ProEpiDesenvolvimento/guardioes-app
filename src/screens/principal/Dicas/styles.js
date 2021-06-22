@@ -83,6 +83,11 @@ export const AdviceIcon = styled.View`
     padding: ${scale(12)}px;
 `
 
+export const DetailsContainer = styled.View`
+    background-color: #348eac;
+    flex: 1;
+`
+
 export const Details = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#ffffff',
