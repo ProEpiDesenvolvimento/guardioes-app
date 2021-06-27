@@ -5,6 +5,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import LeftMenu from '../components/LeftMenu'
 import TabBar from './TabBar'
 
+import StatusBarGDS from '../components/StatusBarGDS'
+
 import { scale } from '../utils/scalling'
 
 const Drawer = createDrawerNavigator()
@@ -14,7 +16,10 @@ const HomeDrawer = () => {
         <SafeAreaProvider>
             <Drawer.Navigator
                 drawerContent={({ navigation }) => (
-                    <LeftMenu navigation={navigation} />
+                    <>
+                        <StatusBarGDS />
+                        <LeftMenu navigation={navigation} />
+                    </>
                 )}
                 drawerStyle={{
                     backgroundColor: 'transparent',

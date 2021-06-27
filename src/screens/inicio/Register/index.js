@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react'
-import { Keyboard, Alert, Modal, SafeAreaView } from 'react-native'
+import { Keyboard, Alert, Modal } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import {
     GradientBackground,
     ButtonBack,
@@ -143,7 +144,7 @@ const Register = ({ navigation }) => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+            <StatusBarGDS light translucent />
             <GradientBackground>
                 <Modal // Modal View for Risk Group Message
                     animationType='fade'

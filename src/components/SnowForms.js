@@ -5,6 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import ShadowView from 'react-native-simple-shadow-view'
 import Spinner from 'react-native-spinkit'
 
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { scale, percentage } from '../utils/scalling'
 
 export const GradientBackground = styled(LinearGradient).attrs({
@@ -18,6 +19,7 @@ export const KeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: getStatusBarHeight(),
     },
 })``
 

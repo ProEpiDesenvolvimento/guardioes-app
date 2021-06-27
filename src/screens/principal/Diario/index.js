@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { View } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
@@ -7,6 +7,7 @@ import { Avatar } from 'react-native-elements'
 import { PieChart } from 'react-native-svg-charts'
 import { useFocusEffect } from '@react-navigation/native'
 
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
     Container,
@@ -245,7 +246,7 @@ const Diario = () => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+            <StatusBarGDS translucent />
             <Container>
                 <ScrollViewStyled>
                     <UserData>

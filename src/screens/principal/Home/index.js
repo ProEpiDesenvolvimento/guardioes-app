@@ -1,12 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-    SafeAreaView,
-    StatusBar,
-    Text,
-    StyleSheet,
-    Alert,
-    Modal,
-} from 'react-native'
+import { Text, StyleSheet, Alert, Modal } from 'react-native'
 import moment from 'moment'
 
 import Emoji from 'react-native-emoji'
@@ -15,6 +8,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import { Avatar } from 'react-native-elements'
 import { useFocusEffect } from '@react-navigation/native'
 
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
 import {
@@ -311,8 +305,7 @@ const Home = ({ navigation }) => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
-            <StatusBar backgroundColor='#348EAC' barStyle='light-content' />
+            <StatusBarGDS translucent />
             <Container>
                 <ScrollViewStyled>
                     <Background>

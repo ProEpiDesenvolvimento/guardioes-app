@@ -6,6 +6,7 @@ import ShadowView from 'react-native-simple-shadow-view'
 import { TouchableOpacity } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
@@ -17,7 +18,8 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#f4f4f4',
         flexGrow: 1,
-        paddingBottom: 20,
+        marginTop: getStatusBarHeight(),
+        paddingBottom: 20, // Same as TabBar margin top
     },
 })``
 

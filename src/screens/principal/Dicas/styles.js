@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import ShadowView from 'react-native-simple-shadow-view'
 import { TouchableOpacity } from 'react-native'
 
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
@@ -16,6 +17,7 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
         borderTopLeftRadius: scale(28),
         borderTopRightRadius: scale(28),
         flexGrow: 1,
+        marginTop: getStatusBarHeight(),
         paddingTop: percentage(6),
         paddingHorizontal: percentage(7),
         paddingBottom: scale(20), // Same as TabBar margin top
@@ -81,6 +83,11 @@ export const AdviceIcon = styled.View`
     background-color: #ffffff;
     border-radius: 100px;
     padding: ${scale(12)}px;
+`
+
+export const DetailsContainer = styled.View`
+    background-color: rgba(52, 142, 172, 0.8);
+    flex: 1;
 `
 
 export const Details = styled.ScrollView.attrs({

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import NoticiasComponent from './NoticiasComponent'
 import {
     Container,
@@ -91,7 +91,7 @@ const Noticias = () => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+            <StatusBarGDS translucent />
             <Container>
                 <NoticiasList
                     ListHeaderComponent={

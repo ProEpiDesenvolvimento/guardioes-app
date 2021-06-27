@@ -1,6 +1,7 @@
 import React from 'react'
-import { Alert, SafeAreaView, StatusBar } from 'react-native'
+import { Alert } from 'react-native'
 
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import {
     GradientBackground,
     Touch,
@@ -41,8 +42,7 @@ const Welcome = ({ navigation }) => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
-            <StatusBar backgroundColor='#5DD39E' barStyle='light-content' />
+            <StatusBarGDS light translucent />
             <GradientBackground>
                 <Container>
                     <Logo source={LogoType} />

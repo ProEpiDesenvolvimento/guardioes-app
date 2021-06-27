@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { TouchableOpacity } from 'react-native'
 import ShadowView from 'react-native-simple-shadow-view'
 
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { scale, percentage, vPercentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
@@ -17,7 +18,8 @@ export const ScrollViewStyled = styled.ScrollView.attrs({
         flexGrow: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingBottom: 20,
+        marginTop: getStatusBarHeight(),
+        paddingBottom: 20, // Same as TabBar margin top
     },
 })``
 

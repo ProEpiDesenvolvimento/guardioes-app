@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 
 import ShadowView from 'react-native-simple-shadow-view'
 
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { scale, percentage } from '../../../utils/scalling'
 
 export const Container = styled.View`
@@ -15,6 +16,7 @@ export const NoticiasList = styled.FlatList.attrs({
         borderTopLeftRadius: scale(28),
         borderTopRightRadius: scale(28),
         flexGrow: 1,
+        marginTop: getStatusBarHeight(),
         paddingTop: percentage(6),
         paddingHorizontal: percentage(7),
         paddingBottom: scale(20), // Same as TabBar margin top

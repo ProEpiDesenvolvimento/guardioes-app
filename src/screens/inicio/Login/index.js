@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { Alert, Keyboard, SafeAreaView } from 'react-native'
+import { Alert, Keyboard } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import {
     GradientBackground,
     KeyboardScrollView,
@@ -78,7 +79,7 @@ const Login = ({ navigation }) => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+            <StatusBarGDS light translucent />
             <GradientBackground>
                 <KeyboardScrollView>
                     <Logo source={LogoType} />

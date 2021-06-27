@@ -4,6 +4,7 @@ import { SafeAreaView, TouchableOpacity, Modal } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 
 import Feather from 'react-native-vector-icons/Feather'
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
     Container,
@@ -143,7 +144,7 @@ const Dicas = () => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#348EAC' }} />
+            <StatusBarGDS translucent />
             <Container>
                 <ScrollViewStyled>
                     <TitleWrapper>

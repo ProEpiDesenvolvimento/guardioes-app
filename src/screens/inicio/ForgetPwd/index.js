@@ -1,10 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react'
-import { Alert, BackHandler, SafeAreaView } from 'react-native'
+import { Alert, BackHandler } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import { useFocusEffect } from '@react-navigation/native'
 
+import StatusBarGDS from '../../../components/StatusBarGDS'
 import {
     GradientBackground,
     KeyboardScrollView,
@@ -148,7 +149,7 @@ const ForgetPwd = ({ navigation }) => {
 
     return (
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
+            <StatusBarGDS light translucent />
             <GradientBackground>
                 <KeyboardScrollView>
                     <SwiperFlatList

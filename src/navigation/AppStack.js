@@ -1,8 +1,8 @@
 import React from 'react'
-import { SafeAreaView } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Feather from 'react-native-vector-icons/Feather'
+import StatusBarGDS from '../components/StatusBarGDS'
 import {
     Container,
     HeaderNavigator,
@@ -37,9 +37,7 @@ const AppStack = () => {
             screenOptions={({ navigation }) => ({
                 header: ({ scene }) => (
                     <>
-                        <SafeAreaView
-                            style={{ flex: 0, backgroundColor: '#348EAC' }}
-                        />
+                        <StatusBarGDS />
                         <Container>
                             <HeaderNavigator>
                                 <BackButton onPress={() => navigation.goBack()}>
