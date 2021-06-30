@@ -28,13 +28,12 @@ Feather.loadFont()
 SimpleLineIcons.loadFont()
 
 const LeftMenu = ({ navigation }) => {
-    const { 
-        user, 
-        avatar, 
-        households, 
-        householdAvatars, 
-        signOut, 
-        storeUser,
+    const {
+        user,
+        avatar,
+        households,
+        householdAvatars,
+        signOut,
         setGroup,
     } = useUser()
 
@@ -60,7 +59,7 @@ const LeftMenu = ({ navigation }) => {
         }
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         getActiveSurveillance()
     }, [user.group_id])
 
