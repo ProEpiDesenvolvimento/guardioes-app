@@ -16,6 +16,7 @@ import {
     Advice,
     AdviceTitle,
     AdviceIcon,
+    DetailsContainer,
     Details,
     DetailsIcon,
     DetailsTitleWrapper,
@@ -205,48 +206,48 @@ const Dicas = () => {
                         () => setModalVisible(!modalVisible) // Exit to modal view
                     }
                 >
-                    <SafeAreaView
-                        style={{ flex: 1, backgroundColor: '#348EAC' }}
-                    >
-                        <Details>
-                            <DetailsIcon>
-                                <TouchableOpacity
-                                    onPress={() => setModalVisible(false)}
+                    <SafeAreaView style={{ flex: 1 }}>
+                        <DetailsContainer>
+                            <Details>
+                                <DetailsIcon>
+                                    <TouchableOpacity
+                                        onPress={() => setModalVisible(false)}
+                                    >
+                                        <Feather
+                                            name='arrow-left-circle'
+                                            size={scale(35)}
+                                            color='#348eac'
+                                        />
+                                    </TouchableOpacity>
+                                </DetailsIcon>
+
+                                <DetailsTitleWrapper>
+                                    <DetailsTitle>
+                                        {contentSelected.title}
+                                    </DetailsTitle>
+                                </DetailsTitleWrapper>
+
+                                <DetailsBodyText>
+                                    {contentSelected.body}
+                                </DetailsBodyText>
+                            </Details>
+
+                            <DetailsSeeMore>
+                                <DetailsButton
+                                    onPress={() =>
+                                        redirectAlert(
+                                            translate('advices.moreInformations'),
+                                            translate('advices.redirectPermission'),
+                                            contentSelected.source_link
+                                        )
+                                    }
                                 >
-                                    <Feather
-                                        name='arrow-left-circle'
-                                        size={scale(35)}
-                                        color='#348eac'
-                                    />
-                                </TouchableOpacity>
-                            </DetailsIcon>
-
-                            <DetailsTitleWrapper>
-                                <DetailsTitle>
-                                    {contentSelected.title}
-                                </DetailsTitle>
-                            </DetailsTitleWrapper>
-
-                            <DetailsBodyText>
-                                {contentSelected.body}
-                            </DetailsBodyText>
-                        </Details>
-
-                        <DetailsSeeMore>
-                            <DetailsButton
-                                onPress={() =>
-                                    redirectAlert(
-                                        translate('advices.moreInformations'),
-                                        translate('advices.redirectPermission'),
-                                        contentSelected.source_link
-                                    )
-                                }
-                            >
-                                <DetailsButtonLabel>
-                                    {translate('advices.more')}
-                                </DetailsButtonLabel>
-                            </DetailsButton>
-                        </DetailsSeeMore>
+                                    <DetailsButtonLabel>
+                                        {translate('advices.more')}
+                                    </DetailsButtonLabel>
+                                </DetailsButton>
+                            </DetailsSeeMore>
+                        </DetailsContainer>
                     </SafeAreaView>
                 </Modal>
             </Container>
