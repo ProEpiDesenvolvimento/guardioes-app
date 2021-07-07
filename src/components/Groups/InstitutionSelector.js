@@ -61,7 +61,7 @@ class InstitutionSelector extends Component {
         }
 
         const doesTheSelectedGroupRequireID = this.state.selectedGroup
-            .group_manager.require_id
+            .group_manager.require_id !== null;
 
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
@@ -157,7 +157,7 @@ class InstitutionSelector extends Component {
                 if (response.status === 200) {
                     this.setState({ selectedGroup: response.body.group })
 
-                    if (response.body.group.group_manager.require_id) {
+                    if (response.body.group.group_manager.require_id != null) {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
@@ -302,7 +302,7 @@ class InstitutionSelector extends Component {
         return (
             <FormGroupChild key={index}>
                 <FormLabel light={this.state.lightTheme}>
-                    {translate('register.idCode')}
+                    {this.state.selectedGroup.group_manager.require_id}
                 </FormLabel>
                 <NormalInput
                     returnKeyType='done'

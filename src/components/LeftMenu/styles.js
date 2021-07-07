@@ -70,8 +70,9 @@ export const Aplicativo = styled.Text`
 `
 
 export const SocialContainer = styled.View`
-    margin-vertical: ${percentage(5)}px;
     flex-direction: row;
+    margin-top: ${percentage(5)}px;
+    margin-bottom: ${percentage(8)}px;
     margin-left: ${scale(75)}px;
     margin-right: ${scale(75)}px;
     justify-content: space-around;
