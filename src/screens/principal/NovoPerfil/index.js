@@ -90,9 +90,8 @@ const NovoPerfil = ({ navigation }) => {
         if (response.status === 201) {
             console.warn(response.status)
             setShowAlert(false)
-            navigation.navigate('Home')
+            navigation.goBack()
         } else {
-            console.warn(response)
             Alert.alert(translate('register.geralError'))
             setShowAlert(false)
         }
