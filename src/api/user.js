@@ -164,9 +164,9 @@ export const resetPassword = async (data) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                reset_password_token: data.password_token,
+                reset_password_token: data.reset_password_token,
                 password: data.password,
-                password_confirmation: data.password_confirm,
+                password_confirmation: data.password_confirmation,
             }),
         })
     } catch (err) {

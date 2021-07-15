@@ -111,7 +111,7 @@ export const UserProvider = ({ children }) => {
     const loadSecondaryData = async () => {
         // Loads secondary data and verify user credentials
         const avatar = await AsyncStorage.getItem('userAvatar')
-        const score = parseInt(await AsyncStorage.getItem('userScore'), 10)
+        const score = parseInt(await AsyncStorage.getItem('score'), 10)
         const lastReport = await AsyncStorage.getItem('lastReport')
         const lastForm = await AsyncStorage.getItem('lastForm')
         const householdsData = JSON.parse(
@@ -232,7 +232,6 @@ export const UserProvider = ({ children }) => {
             'householdsData',
             'householdAvatars',
             'selectedData',
-            'userScore',
             'score',
             'lastReport',
             'surveysData',
@@ -417,7 +416,6 @@ export const UserProvider = ({ children }) => {
                 console.warn('Did not report the day before')
         }
 
-        await AsyncStorage.setItem('userScore', newScore.toString()) // Will be removed on next release
         await AsyncStorage.setItem('score', newScore.toString())
         await AsyncStorage.setItem('lastReport', todayDate.toISOString())
 
