@@ -83,6 +83,7 @@ const ForgetPwd = ({ navigation }) => {
         const response = await sendCode({ email })
 
         if (response.status === 200) {
+            console.warn(response)
             goToNextScreen()
             setShowAlert(false)
         } else {

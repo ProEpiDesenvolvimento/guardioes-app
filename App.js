@@ -42,18 +42,15 @@ const Guardioes = () => {
                     }
 
                     const button2 = {
-                        text: 'Complete',
+                        text: 'Confirm',
                         onPress: () => {
                             notifReceivedEvent.complete(notif)
                         },
                     }
 
-                    Alert.alert(
-                        'Complete notification?',
-                        'Test',
-                        [button1, button2],
-                        { cancelable: true }
-                    )
+                    Alert.alert(notif.title, notif.body, [button1, button2], {
+                        cancelable: false,
+                    })
                 }
             )
             OneSignal.setNotificationOpenedHandler((notification) => {

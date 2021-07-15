@@ -128,7 +128,7 @@ const Diario = () => {
         const markedDatesBad = []
         const markedDatesAll = []
 
-        surveys.map((survey) => {
+        surveys.forEach((survey) => {
             if (!person.is_household) {
                 if (!survey.household) {
                     if (survey.symptom && survey.symptom.length) {
