@@ -92,7 +92,6 @@ const NovoPerfil = ({ navigation }) => {
             setShowAlert(false)
             navigation.navigate('Home')
         } else {
-            console.warn(response)
             Alert.alert(translate('register.geralError'))
             setShowAlert(false)
         }

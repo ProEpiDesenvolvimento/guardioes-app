@@ -52,7 +52,14 @@ const AppStack = () => {
                                 <ScreenTitle>
                                     {scene.descriptor.options.title}
                                 </ScreenTitle>
-                                <Empty />
+                                {scene.descriptor.options.rightButton !==
+                                undefined ? (
+                                    scene.descriptor.options.rightButton(
+                                        navigation
+                                    )
+                                ) : (
+                                    <Empty />
+                                )}
                             </HeaderNavigator>
                         </Container>
                     </>
@@ -85,7 +92,7 @@ const AppStack = () => {
             <Stack.Screen
                 name='Perfis'
                 component={Perfis}
-                options={{ title: translate('profiles.title') }}
+                options={headerOptions.editarPerfil}
             />
             <Stack.Screen
                 name='Rumor'
@@ -134,6 +141,17 @@ const AppStack = () => {
             />
         </Stack.Navigator>
     )
+}
+
+const headerOptions = {
+    editarPerfil: {
+        title: translate('register.editProfile'),
+        rightButton: (navigation) => (
+            <BackButton onPress={() => navigation.navigate('NovoPerfil')}>
+                <Feather name='user-plus' size={scale(30)} color='#ffffff' />
+            </BackButton>
+        ),
+    },
 }
 
 export default AppStack
