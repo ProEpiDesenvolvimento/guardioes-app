@@ -45,9 +45,12 @@ export const createHousehold = async (data, id, token) => {
         })
     } catch (err) {
         console.log(err)
-        response = err
     }
-    return response
+
+    return {
+        status: response.status,
+        body: await response.json(),
+    }
 }
 
 export const updateHousehold = async (data, id, token) => {
