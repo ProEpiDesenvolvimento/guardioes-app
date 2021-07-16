@@ -52,9 +52,14 @@ const AppStack = () => {
                                 <ScreenTitle>
                                     {scene.descriptor.options.title}
                                 </ScreenTitle>
-                                    {scene.descriptor.options.rightButton !== undefined?
-                                    scene.descriptor.options.rightButton(navigation) :
-                                    <Empty/>}
+                                {scene.descriptor.options.rightButton !==
+                                undefined ? (
+                                    scene.descriptor.options.rightButton(
+                                        navigation
+                                    )
+                                ) : (
+                                    <Empty />
+                                )}
                             </HeaderNavigator>
                         </Container>
                     </>
@@ -143,11 +148,7 @@ const headerOptions = {
         title: translate('register.editProfile'),
         rightButton: (navigation) => (
             <BackButton onPress={() => navigation.navigate('NovoPerfil')}>
-                <Feather
-                    name='user-plus'
-                    size={scale(30)}
-                    color='#ffffff'
-                />
+                <Feather name='user-plus' size={scale(30)} color='#ffffff' />
             </BackButton>
         ),
     },

@@ -44,6 +44,7 @@ export const createHousehold = async (data, id, token) => {
             }),
         })
     } catch (err) {
+        console.log(err)
         response = err
     }
     return response
