@@ -73,12 +73,12 @@ const NovoPerfil = ({ navigation }) => {
         const household = {
             description: name,
             birthdate: birth,
-            country,
             gender,
             race,
             kinship,
-            identification_code: idCode,
+            country,
             group_id: groupId,
+            identification_code: idCode,
             risk_group: riskGroup,
         }
 

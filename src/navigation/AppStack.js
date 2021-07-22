@@ -23,6 +23,7 @@ import Rumor from '../screens/principal/Rumor'
 import Sobre from '../screens/principal/Sobre'
 import TermosPoliticas from '../screens/principal/TermosPoliticas'
 import Tutorial from '../screens/principal/Tutorial'
+import Vacinacao from '../screens/principal/Vacinacao'
 import Vigilancia from '../screens/principal/Vigilancia'
 
 import translate from '../../locales/i18n'
@@ -52,8 +53,7 @@ const AppStack = () => {
                                 <ScreenTitle>
                                     {scene.descriptor.options.title}
                                 </ScreenTitle>
-                                {scene.descriptor.options.rightButton !==
-                                undefined ? (
+                                {scene.descriptor.options.rightButton ? (
                                     scene.descriptor.options.rightButton(
                                         navigation
                                     )
@@ -90,6 +90,16 @@ const AppStack = () => {
                 options={{ title: translate('home.addProfile') }}
             />
             <Stack.Screen
+                name='BioSeguranca'
+                component={BioSeguranca}
+                options={{ title: translate('biosecurity.title') }}
+            />
+            <Stack.Screen
+                name='Vacinacao'
+                component={Vacinacao}
+                options={{ title: translate('biosecurity.title') }}
+            />
+            <Stack.Screen
                 name='Perfis'
                 component={Perfis}
                 options={headerOptions.editarPerfil}
@@ -103,11 +113,6 @@ const AppStack = () => {
                 name='EditarPerfil'
                 component={EditarPerfil}
                 options={{ title: translate('register.editProfile') }}
-            />
-            <Stack.Screen
-                name='BioSeguranca'
-                component={BioSeguranca}
-                options={{ title: translate('biosecurity.title') }}
             />
             <Stack.Screen
                 name='Vigilancia'
