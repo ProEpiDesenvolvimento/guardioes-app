@@ -31,10 +31,13 @@ const Vacinacao = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(true)
 
-    const [vaccinated, setIsVaccinated] = useState(false)
     const [vaccines, setVaccines] = useState([])
-    const [shot1, setShot1] = useState({})
-    const [shot2, setShot2] = useState({})
+    const [hasDose1, setHasDose1] = useState(false)
+    const [hasDose2, setHasDose2] = useState(false)
+    const [dose1Date, setDose1Date] = useState('')
+    const [dose2Date, setDose2Date] = useState('')
+    const [dose1, setDose1] = useState({})
+    const [dose2, setDose2] = useState({})
 
     const [loadingAlert, setLoadingAlert] = useState(false)
 
@@ -45,8 +48,8 @@ const Vacinacao = ({ navigation }) => {
                 doses: 2,
             },
             {
-                name: 'Pfizer',
-                doses: 2,
+                name: 'Janssen',
+                doses: 1,
             },
         ]
 
@@ -59,11 +62,11 @@ const Vacinacao = ({ navigation }) => {
         // }
     }
 
-    const handleVaccine = (vaccine, shotType) => {
-        if (shotType === 'shot1') {
-            setShot1(vaccine)
-        } else if (shotType === 'shot2') {
-            setShot2(vaccine)
+    const handleVaccine = (vaccine, doseType) => {
+        if (doseType === 'dose1') {
+            setDose1(vaccine)
+        } else if (doseType === 'dose2') {
+            setDose2(vaccine)
         }
     }
 
@@ -84,34 +87,33 @@ const Vacinacao = ({ navigation }) => {
         <Container>
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
                 <FormInline>
-                    <FormLabel>Você foi vacinado contra a COVID-19?</FormLabel>
+                    <FormLabel>
+                        Você já recebeu a 1ª dose da vacina contra a COVID-19?
+                    </FormLabel>
                     <CheckBoxStyled
                         title='Sim'
-                        checked={vaccinated}
-                        onPress={() => setIsVaccinated(true)}
+                        checked={hasDose1}
+                        onPress={() => setHasDose1(true)}
                         full
                     />
                     <CheckBoxStyled
                         title='Não'
-                        checked={!vaccinated}
-                        onPress={() => setIsVaccinated(false)}
+                        checked={!hasDose1}
+                        onPress={() => setHasDose1(false)}
                         full
                     />
                 </FormInline>
 
-                {vaccinated ? (
+                {hasDose1 ? (
                     <>
                         <FormInline>
-                            <FormLabel>Vacina da 1º dose:</FormLabel>
-
+                            <FormLabel>Vacina da 1º dose (ou única):</FormLabel>
                             <DateSelector
                                 placeholder='Data'
-                                // date={birth}
+                                date={dose1Date}
                                 format='DD-MM-YYYY'
                                 minDate='01-01-1918'
-                                maxDate={moment()
-                                    .subtract(13, 'years')
-                                    .format('DD-MM-YYYY')}
+                                maxDate={moment().format('DD-MM-YYYY')}
                                 locale='pt-BR'
                                 confirmBtnText={translate(
                                     'birthDetails.confirmButton'
@@ -119,7 +121,7 @@ const Vacinacao = ({ navigation }) => {
                                 cancelBtnText={translate(
                                     'birthDetails.cancelButton'
                                 )}
-                                onDateChange={(date) => console.log(date)}
+                                onDateChange={(date) => setDose1Date(date)}
                             />
                         </FormInline>
 
@@ -128,9 +130,75 @@ const Vacinacao = ({ navigation }) => {
                                 <FormInlineCheck>
                                     <CheckBoxStyled
                                         title={vaccine.name}
-                                        checked={vaccine.name === shot1.name}
+                                        checked={vaccine.name === dose1.name}
                                         onPress={() =>
-                                            handleVaccine(vaccine, 'shot1')
+                                            handleVaccine(vaccine, 'dose1')
+                                        }
+                                    />
+                                    <CheckLabel
+                                        onPress={() => console.log('Foi')}
+                                    >
+                                        <Feather
+                                            name='help-circle'
+                                            size={scale(25)}
+                                            color='#348EAC'
+                                        />
+                                    </CheckLabel>
+                                </FormInlineCheck>
+                            ))}
+                        </FormInline>
+                    </>
+                ) : null}
+
+                {hasDose1 && dose1.doses > 1 ? (
+                    <FormInline>
+                        <FormLabel>
+                            Você já recebeu a 2ª dose da vacina contra a COVID-19?
+                        </FormLabel>
+                        <CheckBoxStyled
+                            title='Sim'
+                            checked={hasDose2}
+                            onPress={() => setHasDose2(true)}
+                            full
+                        />
+                        <CheckBoxStyled
+                            title='Não'
+                            checked={!hasDose2}
+                            onPress={() => setHasDose2(false)}
+                            full
+                        />
+                    </FormInline>
+                ) : null}
+
+                {hasDose1 && hasDose2 ? (
+                    <>
+                        <FormInline>
+                            <FormLabel>Vacina da 2º dose:</FormLabel>
+                            <DateSelector
+                                placeholder='Data'
+                                date={dose2Date}
+                                format='DD-MM-YYYY'
+                                minDate='01-01-1918'
+                                maxDate={moment().format('DD-MM-YYYY')}
+                                locale='pt-BR'
+                                confirmBtnText={translate(
+                                    'birthDetails.confirmButton'
+                                )}
+                                cancelBtnText={translate(
+                                    'birthDetails.cancelButton'
+                                )}
+                                onDateChange={(date) => setDose2Date(date)}
+                            />
+                        </FormInline>
+
+                        <FormInline>
+                            {vaccines.map((vaccine) => (
+                                <FormInlineCheck>
+                                    <CheckBoxStyled
+                                        title={vaccine.name}
+                                        checked={vaccine.name === dose2.name}
+                                        onPress={() =>
+                                            handleVaccine(vaccine, 'dose2')
                                         }
                                     />
                                     <CheckLabel
