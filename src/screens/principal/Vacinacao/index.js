@@ -22,12 +22,13 @@ import {
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
+import { updateUser } from '../../../api/user'
 import { useUser } from '../../../hooks/user'
 
 Feather.loadFont()
 
 const Vacinacao = ({ navigation }) => {
-    const { token, user } = useUser()
+    const { token, user, storeUser } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -68,11 +69,40 @@ const Vacinacao = ({ navigation }) => {
         } else if (doseType === 'dose2') {
             setDose2(vaccine)
         }
+
+        if (vaccine.doses < 2) {
+            setHasDose2(false)
+            setDose2({})
+        }
     }
 
     const sendVaccinationForm = async () => {
-        const lastFormDate = new Date()
-        lastFormDate.setHours(0, 0, 0, 0)
+        const dose1D = moment(dose1Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const dose2D = moment(dose2Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+
+        const vaccination = {
+            dose1D,
+            dose2D,
+        }
+
+        if (!dose1) return
+        setLoadingAlert(true)
+
+        const response = await updateUser(vaccination, user.id, token)
+
+        if (response.status === 200) {
+            storeUser({
+                ...user,
+                ...vaccination,
+            })
+
+            setLoadingAlert(false)
+            navigation.goBack()
+        } else {
+            console.warn(response.status)
+            setLoadingAlert(false)
+            Alert.alert(translate('register.geralError'))
+        }
     }
 
     useEffect(() => {
@@ -99,7 +129,14 @@ const Vacinacao = ({ navigation }) => {
                     <CheckBoxStyled
                         title='Não'
                         checked={!hasDose1}
-                        onPress={() => setHasDose1(false)}
+                        onPress={() => {
+                            setHasDose1(false)
+                            setDose1Date('')
+                            setDose1({})
+                            setHasDose2(false)
+                            setDose2Date('')
+                            setDose2({})
+                        }}
                         full
                     />
                 </FormInline>
@@ -164,7 +201,11 @@ const Vacinacao = ({ navigation }) => {
                         <CheckBoxStyled
                             title='Não'
                             checked={!hasDose2}
-                            onPress={() => setHasDose2(false)}
+                            onPress={() => {
+                                setHasDose2(false)
+                                setDose2Date('')
+                                setDose2({})
+                            }}
                             full
                         />
                     </FormInline>
