@@ -38,8 +38,9 @@ export const validVaccination = (vaccination) => {
     let valid = true
 
     if (
-        vaccination.dose1_vaccine &&
-        vaccination.dose1_date === 'Invalid date'
+        vaccination.has_dose1 &&
+        (vaccination.dose1_date === 'Invalid date' ||
+            !vaccination.dose1_vaccine)
     ) {
         Alert.alert(
             translate('vaccination.titleError'),
@@ -47,33 +48,10 @@ export const validVaccination = (vaccination) => {
         )
         valid = false
     } else if (
-        vaccination.dose2_vaccine &&
-        vaccination.dose2_date === 'Invalid date'
+        vaccination.has_dose2 &&
+        (vaccination.dose2_date === 'Invalid date' ||
+            !vaccination.dose2_vaccine)
     ) {
-        Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
-        )
-        valid = false
-    } else if (
-        vaccination.dose1_date !== 'Invalid date' &&
-        !vaccination.dose1_vaccine
-    ) {
-        Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
-        )
-        valid = false
-    } else if (
-        vaccination.dose2_date !== 'Invalid date' &&
-        !vaccination.dose2_vaccine
-    ) {
-        Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
-        )
-        valid = false
-    } else if (vaccination.dose1_date === vaccination.dose2_date) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')
