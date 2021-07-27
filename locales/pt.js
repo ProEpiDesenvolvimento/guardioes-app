@@ -21,7 +21,7 @@ export default {
         cancelButton: 'Cancelar',
         groupError: 'Você deve selecionar o grupo',
         codeError: 'Você deve colocar o codigo de identificação',
-        codeFormatError: 'O código deve conter apenas digitos',
+        codeFormatError: 'O código deve conter apenas dígitos',
         codeLengthError: 'O código deve conter exatamente ',
         codeLengthError2: ' dígitos',
     },
@@ -57,6 +57,17 @@ export default {
         tryAgain: 'Tente Novamente',
         differentsPass: 'Senhas não conferem!',
         passwordChanged: 'Senha Redefinida',
+    },
+    getToken: {
+        title: 'Código de Verificação',
+        invalidCode: 'Código Inválido',
+        confirm: 'Confirmar',
+        loading: 'Carregando',
+        verificationCodeSent:
+            'Foi enviado um código de verificação para o email indicado.',
+        spamCheckWarning:
+            'Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.',
+        inputVerificationCode: 'Código',
     },
     changePwd: {
         title: 'Redefinir senha',
@@ -390,17 +401,6 @@ export default {
     rumor: {
         title: 'Rumor',
         rumorSent: 'Rumor registrado! ',
-    },
-    getToken: {
-        title: 'Código de Verificação',
-        invalidCode: 'Código Inválido',
-        confirm: 'Confirmar',
-        loading: 'Carregando',
-        verificationCodeSent:
-            'Foi enviado um codigo de verificação para o email indicado.',
-        spamCheckWarning:
-            'Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.',
-        inputVerificationCode: 'Código',
     },
     surveilanceInvite: {
         title: 'Faça parte da vigilância ativa',

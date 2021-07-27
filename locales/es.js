@@ -58,6 +58,17 @@ export default {
         differentsPass: '¡Las Contraseñas no Coinciden!',
         passwordChanged: 'Restablecer la contraseña',
     },
+    getToken: {
+        title: 'Código de Verificación',
+        invalidCode: 'Código invalid',
+        confirm: 'Confirmar',
+        loading: 'Cargando',
+        verificationCodeSent:
+            'Se ha enviado un código de verificación al correo electrónico indicado.',
+        spamCheckWarning:
+            'Si no aparece en su cuadro de mensaje principal, verifique su Spam.',
+        inputVerificationCode: 'Código',
+    },
     changePwd: {
         title: 'Redefinir contraseña',
         newPwd: 'Nueva contraseña',
@@ -343,24 +354,22 @@ export default {
         messageError: 'Por favor, responda todas las preguntas.',
     },
     vaccination: {
-        title: 'Vacinação',
-        titleError: 'Alguns campos não foram preenchidos',
-        messageError: 'Por favor, preencha todos os campos.',
-        titleModal: 'Informações da vacina',
-        nameVaccine: 'Nome: ',
-        laboratoryVaccine: 'Laboratório: ',
-        countryVaccine: 'Local que iniciou a produção: ',
-        dosesVaccine: 'Número de doses: ',
-        minIntervalVaccine: 'Intervalo entre as doses: ',
-        question1Label:
-            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
-        question2Label:
-            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
-        vaccine1Label: 'Vacina da 1º dose (ou única):',
-        vaccine2Label: 'Vacina da 2º dose:',
-        dateField: 'Data',
-        yesField: 'Sim',
-        noField: 'Não',
+        title: 'Vacunación',
+        titleError: 'Algunos campos no se completaron',
+        messageError: 'Por favor rellena todos los campos.',
+        titleModal: 'Información sobre vacunas',
+        nameVaccine: 'Nombre: ',
+        laboratoryVaccine: 'Laboratorio: ',
+        countryVaccine: 'País que inició la producción: ',
+        dosesVaccine: 'Cantidad de dosis: ',
+        minIntervalVaccine: 'Intervalo entre dosis: ',
+        question1Label: '¿Ya recibió la primera dosis de la vacuna COVID-19?',
+        question2Label: '¿Ya recibió la segunda dosis de la vacuna COVID-19?',
+        vaccine1Label: 'Vacuna de primera dosis (o única):',
+        vaccine2Label: 'Vacuna de segunda dosis:',
+        dateField: 'Fecha',
+        yesField: 'Sí',
+        noField: 'No',
     },
     drawer: {
         reportRumor: 'Informar Rumor',
@@ -392,17 +401,6 @@ export default {
     rumor: {
         title: 'Rumor',
         rumorSent: 'Rumor registered! ',
-    },
-    getToken: {
-        title: 'Código de Verificación',
-        invalidCode: 'Código invalid',
-        confirm: 'Confirmar',
-        loading: 'Cargando',
-        verificationCodeSent:
-            'Se ha enviado un código de verificación al correo electrónico indicado.',
-        spamCheckWarning:
-            'Si no aparece en su cuadro de mensaje principal, verifique su Spam.',
-        inputVerificationCode: 'Código',
     },
     surveilanceInvite: {
         title: 'Sea parte de la vigilancia activa',
