@@ -39,7 +39,7 @@ import {
     raceChoices,
     householdChoices,
 } from '../../../utils/selector'
-import { validatePerson } from '../../../utils/consts'
+import { validPerson } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
 
@@ -82,7 +82,7 @@ const NovoPerfil = ({ navigation }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(household, institutionError)) return
+        if (!validPerson(household, institutionError)) return
         showLoadingAlert()
 
         const response = await createHousehold(household, user.id, token)

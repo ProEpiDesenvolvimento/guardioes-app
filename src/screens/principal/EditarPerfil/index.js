@@ -42,11 +42,7 @@ import {
     raceChoices,
     householdChoices,
 } from '../../../utils/selector'
-import {
-    handleAvatar,
-    getInitials,
-    validatePerson,
-} from '../../../utils/consts'
+import { handleAvatar, getInitials, validPerson } from '../../../utils/consts'
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
@@ -125,7 +121,7 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(newHousehold, institutionError)) return
+        if (!validPerson(newHousehold, institutionError)) return
         setLoadingAlert(true)
 
         const response = await updateHousehold(newHousehold, user.id, token)
@@ -166,7 +162,7 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(newUser, institutionError)) return
+        if (!validPerson(newUser, institutionError)) return
         setLoadingAlert(true)
 
         const response = await updateUser(newUser, user.id, token)

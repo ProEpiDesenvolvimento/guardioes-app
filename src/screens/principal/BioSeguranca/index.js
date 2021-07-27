@@ -18,6 +18,11 @@ import {
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
+import {
+    isQuestionAnswered,
+    isOptionSelected,
+    validForm,
+} from '../../../utils/formConsts'
 import { getForm, sendFormAnswers } from '../../../api/forms'
 
 Feather.loadFont()
@@ -45,14 +50,7 @@ const BioSeguranca = ({ navigation }) => {
         const lastFormDate = new Date()
         lastFormDate.setHours(0, 0, 0, 0)
 
-        if (questions.length > answers.length) {
-            Alert.alert(
-                translate('biosecurity.titleError'),
-                translate('biosecurity.messageError')
-            )
-            return
-        }
-
+        if (!validForm(questions, answers)) return
         setLoadingAlert(true)
 
         const response = await sendFormAnswers(answers, token)
@@ -68,28 +66,6 @@ const BioSeguranca = ({ navigation }) => {
         }
     }
 
-    const isQuestionAnswered = (option) => {
-        const answered = answers.filter(
-            (ans) => ans.form_question_id === option.form_question_id
-        )
-
-        if (answered.length > 0) {
-            return true
-        }
-        return false
-    }
-
-    const isOptionSelected = (option) => {
-        const selected = answers.filter(
-            (ans) => ans.form_option_id === option.id
-        )
-
-        if (selected.length > 0) {
-            return true
-        }
-        return false
-    }
-
     const handleAnswer = (question, option) => {
         const answer = {
             form_id: group.form_id,
@@ -98,13 +74,13 @@ const BioSeguranca = ({ navigation }) => {
             user_id: user.id,
         }
 
-        if (isQuestionAnswered(option)) {
+        if (isQuestionAnswered(answers, option)) {
             const newAnswers = answers.filter(
                 (ans) => ans.form_question_id !== option.form_question_id
             )
 
             setAnswers([...newAnswers, answer])
-        } else if (isOptionSelected(option)) {
+        } else if (isOptionSelected(answers, option)) {
             const newAnswers = answers.filter(
                 (ans) => ans.form_option_id !== option.id
             )
