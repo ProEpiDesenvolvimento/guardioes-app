@@ -28,8 +28,10 @@ import {
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
-import { updateUser } from '../../../api/user'
 import { useUser } from '../../../hooks/user'
+import { validVaccination } from '../../../utils/formConsts'
+import { getVaccines } from '../../../api/vaccines'
+import { updateUser } from '../../../api/user'
 
 Feather.loadFont()
 
@@ -50,25 +52,14 @@ const Vacinacao = ({ navigation }) => {
     const [modalVaccine, setModalVaccine] = useState(false)
     const [loadingAlert, setLoadingAlert] = useState(false)
 
-    const getVaccines = async () => {
-        const response = [
-            {
-                name: 'Astrazeneca',
-                doses: 2,
-            },
-            {
-                name: 'Janssen',
-                doses: 1,
-            },
-        ]
+    const getAppVaccines = async () => {
+        const response = await getVaccines(token)
 
-        // const response = await getForm(group.form_id, token)
-
-        // if (response.status === 200) {
-        // const { form } = response.body
-        setVaccines(response)
-        setIsLoading(false)
-        // }
+        if (response.status === 200) {
+            const vaccines = response.body
+            setVaccines(vaccines)
+            setIsLoading(false)
+        }
     }
 
     const handleVaccine = (vaccine, doseType) => {
@@ -84,16 +75,18 @@ const Vacinacao = ({ navigation }) => {
         }
     }
 
-    const sendVaccinationForm = async () => {
+    const sendVaccination = async () => {
         const dose1D = moment(dose1Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
         const dose2D = moment(dose2Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
 
         const vaccination = {
-            dose1D,
-            dose2D,
+            dose1_date: dose1D,
+            dose1_vaccine: dose1.name,
+            dose2_date: dose2D,
+            dose2_vaccine: dose2.name,
         }
 
-        if (!dose1) return
+        if (!validVaccination(vaccination)) return
         setLoadingAlert(true)
 
         const response = await updateUser(vaccination, user.id, token)
@@ -114,7 +107,7 @@ const Vacinacao = ({ navigation }) => {
     }
 
     useEffect(() => {
-        getVaccines()
+        getAppVaccines()
     }, [])
 
     if (isLoading) {
@@ -142,16 +135,17 @@ const Vacinacao = ({ navigation }) => {
                             {vaccineSelected.name}
                             {'\n'}
                             {translate('vaccination.laboratoryVaccine')}
-                            {vaccineSelected.name}
+                            {vaccineSelected.laboratory}
                             {'\n'}
                             {translate('vaccination.countryVaccine')}
-                            {vaccineSelected.name}
+                            {vaccineSelected.country_origin}
                             {'\n'}
                             {translate('vaccination.dosesVaccine')}
                             {vaccineSelected.doses}
                             {'\n'}
                             {translate('vaccination.minIntervalVaccine')}
-                            {vaccineSelected.doses}
+                            {vaccineSelected.min_dose_interval}
+                            {translate('vaccination.intervalVaccinePeriod')}
                         </ModalText>
 
                         <Button onPress={() => setModalVaccine(false)}>
@@ -316,7 +310,7 @@ const Vacinacao = ({ navigation }) => {
                     </>
                 ) : null}
 
-                <Button onPress={() => sendVaccinationForm()}>
+                <Button onPress={() => sendVaccination()}>
                     <SendContainer>
                         <SendText>Enviar</SendText>
                     </SendContainer>

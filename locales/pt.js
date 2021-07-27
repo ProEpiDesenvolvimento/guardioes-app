@@ -362,6 +362,7 @@ export default {
         countryVaccine: 'Local que iniciou a produção: ',
         dosesVaccine: 'Número de doses: ',
         minIntervalVaccine: 'Intervalo entre as doses: ',
+        intervalVaccinePeriod: ' dias',
         question1Label:
             'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
         question2Label:

@@ -363,6 +363,7 @@ export default {
         countryVaccine: 'País que inició la producción: ',
         dosesVaccine: 'Cantidad de dosis: ',
         minIntervalVaccine: 'Intervalo entre dosis: ',
+        intervalVaccinePeriod: ' días',
         question1Label: '¿Ya recibió la primera dosis de la vacuna COVID-19?',
         question2Label: '¿Ya recibió la segunda dosis de la vacuna COVID-19?',
         vaccine1Label: 'Vacuna de primera dosis (o única):',
