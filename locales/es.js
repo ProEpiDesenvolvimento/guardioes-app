@@ -58,6 +58,15 @@ export default {
         differentsPass: '¡Las Contraseñas no Coinciden!',
         passwordChanged: 'Restablecer la contraseña',
     },
+    changePwd: {
+        title: 'Redefinir contraseña',
+        newPwd: 'Nueva contraseña',
+        confirmPwd: 'Repite la contraseña',
+        changeButton: 'Redefinir',
+        errorMessages: {
+            shortPwd: 'La contraseña debe tener al menos 8 caracteres',
+        },
+    },
     register: {
         title: 'Regístrese',
         name: 'Nombre:',
@@ -172,7 +181,7 @@ export default {
         reportWithoutSymptom: {
             title: 'No es posible enviar',
             message: 'Seleccione al menos 1 síntoma',
-        }
+        },
     },
     advices: {
         moreInformations: 'Mas informaciones',
@@ -333,6 +342,26 @@ export default {
         titleError: 'Algunas preguntas no han sido respondidas',
         messageError: 'Por favor, responda todas las preguntas.',
     },
+    vaccination: {
+        title: 'Vacinação',
+        titleError: 'Alguns campos não foram preenchidos',
+        messageError: 'Por favor, preencha todos os campos.',
+        titleModal: 'Informações da vacina',
+        nameVaccine: 'Nome: ',
+        laboratoryVaccine: 'Laboratório: ',
+        countryVaccine: 'Local que iniciou a produção: ',
+        dosesVaccine: 'Número de doses: ',
+        minIntervalVaccine: 'Intervalo entre as doses: ',
+        question1Label:
+            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
+        question2Label:
+            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
+        vaccine1Label: 'Vacina da 1º dose (ou única):',
+        vaccine2Label: 'Vacina da 2º dose:',
+        dateField: 'Data',
+        yesField: 'Sim',
+        noField: 'Não',
+    },
     drawer: {
         reportRumor: 'Informar Rumor',
         toEdit: 'Editar perfiles',
@@ -380,15 +409,6 @@ export default {
         message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
         cancelButton: 'No',
         redirectButton: 'Si, seré parte',
-    },
-    changePwd: {
-        title: 'Redefinir contraseña',
-        newPwd: 'Nueva contraseña',
-        confirmPwd: 'Repite la contraseña',
-        changeButton: 'Redefinir',
-        errorMessages: {
-            shortPwd: 'La contraseña debe tener al menos 8 caracteres',
-        },
     },
     autocomplete: {
         searchBar: 'Pesquise aquí',

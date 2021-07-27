@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert } from 'react-native'
+import { Alert, Modal } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
@@ -7,6 +7,13 @@ import Feather from 'react-native-vector-icons/Feather'
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
     Container,
+    ModalContainer,
+    ModalBox,
+    ModalTitle,
+    ModalText,
+    Button,
+    ModalButton,
+    ModalButtonText,
     KeyboardScrollView,
     FormInline,
     FormLabel,
@@ -14,7 +21,6 @@ import {
     FormInlineCheck,
     CheckBoxStyled,
     CheckLabel,
-    Button,
     SendContainer,
     SendText,
 } from '../../../components/NormalForms'
@@ -33,6 +39,7 @@ const Vacinacao = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true)
 
     const [vaccines, setVaccines] = useState([])
+    const [vaccineSelected, setVaccineSelected] = useState({})
     const [hasDose1, setHasDose1] = useState(false)
     const [hasDose2, setHasDose2] = useState(false)
     const [dose1Date, setDose1Date] = useState('')
@@ -40,6 +47,7 @@ const Vacinacao = ({ navigation }) => {
     const [dose1, setDose1] = useState({})
     const [dose2, setDose2] = useState({})
 
+    const [modalVaccine, setModalVaccine] = useState(false)
     const [loadingAlert, setLoadingAlert] = useState(false)
 
     const getVaccines = async () => {
@@ -115,19 +123,60 @@ const Vacinacao = ({ navigation }) => {
 
     return (
         <Container>
+            <Modal // Modal View for Vaccine Info
+                animationType='fade'
+                transparent
+                visible={modalVaccine}
+                onRequestClose={() => {
+                    setModalVaccine(!modalVaccine)
+                }}
+            >
+                <ModalContainer>
+                    <ModalBox>
+                        <ModalTitle>
+                            {translate('vaccination.titleModal')}
+                        </ModalTitle>
+
+                        <ModalText>
+                            {translate('vaccination.nameVaccine')}
+                            {vaccineSelected.name}
+                            {'\n'}
+                            {translate('vaccination.laboratoryVaccine')}
+                            {vaccineSelected.name}
+                            {'\n'}
+                            {translate('vaccination.countryVaccine')}
+                            {vaccineSelected.name}
+                            {'\n'}
+                            {translate('vaccination.dosesVaccine')}
+                            {vaccineSelected.doses}
+                            {'\n'}
+                            {translate('vaccination.minIntervalVaccine')}
+                            {vaccineSelected.doses}
+                        </ModalText>
+
+                        <Button onPress={() => setModalVaccine(false)}>
+                            <ModalButton>
+                                <ModalButtonText>
+                                    {translate('register.riskGroupButton')}
+                                </ModalButtonText>
+                            </ModalButton>
+                        </Button>
+                    </ModalBox>
+                </ModalContainer>
+            </Modal>
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
                 <FormInline>
                     <FormLabel>
-                        Você já recebeu a 1ª dose da vacina contra a COVID-19?
+                        {translate('vaccination.question1Label')}
                     </FormLabel>
                     <CheckBoxStyled
-                        title='Sim'
+                        title={translate('vaccination.yesField')}
                         checked={hasDose1}
                         onPress={() => setHasDose1(true)}
                         full
                     />
                     <CheckBoxStyled
-                        title='Não'
+                        title={translate('vaccination.noField')}
                         checked={!hasDose1}
                         onPress={() => {
                             setHasDose1(false)
@@ -144,9 +193,11 @@ const Vacinacao = ({ navigation }) => {
                 {hasDose1 ? (
                     <>
                         <FormInline>
-                            <FormLabel>Vacina da 1º dose (ou única):</FormLabel>
+                            <FormLabel>
+                                {translate('vaccination.vaccine1Label')}
+                            </FormLabel>
                             <DateSelector
-                                placeholder='Data'
+                                placeholder={translate('vaccination.dateField')}
                                 date={dose1Date}
                                 format='DD-MM-YYYY'
                                 minDate='01-01-1918'
@@ -173,7 +224,10 @@ const Vacinacao = ({ navigation }) => {
                                         }
                                     />
                                     <CheckLabel
-                                        onPress={() => console.log('Foi')}
+                                        onPress={() => {
+                                            setVaccineSelected(vaccine)
+                                            setModalVaccine(true)
+                                        }}
                                     >
                                         <Feather
                                             name='help-circle'
@@ -190,16 +244,16 @@ const Vacinacao = ({ navigation }) => {
                 {hasDose1 && dose1.doses > 1 ? (
                     <FormInline>
                         <FormLabel>
-                            Você já recebeu a 2ª dose da vacina contra a COVID-19?
+                            {translate('vaccination.question2Label')}
                         </FormLabel>
                         <CheckBoxStyled
-                            title='Sim'
+                            title={translate('vaccination.yesField')}
                             checked={hasDose2}
                             onPress={() => setHasDose2(true)}
                             full
                         />
                         <CheckBoxStyled
-                            title='Não'
+                            title={translate('vaccination.noField')}
                             checked={!hasDose2}
                             onPress={() => {
                                 setHasDose2(false)
@@ -214,9 +268,11 @@ const Vacinacao = ({ navigation }) => {
                 {hasDose1 && hasDose2 ? (
                     <>
                         <FormInline>
-                            <FormLabel>Vacina da 2º dose:</FormLabel>
+                            <FormLabel>
+                                {translate('vaccination.vaccine2Label')}
+                            </FormLabel>
                             <DateSelector
-                                placeholder='Data'
+                                placeholder={translate('vaccination.dateField')}
                                 date={dose2Date}
                                 format='DD-MM-YYYY'
                                 minDate='01-01-1918'
@@ -243,7 +299,10 @@ const Vacinacao = ({ navigation }) => {
                                         }
                                     />
                                     <CheckLabel
-                                        onPress={() => console.log('Foi')}
+                                        onPress={() => {
+                                            setVaccineSelected(vaccine)
+                                            setModalVaccine(true)
+                                        }}
                                     >
                                         <Feather
                                             name='help-circle'

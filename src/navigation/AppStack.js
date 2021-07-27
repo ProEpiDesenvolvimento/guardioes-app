@@ -97,7 +97,7 @@ const AppStack = () => {
             <Stack.Screen
                 name='Vacinacao'
                 component={Vacinacao}
-                options={{ title: translate('biosecurity.title') }}
+                options={{ title: translate('vaccination.title') }}
             />
             <Stack.Screen
                 name='Perfis'

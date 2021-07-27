@@ -49,6 +49,24 @@ export default {
             emailPwdCantBeBlank: "Email or password can't be blank",
         },
     },
+    forgetPwd: {
+        title: 'Forgot password',
+        informEmail: 'Enter your email for verification:',
+        sendButton: 'Send',
+        invalidEmail: 'Invalid E-mail',
+        tryAgain: 'Try again',
+        differentsPass: "Passwords don't match!",
+        passwordChanged: 'Reset Password',
+    },
+    changePwd: {
+        title: 'Reset Password',
+        newPwd: 'New password',
+        confirmPwd: 'Confirm password',
+        changeButton: 'Change',
+        errorMessages: {
+            shortPwd: 'Password must be at least 8 characters long',
+        },
+    },
     register: {
         title: 'Sign up',
         name: 'Name:',
@@ -100,15 +118,6 @@ export default {
         riskGroupMessage:
             '\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.',
         riskGroupButton: 'Back',
-    },
-    forgetPwd: {
-        title: 'Forgot password',
-        informEmail: 'Enter your email for verification:',
-        sendButton: 'Send',
-        invalidEmail: 'Invalid E-mail',
-        tryAgain: 'Try again',
-        differentsPass: "Passwords don't match!",
-        passwordChanged: 'Reset Password',
     },
     ajuda: {
         title: 'Help',
@@ -168,9 +177,9 @@ export default {
                 'Download the Guardiões da Saúde and contribute to coping with Covid-19, access:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=en\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=en&ls=1\n\nDownload the app Coronavírus-SUS, access:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=en\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinition of Close Contact: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
         },
         reportWithoutSymptom: {
-            title: 'It isn\'t possible to send',
+            title: "It isn't possible to send",
             message: 'Select at least 1 symptom',
-        }
+        },
     },
     advices: {
         moreInformations: 'More information',
@@ -330,6 +339,26 @@ export default {
         titleError: 'Some questions have not been answered',
         messageError: 'Please, answer all questions.',
     },
+    vaccination: {
+        title: 'Vacinação',
+        titleError: 'Alguns campos não foram preenchidos',
+        messageError: 'Por favor, preencha todos os campos.',
+        titleModal: 'Informações da vacina',
+        nameVaccine: 'Nome: ',
+        laboratoryVaccine: 'Laboratório: ',
+        countryVaccine: 'Local que iniciou a produção: ',
+        dosesVaccine: 'Número de doses: ',
+        minIntervalVaccine: 'Intervalo entre as doses: ',
+        question1Label:
+            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
+        question2Label:
+            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
+        vaccine1Label: 'Vacina da 1º dose (ou única):',
+        vaccine2Label: 'Vacina da 2º dose:',
+        dateField: 'Data',
+        yesField: 'Sim',
+        noField: 'Não',
+    },
     drawer: {
         reportRumor: 'Report Rumor',
         toEdit: 'Edit profiles',
@@ -372,18 +401,10 @@ export default {
     },
     surveilanceInvite: {
         title: 'Be part of active surveilance',
-        message: 'you are not yet an active watchman. Do you want to participate?',
+        message:
+            'you are not yet an active watchman. Do you want to participate?',
         cancelButton: 'No',
-        redirectButton: 'Yes, I\'ll be part',
-    },
-    changePwd: {
-        title: 'Reset Password',
-        newPwd: 'New password',
-        confirmPwd: 'Confirm password',
-        changeButton: 'Change',
-        errorMessages: {
-            shortPwd: 'Password must be at least 8 characters long',
-        },
+        redirectButton: "Yes, I'll be part",
     },
     autocomplete: {
         searchBar: 'Search here',

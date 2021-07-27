@@ -58,6 +58,15 @@ export default {
         differentsPass: 'Senhas não conferem!',
         passwordChanged: 'Senha Redefinida',
     },
+    changePwd: {
+        title: 'Redefinir senha',
+        newPwd: 'Nova senha',
+        confirmPwd: 'Repita a senha',
+        changeButton: 'Redefinir',
+        errorMessages: {
+            shortPwd: 'A senha precisa ter no mínimo 8 caracteres',
+        },
+    },
     register: {
         title: 'Cadastre-se',
         name: 'Nome:',
@@ -171,7 +180,7 @@ export default {
         reportWithoutSymptom: {
             title: 'Não foi possível enviar',
             message: 'Selecione ao menos 1 sintoma',
-        }
+        },
     },
     advices: {
         moreInformations: 'Mais Informações',
@@ -332,6 +341,26 @@ export default {
         titleError: 'Algumas perguntas não foram respondidas',
         messageError: 'Por favor, responda todas as perguntas.',
     },
+    vaccination: {
+        title: 'Vacinação',
+        titleError: 'Alguns campos não foram preenchidos',
+        messageError: 'Por favor, preencha todos os campos.',
+        titleModal: 'Informações da vacina',
+        nameVaccine: 'Nome: ',
+        laboratoryVaccine: 'Laboratório: ',
+        countryVaccine: 'Local que iniciou a produção: ',
+        dosesVaccine: 'Número de doses: ',
+        minIntervalVaccine: 'Intervalo entre as doses: ',
+        question1Label:
+            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
+        question2Label:
+            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
+        vaccine1Label: 'Vacina da 1º dose (ou única):',
+        vaccine2Label: 'Vacina da 2º dose:',
+        dateField: 'Data',
+        yesField: 'Sim',
+        noField: 'Não',
+    },
     drawer: {
         reportRumor: 'Reportar Rumor',
         toEdit: 'Editar perfis',
@@ -375,21 +404,13 @@ export default {
     },
     surveilanceInvite: {
         title: 'Faça parte da vigilância ativa',
-        message: 'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
+        message:
+            'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
         cancelButton: 'Não',
         redirectButton: 'Sim, vou fazer parte',
-    },
-    changePwd: {
-        title: 'Redefinir senha',
-        newPwd: 'Nova senha',
-        confirmPwd: 'Repita a senha',
-        changeButton: 'Redefinir',
-        errorMessages: {
-            shortPwd: 'A senha precisa ter no mínimo 8 caracteres',
-        },
     },
     autocomplete: {
         searchBar: 'Pesquise aqui',
         noResult: 'Sem resultados',
-    }
+    },
 }
