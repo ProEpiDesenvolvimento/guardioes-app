@@ -45,11 +45,11 @@ const Maps = () => {
 
     useFocusEffect(
         useCallback(() => {
-            fetchData()
+            getMapPins()
         }, [])
     )
 
-    const fetchData = async () => {
+    const getMapPins = async () => {
         await getCurrentLocation()
 
         if (location.error === 0) {
@@ -96,7 +96,7 @@ const Maps = () => {
         let badReportsInState = 0
         let covidCasesInState = 0
 
-        weekSurveys.map((data) => {
+        weekSurveys.forEach((data) => {
             if (data.state === polygonState) {
                 reportsInState += 1
                 if (data.symptom && data.symptom.length) {
@@ -146,20 +146,20 @@ const Maps = () => {
         let colorG = 0
 
         if (numCase === 0) {
-            fillColor = `rgba(0, 0, 0, 0.0)`
+            fillColor = 'rgba(0, 0, 0, 0.0)'
         } else if (numCase <= maxCase / 2) {
             colorR = (255 * numCase) / (maxCase / 2)
-            fillColor = `rgba(${parseInt(colorR)}, 255, 0, 0.5)`
+            fillColor = `rgba(${parseInt(colorR, 10)}, 255, 0, 0.5)`
         } else {
             colorG = 255 - (255 * numCase) / maxCase
-            fillColor = `rgba(255, ${parseInt(colorG)}, 0, 0.5)`
+            fillColor = `rgba(255, ${parseInt(colorG, 10)}, 0, 0.5)`
         }
         return fillColor
     }
 
     const coordsFilter = () => {
         const markers = []
-        weekSurveys.map((mark) => {
+        weekSurveys.forEach((mark) => {
             markers.push({
                 location: {
                     latitude: mark.latitude,

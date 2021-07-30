@@ -132,6 +132,7 @@ export const Selector = styled(ModalSelector).attrs({
 `
 
 export const DateSelector = styled(DatePicker).attrs({
+    useNativeDriver: true,
     showIcon: false,
     androidMode: 'spinner',
     customStyles: {

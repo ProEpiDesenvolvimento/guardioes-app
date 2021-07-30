@@ -47,43 +47,60 @@ const Vacinacao = ({ navigation }) => {
     const [dose1Date, setDose1Date] = useState('')
     const [dose2Date, setDose2Date] = useState('')
     const [dose1, setDose1] = useState({})
-    const [dose2, setDose2] = useState({})
 
     const [modalVaccine, setModalVaccine] = useState(false)
     const [loadingAlert, setLoadingAlert] = useState(false)
+
+    const initValues = () => {
+        if (user.vaccine) {
+            setHasDose1(true)
+
+            const firstDoseDate = moment(new Date(user.first_dose_date)).format('DD-MM-YYYY')
+            setDose1Date(firstDoseDate)
+
+            if (user.second_dose_date) {
+                setHasDose2(true)
+
+                const secondDoseDate = moment(
+                    new Date(user.second_dose_date)
+                ).format('DD-MM-YYYY')
+                setDose2Date(secondDoseDate)
+            }
+
+            setDose1(user.vaccine)
+        }
+    }
 
     const getAppVaccines = async () => {
         const response = await getVaccines(token)
 
         if (response.status === 200) {
-            const vaccines = response.body
+            const { vaccines } = response.body
             setVaccines(vaccines)
+            initValues()
+
             setIsLoading(false)
         }
     }
 
-    const handleVaccine = (vaccine, doseType) => {
-        if (doseType === 'dose1') {
-            setDose1(vaccine)
-        } else if (doseType === 'dose2') {
-            setDose2(vaccine)
-        }
+    const handleVaccine = (vaccine) => {
+        setDose1(vaccine)
 
         if (vaccine.doses < 2) {
             setHasDose2(false)
-            setDose2({})
         }
     }
 
     const sendVaccination = async () => {
-        const dose1D = moment(dose1Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
-        const dose2D = moment(dose2Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const firstDoseDate = moment(dose1Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const secondDoseDate = moment(dose2Date, 'DD-MM-YYYY').format('YYYY-MM-DD')
 
         const vaccination = {
-            dose1_date: dose1D,
-            dose1_vaccine: dose1.name,
-            dose2_date: dose2D,
-            dose2_vaccine: dose2.name,
+            has_dose1: hasDose1,
+            first_dose_date: hasDose1 ? firstDoseDate : null,
+            has_dose2: hasDose2,
+            second_dose_date: hasDose2 ? secondDoseDate : null,
+            vaccine_id: hasDose1 ? dose1.id : null,
         }
 
         if (!validVaccination(vaccination)) return
@@ -94,7 +111,7 @@ const Vacinacao = ({ navigation }) => {
         if (response.status === 200) {
             storeUser({
                 ...user,
-                ...vaccination,
+                ...response.body.user,
             })
 
             setLoadingAlert(false)
@@ -178,7 +195,6 @@ const Vacinacao = ({ navigation }) => {
                             setDose1({})
                             setHasDose2(false)
                             setDose2Date('')
-                            setDose2({})
                         }}
                         full
                     />
@@ -209,13 +225,11 @@ const Vacinacao = ({ navigation }) => {
 
                         <FormInline>
                             {vaccines.map((vaccine) => (
-                                <FormInlineCheck>
+                                <FormInlineCheck key={vaccine.id}>
                                     <CheckBoxStyled
                                         title={vaccine.name}
-                                        checked={vaccine.name === dose1.name}
-                                        onPress={() =>
-                                            handleVaccine(vaccine, 'dose1')
-                                        }
+                                        checked={vaccine.id === dose1.id}
+                                        onPress={() => handleVaccine(vaccine)}
                                     />
                                     <CheckLabel
                                         onPress={() => {
@@ -252,7 +266,6 @@ const Vacinacao = ({ navigation }) => {
                             onPress={() => {
                                 setHasDose2(false)
                                 setDose2Date('')
-                                setDose2({})
                             }}
                             full
                         />
@@ -281,38 +294,12 @@ const Vacinacao = ({ navigation }) => {
                                 onDateChange={(date) => setDose2Date(date)}
                             />
                         </FormInline>
-
-                        <FormInline>
-                            {vaccines.map((vaccine) => (
-                                <FormInlineCheck>
-                                    <CheckBoxStyled
-                                        title={vaccine.name}
-                                        checked={vaccine.name === dose2.name}
-                                        onPress={() =>
-                                            handleVaccine(vaccine, 'dose2')
-                                        }
-                                    />
-                                    <CheckLabel
-                                        onPress={() => {
-                                            setVaccineSelected(vaccine)
-                                            setModalVaccine(true)
-                                        }}
-                                    >
-                                        <Feather
-                                            name='help-circle'
-                                            size={scale(25)}
-                                            color='#348EAC'
-                                        />
-                                    </CheckLabel>
-                                </FormInlineCheck>
-                            ))}
-                        </FormInline>
                     </>
                 ) : null}
 
                 <Button onPress={() => sendVaccination()}>
                     <SendContainer>
-                        <SendText>Enviar</SendText>
+                        <SendText>Salvar</SendText>
                     </SendContainer>
                 </Button>
             </KeyboardScrollView>

@@ -39,8 +39,8 @@ export const validVaccination = (vaccination) => {
 
     if (
         vaccination.has_dose1 &&
-        (vaccination.dose1_date === 'Invalid date' ||
-            !vaccination.dose1_vaccine)
+        (vaccination.first_dose_date === 'Invalid date' ||
+            !vaccination.vaccine_id)
     ) {
         Alert.alert(
             translate('vaccination.titleError'),
@@ -49,12 +49,21 @@ export const validVaccination = (vaccination) => {
         valid = false
     } else if (
         vaccination.has_dose2 &&
-        (vaccination.dose2_date === 'Invalid date' ||
-            !vaccination.dose2_vaccine)
+        (vaccination.second_dose_date === 'Invalid date' ||
+            !vaccination.vaccine_id)
     ) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')
+        )
+        valid = false
+    } else if (
+        vaccination.first_dose_date &&
+        vaccination.first_dose_date === vaccination.second_dose_date
+    ) {
+        Alert.alert(
+            translate('vaccination.titleError'),
+            translate('vaccination.dateField')
         )
         valid = false
     }
