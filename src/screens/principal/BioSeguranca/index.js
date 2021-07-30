@@ -112,7 +112,7 @@ const BioSeguranca = ({ navigation }) => {
                             <CheckBoxStyled
                                 key={option.id}
                                 title={option.text}
-                                checked={isOptionSelected(option)}
+                                checked={isOptionSelected(answers, option)}
                                 onPress={() => handleAnswer(question, option)}
                                 full
                             />

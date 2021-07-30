@@ -75,7 +75,7 @@ export const FormInlineCheck = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: ${scale(12)}px;
+    margin-bottom: ${(props) => (props.space ? `${scale(12)}px` : '0px')};
 `
 
 export const Selector = styled(ModalSelector).attrs({

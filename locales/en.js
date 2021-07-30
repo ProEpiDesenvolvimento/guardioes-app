@@ -120,9 +120,10 @@ export default {
             error: 'Error',
             allFieldsAreFilled: 'All fields must be filled.',
         },
-        healthProfessional: 'You are a health professional',
+        healthProfessional: 'Are you a health professional?',
         riskGroupLabel: 'Is part of the risk group?',
         institution: 'Is a member of any institution?',
+        vaccination: 'Do you have vaccination data?',
         idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
