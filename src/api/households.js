@@ -38,8 +38,8 @@ export const createHousehold = async (data, id, token) => {
                 gender: data.gender,
                 race: data.race,
                 kinship: data.kinship,
-                identification_code: data.identification_code,
                 group_id: data.group_id,
+                identification_code: data.identification_code,
                 risk_group: data.risk_group,
             }),
         })
@@ -49,7 +49,7 @@ export const createHousehold = async (data, id, token) => {
 
     return {
         status: response.status,
-        body: await response.json(),
+        body: response.status === 201 ? await response.json() : null,
     }
 }
 

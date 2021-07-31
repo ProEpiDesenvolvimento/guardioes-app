@@ -362,7 +362,7 @@ class InstitutionSelector extends Component {
     render() {
         return (
             <>
-                <FormInlineCheck>
+                <FormInlineCheck space>
                     <CheckBoxStyled
                         title={translate('register.institution')}
                         checked={this.state.groupCheckbox}
