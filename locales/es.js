@@ -356,8 +356,8 @@ export default {
     },
     vaccination: {
         title: 'Vacunación',
-        titleError: 'Algunos campos no se completaron',
-        messageError: 'Por favor rellena todos los campos.',
+        titleError: 'Campos inválidos',
+        messageError: 'Por favor complete todos los campos correctamente.',
         titleModal: 'Información sobre vacunas',
         nameVaccine: 'Nombre: ',
         laboratoryVaccine: 'Laboratorio: ',

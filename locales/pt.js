@@ -355,8 +355,8 @@ export default {
     },
     vaccination: {
         title: 'Vacinação',
-        titleError: 'Alguns campos não foram preenchidos',
-        messageError: 'Por favor, preencha todos os campos.',
+        titleError: 'Campos inválidos',
+        messageError: 'Por favor, preencha todos os campos corretamente.',
         titleModal: 'Informações da vacina',
         nameVaccine: 'Nome: ',
         laboratoryVaccine: 'Laboratório: ',

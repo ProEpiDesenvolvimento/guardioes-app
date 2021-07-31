@@ -352,8 +352,8 @@ export default {
     },
     vaccination: {
         title: 'Vaccination',
-        titleError: 'Some fields are not filled',
-        messageError: 'Please fill in all fields.',
+        titleError: 'Invalid fields',
+        messageError: 'Please fill in all fields correctly.',
         titleModal: 'Vaccine information',
         nameVaccine: 'Name: ',
         laboratoryVaccine: 'Laboratory: ',

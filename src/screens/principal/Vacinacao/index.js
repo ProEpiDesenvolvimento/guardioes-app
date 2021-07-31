@@ -53,21 +53,25 @@ const Vacinacao = ({ navigation }) => {
 
     const initValues = () => {
         if (user.vaccine) {
-            setHasDose1(true)
+            if (user.first_dose_date) {
+                setHasDose1(true)
 
-            const firstDoseDate = moment(new Date(user.first_dose_date)).format('DD-MM-YYYY')
-            setDose1Date(firstDoseDate)
-
-            if (user.second_dose_date) {
-                setHasDose2(true)
-
-                const secondDoseDate = moment(
-                    new Date(user.second_dose_date)
+                const firstDoseDate = moment(
+                    new Date(user.first_dose_date)
                 ).format('DD-MM-YYYY')
-                setDose2Date(secondDoseDate)
-            }
+                setDose1Date(firstDoseDate)
 
-            setDose1(user.vaccine)
+                if (user.second_dose_date) {
+                    setHasDose2(true)
+
+                    const secondDoseDate = moment(
+                        new Date(user.second_dose_date)
+                    ).format('DD-MM-YYYY')
+                    setDose2Date(secondDoseDate)
+                }
+
+                setDose1(user.vaccine)
+            }
         }
     }
 

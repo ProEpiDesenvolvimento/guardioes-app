@@ -1,4 +1,6 @@
 import { Alert } from 'react-native'
+import moment from 'moment'
+
 import translate from '../../locales/i18n'
 
 export const isQuestionAnswered = (answers, option) => {
@@ -36,6 +38,9 @@ export const validForm = (questions, answers) => {
 
 export const validVaccination = (vaccination) => {
     let valid = true
+    const isFirstDoseAfter = moment(vaccination.first_dose_date).isAfter(
+        vaccination.second_dose_date
+    )
 
     if (
         vaccination.has_dose1 &&
@@ -63,7 +68,17 @@ export const validVaccination = (vaccination) => {
     ) {
         Alert.alert(
             translate('vaccination.titleError'),
-            translate('vaccination.dateField')
+            translate('vaccination.messageError')
+        )
+        valid = false
+    } else if (
+        vaccination.first_dose_date &&
+        vaccination.second_dose_date &&
+        isFirstDoseAfter
+    ) {
+        Alert.alert(
+            translate('vaccination.titleError'),
+            translate('vaccination.messageError')
         )
         valid = false
     }
