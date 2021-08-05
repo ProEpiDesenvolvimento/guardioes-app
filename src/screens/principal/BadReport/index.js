@@ -75,6 +75,7 @@ const BadReport = ({ navigation }) => {
 
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
+    const [alertTitle, setAlertTitle] = useState(null)
     const [alertMessage, setAlertMessage] = useState(null)
 
     const [inviteSurveilance, setInviteSurveilance] = useState(false)
@@ -96,24 +97,38 @@ const BadReport = ({ navigation }) => {
     }, [])
 
     const showConfirmation = (response) => {
-        setShowAlert(true)
-
+        let alertTitle = ''
+        let emojiTitle = null
         let alertMessage = ''
+        let emojiMessage = null
 
         if (response && !response.errors) {
+            alertTitle = translate('badReport.alertMessages.thanks')
             alertMessage = response.feedback_message
                 ? response.feedback_message
                 : translate('badReport.alertMessages.reportSent')
+            emojiTitle = emojis[0]
+            emojiMessage = emojis[2]
         } else {
+            alertTitle = 'Oops!'
             alertMessage = translate('badReport.alertMessages.reportNotSent')
+            emojiTitle = emojis[1]
+            emojiMessage = emojis[2]
         }
 
+        setAlertTitle(
+            <Text>
+                {alertTitle} {emojiTitle}
+            </Text>
+        )
         setAlertMessage(
             <Text>
-                {alertMessage} {emojis[0]} {'\n'}
+                {alertMessage} {emojiMessage} {'\n'}
                 {translate('badReport.alertMessages.seeADoctor')}
             </Text>
         )
+
+        setShowAlert(true)
         console.log(alertMessage)
     }
 
@@ -281,7 +296,7 @@ const BadReport = ({ navigation }) => {
         await delay(50)
 
         updateUserScore()
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 201) {
             if (!response.body.errors && response.body.messages.top_3) {
                 if (response.body.messages.top_3[0]) {
                     showSyndromeAlert(response.body)
@@ -440,15 +455,9 @@ const BadReport = ({ navigation }) => {
                 showProgress
                 title={translate('badReport.alertMessages.sending')}
             />
-
             <CoolAlert
                 show={showAlert}
-                title={
-                    <Text>
-                        {translate('badReport.alertMessages.thanks')}{' '}
-                        {emojis[1]}
-                    </Text>
-                }
+                title={alertTitle}
                 message={alertMessage}
                 closeOnTouchOutside
                 closeOnHardwareBackPress={false}
@@ -462,12 +471,16 @@ const BadReport = ({ navigation }) => {
 }
 
 const emojis = [
-    <Emoji // Emoji heart
-        name='heart'
+    <Emoji // Emoji tada
+        name='tada'
         style={{ fontSize: scale(15) }}
     />,
-    <Emoji // Emoji tada
-        name='heavy_check_mark'
+    <Emoji // Emoji warning
+        name='warning'
+        style={{ fontSize: scale(15) }}
+    />,
+    <Emoji // Emoji heart
+        name='heart'
         style={{ fontSize: scale(15) }}
     />,
 ]

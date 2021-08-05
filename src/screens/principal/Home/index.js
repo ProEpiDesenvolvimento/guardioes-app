@@ -229,7 +229,7 @@ const Home = ({ navigation }) => {
         showConfirmation(response.body)
         updateUserScore()
 
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 201) {
             await storeCacheData('localPin', survey)
 
             const newSurveys = surveys.slice()
@@ -261,7 +261,7 @@ const Home = ({ navigation }) => {
         if (show) {
             setAlertTitle(
                 <Text>
-                    {translate('home.offlineTitle')} {emojis[2]}
+                    {translate('home.offlineTitle')} {emojis[0]}
                 </Text>
             )
             setAlertMessage(
@@ -282,26 +282,36 @@ const Home = ({ navigation }) => {
     }
 
     const showConfirmation = (response) => {
+        let alertTitle = ''
+        let emojiTitle = null
         let alertMessage = ''
+        let emojiMessage = null
 
         if (response && !response.errors) {
+            alertTitle = translate('badReport.alertMessages.thanks')
             alertMessage = response.feedback_message
                 ? response.feedback_message
                 : translate('badReport.alertMessages.reportSent')
+            emojiTitle = emojis[1]
+            emojiMessage = emojis[3]
         } else {
+            alertTitle = 'Oops!'
             alertMessage = translate('badReport.alertMessages.reportNotSent')
+            emojiTitle = emojis[2]
+            emojiMessage = emojis[3]
         }
 
-        setAlertMessage(
-            <Text>
-                {alertMessage} {emojis[0]}
-            </Text>
-        )
         setAlertTitle(
             <Text>
-                {translate('badReport.alertMessages.thanks')} {emojis[1]}
+                {alertTitle} {emojiTitle}
             </Text>
         )
+        setAlertMessage(
+            <Text>
+                {alertMessage} {emojiMessage}
+            </Text>
+        )
+
         setShowProgressBar(false)
         console.log(alertMessage)
     }
@@ -555,16 +565,20 @@ const styles = StyleSheet.create({
 })
 
 const emojis = [
-    <Emoji // Emoji heart
-        name='heart'
+    <Emoji // Emoji cloud
+        name='cloud'
         style={{ fontSize: scale(15) }}
     />,
     <Emoji // Emoji tada
         name='tada'
         style={{ fontSize: scale(15) }}
     />,
-    <Emoji // Emoji cloud
-        name='cloud'
+    <Emoji // Emoji warning
+        name='warning'
+        style={{ fontSize: scale(15) }}
+    />,
+    <Emoji // Emoji heart
+        name='heart'
         style={{ fontSize: scale(15) }}
     />,
 ]
