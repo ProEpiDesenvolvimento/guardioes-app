@@ -295,10 +295,10 @@ const Home = ({ navigation }) => {
             emojiTitle = emojis[1]
             emojiMessage = emojis[3]
         } else {
-            alertTitle = 'Oops!'
+            alertTitle = translate('badReport.alertMessages.oops')
             alertMessage = translate('badReport.alertMessages.reportNotSent')
             emojiTitle = emojis[2]
-            emojiMessage = emojis[3]
+            emojiMessage = emojis[4]
         }
 
         setAlertTitle(
@@ -577,8 +577,12 @@ const emojis = [
         name='warning'
         style={{ fontSize: scale(15) }}
     />,
-    <Emoji // Emoji heart
-        name='heart'
+    <Emoji // Emoji heart eyes
+        name='heart_eyes'
+        style={{ fontSize: scale(15) }}
+    />,
+    <Emoji // Emoji smile face
+        name='sweat_smile'
         style={{ fontSize: scale(15) }}
     />,
 ]

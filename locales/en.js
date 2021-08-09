@@ -180,8 +180,9 @@ export default {
             sending: 'Sending...',
             thanks: 'Thanks!',
             reportSent: 'Your survey was sent!',
+            oops: 'Oops!',
             reportNotSent:
-                'You have already sent a survey today. Thanks for your contribution.',
+                'You have already sent a survey through this option today.',
             seeADoctor: 'We recommend that you seek medical help!',
             confirmText: 'Confirm',
             covidSuspect:
