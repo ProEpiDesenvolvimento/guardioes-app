@@ -43,6 +43,11 @@ class InstitutionSelector extends Component {
         }
     }
 
+    componentWillUnmount(){
+        delete this.state
+        console.warn(this.state)
+    }
+
     // eslint-disable-next-line react/sort-comp
     isInputValid() {
         if (this.state.groupCheckbox === false) {
@@ -176,7 +181,7 @@ class InstitutionSelector extends Component {
                     const selectionIndexes = this.state.selectionIndexes.slice()
                     selectionIndexes.push({
                         label: translate('selector.label'),
-                        key: this.state.selectionIndexes.length,
+                        key: -1,
                     })
 
                     const groupList = this.state.groupList.slice()
@@ -267,7 +272,6 @@ class InstitutionSelector extends Component {
                                 selectionIndexes: [
                                     ...this.state.selectionIndexes.slice(0, index),
                                     option,
-                                    ...this.state.selectionIndexes.slice(index + 1),
                                 ],
                             })
 
