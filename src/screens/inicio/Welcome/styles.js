@@ -16,7 +16,7 @@ export const Logo = styled.Image`
 export const WelcomeText = styled.Text`
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(17)}px;
-    color: #fff;
+    color: #ffffff;
     margin-top: 2%;
     margin-bottom: 20%;
 `
