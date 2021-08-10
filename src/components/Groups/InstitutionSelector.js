@@ -26,6 +26,7 @@ class InstitutionSelector extends Component {
             groupCheckbox: false,
             groupList: [],
             selectionIndexes: [],
+            selectorArray: [], 
             rootGroup: null,
             idCodeInputShow: false,
             userGroup: props.userGroup || null,
@@ -175,7 +176,7 @@ class InstitutionSelector extends Component {
                     const selectionIndexes = this.state.selectionIndexes.slice()
                     selectionIndexes.push({
                         label: translate('selector.label'),
-                        key: -1,
+                        key: this.state.selectionIndexes.length,
                     })
 
                     const groupList = this.state.groupList.slice()
