@@ -233,6 +233,8 @@ export default {
         statusLast7Days: 'Status nos últimos 7 dias:',
         statusLast7DaysGood: 'Você tem se sentido bem',
         statusLast7DaysBad: 'Você não esteve bem',
+        vaccination: 'Vacinação:',
+        vaccinationData: 'Adicione seus dados de vacinação',
         bioSecurity: 'Biossegurança:',
         bioSecurityQuestions: 'Responda perguntas sobre sua Instituição',
         userHowYouFelling: 'Como está se sentindo hoje?',
