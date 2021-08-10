@@ -47,8 +47,6 @@ import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
 
-Feather.loadFont()
-
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
 

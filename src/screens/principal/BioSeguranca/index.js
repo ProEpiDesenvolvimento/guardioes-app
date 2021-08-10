@@ -25,8 +25,6 @@ import {
 } from '../../../utils/formConsts'
 import { getForm, sendFormAnswers } from '../../../api/forms'
 
-Feather.loadFont()
-
 const BioSeguranca = ({ navigation }) => {
     const { token, user, group, storeLastForm } = useUser()
 

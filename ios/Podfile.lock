@@ -373,8 +373,8 @@ PODS:
     - React-Core
   - RNSVG (12.1.0):
     - React
-  - RNVectorIcons (6.6.0):
-    - React
+  - RNVectorIcons (8.1.0):
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -576,7 +576,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 7b423f9e248eae65987838148c36eec1dbfe0b53
-  FBReactNativeSpec: f83b7750886bb754be2c7e4c97ecc32fd8d3d977
+  FBReactNativeSpec: 5c1e47756c237749a53f49861c67e5ece3388916
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: 755929a4f851b2fb2c347d533a23f191b008554c
@@ -631,10 +631,10 @@ SPEC CHECKSUMS:
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
   RNShare: 7e22ba3bf66294ff7c122a1f2da8a8ec642091a0
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: a7de31c64fe738607e7a3803e3f591a4b1df7393
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0e48b91f91dc7c8331e8673737658bc3951e473e
+PODFILE CHECKSUM: bd2a67dbe76da27f34b3e6ac2fd2d454de011db3
 
 COCOAPODS: 1.10.1

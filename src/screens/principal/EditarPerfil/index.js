@@ -49,8 +49,6 @@ import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
 
-Feather.loadFont()
-
 const EditarPerfil = ({ navigation, route }) => {
     const {
         token,

@@ -22,8 +22,6 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { authUser } from '../../../api/user'
 
-Feather.loadFont()
-
 const Login = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
 

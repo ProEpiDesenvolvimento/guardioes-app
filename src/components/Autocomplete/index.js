@@ -21,8 +21,6 @@ import {
 
 import translate from '../../../locales/i18n'
 
-Feather.loadFont()
-
 const Autocomplete = (props) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [value, setValue] = useState('')

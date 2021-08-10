@@ -29,8 +29,6 @@ import { handleAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUser } from '../../../api/user'
 
-Feather.loadFont()
-
 const Perfis = ({ navigation }) => {
     const {
         token,

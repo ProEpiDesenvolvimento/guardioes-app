@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
     const [location, setLocation] = useState({})
     const [group, setGroup] = useState({})
     const [app, setApp] = useState({})
-    const [appTips, setAppTips] = useState({})
+    const [appTips, setAppTips] = useState({ loading: true })
     const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
     const [lastForm, setLastForm] = useState('')
@@ -131,6 +131,8 @@ export const UserProvider = ({ children }) => {
         }
         if (appTips) {
             setAppTips(appTips)
+        } else {
+            setAppTips({})
         }
         if (lastReport) {
             setLastReport(lastReport)
@@ -386,6 +388,13 @@ export const UserProvider = ({ children }) => {
         )
     }
 
+    const getAppTip = (tip) => {
+        if (appTips.loading) {
+            return false
+        }
+        return !appTips[tip]
+    }
+
     const hideAppTip = async (tip) => {
         const newTips = { ...appTips, [tip]: true }
         setAppTips(newTips)
@@ -475,7 +484,7 @@ export const UserProvider = ({ children }) => {
                 group,
                 setGroup,
                 app,
-                appTips,
+                getAppTip,
                 hideAppTip,
                 score,
                 updateUserScore,

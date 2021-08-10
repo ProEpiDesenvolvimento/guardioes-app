@@ -12,8 +12,6 @@ import {
 } from './styles'
 import { scale } from '../../utils/scalling'
 
-Feather.loadFont()
-
 const UserTip = (props) => {
     const { icon, title, message, isCloseable, onClose, alert } = props
 

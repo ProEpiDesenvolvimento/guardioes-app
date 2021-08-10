@@ -33,8 +33,6 @@ import { validVaccination } from '../../../utils/formConsts'
 import { getVaccines } from '../../../api/vaccines'
 import { updateUser } from '../../../api/user'
 
-Feather.loadFont()
-
 const Vacinacao = ({ navigation }) => {
     const { token, user, storeUser } = useUser()
 

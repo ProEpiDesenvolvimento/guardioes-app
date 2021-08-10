@@ -43,8 +43,6 @@ import { validPerson } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
 
-Feather.loadFont()
-
 const NovoPerfil = ({ navigation }) => {
     const { token, user } = useUser()
 
