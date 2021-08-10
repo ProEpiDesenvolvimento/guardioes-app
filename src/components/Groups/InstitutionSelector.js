@@ -55,11 +55,6 @@ class InstitutionSelector extends Component {
             return false
         }
 
-        const isThereSelectedGroup = this.state.selectedGroup !== null
-        if (!isThereSelectedGroup) {
-            this.setState({ currentError: translate('selector.groupError') })
-        }
-
         const doesTheSelectedGroupRequireID = this.state.selectedGroup
             .group_manager.require_id !== null;
 
@@ -71,7 +66,6 @@ class InstitutionSelector extends Component {
         }
 
         let isIdRightLength = true
-        /*
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
             isIdRightLength =
                 this.state.userIdCode.length ===
@@ -85,10 +79,8 @@ class InstitutionSelector extends Component {
                 })
             }
         }
-        */
 
         let codeIsNumber = true
-        /*
         if (
             doesTheSelectedGroupRequireID &&
             isIdPresentIfNeeded &&
@@ -101,10 +93,8 @@ class InstitutionSelector extends Component {
                 })
             }
         }
-        */
 
         if (
-            isThereSelectedGroup &&
             isIdPresentIfNeeded &&
             isIdRightLength &&
             codeIsNumber
@@ -113,7 +103,6 @@ class InstitutionSelector extends Component {
         }
 
         return (
-            isThereSelectedGroup &&
             isIdPresentIfNeeded &&
             isIdRightLength &&
             codeIsNumber
@@ -339,7 +328,6 @@ class InstitutionSelector extends Component {
         if (elements.length === 0) {
             return null
         }
-
         let pair = null
         const rowedElements = []
 
