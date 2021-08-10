@@ -180,9 +180,10 @@ export default {
             button: 'Mostrar Mapa',
             sending: 'Enviando...',
             thanks: 'Obrigado!',
+            oops: 'Oops!',
             reportSent: 'Seu relato foi enviado.',
             reportNotSent:
-                'Notamos que você já relatou seu estado de saúde hoje. Obrigado pela contribuição!',
+                'Notamos que você já relatou seu estado de saúde por essa opção hoje.',
             seeADoctor:
                 'Recomendamos que, caso os sintomas continuem, procure atendimento médico!',
             confirmText: 'Confirmar',
