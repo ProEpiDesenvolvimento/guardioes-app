@@ -13,7 +13,6 @@ import translate from '../../locales/i18n'
 import { scale, vPercentage } from '../utils/scalling'
 
 const Tab = createBottomTabNavigator()
-Feather.loadFont()
 
 const TabBar = () => {
     return (

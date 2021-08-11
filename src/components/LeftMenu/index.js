@@ -24,9 +24,6 @@ import { getInitials, handleAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
 import { getAppGroup } from '../../api/groups'
 
-Feather.loadFont()
-SimpleLineIcons.loadFont()
-
 const LeftMenu = ({ navigation }) => {
     const {
         user,

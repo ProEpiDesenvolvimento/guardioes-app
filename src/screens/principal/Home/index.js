@@ -11,11 +11,13 @@ import moment from 'moment'
 
 import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import { Avatar } from 'react-native-elements'
 import { useFocusEffect } from '@react-navigation/native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
+import UserTip from '../../../components/UserTip'
 import { CoolAlert } from '../../../components/CoolAlert'
 import {
     Container,
@@ -33,12 +35,8 @@ import {
     StatusText,
     Bem,
     Mal,
-    Alerts,
-    AlertButton,
-    AlertContainer,
-    StatusAlert,
-    StatusTitle,
-    StatusAlertText,
+    Tips,
+    TipButton,
     Users,
     UserSelector,
     UserScroll,
@@ -59,9 +57,6 @@ import { updateUser } from '../../../api/user'
 import { getUserHouseholds } from '../../../api/households'
 import { createSurvey } from '../../../api/surveys'
 
-Feather.loadFont()
-SimpleLineIcons.loadFont()
-
 const Home = ({ navigation }) => {
     const {
         isLoading,
@@ -79,6 +74,8 @@ const Home = ({ navigation }) => {
         householdAvatars,
         surveys,
         storeSurveys,
+        getAppTip,
+        hideAppTip,
         lastForm,
         getCacheData,
         storeCacheData,
@@ -389,49 +386,67 @@ const Home = ({ navigation }) => {
                         </StatusBemMal>
                     </StatusContainer>
 
-                    <Alerts>{translate('home.alerts')}</Alerts>
+                    <Tips>{translate('home.alerts')}</Tips>
 
-                    {hasForm && group.form_id ? (
-                        <AlertButton
-                            onPress={() => navigation.navigate('BioSeguranca')}
+                    {!user.vaccine_id && getAppTip('vaccination') ? (
+                        <TipButton
+                            onPress={() => navigation.navigate('Vacinacao')}
                         >
-                            <AlertContainer alert>
-                                <SimpleLineIcons
-                                    name='bubble'
-                                    size={48}
-                                    color='#ffffff'
-                                />
-                                <StatusAlert>
-                                    <StatusTitle>
-                                        {translate('home.bioSecurity')}
-                                    </StatusTitle>
-                                    <StatusAlertText>
-                                        {translate('home.bioSecurityQuestions')}
-                                    </StatusAlertText>
-                                </StatusAlert>
-                            </AlertContainer>
-                        </AlertButton>
+                            <UserTip
+                                icon={
+                                    <FontAwesome5
+                                        name='syringe'
+                                        size={scale(46)}
+                                        color='#ffffff'
+                                    />
+                                }
+                                title={translate('home.vaccination')}
+                                message={translate('home.vaccinationData')}
+                                onClose={() => hideAppTip('vaccination')}
+                                isCloseable
+                            />
+                        </TipButton>
                     ) : null}
 
-                    <AlertButton>
-                        <AlertContainer alert={hasBadReports}>
-                            <SimpleLineIcons
-                                name={hasBadReports ? 'exclamation' : 'check'}
-                                size={48}
-                                color='#ffffff'
+                    {group.form_id && hasForm ? (
+                        <TipButton
+                            onPress={() => navigation.navigate('BioSeguranca')}
+                        >
+                            <UserTip
+                                icon={
+                                    <SimpleLineIcons
+                                        name='bubble'
+                                        size={scale(46)}
+                                        color='#ffffff'
+                                    />
+                                }
+                                title={translate('home.bioSecurity')}
+                                message={translate('home.bioSecurityQuestions')}
+                                alert
                             />
-                            <StatusAlert>
-                                <StatusTitle>
-                                    {translate('home.statusLast7Days')}
-                                </StatusTitle>
-                                <StatusAlertText>
-                                    {hasBadReports
-                                        ? translate('home.statusLast7DaysBad')
-                                        : translate('home.statusLast7DaysGood')}
-                                </StatusAlertText>
-                            </StatusAlert>
-                        </AlertContainer>
-                    </AlertButton>
+                        </TipButton>
+                    ) : null}
+
+                    <TipButton>
+                        <UserTip
+                            icon={
+                                <SimpleLineIcons
+                                    name={
+                                        hasBadReports ? 'exclamation' : 'check'
+                                    }
+                                    size={scale(46)}
+                                    color='#ffffff'
+                                />
+                            }
+                            title={translate('home.statusLast7Days')}
+                            message={
+                                hasBadReports
+                                    ? translate('home.statusLast7DaysBad')
+                                    : translate('home.statusLast7DaysGood')
+                            }
+                            alert={hasBadReports}
+                        />
+                    </TipButton>
                 </ScrollViewStyled>
 
                 <Modal

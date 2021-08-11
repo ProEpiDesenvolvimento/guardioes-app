@@ -22,8 +22,6 @@ import { CoolAlert } from '../../../components/CoolAlert'
 import { PasswordIcon } from '../../../img/imageConst'
 import { sendCode, confirmCode, resetPassword } from '../../../api/user'
 
-Feather.loadFont()
-
 const ForgetPwd = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [code, setCode] = useState('')

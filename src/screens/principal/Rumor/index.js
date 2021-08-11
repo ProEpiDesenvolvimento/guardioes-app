@@ -27,8 +27,6 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { createRumor } from '../../../api/rumors'
 
-Feather.loadFont()
-
 const Rumor = ({ navigation }) => {
     const { token, location, getCurrentLocation } = useUser()
 

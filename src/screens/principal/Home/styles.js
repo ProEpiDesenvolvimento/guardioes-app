@@ -144,7 +144,7 @@ export const StatusText = styled.Text`
     color: white;
 `
 
-export const Alerts = styled.Text`
+export const Tips = styled.Text`
     width: 88%;
     font-size: ${scale(16)}px;
     font-family: ArgentumSans-Medium;
@@ -154,44 +154,11 @@ export const Alerts = styled.Text`
     margin-left: ${scale(20)}px;
 `
 
-export const AlertButton = styled(TouchableOpacity).attrs({
+export const TipButton = styled(TouchableOpacity).attrs({
     activeOpacity: 0.5,
 })`
     width: 88%;
-`
-
-export const AlertContainer = styled(ShadowView).attrs({})`
-    align-items: center;
-    background-color: ${(props) => (props.alert ? '#f18f01' : '#5DD39E')};
-    border-radius: ${scale(18)}px;
-    padding: ${scale(20)}px;
-    flex-direction: row;
     margin-bottom: ${percentage(7)}px;
-    shadow-color: #000000;
-    shadow-opacity: 0.1;
-    shadow-radius: 6px;
-    shadow-offset: 0px 4px;
-`
-
-export const StatusAlert = styled.View`
-    align-items: flex-start;
-    margin-left: ${scale(14)}px;
-    flex-shrink: 1;
-`
-
-export const StatusTitle = styled.Text`
-    color: white;
-    font-family: ArgentumSans-SemiBold;
-    font-size: ${scale(15)}px;
-    include-font-padding: false;
-    margin-bottom: ${scale(5)}px;
-`
-
-export const StatusAlertText = styled.Text`
-    color: white;
-    font-family: ArgentumSans;
-    font-size: ${scale(15)}px;
-    include-font-padding: false;
 `
 
 export const Users = styled.View`

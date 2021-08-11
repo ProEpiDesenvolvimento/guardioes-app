@@ -65,6 +65,9 @@
 		<string>ArgentumSans-Medium.otf</string>
 		<string>ArgentumSans.otf</string>
 		<string>ArgentumSans-SemiBold.otf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -76,6 +79,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
