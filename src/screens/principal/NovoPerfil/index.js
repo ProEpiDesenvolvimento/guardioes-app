@@ -39,11 +39,9 @@ import {
     raceChoices,
     householdChoices,
 } from '../../../utils/selector'
-import { validatePerson } from '../../../utils/consts'
+import { validPerson } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
-
-Feather.loadFont()
 
 const NovoPerfil = ({ navigation }) => {
     const { token, user } = useUser()
@@ -73,16 +71,16 @@ const NovoPerfil = ({ navigation }) => {
         const household = {
             description: name,
             birthdate: birth,
-            country,
             gender,
             race,
             kinship,
-            identification_code: idCode,
+            country,
             group_id: groupId,
+            identification_code: idCode,
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(household, institutionError)) return
+        if (!validPerson(household, institutionError)) return
         showLoadingAlert()
 
         const response = await createHousehold(household, user.id, token)
@@ -92,7 +90,6 @@ const NovoPerfil = ({ navigation }) => {
             setShowAlert(false)
             navigation.navigate('Home')
         } else {
-            console.warn(response)
             Alert.alert(translate('register.geralError'))
             setShowAlert(false)
         }

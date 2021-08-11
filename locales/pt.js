@@ -21,7 +21,7 @@ export default {
         cancelButton: 'Cancelar',
         groupError: 'Você deve selecionar o grupo',
         codeError: 'Você deve colocar o codigo de identificação',
-        codeFormatError: 'O código deve conter apenas digitos',
+        codeFormatError: 'O código deve conter apenas dígitos',
         codeLengthError: 'O código deve conter exatamente ',
         codeLengthError2: ' dígitos',
     },
@@ -57,6 +57,26 @@ export default {
         tryAgain: 'Tente Novamente',
         differentsPass: 'Senhas não conferem!',
         passwordChanged: 'Senha Redefinida',
+    },
+    getToken: {
+        title: 'Código de Verificação',
+        invalidCode: 'Código Inválido',
+        confirm: 'Confirmar',
+        loading: 'Carregando',
+        verificationCodeSent:
+            'Foi enviado um código de verificação para o email indicado.',
+        spamCheckWarning:
+            'Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.',
+        inputVerificationCode: 'Código',
+    },
+    changePwd: {
+        title: 'Redefinir senha',
+        newPwd: 'Nova senha',
+        confirmPwd: 'Repita a senha',
+        changeButton: 'Redefinir',
+        errorMessages: {
+            shortPwd: 'A senha precisa ter no mínimo 8 caracteres',
+        },
     },
     register: {
         title: 'Cadastre-se',
@@ -101,8 +121,9 @@ export default {
             error: 'Erro',
             allFieldsAreFilled: 'Todos os campos devem ser preenchidos',
         },
-        healthProfessional: 'Você é um profissional da saúde',
+        healthProfessional: 'Você é um profissional da saúde?',
         riskGroupLabel: 'Faz parte do grupo de risco?',
+        vaccination: 'Possui dados de vacinação?',
         institution: 'É integrante de alguma instituição?',
         idCode: 'Código de Identificação:',
         riskGroupTitle: 'Grupos de Risco:',
@@ -159,9 +180,10 @@ export default {
             button: 'Mostrar Mapa',
             sending: 'Enviando...',
             thanks: 'Obrigado!',
+            oops: 'Oops!',
             reportSent: 'Seu relato foi enviado.',
             reportNotSent:
-                'Notamos que você já relatou seu estado de saúde hoje. Obrigado pela contribuição!',
+                'Notamos que você já relatou seu estado de saúde por essa opção hoje.',
             seeADoctor:
                 'Recomendamos que, caso os sintomas continuem, procure atendimento médico!',
             confirmText: 'Confirmar',
@@ -171,7 +193,7 @@ export default {
         reportWithoutSymptom: {
             title: 'Não foi possível enviar',
             message: 'Selecione ao menos 1 sintoma',
-        }
+        },
     },
     advices: {
         moreInformations: 'Mais Informações',
@@ -211,6 +233,8 @@ export default {
         statusLast7Days: 'Status nos últimos 7 dias:',
         statusLast7DaysGood: 'Você tem se sentido bem',
         statusLast7DaysBad: 'Você não esteve bem',
+        vaccination: 'Vacinação:',
+        vaccinationData: 'Adicione seus dados de vacinação',
         bioSecurity: 'Biossegurança:',
         bioSecurityQuestions: 'Responda perguntas sobre sua Instituição',
         userHowYouFelling: 'Como está se sentindo hoje?',
@@ -332,6 +356,27 @@ export default {
         titleError: 'Algumas perguntas não foram respondidas',
         messageError: 'Por favor, responda todas as perguntas.',
     },
+    vaccination: {
+        title: 'Vacinação',
+        titleError: 'Campos inválidos',
+        messageError: 'Por favor, preencha todos os campos corretamente.',
+        titleModal: 'Informações da vacina',
+        nameVaccine: 'Nome: ',
+        laboratoryVaccine: 'Laboratório: ',
+        countryVaccine: 'Local que iniciou a produção: ',
+        dosesVaccine: 'Número de doses: ',
+        minIntervalVaccine: 'Intervalo entre as doses: ',
+        intervalVaccinePeriod: ' dias',
+        question1Label:
+            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
+        question2Label:
+            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
+        vaccine1Label: 'Vacina da 1º dose (ou única):',
+        vaccine2Label: 'Vacina da 2º dose:',
+        dateField: 'Data',
+        yesField: 'Sim',
+        noField: 'Não',
+    },
     drawer: {
         reportRumor: 'Reportar Rumor',
         toEdit: 'Editar perfis',
@@ -362,34 +407,15 @@ export default {
         title: 'Rumor',
         rumorSent: 'Rumor registrado! ',
     },
-    getToken: {
-        title: 'Código de Verificação',
-        invalidCode: 'Código Inválido',
-        confirm: 'Confirmar',
-        loading: 'Carregando',
-        verificationCodeSent:
-            'Foi enviado um codigo de verificação para o email indicado.',
-        spamCheckWarning:
-            'Caso não apareça na sua caixa de mensagem principal, verifique seu Spam.',
-        inputVerificationCode: 'Código',
-    },
     surveilanceInvite: {
         title: 'Faça parte da vigilância ativa',
-        message: 'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
+        message:
+            'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
         cancelButton: 'Não',
         redirectButton: 'Sim, vou fazer parte',
-    },
-    changePwd: {
-        title: 'Redefinir senha',
-        newPwd: 'Nova senha',
-        confirmPwd: 'Repita a senha',
-        changeButton: 'Redefinir',
-        errorMessages: {
-            shortPwd: 'A senha precisa ter no mínimo 8 caracteres',
-        },
     },
     autocomplete: {
         searchBar: 'Pesquise aqui',
         noResult: 'Sem resultados',
-    }
+    },
 }

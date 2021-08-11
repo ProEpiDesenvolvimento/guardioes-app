@@ -49,6 +49,34 @@ export default {
             emailPwdCantBeBlank: "Email or password can't be blank",
         },
     },
+    forgetPwd: {
+        title: 'Forgot password',
+        informEmail: 'Enter your email for verification:',
+        sendButton: 'Send',
+        invalidEmail: 'Invalid E-mail',
+        tryAgain: 'Try again',
+        differentsPass: "Passwords don't match!",
+        passwordChanged: 'Reset Password',
+    },
+    getToken: {
+        title: 'Verification Code',
+        invalidCode: 'Invalid Code',
+        confirm: 'Confirm',
+        loading: 'Loading',
+        verificationCodeSent: 'A verification code was sent to your email.',
+        spamCheckWarning:
+            "In case you don't find the email, make sure to check the spam folder.",
+        inputVerificationCode: 'Code',
+    },
+    changePwd: {
+        title: 'Reset Password',
+        newPwd: 'New password',
+        confirmPwd: 'Confirm password',
+        changeButton: 'Change',
+        errorMessages: {
+            shortPwd: 'Password must be at least 8 characters long',
+        },
+    },
     register: {
         title: 'Sign up',
         name: 'Name:',
@@ -92,23 +120,15 @@ export default {
             error: 'Error',
             allFieldsAreFilled: 'All fields must be filled.',
         },
-        healthProfessional: 'You are a health professional',
+        healthProfessional: 'Are you a health professional?',
         riskGroupLabel: 'Is part of the risk group?',
         institution: 'Is a member of any institution?',
+        vaccination: 'Do you have vaccination data?',
         idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
             '\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.',
         riskGroupButton: 'Back',
-    },
-    forgetPwd: {
-        title: 'Forgot password',
-        informEmail: 'Enter your email for verification:',
-        sendButton: 'Send',
-        invalidEmail: 'Invalid E-mail',
-        tryAgain: 'Try again',
-        differentsPass: "Passwords don't match!",
-        passwordChanged: 'Reset Password',
     },
     ajuda: {
         title: 'Help',
@@ -160,17 +180,18 @@ export default {
             sending: 'Sending...',
             thanks: 'Thanks!',
             reportSent: 'Your survey was sent!',
+            oops: 'Oops!',
             reportNotSent:
-                'You have already sent a survey today. Thanks for your contribution.',
+                'You have already sent a survey through this option today.',
             seeADoctor: 'We recommend that you seek medical help!',
             confirmText: 'Confirm',
             covidSuspect:
                 'Download the Guardiões da Saúde and contribute to coping with Covid-19, access:\nPlay Store: https://play.google.com/store/apps/details?id=com.guardioesapp&hl=en\nApp Store: https://apps.apple.com/us/app/guardi%C3%B5es-da-sa%C3%BAde/id1450965975?l=en&ls=1\n\nDownload the app Coronavírus-SUS, access:\nPlay Store: https://play.google.com/store/apps/details?id=br.gov.datasus.guardioes&hl=en\nApp Store: https://apps.apple.com/br/app/coronav%C3%ADrus-sus/id1408008382\n\nDefinition of Close Contact: https://coronavirus.saude.gov.br/sobre-a-doenca#transmissao',
         },
         reportWithoutSymptom: {
-            title: 'It isn\'t possible to send',
+            title: "It isn't possible to send",
             message: 'Select at least 1 symptom',
-        }
+        },
     },
     advices: {
         moreInformations: 'More information',
@@ -210,6 +231,8 @@ export default {
         statusLast7Days: 'Status in the last 7 days:',
         statusLast7DaysGood: 'You have been feeling well',
         statusLast7DaysBad: 'You were not feeling well',
+        vaccination: 'Vaccination:',
+        vaccinationData: 'Add your vaccination information',
         bioSecurity: 'Biosecurity:',
         bioSecurityQuestions: 'Answer questions about your institution',
         userHowYouFelling: 'How are you feeling today?',
@@ -330,6 +353,27 @@ export default {
         titleError: 'Some questions have not been answered',
         messageError: 'Please, answer all questions.',
     },
+    vaccination: {
+        title: 'Vaccination',
+        titleError: 'Invalid fields',
+        messageError: 'Please fill in all fields correctly.',
+        titleModal: 'Vaccine information',
+        nameVaccine: 'Name: ',
+        laboratoryVaccine: 'Laboratory: ',
+        countryVaccine: 'Location that started production: ',
+        dosesVaccine: 'Number of doses: ',
+        minIntervalVaccine: 'Interval between doses: ',
+        intervalVaccinePeriod: ' days',
+        question1Label:
+            'Have you already received the 1st dose of the COVID-19 vaccine?',
+        question2Label:
+            'Have you already received the 2nd dose of the COVID-19 vaccine?',
+        vaccine1Label: '1st dose (or single) vaccine:',
+        vaccine2Label: '2nd dose vaccine:',
+        dateField: 'Date',
+        yesField: 'Yes',
+        noField: 'No',
+    },
     drawer: {
         reportRumor: 'Report Rumor',
         toEdit: 'Edit profiles',
@@ -360,30 +404,12 @@ export default {
         title: 'Rumor',
         rumorSent: 'Rumor registered! ',
     },
-    getToken: {
-        title: 'Verification Code',
-        invalidCode: 'Invalid Code',
-        confirm: 'Confirm',
-        loading: 'Loading',
-        verificationCodeSent: 'A verification code was sent to your email.',
-        spamCheckWarning:
-            "In case you don't find the email, make sure to check the spam folder.",
-        inputVerificationCode: 'Code',
-    },
     surveilanceInvite: {
         title: 'Be part of active surveilance',
-        message: 'you are not yet an active watchman. Do you want to participate?',
+        message:
+            'you are not yet an active watchman. Do you want to participate?',
         cancelButton: 'No',
-        redirectButton: 'Yes, I\'ll be part',
-    },
-    changePwd: {
-        title: 'Reset Password',
-        newPwd: 'New password',
-        confirmPwd: 'Confirm password',
-        changeButton: 'Change',
-        errorMessages: {
-            shortPwd: 'Password must be at least 8 characters long',
-        },
+        redirectButton: "Yes, I'll be part",
     },
     autocomplete: {
         searchBar: 'Search here',

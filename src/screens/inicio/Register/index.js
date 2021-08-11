@@ -37,7 +37,7 @@ import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { UserIcon } from '../../../img/imageConst'
-import { validatePerson, terms } from '../../../utils/consts'
+import { validPerson, terms } from '../../../utils/consts'
 import {
     genderChoices,
     countryChoices,
@@ -46,8 +46,6 @@ import {
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
-
-Feather.loadFont()
 
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
@@ -119,7 +117,7 @@ const Register = ({ navigation }) => {
             policy_version: terms.version,
         }
 
-        if (!validatePerson(user, institutionError)) return
+        if (!validPerson(user, institutionError)) return
         setLoadingAlert(true)
 
         const response = await createUser(user)

@@ -58,6 +58,26 @@ export default {
         differentsPass: '¡Las Contraseñas no Coinciden!',
         passwordChanged: 'Restablecer la contraseña',
     },
+    getToken: {
+        title: 'Código de Verificación',
+        invalidCode: 'Código invalid',
+        confirm: 'Confirmar',
+        loading: 'Cargando',
+        verificationCodeSent:
+            'Se ha enviado un código de verificación al correo electrónico indicado.',
+        spamCheckWarning:
+            'Si no aparece en su cuadro de mensaje principal, verifique su Spam.',
+        inputVerificationCode: 'Código',
+    },
+    changePwd: {
+        title: 'Redefinir contraseña',
+        newPwd: 'Nueva contraseña',
+        confirmPwd: 'Repite la contraseña',
+        changeButton: 'Redefinir',
+        errorMessages: {
+            shortPwd: 'La contraseña debe tener al menos 8 caracteres',
+        },
+    },
     register: {
         title: 'Regístrese',
         name: 'Nombre:',
@@ -102,8 +122,9 @@ export default {
             error: 'Error',
             allFieldsAreFilled: 'Todos los campos deben ser llenados',
         },
-        healthProfessional: 'Eres un profesional de la salud',
+        healthProfessional: '¿Eres un profesional de la salud?',
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
+        vaccination: '¿Tiene datos de vacunación?',
         institution: '¿Eres miembro de alguna institución?',
         idCode: 'Código da identificación:',
         riskGroupTitle: 'Grupos de Riesgo:',
@@ -161,8 +182,9 @@ export default {
             sending: 'Envío...',
             thanks: 'Gracias!',
             reportSent: 'Su relato fue enviado.',
+            oops: '¡Ups!',
             reportNotSent:
-                'Notamos que ya informó su estado de salud hoy. Gracias por el aporte!',
+                'Notamos que ya informó su estado de salud a través de esta opción hoy.',
             seeADoctor:
                 '¡Recomendamos que si los síntomas continúan, busque atención médica!',
             confirmText: 'Confirmar',
@@ -172,7 +194,7 @@ export default {
         reportWithoutSymptom: {
             title: 'No es posible enviar',
             message: 'Seleccione al menos 1 síntoma',
-        }
+        },
     },
     advices: {
         moreInformations: 'Mas informaciones',
@@ -212,6 +234,8 @@ export default {
         statusLast7Days: 'Estado en los últimos 7 días:',
         statusLast7DaysGood: 'Te has sentido bien',
         statusLast7DaysBad: 'Usted no estaba bien',
+        vaccination: 'Vacunación:',
+        vaccinationData: 'Agregue sus datos de vacunación',
         bioSecurity: 'Biosecurity:',
         bioSecurityQuestions: 'Responde preguntas sobre tu institución',
         userHowYouFelling: '¿Cómo te sientes hoy?',
@@ -333,6 +357,25 @@ export default {
         titleError: 'Algunas preguntas no han sido respondidas',
         messageError: 'Por favor, responda todas las preguntas.',
     },
+    vaccination: {
+        title: 'Vacunación',
+        titleError: 'Campos inválidos',
+        messageError: 'Por favor complete todos los campos correctamente.',
+        titleModal: 'Información sobre vacunas',
+        nameVaccine: 'Nombre: ',
+        laboratoryVaccine: 'Laboratorio: ',
+        countryVaccine: 'País que inició la producción: ',
+        dosesVaccine: 'Cantidad de dosis: ',
+        minIntervalVaccine: 'Intervalo entre dosis: ',
+        intervalVaccinePeriod: ' días',
+        question1Label: '¿Ya recibió la primera dosis de la vacuna COVID-19?',
+        question2Label: '¿Ya recibió la segunda dosis de la vacuna COVID-19?',
+        vaccine1Label: 'Vacuna de primera dosis (o única):',
+        vaccine2Label: 'Vacuna de segunda dosis:',
+        dateField: 'Fecha',
+        yesField: 'Sí',
+        noField: 'No',
+    },
     drawer: {
         reportRumor: 'Informar Rumor',
         toEdit: 'Editar perfiles',
@@ -364,31 +407,11 @@ export default {
         title: 'Rumor',
         rumorSent: 'Rumor registered! ',
     },
-    getToken: {
-        title: 'Código de Verificación',
-        invalidCode: 'Código invalid',
-        confirm: 'Confirmar',
-        loading: 'Cargando',
-        verificationCodeSent:
-            'Se ha enviado un código de verificación al correo electrónico indicado.',
-        spamCheckWarning:
-            'Si no aparece en su cuadro de mensaje principal, verifique su Spam.',
-        inputVerificationCode: 'Código',
-    },
     surveilanceInvite: {
         title: 'Sea parte de la vigilancia activa',
         message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
         cancelButton: 'No',
         redirectButton: 'Si, seré parte',
-    },
-    changePwd: {
-        title: 'Redefinir contraseña',
-        newPwd: 'Nueva contraseña',
-        confirmPwd: 'Repite la contraseña',
-        changeButton: 'Redefinir',
-        errorMessages: {
-            shortPwd: 'La contraseña debe tener al menos 8 caracteres',
-        },
     },
     autocomplete: {
         searchBar: 'Pesquise aquí',

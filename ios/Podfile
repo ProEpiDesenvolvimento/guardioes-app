@@ -20,6 +20,8 @@ target 'guardioesapp' do
   
   pod 'OneSignal', '>= 3.0.0', '< 4.0'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'guardioesappTests' do
     inherit! :complete
     # Pods for testing

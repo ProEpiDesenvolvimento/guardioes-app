@@ -51,8 +51,6 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { getContents } from '../../../api/contents'
 
-Feather.loadFont()
-
 const Dicas = () => {
     const { isOffline, token, getCacheData, storeCacheData } = useUser()
 

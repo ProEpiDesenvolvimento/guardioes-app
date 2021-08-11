@@ -43,7 +43,7 @@ export const redirectAlert = (title, message, url) => {
     ])
 }
 
-export const validatePerson = (person, instituitionComponentError) => {
+export const validPerson = (person, instituitionComponentError) => {
     let valid = true
 
     if (person.user_name === '' || person.description === '') {

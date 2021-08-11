@@ -42,18 +42,12 @@ import {
     raceChoices,
     householdChoices,
 } from '../../../utils/selector'
-import {
-    handleAvatar,
-    getInitials,
-    validatePerson,
-} from '../../../utils/consts'
+import { handleAvatar, getInitials, validPerson } from '../../../utils/consts'
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
-
-Feather.loadFont()
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
@@ -125,7 +119,7 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(newHousehold, institutionError)) return
+        if (!validPerson(newHousehold, institutionError)) return
         setLoadingAlert(true)
 
         const response = await updateHousehold(newHousehold, user.id, token)
@@ -166,7 +160,7 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
         }
 
-        if (!validatePerson(newUser, institutionError)) return
+        if (!validPerson(newUser, institutionError)) return
         setLoadingAlert(true)
 
         const response = await updateUser(newUser, user.id, token)
@@ -429,6 +423,16 @@ const EditarPerfil = ({ navigation, route }) => {
                         />
                     </CheckLabel>
                 </FormInlineCheck>
+
+                {!isHousehold ? (
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={translate('register.vaccination')}
+                            checked={!!user.vaccine}
+                            onPress={() => navigation.navigate('Vacinacao')}
+                        />
+                    </FormInlineCheck>
+                ) : null}
 
                 <InstitutionSelector
                     setUserInstitutionCallback={setUserInstitutionCallback}

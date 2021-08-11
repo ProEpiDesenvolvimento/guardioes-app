@@ -132,8 +132,8 @@ android {
         applicationId "com.guardioesapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 44
-        versionName "3.2.1"
+        versionCode 45
+        versionName "3.2.2"
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
     }
@@ -217,7 +217,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 project.ext.vectoricons = [
-    iconFontNames: [ 'Feather.ttf', 'SimpleLineIcons.ttf' ] // Name of the font files you want to copy
+    iconFontNames: [ 'Feather.ttf', 'FontAwesome5_Solid.ttf', 'SimpleLineIcons.ttf' ] // Name of the font files you want to copy
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

@@ -51,7 +51,6 @@ import { useUser } from '../../../hooks/user'
 import { getUserSurveys } from '../../../api/surveys'
 
 LocaleConfig.defaultLocale = translate('lang.code')
-Feather.loadFont()
 
 const Diario = () => {
     const {

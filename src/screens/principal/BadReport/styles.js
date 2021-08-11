@@ -82,6 +82,7 @@ export const DateText = styled.Text`
 `
 
 export const DateSelector = styled(DatePicker).attrs({
+    useNativeDriver: true,
     showIcon: true,
     androidMode: 'spinner',
     customStyles: {
@@ -89,7 +90,6 @@ export const DateSelector = styled(DatePicker).attrs({
             borderWidth: 0,
         },
         dateText: {
-            fontSize: scale(16),
             fontFamily: 'ArgentumSans',
             fontSize: scale(13),
             color: '#ffffff',

@@ -30,6 +30,7 @@ export const UserProvider = ({ children }) => {
     const [location, setLocation] = useState({})
     const [group, setGroup] = useState({})
     const [app, setApp] = useState({})
+    const [appTips, setAppTips] = useState({ loading: true })
     const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
     const [lastForm, setLastForm] = useState('')
@@ -112,6 +113,7 @@ export const UserProvider = ({ children }) => {
         // Loads secondary data and verify user credentials
         const avatar = await AsyncStorage.getItem('userAvatar')
         const score = parseInt(await AsyncStorage.getItem('score'), 10)
+        const appTips = JSON.parse(await AsyncStorage.getItem('appTips'))
         const lastReport = await AsyncStorage.getItem('lastReport')
         const lastForm = await AsyncStorage.getItem('lastForm')
         const householdsData = JSON.parse(
@@ -126,6 +128,11 @@ export const UserProvider = ({ children }) => {
         }
         if (score) {
             setScore(score)
+        }
+        if (appTips) {
+            setAppTips(appTips)
+        } else {
+            setAppTips({})
         }
         if (lastReport) {
             setLastReport(lastReport)
@@ -220,7 +227,6 @@ export const UserProvider = ({ children }) => {
         OneSignal.removeExternalUserId()
         OneSignal.deleteTag('city')
         OneSignal.deleteTag('group')
-        OneSignal.deleteTag('school_unit_id')
         OneSignal.deleteTag('score')
     }
 
@@ -233,10 +239,11 @@ export const UserProvider = ({ children }) => {
             'householdAvatars',
             'selectedData',
             'score',
+            'appTips',
             'lastReport',
             'surveysData',
             'contentsData',
-            'showMapTip',
+            'showMapTip', // Will be removed on next release
         ])
 
         RNSecureStorage.exists('userEmail').then((exists) =>
@@ -381,10 +388,18 @@ export const UserProvider = ({ children }) => {
         )
     }
 
-    const storeLastForm = async (lastForm) => {
-        lastForm = lastForm.toISOString()
-        setLastForm(lastForm)
-        AsyncStorage.setItem('lastForm', lastForm)
+    const getAppTip = (tip) => {
+        if (appTips.loading) {
+            return false
+        }
+        return !appTips[tip]
+    }
+
+    const hideAppTip = async (tip) => {
+        const newTips = { ...appTips, [tip]: true }
+        setAppTips(newTips)
+
+        await AsyncStorage.setItem('appTips', JSON.stringify(newTips))
     }
 
     const updateUserScore = async () => {
@@ -421,6 +436,12 @@ export const UserProvider = ({ children }) => {
 
         OneSignal.sendTags({ score: newScore })
         console.warn(`User score: ${newScore}`)
+    }
+
+    const storeLastForm = async (lastFormDate) => {
+        const newLastForm = lastFormDate.toISOString()
+        setLastForm(newLastForm)
+        AsyncStorage.setItem('lastForm', newLastForm)
     }
 
     const storeCacheData = async (key, data) => {
@@ -463,11 +484,13 @@ export const UserProvider = ({ children }) => {
                 group,
                 setGroup,
                 app,
+                getAppTip,
+                hideAppTip,
+                score,
+                updateUserScore,
                 lastReport,
                 lastForm,
                 storeLastForm,
-                score,
-                updateUserScore,
                 storeCacheData,
                 getCacheData,
                 isLoading,
