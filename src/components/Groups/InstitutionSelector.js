@@ -43,11 +43,6 @@ class InstitutionSelector extends Component {
         }
     }
 
-    componentWillUnmount(){
-        delete this.state
-        console.warn(this.state)
-    }
-
     // eslint-disable-next-line react/sort-comp
     isInputValid() {
         if (this.state.groupCheckbox === false) {
@@ -72,6 +67,7 @@ class InstitutionSelector extends Component {
         }
 
         let isIdRightLength = true
+        /*
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
             isIdRightLength =
                 this.state.userIdCode.length ===
@@ -85,8 +81,10 @@ class InstitutionSelector extends Component {
                 })
             }
         }
+        */
 
         let codeIsNumber = true
+        /*
         if (
             doesTheSelectedGroupRequireID &&
             isIdPresentIfNeeded &&
@@ -99,6 +97,7 @@ class InstitutionSelector extends Component {
                 })
             }
         }
+        */
 
         if (
             isIdPresentIfNeeded &&
