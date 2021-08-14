@@ -142,6 +142,24 @@ class InstitutionSelector extends Component {
             })
     }
 
+	insertSortToGroupList(data){
+		let groupList = this.state.groupList.slice()
+
+		groupList.push(data)
+		for (let i=parseInt(groupList.length)-1; i>0; i-=1){
+			if (groupList[i]['id'] < groupList[i-1]['id']){
+				let tmp = groupList[i]
+				groupList[i] = groupList[i-1]
+				groupList[i-1] = tmp
+			}
+			else {
+				break
+			}
+		}
+
+		this.setState({ groupList })
+	}
+
     async getGroup(id, setAlert = true) {
         if (setAlert) this.props.setAlert(true)
         this.setState({ idCodeInputShow: false })
@@ -183,11 +201,8 @@ class InstitutionSelector extends Component {
                         key: -1,
                     })
 
-                    const groupList = this.state.groupList.slice()
-                    groupList.push(response.body)
-
+                    this.insertSortToGroupList({...response.body, id: parseInt(id)})
                     this.setState({ selectionIndexes })
-                    this.setState({ groupList })
                 }
             })
             .then(() => {
@@ -208,7 +223,7 @@ class InstitutionSelector extends Component {
                     const { groups } = response.body
                     const selectionIndexes = []
 
-                    groups.map(async (group) => {
+                    groups.forEach(async (group) => {
                         await this.getChildren(group.id, false)
 
                         selectionIndexes.push({
