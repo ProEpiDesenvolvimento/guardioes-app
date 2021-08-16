@@ -26,7 +26,6 @@ class InstitutionSelector extends Component {
             groupCheckbox: false,
             groupList: [],
             selectionIndexes: [],
-            selectorArray: [], 
             rootGroup: null,
             idCodeInputShow: false,
             userGroup: props.userGroup || null,
@@ -56,8 +55,8 @@ class InstitutionSelector extends Component {
             return false
         }
 
-        const doesTheSelectedGroupRequireID = this.state.selectedGroup
-            .group_manager.require_id !== null;
+        const doesTheSelectedGroupRequireID =
+            this.state.selectedGroup.group_manager.require_id !== null
 
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
@@ -66,7 +65,7 @@ class InstitutionSelector extends Component {
             this.setState({ currentError: translate('selector.codeError') })
         }
 
-        let isIdRightLength = true
+        const isIdRightLength = true
         /*
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
             isIdRightLength =
@@ -83,7 +82,7 @@ class InstitutionSelector extends Component {
         }
         */
 
-        let codeIsNumber = true
+        const codeIsNumber = true
         /*
         if (
             doesTheSelectedGroupRequireID &&
@@ -99,19 +98,11 @@ class InstitutionSelector extends Component {
         }
         */
 
-        if (
-            isIdPresentIfNeeded &&
-            isIdRightLength &&
-            codeIsNumber
-        ) {
+        if (isIdPresentIfNeeded && isIdRightLength && codeIsNumber) {
             this.setState({ currentError: '' })
         }
 
-        return (
-            isIdPresentIfNeeded &&
-            isIdRightLength &&
-            codeIsNumber
-        )
+        return isIdPresentIfNeeded && isIdRightLength && codeIsNumber
     }
 
     updateParent() {
@@ -142,23 +133,22 @@ class InstitutionSelector extends Component {
             })
     }
 
-	insertSortToGroupList(data){
-		let groupList = this.state.groupList.slice()
+    insertSortToGroupList(data) {
+        const groupList = this.state.groupList.slice()
 
-		groupList.push(data)
-		for (let i=parseInt(groupList.length)-1; i>0; i-=1){
-			if (groupList[i]['id'] < groupList[i-1]['id']){
-				let tmp = groupList[i]
-				groupList[i] = groupList[i-1]
-				groupList[i-1] = tmp
-			}
-			else {
-				break
-			}
-		}
+        groupList.push(data)
+        for (let i = parseInt(groupList.length, 10) - 1; i > 0; i -= 1) {
+            if (groupList[i].id < groupList[i - 1].id) {
+                const tmp = groupList[i]
+                groupList[i] = groupList[i - 1]
+                groupList[i - 1] = tmp
+            } else {
+                break
+            }
+        }
 
-		this.setState({ groupList })
-	}
+        this.setState({ groupList })
+    }
 
     async getGroup(id, setAlert = true) {
         if (setAlert) this.props.setAlert(true)
@@ -201,7 +191,10 @@ class InstitutionSelector extends Component {
                         key: -1,
                     })
 
-                    this.insertSortToGroupList({...response.body, id: parseInt(id)})
+                    this.insertSortToGroupList({
+                        ...response.body,
+                        id: parseInt(id, 10),
+                    })
                     this.setState({ selectionIndexes })
                 }
             })
@@ -273,10 +266,16 @@ class InstitutionSelector extends Component {
                         value={this.state.selectionIndexes[index].label}
                         onChange={(option) => {
                             this.setState({
-                                groupList: this.state.groupList.slice(0, index + 1),
+                                groupList: this.state.groupList.slice(
+                                    0,
+                                    index + 1
+                                ),
                             })
                             this.setState({
-                                selectionIndexes: this.state.selectionIndexes.slice(0, index + 1),
+                                selectionIndexes: this.state.selectionIndexes.slice(
+                                    0,
+                                    index + 1
+                                ),
                             })
                             this.setState({ idCodeInputShow: false })
 
@@ -284,7 +283,10 @@ class InstitutionSelector extends Component {
 
                             this.setState({
                                 selectionIndexes: [
-                                    ...this.state.selectionIndexes.slice(0, index),
+                                    ...this.state.selectionIndexes.slice(
+                                        0,
+                                        index
+                                    ),
                                     option,
                                 ],
                             })
