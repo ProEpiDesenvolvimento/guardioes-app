@@ -20,7 +20,6 @@ const TermosPoliticas = () => {
             <Terms>{translate('useTerms.terms.textoTermos_10')}</Terms>
             <Terms>{translate('useTerms.terms.textoTermos_11')}</Terms>
             <Terms>{translate('useTerms.terms.textoTermos_12')}</Terms>
-            <Terms>{translate('useTerms.terms.textoTermos_13')}</Terms>
         </ScrollViewStyled>
     )
 }

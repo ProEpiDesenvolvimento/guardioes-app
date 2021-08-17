@@ -105,8 +105,7 @@ export const terms = {
         ${translate('useTerms.terms.textoTermos_9')}\n
         ${translate('useTerms.terms.textoTermos_10')}\n
         ${translate('useTerms.terms.textoTermos_11')}\n
-        ${translate('useTerms.terms.textoTermos_12')}\n
-        ${translate('useTerms.terms.textoTermos_13')}`,
+        ${translate('useTerms.terms.textoTermos_12')}`,
     version: translate('useTerms.compilation'),
     disagree: translate('useTerms.disagree'),
     agree: translate('useTerms.agree'),
