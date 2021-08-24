@@ -105,7 +105,17 @@ export const terms = {
         ${translate('useTerms.terms.textoTermos_9')}\n
         ${translate('useTerms.terms.textoTermos_10')}\n
         ${translate('useTerms.terms.textoTermos_11')}\n
-        ${translate('useTerms.terms.textoTermos_12')}`,
+        ${translate('useTerms.terms.textoTermos_12')}\n
+        ${translate('useTerms.terms.textoTituloPoliticas')}\n
+        ${translate('useTerms.terms.textoPoliticas_1')}\n
+        ${translate('useTerms.terms.textoPoliticas_2')}\n
+        ${translate('useTerms.terms.textoPoliticas_3')}\n
+        ${translate('useTerms.terms.textoPoliticas_4')}\n
+        ${translate('useTerms.terms.textoPoliticas_5')}\n
+        ${translate('useTerms.terms.textoPoliticas_6')}\n
+        ${translate('useTerms.terms.textoPoliticas_7')}\n
+        ${translate('useTerms.terms.textoPoliticas_8')}\n
+        `,
     version: translate('useTerms.compilation'),
     disagree: translate('useTerms.disagree'),
     agree: translate('useTerms.agree'),

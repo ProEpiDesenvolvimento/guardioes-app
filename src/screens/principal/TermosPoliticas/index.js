@@ -20,6 +20,15 @@ const TermosPoliticas = () => {
             <Terms>{translate('useTerms.terms.textoTermos_10')}</Terms>
             <Terms>{translate('useTerms.terms.textoTermos_11')}</Terms>
             <Terms>{translate('useTerms.terms.textoTermos_12')}</Terms>
+            <Terms>{translate('useTerms.terms.textoTituloPoliticas')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_1')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_2')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_3')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_4')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_5')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_6')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_7')}</Terms>
+            <Terms>{translate('useTerms.terms.textoPoliticas_8')}</Terms>
         </ScrollViewStyled>
     )
 }
