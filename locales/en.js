@@ -291,13 +291,13 @@ export default {
             'A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone.',
     },
     useTerms: {
-        title: 'Termos e Políticas',
-        consentTitle: 'Nossos Termos e Políticas de Privacidade mudaram',
+        title: 'Terms and Policies',
+        consentTitle: 'Our Terms and Privacy Policies have changed',
         consentMessage:
-            'Para continuar utilizando o Guardiões da Saúde, você deve aceitar os novos termos. Nós levamos sua privacidade a sério.',
-        seeTerms: 'Ler Termos',
-        agree: 'Eu aceito',
-        disagree: 'Não aceito',
+            'To continue using Guardiões da Saúde, you must accept the new terms. We take your privacy seriously.',
+        seeTerms: 'Read Terms',
+        agree: 'I agree',
+        disagree: 'I refuse',
         terms: {
             textoTermosTitulo:
                 '\nBem-vindo ao Guardiões da Saúde!\nConvidamos você para acessar nosso aplicativo e usar de nossos serviços, porém antes de utilizar nosso aplicativo é necessário que você leia, entenda e concorde com nossos Termos de Uso e com nossa Política de Uso de Dados Pessoais.\n\nEste termo descreve detalhadamente os seus direitos e nossos direitos em relação a utilização dos serviços que disponibilizamos através de nosso aplicativo.\n\nPortanto, leia estes termos cuidadosamente, antes de fazer o uso do aplicativo, caso você não concorde com estes nossos Termos de Uso ou ainda, não concorde com a nossa Política de Uso de Dados Pessoais, você não poderá acessar ou utilizar os serviços do aplicativo Guardiões da Saúde.',
