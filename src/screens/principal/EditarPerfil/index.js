@@ -76,6 +76,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
+    const [categoryId, setCategoryId] = useState(person.category_id)
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
@@ -158,6 +159,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: categoryId,
         }
 
         if (!validPerson(newUser, institutionError)) return
@@ -404,6 +406,14 @@ const EditarPerfil = ({ navigation, route }) => {
                         />
                     </FormInline>
                 ) : null}
+
+                <FormInline>
+                    <FormLabel>Categoria:</FormLabel>
+                    <NormalInput
+                        value={categoryId}
+                        onChangeText={(text) => setCategoryId(text)}
+                    />
+                </FormInline>
 
                 <FormInlineCheck>
                     <CheckBoxStyled
