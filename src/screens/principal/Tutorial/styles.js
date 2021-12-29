@@ -1,14 +1,14 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 import Feather from 'react-native-vector-icons/Feather'
 import { Image as Img } from 'react-native'
-import { scale, percentage } from '../../../utils/scalling';
+import { scale, percentage } from '../../../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
         backgroundColor: '#f4f4f4',
         flexGrow: 1,
         paddingVertical: percentage(7),
-        paddingHorizontal: percentage(7),
+        paddingHorizontal: percentage(7), 
     }
 })``;
 
@@ -24,6 +24,7 @@ export const Feath = styled(Feather)`
     align-self: center;
     margin-right: 10px;
     color: #348EAC;
+    font-size: ${scale(30)}px;
     
 `;
 
