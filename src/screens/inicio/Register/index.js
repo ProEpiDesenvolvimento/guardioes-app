@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Keyboard, Alert, Modal, SafeAreaView } from 'react-native'
 import moment from 'moment'
 
@@ -46,6 +46,7 @@ import {
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
+import { getCategories } from '../../../api/categories'
 
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
@@ -70,11 +71,24 @@ const Register = ({ navigation }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [categoryId, setCategoryId] = useState(null)
+    const [categories, setCategories] = useState(null)
+    // const categories = [
+    //    { key: 1, label: 'categoria 1'},
+    //    { key: 2, label: 'categoria 2'}
+    // ]
 
-    const categories = [
-        { key: 1, label: 'categoria 1'},
-        { key: 2, label: 'categoria 2'}
-    ]
+    const getAppCategories = async () => {
+        const response = await getCategories()
+
+        if (response.status === 200) {
+            const { appCategories } = response.body
+            setCategories(appCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
 
     const passwordInput = useRef()
 
@@ -343,7 +357,7 @@ const Register = ({ navigation }) => {
                         lightTheme
                     />
 
-                    {categories.length > 0 &&
+                    {categories &&
                         <FormInline>
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
