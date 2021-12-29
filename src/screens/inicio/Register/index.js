@@ -69,6 +69,12 @@ const Register = ({ navigation }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+    const [categoryId, setCategoryId] = useState(null)
+
+    const categories = [
+        { key: 1, label: 'categoria 1'},
+        { key: 2, label: 'categoria 2'}
+    ]
 
     const passwordInput = useRef()
 
@@ -115,6 +121,7 @@ const Register = ({ navigation }) => {
             is_professional: isProfessional,
             risk_group: riskGroup,
             policy_version: terms.version,
+            category_id: categoryId,
         }
 
         if (!validPerson(user, institutionError)) return
@@ -335,6 +342,18 @@ const Register = ({ navigation }) => {
                         setErrorCallback={setInstituitionComponentError}
                         lightTheme
                     />
+
+                    {categories.length > 0 &&
+                        <FormInline>
+                            <FormLabel>Categoria:</FormLabel>
+                            <Selector
+                                data={categories}
+                                initValue={translate('selector.label')}
+                                cancelText={translate('selector.cancelButton')}
+                                onChange={(option) => setCategoryId(option.key)}
+                            />
+                        </FormInline>
+                    }
 
                     <FormInline>
                         <FormLabel>{translate('register.email')}</FormLabel>

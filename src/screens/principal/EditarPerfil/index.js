@@ -78,6 +78,11 @@ const EditarPerfil = ({ navigation, route }) => {
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
     const [categoryId, setCategoryId] = useState(person.category_id)
 
+    const categories = [
+        { key: 1, label: 'categoria 1'},
+        { key: 2, label: 'categoria 2'}
+    ]
+
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
@@ -118,6 +123,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: categoryId,
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -407,13 +413,17 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormInline>
                 ) : null}
 
-                <FormInline>
-                    <FormLabel>Categoria:</FormLabel>
-                    <NormalInput
-                        value={categoryId}
-                        onChangeText={(text) => setCategoryId(text)}
-                    />
-                </FormInline>
+                {categories.length > 0 &&
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={categories}
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategoryId(option.key)}
+                        />
+                    </FormInline>
+                }
 
                 <FormInlineCheck>
                     <CheckBoxStyled

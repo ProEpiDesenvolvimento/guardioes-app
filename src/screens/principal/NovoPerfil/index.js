@@ -61,6 +61,12 @@ const NovoPerfil = ({ navigation }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+    const [categoryId, setCategoryId] = useState(null)
+
+    const categories = [
+        { key: 1, label: 'categoria 1'},
+        { key: 2, label: 'categoria 2'}
+    ]
 
     const showLoadingAlert = () => {
         setShowAlert(true)
@@ -78,6 +84,7 @@ const NovoPerfil = ({ navigation }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: categoryId,
         }
 
         if (!validPerson(household, institutionError)) return
@@ -231,6 +238,18 @@ const NovoPerfil = ({ navigation }) => {
                         onChange={(option) => setKinship(option.key)}
                     />
                 </FormInline>
+
+                {categories.length > 0 &&
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={categories}
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategoryId(option.key)}
+                        />
+                    </FormInline>
+                }
 
                 <Button onPress={() => handleCreate()}>
                     <SendContainer>
