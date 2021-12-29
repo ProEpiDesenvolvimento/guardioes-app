@@ -139,26 +139,29 @@ export default {
     },
     tutorial: {
         title: 'Tutorial',
-        tutorial: 'Tutorial de como usar o app',
+        tutorial: 'Tutorial',
         howToUse:
-            '\nPara usar o aplicativo basta clicar no ícone de reportar na tela inicial:',
-        howToUse2:
-            'Em seguida, escolha como reportar, bem ou mal. Caso escolha mal você poderá escolher os sintomas e desde quando se sente mal. Pronto, esse é o uso básico do aplicativo, caso queria aprender mais continue lendo para ver algumas dicas e outras funcionalidades',
+            '\nA funcionalidade básica do Guardiões da Saúde (GdS) é o reporte de saúde. Ela se encontra na Página Principal, mas existem outras funcionalidades. Se quiser aprender mais, continue lendo.',
+        home: "Página Inicial",
+        homeCont: "Nessa aba você pode selecionar como você está se sentindo (bem ou mal). Caso esteja mal você poderá marcar os sintomas e sinalizar há quanto tempo está se assim.\n\nVocê também pode personalizar seu GdS colocando uma foto sua no ícone ao lado do seu nome (lembrando que a foto não fica salva permanentemente no aplicativo, então caso você saia de seu conta é necessário inserir sua foto novamente). ",
         news: 'Tela de Notícias',
         newsCont:
-            'A tela de notícias é uma das funções que você acha na tela inicial, ela fica ligada no perfil do Guardiões e lá você pode ver muitas informações pois essa página está sempre atualizada.\n Já que você está por aqui dê uma passadinha lá.',
+            'A tela de notícias é a última opção que você encontra na parte inicial do app. Nessa parte estão notícias diárias sobre a pandemia e saúde em geral. Aproveita que você já está aqui e dá uma olhada no que preparamos lá! Para acessar a aba não é necessário ter uma conta no Twitter e nem estabelecer vínculo (não receberá nenhum tipo de notificação ou email).',
         newsPs:
-            'Ps: você não precisa ter conta no Twitter e você não recebe nenhum tipo de notificação/email.',
+            'PS: você não precisa ter conta no Twitter e não receberá nenhum tipo de notificação ou email.',
         advices: 'Dicas de Saúde',
         advicesCont:
-            'Aqui você encontra algumas informações importantes pra dar uma olhada, como Dengue Chicungunya e Zika, telefones úteis e também, com auxílio do Google Maps você tem acesso à hospitais e farmácias perto de você.',
+            'A aba de dicas é uma importante ferramenta para que você aprenda mais sobre a sua saúde, ela é atualizada duas vezes ao mês e conta com informações sobre vacinas, links úteis, como se prevenir na pandemia e muito mais.',
         diary: 'Diário da Saúde',
         diaryCont:
-            'Essa é uma das telas mais importantes, aqui você consegue visualizar todos os envios que você tenha feito e também tem um calendário caso você precise desses dados para esclarecer algo em um consulta médica, por exemplo.',
+            'Essa é uma das funcionalidade mais importantes do aplicativo, lá você consegue visualizar por meio do calendário da saúde e do gráfico pizza todos os reportes que você tem feito diariamente.\n\nVocê pode usar seu calendário da saúde caso você precise desses dados para esclarecer algo em uma consulta médica.',
         healthMap: 'Mapa da Saúde',
         healthMapCont:
-            'No Mapa da Saúde se tem acesso à todos os envios feitos na sua região, isso, é claro, sem expor nenhum dado sensível dos usuários. Essa função ajuda o usuário a ter uma visão de como anda a saúde das pessoas a sua volta para que ela consiga até se prevenir. \
-        Por exemplo, se você ver que em uma certa área tem muitos relatos de sintomas de gripe você pode tomar um suco de laranja, ou se tiver sintomas de Dengue você pode evitar passar no lugar.',
+            'É nessa aba que vai aparecer como as pessoas na sua região estão se sentindo. Cada ponto no mapa representa uma pessoa ou grupo de pessoas.',
+        healthMapCont2:
+            'Ao clicar em algum ponto do mapa você consegue ver o estado de saúde das pessoas que relataram naquela região. Nenhum dado sensível do usuário é exposto.',
+        healthMapCont3:
+            'Essa função te ajuda a ter uma visão de como está a saúde das pessoas a sua volta e nos locais que você pretende ir.\n\nSe você ver que em uma certa área tem muitos relatos de sintomas da COVID-19 você pode evitar passar no lugar, adiar sua ida até o local ou redobrar as medidas de prevenção ao passar nessas regiões.'
     },
     badReport: {
         title: 'O que está sentindo?',
