@@ -1,5 +1,6 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
+
 import {
     ScrollViewStyled,
     Title,
@@ -9,6 +10,7 @@ import {
     Feath,
     Image,
 } from './styles'
+
 import translate from '../../../../locales/i18n'
 
 const Tutorial = ({ navigation }) => {
@@ -20,7 +22,7 @@ const Tutorial = ({ navigation }) => {
             <BodyText>{translate('tutorial.howToUse')}</BodyText>
             <TouchableOpacity onPress={() => navigate('Home')}>
                 <ImageContainer>
-                    <Feath name={'home'} />
+                    <Feath name='home' />
                     <Subtitle>{translate('tutorial.home')}</Subtitle>
                 </ImageContainer>
             </TouchableOpacity>
@@ -28,7 +30,7 @@ const Tutorial = ({ navigation }) => {
 
             <TouchableOpacity onPress={() => navigate('Diario')}>
                 <ImageContainer>
-                    <Feath name={'clipboard'} />
+                    <Feath name='clipboard' />
                     <Subtitle>{translate('tutorial.diary')}</Subtitle>
                 </ImageContainer>
             </TouchableOpacity>
@@ -36,24 +38,20 @@ const Tutorial = ({ navigation }) => {
 
             <TouchableOpacity onPress={() => navigate('Mapa')}>
                 <ImageContainer>
-                    <Feath name={'map'} />
+                    <Feath name='map' />
                     <Subtitle>{translate('tutorial.healthMap')}</Subtitle>
                 </ImageContainer>
             </TouchableOpacity>
 
             <BodyText>{translate('tutorial.healthMapCont')}</BodyText>
-            <Image
-                source={require('../../../../src/img/tutorial/image1.jpeg')}
-            />
+            <Image source={require('../../../img/tutorial/image1.jpeg')} />
             <BodyText>{translate('tutorial.healthMapCont2')}</BodyText>
-            <Image
-                source={require('../../../../src/img/tutorial/image2.jpeg')}
-            />
+            <Image source={require('../../../img/tutorial/image2.jpeg')} />
             <BodyText>{translate('tutorial.healthMapCont3')}</BodyText>
 
             <TouchableOpacity onPress={() => navigate('Dicas')}>
                 <ImageContainer>
-                    <Feath name={'heart'} />
+                    <Feath name='heart' />
                     <Subtitle>{translate('tutorial.advices')}</Subtitle>
                 </ImageContainer>
             </TouchableOpacity>
@@ -61,7 +59,7 @@ const Tutorial = ({ navigation }) => {
 
             <TouchableOpacity onPress={() => navigate('Noticias')}>
                 <ImageContainer>
-                    <Feath name={'message-square'} />
+                    <Feath name='message-square' />
                     <Subtitle>{translate('tutorial.news')}</Subtitle>
                 </ImageContainer>
             </TouchableOpacity>
