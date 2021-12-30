@@ -42,6 +42,7 @@ import {
 import { validPerson } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
+import { getCategories } from '../../../api/categories'
 
 const NovoPerfil = ({ navigation }) => {
     const { token, user } = useUser()
@@ -62,11 +63,28 @@ const NovoPerfil = ({ navigation }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [categoryId, setCategoryId] = useState(null)
+    const [categories, setCategories] = useState(null)
 
-    const categories = [
-        { key: 1, label: 'categoria 1'},
-        { key: 2, label: 'categoria 2'}
-    ]
+    const getAppCategories = async () => {
+        const response = await getCategories()
+    
+        if (response.status === 200) {
+            const { appCategories } = response.body
+            
+            // Convertendo o json recebido para um aceito pelo Selector
+            const allCategories = appCategories.map(({id, name}) => {
+                return {
+                    key: id,
+                    label: name
+                }
+            });
+            setCategories(allCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
 
     const showLoadingAlert = () => {
         setShowAlert(true)

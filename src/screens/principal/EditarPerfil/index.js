@@ -48,6 +48,7 @@ import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
+import { getCategories } from '../../../api/categories'
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
@@ -77,11 +78,29 @@ const EditarPerfil = ({ navigation, route }) => {
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
     const [categoryId, setCategoryId] = useState(person.category_id)
+    const [categories, setCategories] = useState(null)
 
-    const categories = [
-        { key: 1, label: 'categoria 1'},
-        { key: 2, label: 'categoria 2'}
-    ]
+    const getAppCategories = async () => {
+        const response = await getCategories()
+    
+        if (response.status === 200) {
+            const { appCategories } = response.body
+            
+            // Convertendo o json recebido para um aceito pelo Selector
+            const allCategories = appCategories.map(({id, name}) => {
+                return {
+                    key: id,
+                    label: name
+                }
+            });
+            setCategories(allCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
+
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)

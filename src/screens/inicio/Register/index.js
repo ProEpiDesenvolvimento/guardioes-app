@@ -73,32 +73,24 @@ const Register = ({ navigation }) => {
     const [categoryId, setCategoryId] = useState(null)
     const [categories, setCategories] = useState(null)
 
-    const testeCategories = [
-        { id: 1, name: 'categoria 1'},
-        { id: 2, name: 'categoria 2'}
-    ]
-
     const getAppCategories = async () => {
         const response = await getCategories()
     
-        //if (response.status === 200) {
-        //    const { appCategories } = response.body
-        //    setCategories(appCategories)
-        
-        //}
-
-
-        // Convertendo o json recebido para um aceito pelo Selector
-        const allCategories = testeCategories.map(({id, name}) => {
-            return {
-                key: id,
-                label: name
-            }
-        });
-        setCategories(allCategories)
+        if (response.status === 200) {
+            const { appCategories } = response.body
+            
+            // Convertendo o json recebido para um aceito pelo Selector
+            const allCategories = appCategories.map(({id, name}) => {
+                return {
+                    key: id,
+                    label: name
+                }
+            });
+            setCategories(allCategories)
+        }
     }
 
-     useEffect(() => {
+    useEffect(() => {
         getAppCategories()
     }, [])
 
