@@ -419,18 +419,6 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormGroup>
                 ) : null}
 
-                {isHousehold ? (
-                    <FormInline>
-                        <FormLabel>Parentesco:</FormLabel>
-                        <Selector
-                            data={householdChoices}
-                            initValue={kinship}
-                            cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setKinship(option.key)}
-                        />
-                    </FormInline>
-                ) : null}
-
                 {categories ?
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
@@ -442,6 +430,18 @@ const EditarPerfil = ({ navigation, route }) => {
                         />
                     </FormInline>
                 : null}
+
+                {isHousehold ? (
+                    <FormInline>
+                        <FormLabel>Parentesco:</FormLabel>
+                        <Selector
+                            data={householdChoices}
+                            initValue={kinship}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setKinship(option.key)}
+                        />
+                    </FormInline>
+                ) : null}
 
                 <FormInlineCheck>
                     <CheckBoxStyled
