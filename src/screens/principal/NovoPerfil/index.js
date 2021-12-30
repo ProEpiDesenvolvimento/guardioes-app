@@ -246,16 +246,6 @@ const NovoPerfil = ({ navigation }) => {
                     setErrorCallback={setInstituitionComponentError}
                 />
 
-                <FormInline>
-                    <FormLabel>Parentesco:</FormLabel>
-                    <Selector
-                        initValue={translate('selector.label')}
-                        cancelText={translate('selector.cancelButton')}
-                        data={householdChoices}
-                        onChange={(option) => setKinship(option.key)}
-                    />
-                </FormInline>
-
                 {categories ?
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
@@ -267,6 +257,16 @@ const NovoPerfil = ({ navigation }) => {
                         />
                     </FormInline>
                 : null}
+
+                <FormInline>
+                    <FormLabel>Parentesco:</FormLabel>
+                    <Selector
+                        initValue={translate('selector.label')}
+                        cancelText={translate('selector.cancelButton')}
+                        data={householdChoices}
+                        onChange={(option) => setKinship(option.key)}
+                    />
+                </FormInline>
 
                 <Button onPress={() => handleCreate()}>
                     <SendContainer>
