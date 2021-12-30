@@ -86,7 +86,6 @@ const EditarPerfil = ({ navigation, route }) => {
         if (response.status === 200) {
             const { appCategories } = response.body
             
-            // Convertendo o json recebido para um aceito pelo Selector
             const allCategories = appCategories.map(({id, name}) => {
                 return {
                     key: id,
@@ -432,7 +431,7 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormInline>
                 ) : null}
 
-                {categories.length > 0 &&
+                {categories ?
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
@@ -442,7 +441,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             onChange={(option) => setCategoryId(option.key)}
                         />
                     </FormInline>
-                }
+                : null}
 
                 <FormInlineCheck>
                     <CheckBoxStyled

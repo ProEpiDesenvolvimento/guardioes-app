@@ -71,7 +71,6 @@ const NovoPerfil = ({ navigation }) => {
         if (response.status === 200) {
             const { appCategories } = response.body
             
-            // Convertendo o json recebido para um aceito pelo Selector
             const allCategories = appCategories.map(({id, name}) => {
                 return {
                     key: id,
@@ -257,7 +256,7 @@ const NovoPerfil = ({ navigation }) => {
                     />
                 </FormInline>
 
-                {categories.length > 0 &&
+                {categories ?
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
@@ -267,7 +266,7 @@ const NovoPerfil = ({ navigation }) => {
                             onChange={(option) => setCategoryId(option.key)}
                         />
                     </FormInline>
-                }
+                : null}
 
                 <Button onPress={() => handleCreate()}>
                     <SendContainer>

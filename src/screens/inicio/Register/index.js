@@ -361,7 +361,7 @@ const Register = ({ navigation }) => {
                         lightTheme
                     />
 
-                    {categories &&
+                    {categories ?
                         <FormInline>
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
@@ -371,7 +371,7 @@ const Register = ({ navigation }) => {
                                 onChange={(option) => setCategoryId(option.key)}
                             />
                         </FormInline>
-                    }
+                    : null}
 
                     <FormInline>
                         <FormLabel>{translate('register.email')}</FormLabel>
