@@ -1,0 +1,9 @@
+import axios from 'axios'
+import { API_URL } from 'react-native-dotenv'
+
+axios.defaults.baseURL = API_URL
+axios.defaults.timeout = 60 * 1000
+axios.defaults.headers.common.Accept = 'application/vnd.api+json'
+axios.defaults.headers.common['Content-Type'] = 'application/json'
+
+export default axios
