@@ -1,15 +1,16 @@
 import { Alert, Linking } from 'react-native'
+
+import { Emojis } from '../img/imageConst'
 import translate from '../../locales/i18n'
 
 export const getNameParts = (fullName, firstAndLast = false) => {
     if (typeof fullName === 'string') {
-        const nameParts = fullName.split(' ')
-        const { length } = nameParts
+        const names = fullName.split(' ')
 
-        if (firstAndLast && length > 1) {
-            return `${nameParts[0]} ${nameParts[length - 1]}`
+        if (firstAndLast && names.length > 1) {
+            return `${names[0]} ${names[names.length - 1]}`
         }
-        return nameParts[0]
+        return names[0]
     }
     return null
 }
@@ -119,4 +120,29 @@ export const terms = {
     version: translate('useTerms.compilation'),
     disagree: translate('useTerms.disagree'),
     agree: translate('useTerms.agree'),
+}
+
+export const getSurveyConfirmation = (status, body) => {
+    const message = {}
+
+    if (status === 201) {
+        message.alertTitle = translate('badReport.messages.thanks')
+        message.alertMessage = body.feedback_message
+            ? body.feedback_message
+            : translate('badReport.messages.reportSent')
+        message.emojiTitle = Emojis.tada
+        message.emojiMessage = Emojis.heart_eyes
+    } else if (status === 208) {
+        message.alertTitle = translate('badReport.messages.oops')
+        message.alertMessage = translate('badReport.messages.reportSent2')
+        message.emojiTitle = Emojis.warning
+        message.emojiMessage = Emojis.sweat_smile
+    } else {
+        message.alertTitle = translate('badReport.messages.oops')
+        message.alertMessage = translate('badReport.messages.reportNotSent')
+        message.emojiTitle = Emojis.warning
+        message.emojiMessage = Emojis.confused
+    }
+
+    return message
 }

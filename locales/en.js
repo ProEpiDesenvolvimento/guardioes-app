@@ -175,14 +175,16 @@ export default {
         },
         yes: 'Yes',
         checkboxConfirm: 'Confirm',
-        alertMessages: {
+        messages: {
             button: 'Show Map',
             sending: 'Sending...',
             thanks: 'Thanks!',
             reportSent: 'Your survey was sent!',
             oops: 'Oops!',
-            reportNotSent:
+            reportSent2:
                 'You have already sent a survey through this option today.',
+            reportNotSent:
+                'There was an error submitting your survey. Try again later.',
             seeADoctor: 'We recommend that you seek medical help!',
             confirmText: 'Confirm',
             covidSuspect:
