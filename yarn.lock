@@ -6412,9 +6412,9 @@
     "prop-types" "^15.5.10"
 
 "react-native-onesignal@^4.0.8":
-  "integrity" "sha512-Rc9LmnT9Hpbz4AxbILnWg8ElbErhftFi+eDW54NoEMi6n5uDodGn5kEQv1nEcP3ET0CmTDNYClB4n8M12X6NgQ=="
-  "resolved" "https://registry.npmjs.org/react-native-onesignal/-/react-native-onesignal-4.1.1.tgz"
-  "version" "4.1.1"
+  "integrity" "sha512-aJdgp32HsW1PEXgwMNXAaSbr037VdZmO70NPIQHWgCsIAGG4SD/MW9Kj197z1wdn/CRcfz/YNsZwhlmwUIgDMA=="
+  "resolved" "https://registry.npmjs.org/react-native-onesignal/-/react-native-onesignal-4.3.3.tgz"
+  "version" "4.3.3"
   dependencies:
     "invariant" "^2.2.2"
 
