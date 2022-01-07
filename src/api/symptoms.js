@@ -1,12 +1,11 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getAppSymptoms = async (token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/symptoms`, {
+        response = await api.get(`/symptoms`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -14,8 +13,5 @@ export const getAppSymptoms = async (token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
