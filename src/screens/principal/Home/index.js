@@ -43,6 +43,7 @@ import {
     UserName,
 } from './styles'
 
+import translate from '../../../../locales/i18n'
 import {
     terms,
     getNameParts,
@@ -50,7 +51,7 @@ import {
     getInitials,
     getSurveyConfirmation,
 } from '../../../utils/consts'
-import translate from '../../../../locales/i18n'
+import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
@@ -136,7 +137,7 @@ const Home = ({ navigation }) => {
             policy_version: terms.version,
         }
 
-        const response = await updateUser(policy, user.id, token)
+        const response = await updateUser({ user: policy }, user.id, token)
 
         if (response.status === 200) {
             console.warn(response.status)
@@ -225,7 +226,7 @@ const Home = ({ navigation }) => {
         if (show) {
             setAlertTitle(
                 <Text>
-                    {translate('home.offlineTitle')} {emojis[0]}
+                    {translate('home.offlineTitle')} {Emojis.cloud}
                 </Text>
             )
             setAlertMessage(
@@ -283,7 +284,7 @@ const Home = ({ navigation }) => {
             created_at: moment().format('YYYY-MM-DD'),
         }
 
-        const response = await createSurvey(survey, user.id, token)
+        const response = await createSurvey({ survey }, user.id, token)
         showConfirmation(response.status, response.data)
 
         updateUserScore()

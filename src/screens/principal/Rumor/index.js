@@ -67,11 +67,9 @@ const Rumor = ({ navigation }) => {
             token
         )
 
-        if (response.status === 200) {
-            console.warn(response.status)
-            // navigation.navigate('Home')
-            setShowAlert(false)
+        if (response.status === 201) {
             setShowProgressBar(false)
+            // navigation.navigate('Home')
         }
     }
 

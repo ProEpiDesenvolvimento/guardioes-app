@@ -79,7 +79,7 @@ const Dicas = () => {
             const response = await getContents(token)
 
             if (response.status === 200) {
-                const appContents = sortContents(response.body.contents)
+                const appContents = sortContents(response.data.contents)
                 setContents(appContents)
                 setIsLoading(false)
 

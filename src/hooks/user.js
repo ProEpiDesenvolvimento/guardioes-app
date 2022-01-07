@@ -209,14 +209,11 @@ export const UserProvider = ({ children }) => {
     }
 
     const signIn = async ({ email, password }) => {
-        const response = await authUser({
-            email,
-            password,
-        })
+        const response = await authUser({ user: { email, password } })
 
         if (response.status === 200) {
-            storeUser(response.body.user, response.token)
-            sendUserTagsToOneSignal(response.body.user)
+            storeUser(response.data.user, response.headers.authorization)
+            sendUserTagsToOneSignal(response.data.user)
             setNeedSignIn(false)
         } else if (response.status === 401) {
             signOut()

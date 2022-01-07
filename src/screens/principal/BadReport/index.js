@@ -286,7 +286,7 @@ const BadReport = ({ navigation }) => {
             created_at: moment().format('YYYY-MM-DD'),
         }
 
-        const response = await createSurvey(survey, user.id, token)
+        const response = await createSurvey({ survey }, user.id, token)
         setShowProgressBar(false)
 
         // Wait page re-render

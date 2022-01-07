@@ -50,8 +50,8 @@ const Perfis = ({ navigation }) => {
         const response = await getUser(user.id, token)
 
         if (response.status === 200) {
-            storeHouseholds(response.body.user.households)
-            storeUser(response.body.user)
+            storeHouseholds(response.data.user.households)
+            storeUser(response.data.user)
 
             setIsLoading(false)
         }

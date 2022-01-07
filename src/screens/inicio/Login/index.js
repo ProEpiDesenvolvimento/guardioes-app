@@ -43,16 +43,17 @@ const Login = ({ navigation }) => {
         setShowProgressBar(true)
         setShowAlert(true)
 
-        const response = await authUser({
-            email,
-            password,
-        })
+        const response = await authUser({ user: { email, password } })
 
         if (response.status === 200) {
-            await storeUser(response.body.user, response.token, {
-                email,
-                password,
-            })
+            await storeUser(
+                response.data.user,
+                response.headers.authorization,
+                {
+                    email,
+                    password,
+                }
+            )
             setShowAlert(false)
 
             setTimeout(() => {
