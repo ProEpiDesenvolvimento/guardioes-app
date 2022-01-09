@@ -50,77 +50,16 @@ const Vacinacao = ({ navigation }) => {
     const [newDoseVaccine, setNewDoseVaccine] = useState({})
     const [doses, setDoses] = useState([])
 
-    const mockData = [
-        // {
-        //     id: 1,
-        //     user_id: 1,
-        //     dose: 1,
-        //     vaccine_id: 1,
-        //     date: '2021-08-12',
-        // },
-        // {
-        //     id: 2,
-        //     user_id: 2,
-        //     dose: 1,
-        //     vaccine_id: 2,
-        //     date: '2021-09-13',
-        // },
-        // {
-        //     id: 3,
-        //     user_id: 1,
-        //     dose: 2,
-        //     vaccine_id: 1,
-        //     date: '2021-10-23',
-        // },
-        // {
-        //     id: 4,
-        //     user_id: 1,
-        //     dose: 3,
-        //     vaccine_id: 1,
-        //     date: '2021-11-03',
-        // },
-        // {
-        //     id: 5,
-        //     user_id: 1,
-        //     dose: 4,
-        //     vaccine_id: 2,
-        //     date: '2021-12-03',
-        // },
-    ]
-
     const initValues = async () => {
         const response = await getDoses(token)
-        //console.log(response)
-
-        // function isUserId(value) {
-        //     return value.user_id === user.id
-        // }
 
         setDoses(response.body)
 
-        setNumberDoses(response.body.length + 1)
+        if (!user.vaccine) setNumberDoses(1)
+        else setNumberDoses(response.body.length + 1)
 
         if (response.body.length > 0) {
             setDose1Vaccine(response.body[0].vaccine_id)
-            // if (doses.find((first) => first.dose === 1)) {
-            //     const firstDose = doses.find((first) => first.dose === 1)
-
-            //     const firstDoseDate = moment(new Date(firstDose.date)).format(
-            //         'DD-MM-YYYY'
-            //     )
-            //     setDose1Date(firstDoseDate)
-
-            //     // if (user.second_dose_date) {
-            //     //     setHasDose2(true)
-
-            //     //     const secondDoseDate = moment(
-            //     //         new Date(user.second_dose_date)
-            //     //     ).format('DD-MM-YYYY')
-            //     //     setDose2Date(secondDoseDate)
-            //     // }
-
-            //     setDose1(firstDose.vaccine_id)
-            // }
         }
     }
 
@@ -131,7 +70,6 @@ const Vacinacao = ({ navigation }) => {
             const { vaccines } = response.body
             setVaccines(vaccines)
             initValues()
-
             setIsLoading(false)
         }
     }
@@ -143,50 +81,50 @@ const Vacinacao = ({ navigation }) => {
     const sendVaccination = async () => {
         setLoadingAlert(false)
 
-        if (numberDoses > vaccineSelected.doses)
+        if (numberDoses > newDoseVaccine.doses)
             Alert.alert(`Essa vacina não possui ${numberDoses}ª dose.`)
+        else if (!validVaccination(newDoseVaccine)) setLoadingAlert(true)
+        else {
+            setModalAddDose(false)
+            const doseDate = moment(newDoseDate, 'DD-MM-YYYY').format(
+                'YYYY-MM-DD'
+            )
 
-        setModalAddDose(false)
-        const doseDate = moment(newDoseDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
-        // const secondDoseDate = moment(dose2Date, 'DD-MM-YYYY').format(
-        //     'YYYY-MM-DD'
-        // )
+            const newDose = {
+                date: doseDate,
+                dose: numberDoses,
+                vaccine_id:
+                    numberDoses === 2 ? dose1Vaccine : newDoseVaccine.id,
+                user_id: user.id,
+            }
 
-        const newDose = {
-            date: doseDate,
-            dose: numberDoses,
-            vaccine_id: numberDoses === 2 ? dose1Vaccine : newDoseVaccine.id,
-            user_id: user.id,
-        }
+            const vaccination = {
+                vaccine_id: newDoseVaccine.id,
+            }
 
-        console.log(newDose)
+            const res = await updateUser(vaccination, user.id, token)
 
-        // const vaccination = {
-        //     has_dose1: hasDose1,
-        //     first_dose_date: hasDose1 ? firstDoseDate : null,
-        //     has_dose2: hasDose2,
-        //     second_dose_date: hasDose2 ? secondDoseDate : null,
-        //     vaccine_id: hasDose1 ? dose1.id : null,
-        // }
+            const response = await sendDose(newDose, token)
 
-        // if (!validVaccination(vaccination)) return
-        // setLoadingAlert(true)
+            if (response.status === 200) {
+                storeUser({
+                    ...user,
+                    ...res.body.user,
+                })
 
-        const response = await sendDose(newDose, token)
-
-        if (response.status === 200) {
-            setLoadingAlert(false)
-            navigation.goBack()
-        } else {
-            console.warn(response)
-            setLoadingAlert(false)
-            Alert.alert(translate('register.geralError'))
+                setLoadingAlert(false)
+                setModalAddDose(false)
+            } else {
+                console.warn(response)
+                setLoadingAlert(false)
+                Alert.alert(translate('register.geralError'))
+            }
         }
     }
 
     useEffect(() => {
         getAppVaccines()
-    }, [])
+    }, [numberDoses])
 
     if (isLoading) {
         return <ScreenLoader />
@@ -265,79 +203,6 @@ const Vacinacao = ({ navigation }) => {
                 </ModalContainer>
             </Modal>
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
-                {/* <FormInline>
-                    <FormLabel>
-                        {translate('vaccination.question1Label')}
-                    </FormLabel>
-                    <CheckBoxStyled
-                        title={translate('vaccination.yesField')}
-                        checked={hasDose1}
-                        onPress={() => setHasDose1(true)}
-                        full
-                    />
-                    <CheckBoxStyled
-                        title={translate('vaccination.noField')}
-                        checked={!hasDose1}
-                        onPress={() => {
-                            setHasDose1(false)
-                            setDose1Date('')
-                            setDose1({})
-                        }}
-                        full
-                    />
-                </FormInline> */}
-                {/* {hasDose1 ? (
-                    <>
-                        <FormInline>
-                            <FormLabel>
-                                {translate('vaccination.vaccine1Label')}
-                            </FormLabel>
-                            <DateSelector
-                                placeholder={translate('vaccination.dateField')}
-                                date={moment(new Date(doses[0].date)).format(
-                                    'DD-MM-YYYY'
-                                )}
-                                format='DD-MM-YYYY'
-                                minDate='01-01-1918'
-                                maxDate={moment().format('DD-MM-YYYY')}
-                                locale='pt-BR'
-                                confirmBtnText={translate(
-                                    'birthDetails.confirmButton'
-                                )}
-                                cancelBtnText={translate(
-                                    'birthDetails.cancelButton'
-                                )}
-                                onDateChange={(date) => setDose1Date(date)}
-                            />
-                        </FormInline>
-
-                        <FormInline>
-                            {vaccines.map((vaccine) => (
-                                <FormInlineCheck key={vaccine.id}>
-                                    <CheckBoxStyled
-                                        title={vaccine.name}
-                                        checked={
-                                            vaccine.id === doses[0].vaccine_id
-                                        }
-                                        //onPress={() => handleVaccine(vaccine)}
-                                    />
-                                    <CheckLabel
-                                        onPress={() => {
-                                            setVaccineSelected(vaccine)
-                                            setModalVaccine(true)
-                                        }}
-                                    >
-                                        <Feather
-                                            name='help-circle'
-                                            size={scale(25)}
-                                            color='#348EAC'
-                                        />
-                                    </CheckLabel>
-                                </FormInlineCheck>
-                            ))}
-                        </FormInline>
-                    </>
-                ) : null} */}
                 {doses.length > 0 ? (
                     doses.map((item) => (
                         <>
@@ -365,6 +230,7 @@ const Vacinacao = ({ navigation }) => {
                                     onDateChange={(date) =>
                                         setNewDoseDate(date)
                                     }
+                                    disabled={true}
                                 />
                             </FormInline>
 
