@@ -36,46 +36,38 @@ export const validForm = (questions, answers) => {
     return valid
 }
 
-export const validVaccination = (vaccination) => {
+export const validVaccination = (
+    newDoseVaccine,
+    newDoseNumber,
+    newDoseDate,
+    lastDoseDate
+) => {
     let valid = true
-    const isFirstDoseAfter = moment(vaccination.first_dose_date).isAfter(
-        vaccination.second_dose_date
-    )
+
+    const isLastDoseAfter = moment(lastDoseDate).isAfter(newDoseDate)
 
     if (
-        vaccination.has_dose1 &&
-        (vaccination.first_dose_date === 'Invalid date' ||
-            !vaccination.vaccine_id)
+        newDoseDate === 'Invalid date' ||
+        (newDoseNumber !== 2 && !newDoseVaccine.id)
     ) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')
         )
         valid = false
-    } else if (
-        vaccination.has_dose2 &&
-        (vaccination.second_dose_date === 'Invalid date' ||
-            !vaccination.vaccine_id)
-    ) {
+    } else if (newDoseNumber > newDoseVaccine.doses) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')
         )
         valid = false
-    } else if (
-        vaccination.first_dose_date &&
-        vaccination.first_dose_date === vaccination.second_dose_date
-    ) {
+    } else if (lastDoseDate && lastDoseDate === newDoseDate) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')
         )
         valid = false
-    } else if (
-        vaccination.first_dose_date &&
-        vaccination.second_dose_date &&
-        isFirstDoseAfter
-    ) {
+    } else if (lastDoseDate && newDoseDate && isLastDoseAfter) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')

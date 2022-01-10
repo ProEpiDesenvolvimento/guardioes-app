@@ -47,6 +47,7 @@ const Vacinacao = ({ navigation }) => {
     const [modalAddDose, setModalAddDose] = useState(false)
     const [numberDoses, setNumberDoses] = useState(0)
     const [newDoseDate, setNewDoseDate] = useState('')
+    const [lastDoseDate, setLastDoseDate] = useState('')
     const [newDoseVaccine, setNewDoseVaccine] = useState({})
     const [doses, setDoses] = useState([])
 
@@ -60,6 +61,7 @@ const Vacinacao = ({ navigation }) => {
 
         if (response.body.length > 0) {
             setDose1Vaccine(response.body[0].vaccine_id)
+            setLastDoseDate(response.body[response.body.length - 1].date)
         }
     }
 
@@ -81,14 +83,22 @@ const Vacinacao = ({ navigation }) => {
     const sendVaccination = async () => {
         setLoadingAlert(false)
 
-        if (numberDoses > newDoseVaccine.doses)
-            Alert.alert(`Essa vacina não possui ${numberDoses}ª dose.`)
-        else if (!validVaccination(newDoseVaccine)) setLoadingAlert(true)
-        else {
-            setModalAddDose(false)
-            const doseDate = moment(newDoseDate, 'DD-MM-YYYY').format(
-                'YYYY-MM-DD'
+        const doseDate = moment
+            .utc(newDoseDate, 'DD-MM-YYYY')
+            .format('YYYY-MM-DD')
+
+        if (
+            !validVaccination(
+                newDoseVaccine,
+                numberDoses,
+                doseDate,
+                lastDoseDate
             )
+        ) {
+            setModalAddDose(false)
+            setLoadingAlert(false)
+        } else {
+            setModalAddDose(false)
 
             const newDose = {
                 date: doseDate,
@@ -102,16 +112,20 @@ const Vacinacao = ({ navigation }) => {
                 vaccine_id: newDoseVaccine.id,
             }
 
-            const res = await updateUser(vaccination, user.id, token)
+            if (!user.vaccine) {
+                const userUpdate = await updateUser(vaccination, user.id, token)
+
+                if (userUpdate.status === 200) {
+                    storeUser({
+                        ...user,
+                        ...userUpdate.body.user,
+                    })
+                }
+            }
 
             const response = await sendDose(newDose, token)
 
             if (response.status === 200) {
-                storeUser({
-                    ...user,
-                    ...res.body.user,
-                })
-
                 setLoadingAlert(false)
                 setModalAddDose(false)
             } else {
@@ -119,6 +133,8 @@ const Vacinacao = ({ navigation }) => {
                 setLoadingAlert(false)
                 Alert.alert(translate('register.geralError'))
             }
+
+            initValues()
         }
     }
 
@@ -206,7 +222,7 @@ const Vacinacao = ({ navigation }) => {
                 {doses.length > 0 ? (
                     doses.map((item) => (
                         <>
-                            <FormInline>
+                            <FormInline key={item.dose}>
                                 <FormLabel>
                                     {`Vacina da ${item.dose}ª dose`}
                                 </FormLabel>
@@ -214,12 +230,12 @@ const Vacinacao = ({ navigation }) => {
                                     placeholder={translate(
                                         'vaccination.dateField'
                                     )}
-                                    date={moment(new Date(item.date)).format(
-                                        'DD-MM-YYYY'
-                                    )}
+                                    date={moment
+                                        .utc(new Date(item.date))
+                                        .format('DD-MM-YYYY')}
                                     format='DD-MM-YYYY'
                                     minDate='01-01-1918'
-                                    maxDate={moment().format('DD-MM-YYYY')}
+                                    maxDate={moment.utc().format('DD-MM-YYYY')}
                                     locale='pt-BR'
                                     confirmBtnText={translate(
                                         'birthDetails.confirmButton'
@@ -249,7 +265,7 @@ const Vacinacao = ({ navigation }) => {
                         </FormInline>
                     </>
                 )}
-                <Modal // Modal View for Vaccine Info
+                <Modal
                     animationType='fade'
                     transparent
                     visible={modalAddDose}
@@ -270,7 +286,9 @@ const Vacinacao = ({ navigation }) => {
                                         date={newDoseDate}
                                         format='DD-MM-YYYY'
                                         minDate='01-01-1918'
-                                        maxDate={moment().format('DD-MM-YYYY')}
+                                        maxDate={moment
+                                            .utc()
+                                            .format('DD-MM-YYYY')}
                                         locale='pt-BR'
                                         confirmBtnText={translate(
                                             'birthDetails.confirmButton'
