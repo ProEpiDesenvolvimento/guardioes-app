@@ -33,7 +33,7 @@ import { validVaccination } from '../../../utils/formConsts'
 import { getVaccines, getDoses, sendDose } from '../../../api/vaccines'
 import { updateUser } from '../../../api/user'
 
-const Vacinacao = ({ navigation }) => {
+const Vacinacao = () => {
     const { token, user, storeUser } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
@@ -176,7 +176,7 @@ const Vacinacao = ({ navigation }) => {
 
     return (
         <Container>
-            <Modal // Modal View for Vaccine Info
+            <Modal
                 animationType='fade'
                 transparent
                 visible={modalVaccine}
@@ -224,7 +224,8 @@ const Vacinacao = ({ navigation }) => {
                         <>
                             <FormInline key={item.dose}>
                                 <FormLabel>
-                                    {`Vacina da ${item.dose}ª dose`}
+                                    {translate('vaccination.vaccineLabel') +
+                                        `${item.dose}`}
                                 </FormLabel>
                                 <DateSelector
                                     placeholder={translate(
@@ -243,9 +244,6 @@ const Vacinacao = ({ navigation }) => {
                                     cancelBtnText={translate(
                                         'birthDetails.cancelButton'
                                     )}
-                                    onDateChange={(date) =>
-                                        setNewDoseDate(date)
-                                    }
                                     disabled={true}
                                 />
                             </FormInline>
@@ -259,8 +257,7 @@ const Vacinacao = ({ navigation }) => {
                     <>
                         <FormInline>
                             <FormLabel>
-                                Clique no botão para adicionar uma dose da
-                                vacina.
+                                {translate('vaccination.addDose')}
                             </FormLabel>
                         </FormInline>
                     </>
@@ -275,7 +272,10 @@ const Vacinacao = ({ navigation }) => {
                 >
                     <ModalContainer>
                         <ModalBox>
-                            <ModalTitle>{`Informações da ${numberDoses}ª dose`}</ModalTitle>
+                            <ModalTitle>
+                                {translate('vaccination.information') +
+                                    `${numberDoses}`}
+                            </ModalTitle>
 
                             <>
                                 <FormInline>
@@ -309,7 +309,9 @@ const Vacinacao = ({ navigation }) => {
 
                             <Button onPress={() => sendVaccination()}>
                                 <ModalButton>
-                                    <ModalButtonText>Salvar</ModalButtonText>
+                                    <ModalButtonText>
+                                        {translate('vaccination.save')}
+                                    </ModalButtonText>
                                 </ModalButton>
                             </Button>
                         </ModalBox>
@@ -318,7 +320,7 @@ const Vacinacao = ({ navigation }) => {
 
                 <Button onPress={() => setModalAddDose(true)}>
                     <SendContainer>
-                        <SendText>Adicionar</SendText>
+                        <SendText>{translate('vaccination.add')}</SendText>
                     </SendContainer>
                 </Button>
             </KeyboardScrollView>
