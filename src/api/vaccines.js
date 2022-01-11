@@ -4,7 +4,7 @@ export const getVaccines = async (token) => {
     let response = {}
 
     try {
-        response = await fetch(`http://localhost:3001/vaccines`, {
+        response = await fetch(`${API_URL}/vaccines`, {
             headers: {
                 Accept: 'application/vnd.api+json',
                 Authorization: token,
@@ -24,7 +24,7 @@ export const getDoses = async (token) => {
     let response = {}
 
     try {
-        response = await fetch(`http://localhost:3001/doses`, {
+        response = await fetch(`${API_URL}/doses`, {
             headers: {
                 Accept: 'application/vnd.api+json',
                 Authorization: token,
@@ -44,7 +44,7 @@ export const sendDose = async (data, token) => {
     let response = {}
 
     try {
-        response = await fetch(`http://localhost:3001/doses`, {
+        response = await fetch(`${API_URL}/doses`, {
             method: 'POST',
             headers: {
                 Accept: 'application/vnd.api+json',
