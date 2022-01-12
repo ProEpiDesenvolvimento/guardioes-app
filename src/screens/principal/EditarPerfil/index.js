@@ -78,21 +78,21 @@ const EditarPerfil = ({ navigation, route }) => {
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
     const [categoryId, setCategoryId] = useState(person.category_id)
-    const [categories, setCategories] = useState(null)
+    const [allCategories, setAllCategories] = useState(null)
 
     const getAppCategories = async () => {
         const response = await getCategories()
     
         if (response.status === 200) {
-            const { appCategories } = response.body
+            const { categories } = response.body
             
-            const allCategories = appCategories.map(({id, name}) => {
+            const auxCategories = categories.map(({id, name}) => {
                 return {
                     key: id,
                     label: name
                 }
             });
-            setCategories(allCategories)
+            setAllCategories(auxCategories)
         }
     }
 
@@ -419,11 +419,11 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormGroup>
                 ) : null}
 
-                {categories ?
+                {allCategories ?
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
-                            data={categories}
+                            data={allCategories}
                             initValue={translate('selector.label')}
                             cancelText={translate('selector.cancelButton')}
                             onChange={(option) => setCategoryId(option.key)}

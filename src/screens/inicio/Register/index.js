@@ -71,22 +71,22 @@ const Register = ({ navigation }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [categoryId, setCategoryId] = useState(null)
-    const [categories, setCategories] = useState(null)
+    const [allCategories, setAllCategories] = useState(null)
 
     const getAppCategories = async () => {
         const response = await getCategories()
     
         if (response.status === 200) {
-            const { appCategories } = response.body
+            const { categories } = response.body
             
             // Convertendo o json recebido para um aceito pelo Selector
-            const allCategories = appCategories.map(({id, name}) => {
+            const auxCategories = categories.map(({id, name}) => {
                 return {
                     key: id,
                     label: name
                 }
             });
-            setCategories(allCategories)
+            setAllCategories(auxCategories)
         }
     }
 
@@ -361,11 +361,11 @@ const Register = ({ navigation }) => {
                         lightTheme
                     />
 
-                    {categories ?
+                    {allCategories ?
                         <FormInline>
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
-                                data={categories}
+                                data={allCategories}
                                 initValue={translate('selector.label')}
                                 cancelText={translate('selector.cancelButton')}
                                 onChange={(option) => setCategoryId(option.key)}
