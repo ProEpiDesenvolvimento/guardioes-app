@@ -77,7 +77,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
-    const [categoryId, setCategoryId] = useState(person.category_id)
+    const [category, setCategory] = useState(person.category)
     const [allCategories, setAllCategories] = useState(null)
 
     const getAppCategories = async () => {
@@ -86,10 +86,11 @@ const EditarPerfil = ({ navigation, route }) => {
         if (response.status === 200) {
             const { categories } = response.body
 
-            const auxCategories = categories.map(({ id, name }) => {
+            const auxCategories = categories.map(({ id, name, description }) => {
                 return {
                     key: id,
                     label: name,
+                    description
                 }
             })
             setAllCategories(auxCategories)
@@ -140,7 +141,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: categoryId,
+            category_id: category.key,
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -182,7 +183,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: categoryId,
+            category_id: category.key,
         }
 
         if (!validPerson(newUser, institutionError)) return
@@ -423,9 +424,10 @@ const EditarPerfil = ({ navigation, route }) => {
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
                             data={allCategories}
-                            initValue={translate('selector.label')}
+                            selectedKey={category.key}
+                            initValue={category ? category.name : translate('selector.label')}
                             cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setCategoryId(option.key)}
+                            onChange={(option) => setCategory(option)}
                         />
                     </FormInline>
                 ) : null}
