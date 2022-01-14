@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Modal } from 'react-native'
 import moment from 'moment'
 
@@ -67,16 +67,16 @@ const NovoPerfil = ({ navigation }) => {
 
     const getAppCategories = async () => {
         const response = await getCategories()
-    
+
         if (response.status === 200) {
             const { categories } = response.body
-            
-            const auxCategories = categories.map(({id, name}) => {
+
+            const auxCategories = categories.map(({ id, name }) => {
                 return {
                     key: id,
-                    label: name
+                    label: name,
                 }
-            });
+            })
             setAllCategories(auxCategories)
         }
     }
@@ -246,7 +246,7 @@ const NovoPerfil = ({ navigation }) => {
                     setErrorCallback={setInstituitionComponentError}
                 />
 
-                {allCategories ?
+                {allCategories ? (
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
@@ -256,7 +256,7 @@ const NovoPerfil = ({ navigation }) => {
                             onChange={(option) => setCategoryId(option.key)}
                         />
                     </FormInline>
-                : null}
+                ) : null}
 
                 <FormInline>
                     <FormLabel>Parentesco:</FormLabel>

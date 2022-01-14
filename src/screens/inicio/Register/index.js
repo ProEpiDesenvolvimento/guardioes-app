@@ -75,17 +75,17 @@ const Register = ({ navigation }) => {
 
     const getAppCategories = async () => {
         const response = await getCategories()
-    
+
         if (response.status === 200) {
             const { categories } = response.body
-            
+
             // Convertendo o json recebido para um aceito pelo Selector
-            const auxCategories = categories.map(({id, name}) => {
+            const auxCategories = categories.map(({ id, name }) => {
                 return {
                     key: id,
-                    label: name
+                    label: name,
                 }
-            });
+            })
             setAllCategories(auxCategories)
         }
     }
@@ -313,7 +313,9 @@ const Register = ({ navigation }) => {
                                 }
                                 checked={countryCheckbox}
                                 onPress={() => {
-                                    !countryCheckbox ? setCountry(residence) : null
+                                    !countryCheckbox
+                                        ? setCountry(residence)
+                                        : null
                                     setCountryCheckbox(!countryCheckbox)
                                 }}
                             />
@@ -361,7 +363,7 @@ const Register = ({ navigation }) => {
                         lightTheme
                     />
 
-                    {allCategories ?
+                    {allCategories ? (
                         <FormInline>
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
@@ -371,7 +373,7 @@ const Register = ({ navigation }) => {
                                 onChange={(option) => setCategoryId(option.key)}
                             />
                         </FormInline>
-                    : null}
+                    ) : null}
 
                     <FormInline>
                         <FormLabel>{translate('register.email')}</FormLabel>

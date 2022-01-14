@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Modal, Platform } from 'react-native'
 import moment from 'moment'
 
@@ -63,7 +63,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const { person } = route.params
 
     const isHousehold = person.is_household
-    const id = person.id
+    const { id } = person
     const [avatar, setAvatar] = useState(person.avatar)
     const [name, setName] = useState(person.name)
     const [email, setEmail] = useState(person.email)
@@ -82,16 +82,16 @@ const EditarPerfil = ({ navigation, route }) => {
 
     const getAppCategories = async () => {
         const response = await getCategories()
-    
+
         if (response.status === 200) {
             const { categories } = response.body
-            
-            const auxCategories = categories.map(({id, name}) => {
+
+            const auxCategories = categories.map(({ id, name }) => {
                 return {
                     key: id,
-                    label: name
+                    label: name,
                 }
-            });
+            })
             setAllCategories(auxCategories)
         }
     }
@@ -99,7 +99,6 @@ const EditarPerfil = ({ navigation, route }) => {
     useEffect(() => {
         getAppCategories()
     }, [])
-
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
@@ -389,7 +388,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
                     <FormGroupChild>
                         <FormLabel>{translate('register.country')}</FormLabel>
-                        <Autocomplete 
+                        <Autocomplete
                             data={countryChoices}
                             value={country}
                             onChange={(option) => setCountry(option.key)}
@@ -419,7 +418,7 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormGroup>
                 ) : null}
 
-                {allCategories ?
+                {allCategories ? (
                     <FormInline>
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
@@ -429,7 +428,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             onChange={(option) => setCategoryId(option.key)}
                         />
                     </FormInline>
-                : null}
+                ) : null}
 
                 {isHousehold ? (
                     <FormInline>
