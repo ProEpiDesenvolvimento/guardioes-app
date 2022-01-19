@@ -368,6 +368,7 @@ const Register = ({ navigation }) => {
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
                                 data={allCategories}
+                                selectedKey={categoryId}
                                 initValue={translate('selector.label')}
                                 cancelText={translate('selector.cancelButton')}
                                 onChange={(option) => setCategoryId(option.key)}

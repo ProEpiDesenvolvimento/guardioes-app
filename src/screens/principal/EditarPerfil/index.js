@@ -86,11 +86,10 @@ const EditarPerfil = ({ navigation, route }) => {
         if (response.status === 200) {
             const { categories } = response.body
 
-            const auxCategories = categories.map(({ id, name, description }) => {
+            const auxCategories = categories.map(({ id, name }) => {
                 return {
                     key: id,
                     label: name,
-                    description
                 }
             })
             setAllCategories(auxCategories)
@@ -141,7 +140,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: category.key,
+            category_id: category.id,
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -183,7 +182,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: category.key,
+            category_id: category.id,
         }
 
         if (!validPerson(newUser, institutionError)) return
@@ -424,7 +423,7 @@ const EditarPerfil = ({ navigation, route }) => {
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
                             data={allCategories}
-                            selectedKey={category.key}
+                            selectedKey={category.id}
                             initValue={category ? category.name : translate('selector.label')}
                             cancelText={translate('selector.cancelButton')}
                             onChange={(option) => setCategory(option)}
