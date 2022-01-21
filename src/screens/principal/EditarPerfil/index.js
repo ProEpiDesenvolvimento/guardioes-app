@@ -84,7 +84,7 @@ const EditarPerfil = ({ navigation, route }) => {
         const response = await getCategories()
 
         if (response.status === 200) {
-            const { categories } = response.body
+            const { categories } = response.data
 
             const auxCategories = categories.map(({ id, name }) => {
                 return {
@@ -140,7 +140,11 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: category.id,
+            category_id: category.key,
+            category: {
+                id: category.key,
+                name: category.label,
+            },
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -182,7 +186,11 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: category.id,
+            category_id: category.key,
+            category: {
+                id: category.key,
+                name: category.label,
+            },
         }
 
         if (!validPerson(newUser, institutionError)) return
@@ -423,8 +431,11 @@ const EditarPerfil = ({ navigation, route }) => {
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
                             data={allCategories}
-                            selectedKey={category.id}
-                            initValue={category ? category.name : translate('selector.label')}
+                            initValue={
+                                category.key
+                                    ? category.label
+                                    : translate('selector.label')
+                            }
                             cancelText={translate('selector.cancelButton')}
                             onChange={(option) => setCategory(option)}
                         />

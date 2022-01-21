@@ -69,7 +69,7 @@ const NovoPerfil = ({ navigation }) => {
         const response = await getCategories()
 
         if (response.status === 200) {
-            const { categories } = response.body
+            const { categories } = response.data
 
             const auxCategories = categories.map(({ id, name }) => {
                 return {

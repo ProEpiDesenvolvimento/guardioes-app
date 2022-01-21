@@ -1,20 +1,17 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
-export const getCategories = async () => {
+export const getCategories = async (token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/categories`, {
+        response = await api.get(`/categories`, {
             headers: {
-                Accept: 'application/vnd.api+json',
+                Authorization: token,
             },
         })
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }
