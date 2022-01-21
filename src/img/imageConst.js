@@ -1,3 +1,8 @@
+import React from 'react'
+import Emoji from 'react-native-emoji'
+
+import { scale } from '../utils/scalling'
+
 // Logos
 export const GDSLogoBR = require('./logos/gds-pt-branca.png')
 export const GDSLogoES = require('./logos/gds-es-branca.png')
@@ -40,3 +45,49 @@ export { default as ThermometerIcon } from './advices/thermometer.svg'
 export { default as VaccineIcon } from './advices/vaccine.svg'
 export { default as VirusIcon } from './advices/virus.svg'
 export { default as WashIcon } from './advices/wash.svg'
+
+// Emojis
+export const Emojis = {
+    cloud: (
+        <Emoji // Emoji cloud
+            name='cloud'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    tada: (
+        <Emoji // Emoji tada
+            name='tada'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    warning: (
+        <Emoji // Emoji warning
+            name='warning'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    heart: (
+        <Emoji // Emoji heart up
+            name='heart'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    heart_eyes: (
+        <Emoji // Emoji heart eyes
+            name='heart_eyes'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    sweat_smile: (
+        <Emoji // Emoji smile face
+            name='sweat_smile'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+    confused: (
+        <Emoji // Emoji confused face
+            name='confused'
+            style={{ fontSize: scale(15) }}
+        />
+    ),
+}

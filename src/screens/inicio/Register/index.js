@@ -69,18 +69,19 @@ const Register = ({ navigation }) => {
     const passwordInput = useRef()
 
     const loginAfterCreate = async () => {
-        const response = await authUser({
-            email,
-            password,
-        })
+        const response = await authUser({ user: { email, password } })
 
         if (response.status === 200) {
             setLoadingAlert(false)
 
-            await storeUser(response.body.user, response.token, {
-                email,
-                password,
-            })
+            await storeUser(
+                response.data.user,
+                response.headers.authorization,
+                {
+                    email,
+                    password,
+                }
+            )
 
             setTimeout(() => {
                 setNeedSignIn(false)
@@ -114,13 +115,13 @@ const Register = ({ navigation }) => {
         if (!validPerson(user, null)) return
         setLoadingAlert(true)
 
-        const response = await createUser(user)
+        const response = await createUser({ user })
 
         if (response.status === 200) {
             loginAfterCreate()
         } else {
             setLoadingAlert(false)
-            Alert.alert(`O email ${response.body.errors[0].detail.email}`)
+            Alert.alert(`O email ${response.data.errors[0].detail.email}`)
         }
     }
 

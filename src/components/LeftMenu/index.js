@@ -42,7 +42,7 @@ const LeftMenu = ({ navigation }) => {
             const response = await getAppGroup(user.group_id)
 
             if (response.status === 200) {
-                const { group } = response.body
+                const { group } = response.data
                 setGroup(group)
 
                 if (group.group_manager.vigilance_email) {

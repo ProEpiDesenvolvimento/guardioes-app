@@ -107,7 +107,7 @@ const ForgetPwd = ({ navigation }) => {
         const response = await confirmCode({ code })
 
         if (response.status === 200) {
-            setToken(response.body.reset_password_token)
+            setToken(response.data.reset_password_token)
             goToNextScreen()
             setShowAlert(false)
         } else {

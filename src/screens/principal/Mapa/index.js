@@ -79,9 +79,9 @@ const Maps = () => {
 
         if (response.status === 200) {
             if (localPin) {
-                setWeekSurveys([...response.body.surveys, localPin])
+                setWeekSurveys([...response.data.surveys, localPin])
             } else {
-                setWeekSurveys(response.body.surveys)
+                setWeekSurveys(response.data.surveys)
             }
 
             setIsLoading(false)
