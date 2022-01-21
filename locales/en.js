@@ -140,24 +140,27 @@ export default {
         title: 'Tutorial',
         tutorial: 'How to use the app',
         howToUse:
-            '\nTo use the main functionality of the app, click the Good or Bad button on the home screen:',
-        howToUse2:
-            "If you choose Bad, you'll be able to choose symptoms and when it started. That's it, this is the core of it, if you want to learn more keep reading, we have other tips and functionalities.",
+            '\nThe basic functionality of Guardians of Health (GdS) is health reporting. It can be found on the Home page, but there are other features. If you want to learn more, read on.',
+        home: "Home page",
+        homeCont: "On this tab you can select how you are feeling (good or bad). If it's bad you can mark the symptoms and signal how long it's been in if so.\n\nYou can also customize your GdS by putting your photo on the icon next to your name (remembering that the photo is not permanently saved in the app, so if you log out of your account you will need to insert your photo again).",
         news: 'News',
         newsCont:
-            "Is where you'll read about all that's happening is this big world, it's a Twitter page so, if you have an account, you can interact with professionals.\n Since you're here, try checking it out. ",
+            "The news screen is the last option you find at the start of the app. In this part are daily news about the pandemic and health in general. Take advantage that you are already here and take a look at what we have prepared there! To access the tab it is not necessary to have a Twitter account or to establish a link (you will not receive any type of notification or email).",
         newsPs:
-            "Ps: You don't need a Twitter account to see it and you won't get any notifications or email, we got you covered.",
+            "PS: you don't need to have a Twitter account and you won't receive any kind of notification or email.",
         advices: 'Health Advices',
         advicesCont:
-            'Here you find some important information to check out like Dengue fever, Chicungunya and Zika and, with Google Maps help you have quick access to a map with hospitals and pharmacies near you.',
+            'The tips tab is an important tool for you to learn more about your health, it is updated twice a month and has information about vaccines, useful links, how to prevent a pandemic and much more.',
         diary: 'Health Diary',
         diaryCont:
-            "This is one the most important features, it's where you find information about all reports you've done, so you can check it out if you need to tell a doctor when symptons began, for example.",
-        healthMap: 'Mapa da Saúde',
+            "This is one of the most important features of the app, there you can view through the health calendar and the pie chart all the reports you have done daily.\n\nYou can use your health calendar if you need this data to clarify something in a doctor's appointment.",
+        healthMap: 'Health Map',
         healthMapCont:
-            'No Mapa da Saúde se tem acesso à todos os envios feitos na sua região, isso, é claro, sem expor nenhum dado sensível dos usuários. Essa função ajuda o usuário a ter uma visão de como anda a saúde das pessoas a sua volta para que ela consiga até se prevenir. \
-        Por exemplo, se você ver que em uma certa área tem muitos relatos de sintomas de gripe você pode tomar um suco de laranja, ou se tiver sintomas de Dengue você pode evitar passar no lugar.',
+            'This tab will show how people in your region are feeling. Each point on the map represents a person or group of people.',
+        healthMapCont2:
+            'By clicking on any point on the map you can see the health status of people who reported in that region. No sensitive user data is exposed.',
+        healthMapCont3:
+            'This function helps you get an insight into the health of people around you and where you plan to go.\n\nIf you see that in a certain area there are many reports of symptoms of COVID-19 you can avoid passing by instead, postpone your trip to the location or redouble the prevention measures when passing in these regions'
     },
     badReport: {
         title: 'What are you feeling?',
@@ -175,14 +178,16 @@ export default {
         },
         yes: 'Yes',
         checkboxConfirm: 'Confirm',
-        alertMessages: {
+        messages: {
             button: 'Show Map',
             sending: 'Sending...',
             thanks: 'Thanks!',
             reportSent: 'Your survey was sent!',
             oops: 'Oops!',
-            reportNotSent:
+            reportSent2:
                 'You have already sent a survey through this option today.',
+            reportNotSent:
+                'There was an error submitting your survey. Try again later.',
             seeADoctor: 'We recommend that you seek medical help!',
             confirmText: 'Confirm',
             covidSuspect:

@@ -32,7 +32,6 @@ import {
 } from '../../../components/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
-import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -61,14 +60,11 @@ const Register = ({ navigation }) => {
     const [city, setCity] = useState('')
     const [race, setRace] = useState('')
     const [birth, setBirth] = useState('')
-    const [groupId, setGroupId] = useState(null)
-    const [idCode, setIdCode] = useState(null)
     const [riskGroup, setRiskGroup] = useState(false)
     const [isProfessional, setIsProfessional] = useState(false)
 
     const [countryCheckbox, setCountryCheckbox] = useState(true)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
-    const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [categoryId, setCategoryId] = useState(null)
     const [allCategories, setAllCategories] = useState(null)
@@ -97,18 +93,19 @@ const Register = ({ navigation }) => {
     const passwordInput = useRef()
 
     const loginAfterCreate = async () => {
-        const response = await authUser({
-            email,
-            password,
-        })
+        const response = await authUser({ user: { email, password } })
 
         if (response.status === 200) {
             setLoadingAlert(false)
 
-            await storeUser(response.body.user, response.token, {
-                email,
-                password,
-            })
+            await storeUser(
+                response.data.user,
+                response.headers.authorization,
+                {
+                    email,
+                    password,
+                }
+            )
 
             setTimeout(() => {
                 setNeedSignIn(false)
@@ -134,34 +131,23 @@ const Register = ({ navigation }) => {
             residence,
             state,
             city,
-            group_id: groupId,
-            identification_code: idCode,
             is_professional: isProfessional,
             risk_group: riskGroup,
             policy_version: terms.version,
             category_id: categoryId,
         }
 
-        if (!validPerson(user, institutionError)) return
+        if (!validPerson(user, null)) return
         setLoadingAlert(true)
 
-        const response = await createUser(user)
+        const response = await createUser({ user })
 
         if (response.status === 200) {
             loginAfterCreate()
         } else {
             setLoadingAlert(false)
-            Alert.alert(`O email ${response.body.errors[0].detail.email}`)
+            Alert.alert(`O email ${response.data.errors[0].detail.email}`)
         }
-    }
-
-    const setUserInstitutionCallback = (idCode, groupId) => {
-        setIdCode(idCode)
-        setGroupId(groupId)
-    }
-
-    const setInstituitionComponentError = (error) => {
-        setInstituitionError(error)
     }
 
     return (
@@ -341,7 +327,7 @@ const Register = ({ navigation }) => {
                         />
                     </FormInlineCheck>
 
-                    <FormInlineCheck>
+                    <FormInlineCheck space>
                         <CheckBoxStyled
                             title={translate('register.riskGroupLabel')}
                             checked={riskGroup}
@@ -355,13 +341,6 @@ const Register = ({ navigation }) => {
                             />
                         </CheckLabel>
                     </FormInlineCheck>
-
-                    <InstitutionSelector
-                        setUserInstitutionCallback={setUserInstitutionCallback}
-                        setAlert={setLoadingAlert}
-                        setErrorCallback={setInstituitionComponentError}
-                        lightTheme
-                    />
 
                     {allCategories ? (
                         <FormInline>

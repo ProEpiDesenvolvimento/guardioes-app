@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Text, Alert } from 'react-native'
 import moment from 'moment'
-import { CommonActions } from '@react-navigation/native'
 
-import Emoji from 'react-native-emoji'
 import Share from 'react-native-share'
 import { Avatar } from 'react-native-elements'
+import { CommonActions } from '@react-navigation/native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
@@ -39,6 +38,7 @@ import {
     handleAvatar,
     getInitials,
     redirectAlert,
+    getSurveyConfirmation,
 } from '../../../utils/consts'
 import { countryChoices, localSymptom } from '../../../utils/selector'
 import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
@@ -96,50 +96,33 @@ const BadReport = ({ navigation }) => {
         }
     }, [])
 
-    const showConfirmation = (response) => {
-        let alertTitle = ''
-        let emojiTitle = null
-        let alertMessage = ''
-        let emojiMessage = null
-
-        if (response && !response.errors) {
-            alertTitle = translate('badReport.alertMessages.thanks')
-            alertMessage = response.feedback_message
-                ? response.feedback_message
-                : translate('badReport.alertMessages.reportSent')
-            emojiTitle = emojis[0]
-            emojiMessage = emojis[2]
-        } else {
-            alertTitle = translate('badReport.alertMessages.oops')
-            alertMessage = translate('badReport.alertMessages.reportNotSent')
-            emojiTitle = emojis[1]
-            emojiMessage = emojis[3]
-        }
+    const showConfirmation = (status, data) => {
+        const message = getSurveyConfirmation(status, data)
 
         setAlertTitle(
             <Text>
-                {alertTitle} {emojiTitle}
+                {message.alertTitle} {message.emojiTitle}
             </Text>
         )
         setAlertMessage(
             <Text>
-                {alertMessage} {emojiMessage} {'\n'}
-                {translate('badReport.alertMessages.seeADoctor')}
+                {message.alertMessage} {message.emojiMessage} {'\n'}
+                {translate('badReport.messages.seeADoctor')}
             </Text>
         )
 
         setShowAlert(true)
-        console.log(alertMessage)
+        console.log(message.alertMessage)
     }
 
-    const showWhatsappAlert = (response) => {
+    const showWhatsappAlert = (status, body) => {
         Alert.alert(
             translate('map.alert'),
             translate('map.share'),
             [
                 {
                     text: translate('map.noAlert'),
-                    onPress: () => showConfirmation(response),
+                    onPress: () => showConfirmation(status, body),
                 },
                 {
                     text: translate('badReport.yes'),
@@ -149,9 +132,9 @@ const BadReport = ({ navigation }) => {
                                 console.log(res)
                             })
                             .catch((err) => {
-                                err && console.log(err)
+                                console.log(err)
                             })
-                        showConfirmation(response)
+                        showConfirmation(status, body)
                     },
                 },
             ],
@@ -159,15 +142,17 @@ const BadReport = ({ navigation }) => {
         )
     }
 
-    const showSurveilanceInvite = (response, func) => {
+    const showSurveilanceInvite = (status, body, func) => {
         const title = translate('surveilanceInvite.title')
-        const message = `${user.user_name}, ${translate('surveilanceInvite.message')}`
+        const message = `${person.name}, ${translate(
+            'surveilanceInvite.message'
+        )}`
 
         Alert.alert(title, message, [
             {
                 text: translate('surveilanceInvite.cancelButton'),
                 onPress: () => {
-                    func(response)
+                    func(status, body)
                 },
             },
             {
@@ -187,10 +172,10 @@ const BadReport = ({ navigation }) => {
         ])
     }
 
-    const showSyndromeAlert = (response) => {
+    const showSyndromeAlert = (status, body) => {
         let alert = []
 
-        if (response.messages.top_3[0].name === 'Síndrome Gripal') {
+        if (body.messages.top_3[0].name === 'Síndrome Gripal') {
             alert = [
                 {
                     text: translate('advices.moreInformations'),
@@ -205,8 +190,15 @@ const BadReport = ({ navigation }) => {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        if (!inviteSurveilance) showWhatsappAlert(response)
-                        else showSurveilanceInvite(response, showWhatsappAlert)
+                        if (!inviteSurveilance) {
+                            showWhatsappAlert(status, body)
+                        } else {
+                            showSurveilanceInvite(
+                                status,
+                                body,
+                                showWhatsappAlert
+                            )
+                        }
                     },
                 },
             ]
@@ -215,16 +207,23 @@ const BadReport = ({ navigation }) => {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        if (!inviteSurveilance) showConfirmation(response)
-                        else showSurveilanceInvite(response, showConfirmation)
+                        if (!inviteSurveilance) {
+                            showConfirmation(status, body)
+                        } else {
+                            showSurveilanceInvite(
+                                status,
+                                body,
+                                showConfirmation
+                            )
+                        }
                     },
                 },
             ]
         }
 
         Alert.alert(
-            response.messages.top_syndrome_message.title,
-            response.messages.top_syndrome_message.warning_message,
+            body.messages.top_syndrome_message.title,
+            body.messages.top_syndrome_message.warning_message,
             alert,
             { cancelable: false }
         )
@@ -233,11 +232,11 @@ const BadReport = ({ navigation }) => {
     const sortSymptoms = (symptoms = []) => {
         // Sort in alphabetical order
         symptoms.sort((a, b) => {
-            return a.description !== b.description
-                ? a.description < b.description
-                    ? -1
-                    : 1
-                : 0
+            if (a.description !== b.description) {
+                if (a.description < b.description) return -1
+                return 1
+            }
+            return 0
         })
         return symptoms
     }
@@ -246,7 +245,7 @@ const BadReport = ({ navigation }) => {
         const response = await getAppSymptoms(token)
 
         if (response.status === 200) {
-            const sortedSymptoms = sortSymptoms(response.body.symptoms)
+            const sortedSymptoms = sortSymptoms(response.data.symptoms)
             setSymptoms(sortedSymptoms)
             setIsLoading(false)
         }
@@ -266,8 +265,7 @@ const BadReport = ({ navigation }) => {
         if (personSymptoms.length === 0) {
             Alert.alert(
                 translate('badReport.reportWithoutSymptom.title'),
-                translate('badReport.reportWithoutSymptom.message'),
-                [(text = 'OK')]
+                translate('badReport.reportWithoutSymptom.message')
             )
             setShowProgressBar(false)
             setShowAlert(false)
@@ -288,7 +286,7 @@ const BadReport = ({ navigation }) => {
             created_at: moment().format('YYYY-MM-DD'),
         }
 
-        const response = await createSurvey(survey, user.id, token)
+        const response = await createSurvey({ survey }, user.id, token)
         setShowProgressBar(false)
 
         // Wait page re-render
@@ -297,14 +295,14 @@ const BadReport = ({ navigation }) => {
 
         updateUserScore()
         if (response.status === 201) {
-            if (!response.body.errors && response.body.messages.top_3) {
-                if (response.body.messages.top_3[0]) {
-                    showSyndromeAlert(response.body)
+            if (!response.data.errors && response.data.messages.top_3) {
+                if (response.data.messages.top_3[0]) {
+                    showSyndromeAlert(response.status, response.data)
                 } else {
-                    showConfirmation(response.body)
+                    showConfirmation(response.status, response.data)
                 }
             } else {
-                showConfirmation(response.body)
+                showConfirmation(response.status, response.data)
             }
 
             // Save only important data for Map
@@ -319,10 +317,10 @@ const BadReport = ({ navigation }) => {
             await storeCacheData('localPin', localPin)
 
             const newSurveys = surveys.slice()
-            newSurveys.push(response.body.survey)
+            newSurveys.push(response.data.survey)
             storeSurveys(newSurveys)
         } else {
-            showConfirmation(response.body)
+            showConfirmation(response.status, response.data)
         }
     }
 
@@ -378,13 +376,11 @@ const BadReport = ({ navigation }) => {
                                 )
 
                                 setPersonSymptoms(newSymptoms)
-                                // console.warn(newSymptoms)
                             } else {
                                 const newSymptoms = personSymptoms.slice()
                                 newSymptoms.push(symptom.code)
 
                                 setPersonSymptoms(newSymptoms)
-                                // console.warn(newSymptoms)
                             }
                         }}
                     />
@@ -453,7 +449,7 @@ const BadReport = ({ navigation }) => {
             <CoolAlert
                 show={showProgressBar}
                 showProgress
-                title={translate('badReport.alertMessages.sending')}
+                title={translate('badReport.messages.sending')}
             />
             <CoolAlert
                 show={showAlert}
@@ -462,7 +458,7 @@ const BadReport = ({ navigation }) => {
                 closeOnTouchOutside
                 closeOnHardwareBackPress={false}
                 showConfirmButton
-                confirmText={translate('badReport.alertMessages.button')}
+                confirmText={translate('badReport.messages.button')}
                 onConfirmPressed={() => navigation.navigate('Mapa')}
                 onDismiss={() => navigation.navigate('Mapa')}
             />
@@ -470,27 +466,8 @@ const BadReport = ({ navigation }) => {
     )
 }
 
-const emojis = [
-    <Emoji // Emoji tada
-        name='tada'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji warning
-        name='warning'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji heart eyes
-        name='heart_eyes'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji smile face
-        name='sweat_smile'
-        style={{ fontSize: scale(15) }}
-    />,
-]
-
 const shareOptions = {
-    message: translate('badReport.alertMessages.covidSuspect'),
+    message: translate('badReport.messages.covidSuspect'),
     url: cardWhatsapp,
 }
 

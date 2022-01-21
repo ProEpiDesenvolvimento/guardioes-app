@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import moment from 'moment'
 
-import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -44,13 +43,15 @@ import {
     UserName,
 } from './styles'
 
+import translate from '../../../../locales/i18n'
 import {
     terms,
     getNameParts,
     handleAvatar,
     getInitials,
+    getSurveyConfirmation,
 } from '../../../utils/consts'
-import translate from '../../../../locales/i18n'
+import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
@@ -136,11 +137,11 @@ const Home = ({ navigation }) => {
             policy_version: terms.version,
         }
 
-        const response = await updateUser(policy, user.id, token)
+        const response = await updateUser({ user: policy }, user.id, token)
 
         if (response.status === 200) {
             console.warn(response.status)
-            storeUser(response.body.user)
+            storeUser(response.data.user)
         }
     }
 
@@ -149,14 +150,6 @@ const Home = ({ navigation }) => {
 
         if (surveysCache) {
             storeSurveys(surveysCache)
-        }
-    }
-
-    const getHouseholds = async () => {
-        const response = await getUserHouseholds(user.id, token)
-
-        if (response.status === 200) {
-            storeHouseholds(response.body.households)
         }
     }
 
@@ -202,36 +195,11 @@ const Home = ({ navigation }) => {
         setHasBadReports(badReports > 2)
     }
 
-    const sendSurvey = async () => {
-        // Send Survey GOOD CHOICE
-        showLoadingAlert()
+    const getHouseholds = async () => {
+        const response = await getUserHouseholds(user.id, token)
 
-        let local = {}
-        if (location.error !== 0) {
-            local = await getCurrentLocation()
-        } else {
-            local = location
-        }
-
-        const householdID = person.is_household ? person.id : null
-        const survey = {
-            household_id: householdID,
-            latitude: local.latitude,
-            longitude: local.longitude,
-            symptom: [],
-            created_at: moment().format('YYYY-MM-DD'),
-        }
-
-        const response = await createSurvey(survey, user.id, token)
-        showConfirmation(response.body)
-        updateUserScore()
-
-        if (response.status === 201) {
-            await storeCacheData('localPin', survey)
-
-            const newSurveys = surveys.slice()
-            newSurveys.push(response.body.survey)
-            storeSurveys(newSurveys)
+        if (response.status === 200) {
+            storeHouseholds(response.data.households)
         }
     }
 
@@ -258,7 +226,7 @@ const Home = ({ navigation }) => {
         if (show) {
             setAlertTitle(
                 <Text>
-                    {translate('home.offlineTitle')} {emojis[0]}
+                    {translate('home.offlineTitle')} {Emojis.cloud}
                 </Text>
             )
             setAlertMessage(
@@ -278,39 +246,55 @@ const Home = ({ navigation }) => {
         setShowProgressBar(true)
     }
 
-    const showConfirmation = (response) => {
-        let alertTitle = ''
-        let emojiTitle = null
-        let alertMessage = ''
-        let emojiMessage = null
-
-        if (response && !response.errors) {
-            alertTitle = translate('badReport.alertMessages.thanks')
-            alertMessage = response.feedback_message
-                ? response.feedback_message
-                : translate('badReport.alertMessages.reportSent')
-            emojiTitle = emojis[1]
-            emojiMessage = emojis[3]
-        } else {
-            alertTitle = translate('badReport.alertMessages.oops')
-            alertMessage = translate('badReport.alertMessages.reportNotSent')
-            emojiTitle = emojis[2]
-            emojiMessage = emojis[4]
-        }
+    const showConfirmation = (status, body) => {
+        const message = getSurveyConfirmation(status, body)
 
         setAlertTitle(
             <Text>
-                {alertTitle} {emojiTitle}
+                {message.alertTitle} {message.emojiTitle}
             </Text>
         )
         setAlertMessage(
             <Text>
-                {alertMessage} {emojiMessage}
+                {message.alertMessage} {message.emojiMessage}
             </Text>
         )
 
         setShowProgressBar(false)
-        console.log(alertMessage)
+        console.log(message.alertMessage)
+    }
+
+    const sendSurvey = async () => {
+        // Send Survey GOOD CHOICE
+        showLoadingAlert()
+
+        let local = {}
+        if (location.error !== 0) {
+            local = await getCurrentLocation()
+        } else {
+            local = location
+        }
+
+        const householdID = person.is_household ? person.id : null
+        const survey = {
+            household_id: householdID,
+            latitude: local.latitude,
+            longitude: local.longitude,
+            symptom: [],
+            created_at: moment().format('YYYY-MM-DD'),
+        }
+
+        const response = await createSurvey({ survey }, user.id, token)
+        showConfirmation(response.status, response.data)
+
+        updateUserScore()
+        if (response.status === 201) {
+            await storeCacheData('localPin', survey)
+
+            const newSurveys = surveys.slice()
+            newSurveys.push(response.data.survey)
+            storeSurveys(newSurveys)
+        }
     }
 
     if (isLoading) {
@@ -546,16 +530,14 @@ const Home = ({ navigation }) => {
                     showProgress={showProgressBar}
                     title={
                         showProgressBar
-                            ? translate('badReport.alertMessages.sending')
+                            ? translate('badReport.messages.sending')
                             : alertTitle
                     }
                     message={alertMessage}
                     closeOnTouchOutside={!showProgressBar}
                     closeOnHardwareBackPress={false}
                     showConfirmButton={!showProgressBar}
-                    confirmText={translate(
-                        'badReport.alertMessages.confirmText'
-                    )}
+                    confirmText={translate('badReport.messages.confirmText')}
                     onConfirmPressed={() => setShowAlert(false)}
                     onDismiss={() => setShowAlert(false)}
                 />
@@ -578,28 +560,5 @@ const styles = StyleSheet.create({
         shadowOpacity: 0,
     },
 })
-
-const emojis = [
-    <Emoji // Emoji cloud
-        name='cloud'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji tada
-        name='tada'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji warning
-        name='warning'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji heart eyes
-        name='heart_eyes'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji smile face
-        name='sweat_smile'
-        style={{ fontSize: scale(15) }}
-    />,
-]
 
 export default Home

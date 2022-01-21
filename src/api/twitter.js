@@ -1,12 +1,11 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getGroupTweets = async (data, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/twitter_apis/${data.username}`, {
+        response = await api.get(`/twitter_apis/${data.username}`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -14,8 +13,5 @@ export const getGroupTweets = async (data, token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }

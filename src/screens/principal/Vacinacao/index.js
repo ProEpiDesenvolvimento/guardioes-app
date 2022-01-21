@@ -77,7 +77,7 @@ const Vacinacao = ({ navigation }) => {
         const response = await getVaccines(token)
 
         if (response.status === 200) {
-            const { vaccines } = response.body
+            const { vaccines } = response.data
             setVaccines(vaccines)
             initValues()
 
@@ -108,12 +108,12 @@ const Vacinacao = ({ navigation }) => {
         if (!validVaccination(vaccination)) return
         setLoadingAlert(true)
 
-        const response = await updateUser(vaccination, user.id, token)
+        const response = await updateUser({ user: vaccination }, user.id, token)
 
         if (response.status === 200) {
             storeUser({
                 ...user,
-                ...response.body.user,
+                ...response.data.user,
             })
 
             setLoadingAlert(false)

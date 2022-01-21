@@ -124,8 +124,8 @@ class InstitutionSelector extends Component {
         getAppRootGroup()
             .then((response) => {
                 if (response.status === 200) {
-                    this.setState({ rootGroup: response.body.group })
-                    this.getChildren(response.body.group.id)
+                    this.setState({ rootGroup: response.data.group })
+                    this.getChildren(response.data.group.id)
                 }
             })
             .then(() => {
@@ -157,9 +157,9 @@ class InstitutionSelector extends Component {
         getAppGroup(id)
             .then((response) => {
                 if (response.status === 200) {
-                    this.setState({ selectedGroup: response.body.group })
+                    this.setState({ selectedGroup: response.data.group })
 
-                    if (response.body.group.group_manager.require_id != null) {
+                    if (response.data.group.group_manager.require_id != null) {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
@@ -179,7 +179,7 @@ class InstitutionSelector extends Component {
         getAppGroupChildren(id)
             .then((response) => {
                 if (response.status === 200) {
-                    if (response.body.is_child) {
+                    if (response.data.is_child) {
                         this.setState({ userGroup: id })
                         this.getGroup(id, setAlert)
                         return
@@ -192,7 +192,7 @@ class InstitutionSelector extends Component {
                     })
 
                     this.insertSortToGroupList({
-                        ...response.body,
+                        ...response.data,
                         id: parseInt(id, 10),
                     })
                     this.setState({ selectionIndexes })
@@ -213,7 +213,7 @@ class InstitutionSelector extends Component {
         getUserGroupPath(id)
             .then(async (response) => {
                 if (response.status === 200) {
-                    const { groups } = response.body
+                    const { groups } = response.data
                     const selectionIndexes = []
 
                     groups.forEach(async (group) => {

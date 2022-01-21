@@ -140,26 +140,29 @@ export default {
     },
     tutorial: {
         title: 'Tutorial',
-        tutorial: 'Tutorial de cómo utilizar la aplicación',
+        tutorial: 'Tutorial',
         howToUse:
-            '\nPara utilizar la aplicación basta con hacer clic en el icono de reportar en la pantalla de inicio:',
-        howToUse2:
-            'A continuación, elija cómo informar, bien o mal. Si usted elige mal usted puede elegir los síntomas y desde cuando se siente mal. En este caso, el uso básico de la aplicación, si quería aprender más seguir leyendo para ver algunos consejos y otras características',
+            '\nLa funcionalidad básica de Guardianes de la salud (GdS) son los informes de salud. Se puede encontrar en la página de inicio, pero hay otras funciones. Si desea obtener más información, siga leyendo.',
+        home: 'Pagina de inicio',
+        homeCont: 'En esta pestaña puede seleccionar cómo se siente (bien o mal). Si es malo, puede marcar los síntomas y señalar cuánto tiempo ha estado, si es así. \ N \ nTambién puede personalizar su GdS colocando su foto en el ícono al lado de su nombre (recordando que la foto no se guarda permanentemente en la aplicación , por lo que si cierra sesión en su cuenta, deberá volver a insertar su foto).',
         news: 'Pantalla de Noticias',
         newsCont:
-            'La pantalla de noticias es una de las funciones que usted encuentra en la pantalla de inicio, que está vinculada en el perfil de Guardianes y allí puedes ver mucha información porque esta página siempre está actualizada.\n Ya que estás por aquí dar una pasadita allí. ',
+            'La pantalla de noticias es la última opción que encuentra al inicio de la aplicación. En esta parte se encuentran noticias diarias sobre la pandemia y la salud en general. ¡Aprovecha que ya estás aquí y echa un vistazo a lo que hemos preparado allí! Para acceder a la pestaña no es necesario tener una cuenta de Twitter ni establecer un enlace (no recibirás ningún tipo de notificación o correo electrónico).',
         newsPs:
-            'Ps: usted no necesita tener cuenta en Twitter y usted no recibe ningún tipo de notificación / email.',
+            'PS: no necesitas tener una cuenta de Twitter y no recibirás ningún tipo de notificación o correo electrónico.',
         advices: 'Consejos de Salud',
         advicesCont:
-            'Aquí encontrará algunas informaciones importantes para echar un vistazo, como Dengue Chicungunya y Zika, teléfonos útiles y también, con ayuda de Google Maps usted tiene acceso a hospitales y farmacias cerca de usted.',
+            'La pestaña de consejos es una herramienta importante para que aprenda más sobre su salud, se actualiza dos veces al mes y tiene información sobre vacunas, enlaces útiles, cómo prevenir una pandemia y mucho más.',
         diary: 'Diario de la Salud',
         diaryCont:
-            'Esta es una de las pantallas más importantes, aquí usted puede ver todos los envíos que usted ha hecho y también tiene un calendario si usted necesita estos datos para aclarar algo en una consulta médica, por ejemplo.',
+            'Esta es una de las características más importantes de la aplicación, allí puede ver a través del calendario de salud y el gráfico circular todos los informes que ha realizado diariamente. \ N \ nPuede usar su calendario de salud si necesita estos datos para aclarar algo en una cita con el médico.',
         healthMap: 'Mapa de la Salud',
         healthMapCont:
-            'En el Mapa de la Salud se tiene acceso a todos los envíos hechos en su región, eso, por supuesto, sin exponer ningún dato sensible de los usuarios. Esta función ayuda al usuario a tener una visión de cómo va la salud de las personas a su alrededor para que ella consiga hasta prevenirse. \
-        Por ejemplo, si usted ve que en una cierta área tiene muchos informes de síntomas de gripe usted puede tomar un jugo de naranja, o si tiene síntomas de Dengue usted puede evitar pasar en su lugar.',
+            'Esta pestaña mostrará cómo se sienten las personas en su región. Cada punto del mapa representa a una persona o grupo de personas.',
+        healthMapCont2:
+            'Al hacer clic en cualquier punto del mapa, puede ver el estado de salud de las personas que informaron en esa región. No se exponen datos sensibles del usuario.',
+        healthMapCont3:
+            'Esta función lo ayuda a obtener una idea de la salud de las personas que lo rodean y adónde planea ir. \ N \ nSi ve que en un área determinada hay muchos informes de síntomas de COVID-19, puede evitar pasar, posponga su viaje al lugar o redoblar las medidas de prevención al pasar por estas regiones'
     },
     badReport: {
         title: '¿Que estas sintiendo?',
@@ -177,14 +180,16 @@ export default {
         },
         yes: 'Si',
         checkboxConfirm: 'Confirmar',
-        alertMessages: {
+        messages: {
             button: 'Mostrar Mapa',
             sending: 'Envío...',
             thanks: 'Gracias!',
             reportSent: 'Su relato fue enviado.',
             oops: '¡Ups!',
-            reportNotSent:
+            reportSent2:
                 'Notamos que ya informó su estado de salud a través de esta opción hoy.',
+            reportNotSent:
+                'Hubo un error al enviar su estado de salud. Vuelve a intentarlo más tarde.',
             seeADoctor:
                 '¡Recomendamos que si los síntomas continúan, busque atención médica!',
             confirmText: 'Confirmar',

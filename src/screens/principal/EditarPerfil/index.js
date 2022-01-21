@@ -188,7 +188,7 @@ const EditarPerfil = ({ navigation, route }) => {
         if (!validPerson(newUser, institutionError)) return
         setLoadingAlert(true)
 
-        const response = await updateUser(newUser, user.id, token)
+        const response = await updateUser({ user: newUser }, user.id, token)
 
         if (response.status === 200) {
             storeUser({
