@@ -49,6 +49,7 @@ import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
 import { getCategories } from '../../../api/categories'
+import { getAppGroup } from '../../../api/groups'
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
@@ -59,6 +60,7 @@ const EditarPerfil = ({ navigation, route }) => {
         households,
         storeHouseholds,
         updateHouseholdAvatars,
+        setGroup,
     } = useUser()
     const { person } = route.params
 
@@ -79,6 +81,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
     const [category, setCategory] = useState(person.category)
     const [allCategories, setAllCategories] = useState(null)
+    const [isVigilance, setIsVigilance] = useState(false)
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -99,6 +102,29 @@ const EditarPerfil = ({ navigation, route }) => {
     useEffect(() => {
         getAppCategories()
     }, [])
+
+    const getActiveSurveillance = async () => {
+        if (groupId) {
+            const response = await getAppGroup(groupId)
+
+            if (response.status === 200) {
+                const { group } = response.data
+                setGroup(group)
+
+                if (group.group_manager.vigilance_email) {
+                    setIsVigilance(true)
+                } else {
+                    setIsVigilance(false)
+                }
+            }
+        } else {
+            setIsVigilance(false)
+        }
+    }
+
+    useEffect(() => {
+        getActiveSurveillance()
+    }, [groupId])
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
@@ -187,6 +213,7 @@ const EditarPerfil = ({ navigation, route }) => {
             identification_code: idCode,
             risk_group: riskGroup,
             category_id: category.key,
+            is_vigilance: isVigilance,
             category: {
                 id: category.key,
                 name: category.label,
