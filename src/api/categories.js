@@ -1,10 +1,10 @@
 import api from './api'
 
-export const getGroupTweets = async (data, token) => {
+export const getCategories = async (token) => {
     let response = {}
 
     try {
-        response = await api.get(`/twitter_apis/${data.username}`, {
+        response = await api.get(`/categories`, {
             headers: {
                 Authorization: token,
             },

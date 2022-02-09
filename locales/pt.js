@@ -179,14 +179,16 @@ export default {
         },
         yes: 'Sim',
         checkboxConfirm: 'Confirmar',
-        alertMessages: {
+        messages: {
             button: 'Mostrar Mapa',
             sending: 'Enviando...',
             thanks: 'Obrigado!',
             oops: 'Oops!',
             reportSent: 'Seu relato foi enviado.',
-            reportNotSent:
+            reportSent2:
                 'Notamos que você já relatou seu estado de saúde por essa opção hoje.',
+            reportNotSent:
+                'Houve um erro ao enviar seu relato de saúde. Tente novamente mais tarde.',
             seeADoctor:
                 'Recomendamos que, caso os sintomas continuem, procure atendimento médico!',
             confirmText: 'Confirmar',

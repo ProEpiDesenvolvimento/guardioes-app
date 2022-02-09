@@ -1,12 +1,11 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getForm = async (id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/forms/${id}`, {
+        response = await api.get(`/forms/${id}`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -14,33 +13,21 @@ export const getForm = async (id, token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }
 
 export const sendFormAnswers = async (data, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/form_answers`, {
-            method: 'POST',
+        response = await api.post(`/form_answers`, data, {
             headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
                 Authorization: token,
             },
-            body: JSON.stringify({
-                form_answers: data,
-            }),
         })
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 201 ? await response.json() : null,
-    }
+    return response
 }

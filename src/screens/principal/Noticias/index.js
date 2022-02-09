@@ -37,13 +37,13 @@ const Noticias = () => {
             const response = await getUserGroupTwitter(user.group_id, token)
 
             if (response.status === 200) {
-                setGroupTwitter(response.body.twitter)
+                setGroupTwitter(response.data.twitter)
 
                 if (
-                    response.body.twitter &&
-                    response.body.twitter !== app.twitter
+                    response.data.twitter &&
+                    response.data.twitter !== app.twitter
                 ) {
-                    setTwitterOption(response.body.twitter)
+                    setTwitterOption(response.data.twitter)
                 } else {
                     setGroupTwitter(null)
                     setTwitterOption(app.twitter)
@@ -68,8 +68,8 @@ const Noticias = () => {
         const response = await getGroupTweets(twitter, token)
 
         if (response.status === 200) {
-            setTweets(response.body.twitter_api.tweets)
-            setFilteredTweets(response.body.twitter_api.tweets.slice(0, posts))
+            setTweets(response.data.twitter_api.tweets)
+            setFilteredTweets(response.data.twitter_api.tweets.slice(0, posts))
         }
 
         setIsLoading(false)

@@ -49,11 +49,11 @@ const Vigilancia = ({ navigation }) => {
             phone: !user.is_vigilance ? phone : null,
         }
 
-        const response = await updateUser(vigilance, user.id, token)
+        const response = await updateUser({ user: vigilance }, user.id, token)
         console.warn(response.status)
 
         if (response.status === 200) {
-            storeUser(response.body.user)
+            storeUser(response.data.user)
             navigation.goBack()
         } else {
             Alert.alert(translate('register.geralError'))

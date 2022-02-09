@@ -97,7 +97,7 @@ const Diario = () => {
             const response = await getUserSurveys(user.id, token)
 
             if (response.status === 200) {
-                storeSurveys(response.body.surveys)
+                storeSurveys(response.data.surveys)
                 setIsLoading(false)
             }
         } else {

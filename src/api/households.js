@@ -1,12 +1,11 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getUserHouseholds = async (id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/users/${id}/households`, {
+        response = await api.get(`/users/${id}/households`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -14,76 +13,47 @@ export const getUserHouseholds = async (id, token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }
 
 export const createHousehold = async (data, id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/users/${id}/households`, {
-            method: 'POST',
+        response = await api.post(`/users/${id}/households`, data, {
             headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
                 Authorization: token,
             },
-            body: JSON.stringify({
-                description: data.description,
-                birthdate: data.birthdate,
-                country: data.country,
-                gender: data.gender,
-                race: data.race,
-                kinship: data.kinship,
-                group_id: data.group_id,
-                identification_code: data.identification_code,
-                risk_group: data.risk_group,
-            }),
         })
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 201 ? await response.json() : null,
-    }
+    return response
 }
 
 export const updateHousehold = async (data, id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/users/${id}/households/${data.id}`, {
-            method: 'PATCH',
+        response = await api.patch(`/users/${id}/households/${data.id}`, data, {
             headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
                 Authorization: token,
             },
-            body: JSON.stringify(data),
         })
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const deleteHousehold = async (data, id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/users/${id}/households/${data.id}`, {
-            method: 'DELETE',
+        response = await api.delete(`/users/${id}/households/${data.id}`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -91,7 +61,5 @@ export const deleteHousehold = async (data, id, token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-    }
+    return response
 }
