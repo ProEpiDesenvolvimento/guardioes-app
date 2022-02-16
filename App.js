@@ -18,8 +18,7 @@ const Guardioes = () => {
         const initOneSignal = async () => {
             /* ONESIGNAL SETUP */
             OneSignal.setAppId('61c9e02a-d703-4e1c-aff1-3bce49948818')
-            OneSignal.setLogLevel(6, 0)
-            OneSignal.setRequiresUserPrivacyConsent(false)
+            OneSignal.setLogLevel(5, 0)
             OneSignal.promptForPushNotificationsWithUserResponse((response) => {
                 console.log('Prompt response:', response)
             })
@@ -55,12 +54,6 @@ const Guardioes = () => {
             )
             OneSignal.setNotificationOpenedHandler((notification) => {
                 console.log('OneSignal: notification opened:', notification)
-            })
-            OneSignal.setInAppMessageClickHandler((event) => {
-                console.log('OneSignal IAM clicked:', event)
-            })
-            OneSignal.addEmailSubscriptionObserver((event) => {
-                console.log('OneSignal: email subscription changed: ', event)
             })
             OneSignal.addSubscriptionObserver((event) => {
                 console.log('OneSignal: subscription changed:', event)
