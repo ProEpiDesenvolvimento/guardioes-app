@@ -358,6 +358,7 @@ export default {
     },
     vaccination: {
         title: 'Vacinação',
+        doses: 'Doses',
         titleError: 'Campos inválidos',
         messageError: 'Por favor, preencha todos os campos corretamente.',
         titleModal: 'Informações da vacina',
@@ -367,18 +368,9 @@ export default {
         dosesVaccine: 'Número de doses: ',
         minIntervalVaccine: 'Intervalo entre as doses: ',
         intervalVaccinePeriod: ' dias',
-        question1Label:
-            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
-        question2Label:
-            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
-        vaccine1Label: 'Vacina da 1º dose (ou única):',
-        vaccine2Label: 'Vacina da 2º dose:',
-        vaccineLabel: 'Vacina da dose ',
+        titleAddDose: 'Adicionar dose',
+        titleEditDose: 'Editar dose ',
         dateField: 'Data',
-        yesField: 'Sim',
-        noField: 'Não',
-        addDose: 'Clique no botão para adicionar uma dose da vacina.',
-        information: 'Informações da dose ',
         save: 'Salvar',
         add: 'Adicionar',
     },

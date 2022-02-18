@@ -388,7 +388,7 @@ const Home = ({ navigation }) => {
 
                     <Tips>{translate('home.alerts')}</Tips>
 
-                    {!user.vaccine_id && getAppTip('vaccination') ? (
+                    {user.doses?.length < 3 && getAppTip('vaccination') ? (
                         <TipButton
                             onPress={() => navigation.navigate('Vacinacao')}
                         >

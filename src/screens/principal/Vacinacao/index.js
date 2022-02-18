@@ -3,6 +3,7 @@ import { Alert, Modal } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
+import { Avatar } from 'react-native-elements'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
@@ -16,7 +17,6 @@ import {
     ModalButtonText,
     KeyboardScrollView,
     FormInline,
-    FormLabel,
     DateSelector,
     FormInlineCheck,
     CheckBoxStyled,
@@ -24,10 +24,22 @@ import {
     SendContainer,
     SendText,
 } from '../../../components/NormalForms'
+import {
+    AvatarWrapper,
+    InfoContainer,
+    InfoWrapper,
+    ButtonsWrapper,
+    HouseholdWrapper,
+    HouseholdTitle,
+    Household,
+    HouseholdName,
+    HouseholdRelation,
+} from '../Perfis/styles'
 
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
+import { getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { validVaccination } from '../../../utils/formConsts'
 import { getVaccines, getDoses, sendDose } from '../../../api/vaccines'
@@ -44,24 +56,27 @@ const Vacinacao = () => {
 
     const [modalVaccine, setModalVaccine] = useState(false)
     const [loadingAlert, setLoadingAlert] = useState(false)
-    const [modalAddDose, setModalAddDose] = useState(false)
+    const [modalDose, setModalDose] = useState(false)
     const [numberDoses, setNumberDoses] = useState(0)
     const [newDoseDate, setNewDoseDate] = useState('')
     const [lastDoseDate, setLastDoseDate] = useState('')
     const [newDoseVaccine, setNewDoseVaccine] = useState({})
     const [doses, setDoses] = useState([])
+    const [doseSelected, setDoseSelected] = useState({})
 
     const initValues = async () => {
         const response = await getDoses(token)
 
-        setDoses(response.body)
+        setDoses(response.body.doses)
 
         if (!user.vaccine) setNumberDoses(1)
-        else setNumberDoses(response.body.length + 1)
+        else setNumberDoses(response.body.doses.length + 1)
 
-        if (response.body.length > 0) {
-            setDose1Vaccine(response.body[0].vaccine_id)
-            setLastDoseDate(response.body[response.body.length - 1].date)
+        if (response.body.doses.length > 0) {
+            setDose1Vaccine(response.body.doses[0].vaccine_id)
+            setLastDoseDate(
+                response.body.doses[response.body.doses.length - 1].date
+            )
         }
     }
 
@@ -95,10 +110,10 @@ const Vacinacao = () => {
                 lastDoseDate
             )
         ) {
-            setModalAddDose(false)
+            setModalDose(false)
             setLoadingAlert(false)
         } else {
-            setModalAddDose(false)
+            setModalDose(false)
 
             const newDose = {
                 date: doseDate,
@@ -127,7 +142,7 @@ const Vacinacao = () => {
 
             if (response.status === 200) {
                 setLoadingAlert(false)
-                setModalAddDose(false)
+                setModalDose(false)
             } else {
                 console.warn(response)
                 setLoadingAlert(false)
@@ -176,7 +191,7 @@ const Vacinacao = () => {
 
     return (
         <Container>
-            <Modal
+            <Modal // Vaccine
                 animationType='fade'
                 transparent
                 visible={modalVaccine}
@@ -218,63 +233,67 @@ const Vacinacao = () => {
                     </ModalBox>
                 </ModalContainer>
             </Modal>
+
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
                 {doses.length > 0 ? (
-                    doses.map((item) => (
-                        <>
-                            <FormInline key={item.dose}>
-                                <FormLabel>
-                                    {translate('vaccination.vaccineLabel') +
-                                        `${item.dose}`}
-                                </FormLabel>
-                                <DateSelector
-                                    placeholder={translate(
-                                        'vaccination.dateField'
-                                    )}
-                                    date={moment
-                                        .utc(new Date(item.date))
-                                        .format('DD-MM-YYYY')}
-                                    format='DD-MM-YYYY'
-                                    minDate='01-01-1918'
-                                    maxDate={moment.utc().format('DD-MM-YYYY')}
-                                    locale='pt-BR'
-                                    confirmBtnText={translate(
-                                        'birthDetails.confirmButton'
-                                    )}
-                                    cancelBtnText={translate(
-                                        'birthDetails.cancelButton'
-                                    )}
-                                    disabled={true}
-                                />
-                            </FormInline>
+                    <HouseholdWrapper>
+                        <HouseholdTitle>
+                            {translate('vaccination.doses')}
+                        </HouseholdTitle>
+                    </HouseholdWrapper>
+                ) : null}
 
-                            {item.dose !== 2
-                                ? VaccineSelector(item.vaccine_id)
-                                : null}
-                        </>
-                    ))
-                ) : (
-                    <>
-                        <FormInline>
-                            <FormLabel>
-                                {translate('vaccination.addDose')}
-                            </FormLabel>
-                        </FormInline>
-                    </>
-                )}
-                <Modal
+                {doses.map((dose) => (
+                    <Household key={dose.id}>
+                        <AvatarWrapper>
+                            <Avatar
+                                size={scale(58)}
+                                source={null}
+                                title={getInitials(`Dose ${dose.dose}`)}
+                                rounded
+                            />
+                        </AvatarWrapper>
+                        <InfoContainer>
+                            <InfoWrapper>
+                                <HouseholdName>
+                                    {dose.vaccine.name}
+                                </HouseholdName>
+                                <HouseholdRelation>
+                                    {moment(new Date(dose.date)).format(
+                                        'DD/MM/YYYY'
+                                    )}
+                                </HouseholdRelation>
+                            </InfoWrapper>
+                            <ButtonsWrapper>
+                                <Button
+                                    onPress={() => {
+                                        setDoseSelected(dose)
+                                        setModalDose(true)
+                                    }}
+                                >
+                                    <Feather
+                                        name='edit'
+                                        size={scale(25)}
+                                        color='#348EAC'
+                                    />
+                                </Button>
+                            </ButtonsWrapper>
+                        </InfoContainer>
+                    </Household>
+                ))}
+
+                <Modal // Dose
                     animationType='fade'
                     transparent
-                    visible={modalAddDose}
+                    visible={modalDose}
                     onRequestClose={() => {
-                        setModalAddDose(!modalAddDose)
+                        setModalDose(!modalDose)
                     }}
                 >
                     <ModalContainer>
                         <ModalBox>
                             <ModalTitle>
-                                {translate('vaccination.information') +
-                                    `${numberDoses}`}
+                                {`${translate('vaccination.titleAddDose')}`}
                             </ModalTitle>
 
                             <>
@@ -318,7 +337,7 @@ const Vacinacao = () => {
                     </ModalContainer>
                 </Modal>
 
-                <Button onPress={() => setModalAddDose(true)}>
+                <Button onPress={() => setModalDose(true)}>
                     <SendContainer>
                         <SendText>{translate('vaccination.add')}</SendText>
                     </SendContainer>
