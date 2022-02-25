@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Modal, Platform } from 'react-native'
 import moment from 'moment'
 
@@ -48,6 +48,7 @@ import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
+import { getCategories } from '../../../api/categories'
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
@@ -62,7 +63,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const { person } = route.params
 
     const isHousehold = person.is_household
-    const id = person.id
+    const { id } = person
     const [avatar, setAvatar] = useState(person.avatar)
     const [name, setName] = useState(person.name)
     const [email, setEmail] = useState(person.email)
@@ -76,6 +77,28 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
+    const [category, setCategory] = useState(person.category)
+    const [allCategories, setAllCategories] = useState(null)
+
+    const getAppCategories = async () => {
+        const response = await getCategories()
+
+        if (response.status === 200) {
+            const { categories } = response.data
+
+            const auxCategories = categories.map(({ id, name }) => {
+                return {
+                    key: id,
+                    label: name,
+                }
+            })
+            setAllCategories(auxCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
@@ -117,6 +140,11 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: category.key,
+            category: {
+                id: category.key,
+                name: category.label,
+            },
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -158,12 +186,17 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: category.key,
+            category: {
+                id: category.key,
+                name: category.label,
+            },
         }
 
         if (!validPerson(newUser, institutionError)) return
         setLoadingAlert(true)
 
-        const response = await updateUser(newUser, user.id, token)
+        const response = await updateUser({ user: newUser }, user.id, token)
 
         if (response.status === 200) {
             storeUser({
@@ -363,7 +396,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
                     <FormGroupChild>
                         <FormLabel>{translate('register.country')}</FormLabel>
-                        <Autocomplete 
+                        <Autocomplete
                             data={countryChoices}
                             value={country}
                             onChange={(option) => setCountry(option.key)}
@@ -391,6 +424,22 @@ const EditarPerfil = ({ navigation, route }) => {
                             />
                         </FormGroupChild>
                     </FormGroup>
+                ) : null}
+
+                {allCategories ? (
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={allCategories}
+                            initValue={
+                                category.key
+                                    ? category.label
+                                    : translate('selector.label')
+                            }
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategory(option)}
+                        />
+                    </FormInline>
                 ) : null}
 
                 {isHousehold ? (

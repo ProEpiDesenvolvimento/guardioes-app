@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useRef } from 'react'
 import { Text, Modal, Keyboard, Platform, StyleSheet } from 'react-native'
 
-import Emoji from 'react-native-emoji'
 import Feather from 'react-native-vector-icons/Feather'
 import MapView, { Marker } from 'react-native-maps'
 import { useFocusEffect } from '@react-navigation/native'
@@ -21,6 +20,7 @@ import {
 } from '../../../components/NormalForms'
 import { CoolAlert } from '../../../components/CoolAlert'
 import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles'
+import { Emojis } from '../../../img/imageConst'
 
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -67,11 +67,9 @@ const Rumor = ({ navigation }) => {
             token
         )
 
-        if (response.status === 200) {
-            console.warn(response.status)
-            // navigation.navigate('Home')
-            setShowAlert(false)
+        if (response.status === 201) {
             setShowProgressBar(false)
+            // navigation.navigate('Home')
         }
     }
 
@@ -228,29 +226,25 @@ const Rumor = ({ navigation }) => {
                 showProgress={showProgressBar}
                 title={
                     showProgressBar ? (
-                        translate('badReport.alertMessages.sending')
+                        translate('badReport.messages.sending')
                     ) : (
                         <Text>
-                            {translate('badReport.alertMessages.thanks')}{' '}
-                            {emojis[1]}
-                            {emojis[1]}
-                            {emojis[1]}
+                            {translate('badReport.messages.thanks')}{' '}
+                            {Emojis.tada}
                         </Text>
                     )
                 }
                 message={
                     showProgressBar ? null : (
                         <Text>
-                            {translate('rumor.rumorSent')} {emojis[0]}
-                            {emojis[0]}
-                            {emojis[0]}
+                            {translate('rumor.rumorSent')} {Emojis.heart}
                         </Text>
                     )
                 }
                 closeOnTouchOutside={!showProgressBar}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={!showProgressBar}
-                confirmText={translate('badReport.alertMessages.confirmText')}
+                confirmText={translate('badReport.messages.confirmText')}
                 onCancelPressed={() => setShowAlert(false)}
                 onConfirmPressed={() => setShowAlert(false)}
                 onDismiss={() => setShowAlert(false)}
@@ -264,16 +258,5 @@ const styles = StyleSheet.create({
         marginBottom: Platform.OS === 'ios' ? -3 : 0,
     },
 })
-
-const emojis = [
-    <Emoji // Emoji heart up
-        name='heart'
-        style={{ fontSize: scale(15) }}
-    />,
-    <Emoji // Emoji tada up
-        name='tada'
-        style={{ fontSize: scale(15) }}
-    />,
-]
 
 export default Rumor

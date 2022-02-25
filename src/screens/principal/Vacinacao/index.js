@@ -67,7 +67,7 @@ const Vacinacao = () => {
         const response = await getVaccines(token)
 
         if (response.status === 200) {
-            const { vaccines } = response.body
+            const { vaccines } = response.data
             setVaccines(vaccines)
             setDoses(user.doses)
             setIsLoading(false)
