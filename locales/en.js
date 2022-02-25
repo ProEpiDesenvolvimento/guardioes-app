@@ -381,6 +381,8 @@ export default {
         titleError2: 'Error adding dose',
         messageError2:
             'Você atingiu o limite de doses de vacina para essa doença.',
+        confirmDeleteDose: 'Delete dose?',
+        confirmDeleteDose2: 'Do you want to delete this dose?',
         titleModal: 'Vaccine information',
         nameVaccine: 'Name: ',
         laboratoryVaccine: 'Laboratory: ',
@@ -391,6 +393,7 @@ export default {
         titleAddDose: 'Add new dose',
         titleEditDose: 'Edit dose ',
         dateField: 'Date',
+        delete: 'Delete',
         save: 'Save',
         add: 'Add',
     },
