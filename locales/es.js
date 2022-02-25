@@ -362,6 +362,9 @@ export default {
         doses: 'Doses',
         titleError: 'Campos inválidos',
         messageError: 'Por favor complete todos los campos correctamente.',
+        titleError2: 'Error al agregar dosis',
+        messageError2:
+            'Você atingiu o limite de doses de vacina para essa doença.',
         titleModal: 'Información sobre vacunas',
         nameVaccine: 'Nombre: ',
         laboratoryVaccine: 'Laboratorio: ',
