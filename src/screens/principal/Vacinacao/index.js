@@ -42,9 +42,13 @@ import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
-import { validVaccination } from '../../../utils/formConsts'
-import { getVaccines, getDoses, sendDose } from '../../../api/vaccines'
-import { updateUser } from '../../../api/user'
+import { getDoseInfo, validVaccination } from '../../../utils/formConsts'
+import {
+    getVaccines,
+    sendDose,
+    updateDose,
+    deleteDose,
+} from '../../../api/vaccines'
 
 const Vacinacao = () => {
     const { token, user, storeUser } = useUser()
@@ -52,8 +56,8 @@ const Vacinacao = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const [vaccines, setVaccines] = useState([])
+    const [vaccineInfo, setVaccineInfo] = useState({})
     const [vaccineSelected, setVaccineSelected] = useState({})
-    const [newVaccineSelected, setNewVaccineSelected] = useState({})
 
     const [doses, setDoses] = useState([])
     const [doseSelected, setDoseSelected] = useState({})
@@ -74,152 +78,150 @@ const Vacinacao = () => {
         }
     }
 
-    const VaccineSelector = () => {
+    const vaccineSelector = () => {
         return (
             <FormInline>
-                {vaccines.map((vaccine) => {
-                    if (vaccine.id === newVaccineSelected.id) {
-                        return (
-                            <FormInlineCheck key={vaccine.id}>
-                                <CheckBoxStyled
-                                    title={vaccine.name}
-                                    checked={vaccine.id === newVaccineSelected.id}
-                                    onPress={() => setNewVaccineSelected(vaccine)}
-                                />
-                                <CheckLabel
-                                    onPress={() => {
-                                        setVaccineSelected(vaccine)
-                                        setModalVaccine(true)
-                                    }}
-                                >
-                                    <Feather
-                                        name='help-circle'
-                                        size={scale(25)}
-                                        color='#348EAC'
-                                    />
-                                </CheckLabel>
-                            </FormInlineCheck>
-                        )
-                    }
-                    return (
-                        <FormInlineCheck key={vaccine.id}>
-                            <CheckBoxStyled
-                                title={vaccine.name}
-                                checked={vaccine.id === newVaccineSelected.id}
-                                onPress={() => setNewVaccineSelected(vaccine)}
+                {vaccines.map((vaccine) => (
+                    <FormInlineCheck key={vaccine.id}>
+                        <CheckBoxStyled
+                            title={vaccine.name}
+                            checked={vaccine.id === vaccineSelected.id}
+                            onPress={() => setVaccineSelected(vaccine)}
+                        />
+                        <CheckLabel
+                            onPress={() => {
+                                setVaccineInfo(vaccine)
+                                setModalVaccine(true)
+                            }}
+                        >
+                            <Feather
+                                name='help-circle'
+                                size={scale(25)}
+                                color='#348EAC'
                             />
-                            <CheckLabel
-                                onPress={() => {
-                                    setVaccineSelected(vaccine)
-                                    setModalVaccine(true)
-                                }}
-                            >
-                                <Feather
-                                    name='help-circle'
-                                    size={scale(25)}
-                                    color='#348EAC'
-                                />
-                            </CheckLabel>
-                        </FormInlineCheck>
-                    )
-                })}
+                        </CheckLabel>
+                    </FormInlineCheck>
+                ))}
             </FormInline>
         )
     }
 
-    const handleAddDose = () => {
-        if (!newDoseDate || !newVaccineSelected.id) {
-            Alert.alert(
-                translate('vaccination.titleError'),
-                translate('vaccination.messageError')
-            )
-            return
-        }
-
-        let numberDose = 1
-        doses.forEach((dose) => {
-            if (
-                dose.vaccine.id === newVaccineSelected.id ||
-                dose.vaccine.disease === newVaccineSelected.disease
-            ) {
-                numberDose += 1
-            }
-        })
-
-        if (numberDose > newVaccineSelected.doses) {
-            Alert.alert(
-                translate('vaccination.titleError2'),
-                translate('vaccination.messageError2')
-            )
-            return
-        }
-
-        const doseDate = moment(newDoseDate, 'DD-MM-YYYY').toISOString()
-        const newDose = {
-            id: new Date().getTime(),
-            date: doseDate,
-            dose: numberDose,
-            user_id: user.id,
-            vaccine_id: newVaccineSelected.id,
-            vaccine: newVaccineSelected,
-        }
-
-        setDoses([...doses, newDose])
+    const resetModalDose = () => {
+        setDoseSelected({})
         setNewDoseDate('')
-        setNewVaccineSelected({})
-        setModalDose(false)
+        setVaccineSelected({})
     }
 
-    const sendVaccination = async () => {
-        setLoadingAlert(false)
+    const editDose = async () => {
+        const doseDate = moment(newDoseDate, 'DD-MM-YYYY').toISOString()
 
-        /*
-        const doseDate = moment
-            .utc(newDoseDate, 'DD-MM-YYYY')
-            .format('YYYY-MM-DD')
+        const doseInfo = getDoseInfo(vaccineSelected, doses, doseDate, doseSelected)
+        const newDose = {
+            id: doseSelected.id,
+            date: doseDate,
+            dose: doseInfo.number,
+            user_id: user.id,
+            vaccine_id: vaccineSelected.id,
+        }
 
-        if (!validVaccination(newDoseVaccine, numberDoses, doseDate)) {
+        if (!validVaccination(vaccineSelected, doseDate, doseInfo)) return
+        setLoadingAlert(true)
+
+        const response = await updateDose(newDose, token)
+
+        if (response.status === 200) {
+            const newDoses = doses.filter((d) => d.id !== doseSelected.id)
+            newDoses.push(response.data.dose)
+
+            storeUser({ ...user, doses: newDoses })
+            setDoses(newDoses)
+
+            resetModalDose()
             setModalDose(false)
             setLoadingAlert(false)
         } else {
-            setModalDose(false)
-
-            const newDose = {
-                date: doseDate,
-                dose: numberDoses,
-                vaccine_id: vaccineSelected.id,
-                user_id: user.id,
-            }
-
-            const vaccination = {
-                vaccine_id: newDoseVaccine.id,
-            }
-
-            if (!user.vaccine) {
-                const userUpdate = await updateUser(vaccination, user.id, token)
-
-                if (userUpdate.status === 200) {
-                    storeUser({
-                        ...user,
-                        ...userUpdate.body.user,
-                    })
-                }
-            }
-
-            const response = await sendDose(newDose, token)
-
-            if (response.status === 200) {
-                setLoadingAlert(false)
-                setModalDose(false)
-            } else {
-                console.warn(response)
-                setLoadingAlert(false)
-                Alert.alert(translate('register.geralError'))
-            }
-
-            initValues()
+            Alert.alert(translate('register.geralError'))
+            setLoadingAlert(false)
         }
-        */
+    }
+
+    const createDose = async () => {
+        const doseDate = moment(newDoseDate, 'DD-MM-YYYY').toISOString()
+
+        const doseInfo = getDoseInfo(vaccineSelected, doses, doseDate, {})
+        const newDose = {
+            date: doseDate,
+            dose: doseInfo.number,
+            user_id: user.id,
+            vaccine_id: vaccineSelected.id,
+        }
+
+        if (!validVaccination(vaccineSelected, doseDate, doseInfo)) return
+        setLoadingAlert(true)
+
+        const response = await sendDose(newDose, token)
+
+        if (response.status === 200) {
+            const newDoses = [...doses, response.data.dose]
+
+            storeUser({ ...user, doses: newDoses })
+            setDoses(newDoses)
+
+            resetModalDose()
+            setModalDose(false)
+            setLoadingAlert(false)
+        } else {
+            Alert.alert(translate('register.geralError'))
+            setLoadingAlert(false)
+        }
+    }
+
+    const removeDose = async () => {
+        const dose = {
+            id: doseSelected.id,
+        }
+
+        setLoadingAlert(true)
+
+        const response = await deleteDose(dose, token)
+
+        if (response.status === 204) {
+            const newDoses = doses.filter((d) => d.id !== dose.id)
+
+            storeUser({ ...user, doses: newDoses })
+            setDoses(newDoses)
+
+            resetModalDose()
+            setModalDose(false)
+            setLoadingAlert(false)
+        } else {
+            Alert.alert(translate('register.geralError'))
+            setLoadingAlert(false)
+        }
+    }
+
+    const handleSave = () => {
+        if (doseSelected.id) {
+            editDose()
+        } else {
+            createDose()
+        }
+    }
+
+    const handleDelete = () => {
+        Alert.alert(
+            translate('vaccination.confirmDeleteDose'),
+            translate('vaccination.confirmDeleteDose2'),
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => removeDose() },
+            ],
+            { cancelable: false }
+        )
     }
 
     useEffect(() => {
@@ -248,19 +250,19 @@ const Vacinacao = () => {
 
                         <ModalText>
                             {translate('vaccination.nameVaccine')}
-                            {vaccineSelected.name}
+                            {vaccineInfo.name}
                             {'\n'}
                             {translate('vaccination.laboratoryVaccine')}
-                            {vaccineSelected.laboratory}
+                            {vaccineInfo.laboratory}
                             {'\n'}
                             {translate('vaccination.countryVaccine')}
-                            {vaccineSelected.country_origin}
+                            {vaccineInfo.country_origin}
                             {'\n'}
                             {translate('vaccination.dosesVaccine')}
-                            {vaccineSelected.doses}
+                            {vaccineInfo.doses}
                             {'\n'}
                             {translate('vaccination.minIntervalVaccine')}
-                            {vaccineSelected.min_dose_interval}
+                            {vaccineInfo.min_dose_interval}
                             {translate('vaccination.intervalVaccinePeriod')}
                         </ModalText>
 
@@ -276,13 +278,11 @@ const Vacinacao = () => {
             </Modal>
 
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
-                {doses.length > 0 ? (
-                    <HouseholdWrapper>
-                        <HouseholdTitle>
-                            {translate('vaccination.doses')}
-                        </HouseholdTitle>
-                    </HouseholdWrapper>
-                ) : null}
+                <HouseholdWrapper>
+                    <HouseholdTitle>
+                        {translate('vaccination.doses')}
+                    </HouseholdTitle>
+                </HouseholdWrapper>
 
                 {doses.map((dose) => (
                     <Household key={dose.id}>
@@ -309,7 +309,13 @@ const Vacinacao = () => {
                                 <Button
                                     onPress={() => {
                                         setDoseSelected(dose)
-                                        setModalDose(true)
+                                        setNewDoseDate(
+                                            moment(new Date(dose.date)).format(
+                                                'DD-MM-YYYY'
+                                            )
+                                        )
+                                        setVaccineSelected(dose.vaccine)
+                                        setModalDose(!modalDose)
                                     }}
                                 >
                                     <Feather
@@ -329,9 +335,7 @@ const Vacinacao = () => {
                     visible={modalDose}
                     onRequestClose={() => {
                         setModalDose(!modalDose)
-                        setDoseSelected({})
-                        setNewDoseDate('')
-                        setNewVaccineSelected({})
+                        resetModalDose()
                     }}
                 >
                     <ModalContainer>
@@ -348,11 +352,7 @@ const Vacinacao = () => {
                                         placeholder={translate(
                                             'vaccination.dateField'
                                         )}
-                                        date={
-                                            doseSelected.id
-                                                ? doseSelected.date
-                                                : newDoseDate
-                                        }
+                                        date={newDoseDate}
                                         format='DD-MM-YYYY'
                                         minDate='01-01-1918'
                                         maxDate={moment()
@@ -365,23 +365,26 @@ const Vacinacao = () => {
                                         cancelBtnText={translate(
                                             'birthDetails.cancelButton'
                                         )}
-                                        onDateChange={(date) => {
-                                            if (doseSelected.id) {
-                                                setDoseSelected({
-                                                    ...doseSelected,
-                                                    date,
-                                                })
-                                            } else {
-                                                setNewDoseDate(date)
-                                            }
-                                        }}
+                                        onDateChange={(date) =>
+                                            setNewDoseDate(date)
+                                        }
                                     />
                                 </FormInline>
 
-                                {VaccineSelector()}
+                                {vaccineSelector()}
                             </VaccineScroll>
 
-                            <Button onPress={() => handleAddDose()}>
+                            {doseSelected.id ? (
+                                <Button onPress={() => handleDelete()}>
+                                    <ModalButton>
+                                        <ModalButtonText>
+                                            {translate('vaccination.delete')}
+                                        </ModalButtonText>
+                                    </ModalButton>
+                                </Button>
+                            ) : null}
+
+                            <Button onPress={() => handleSave()}>
                                 <ModalButton>
                                     <ModalButtonText>
                                         {translate('vaccination.save')}
