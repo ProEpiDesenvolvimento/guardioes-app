@@ -35,7 +35,38 @@ export const validForm = (questions, answers) => {
     return valid
 }
 
-export const validVaccination = (vaccine, newDoseDate, numberDose) => {
+export const getDoseInfo = (vaccine, doses, newDoseDate, currentDose) => {
+    const doseDateTime = new Date(newDoseDate).getTime()
+
+    const dates = []
+    doses.forEach((dose) => {
+        if (
+            (dose.vaccine.id === vaccine.id ||
+                dose.vaccine.disease === vaccine.disease) &&
+            dose.id !== currentDose.id
+        ) {
+            dates.push(new Date(dose.date).getTime())
+        }
+    })
+    dates.push(doseDateTime)
+    dates.sort()
+
+    let number = 1
+    let count = 0
+    dates.forEach((date, index) => {
+        if (date === doseDateTime) {
+            if (count === 0) {
+                number = index + 1
+                count += 1
+            } else {
+                count += 1
+            }
+        }
+    })
+    return { number, overlap: count > 1 }
+}
+
+export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
     let valid = true
 
     if (!newDoseDate || !vaccine.id) {
@@ -44,10 +75,16 @@ export const validVaccination = (vaccine, newDoseDate, numberDose) => {
             translate('vaccination.messageError')
         )
         valid = false
-    } else if (numberDose > vaccine.doses) {
+    } else if (doseInfo.number > vaccine.doses) {
         Alert.alert(
             translate('vaccination.titleError2'),
             translate('vaccination.messageError2')
+        )
+        valid = false
+    } else if (doseInfo.overlap) {
+        Alert.alert(
+            translate('vaccination.titleError'),
+            translate('vaccination.messageError')
         )
         valid = false
     }
