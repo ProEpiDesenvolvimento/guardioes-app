@@ -74,6 +74,10 @@ const Perfis = ({ navigation }) => {
             name: user.user_name ? user.user_name : '',
             avatar,
             birthdate: birthDate,
+            category: {
+                key: user.category ? user.category.id : null,
+                label: user.category ? user.category.name : null,
+            },
         }
     }
 
@@ -96,6 +100,10 @@ const Perfis = ({ navigation }) => {
             name: household.description ? household.description : '',
             avatar: householdAvatars[household.id],
             birthdate: birthDate,
+            category: {
+                key: household.category ? household.category.id : null,
+                label: household.category ? household.category.name : null,
+            },
         }
     }
 

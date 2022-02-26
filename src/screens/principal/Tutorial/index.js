@@ -1,55 +1,73 @@
-import React, {Component} from 'react';
-import {TouchableOpacity} from 'react-native';
+import React from 'react'
+import { TouchableOpacity } from 'react-native'
 
-import {ScrollViewStyled, Title, Subtitle, BodyText} from './styles';
+import {
+    ScrollViewStyled,
+    Title,
+    Subtitle,
+    BodyText,
+    ImageContainer,
+    Feath,
+    Image,
+} from './styles'
 
-import translate from '../../../../locales/i18n';
+import translate from '../../../../locales/i18n'
 
-class Tutorial extends Component {
-  static navigationOptions = {
-    title: translate('tutorial.title'),
-  };
-  render() {
-    const {navigate} = this.props.navigation;
+const Tutorial = ({ navigation }) => {
+    const { navigate } = navigation
 
     return (
-      <ScrollViewStyled>
-        <Title>{translate('tutorial.tutorial')}</Title>
+        <ScrollViewStyled>
+            <Title>{translate('tutorial.tutorial')}</Title>
+            <BodyText>{translate('tutorial.howToUse')}</BodyText>
+            <TouchableOpacity onPress={() => navigate('Home')}>
+                <ImageContainer>
+                    <Feath name='home' />
+                    <Subtitle>{translate('tutorial.home')}</Subtitle>
+                </ImageContainer>
+            </TouchableOpacity>
+            <BodyText>{translate('tutorial.homeCont')}</BodyText>
 
-        {/* Como Usar */}
-        <BodyText>{translate('tutorial.howToUse')}</BodyText>
+            <TouchableOpacity onPress={() => navigate('Diario')}>
+                <ImageContainer>
+                    <Feath name='clipboard' />
+                    <Subtitle>{translate('tutorial.diary')}</Subtitle>
+                </ImageContainer>
+            </TouchableOpacity>
+            <BodyText>{translate('tutorial.diaryCont')}</BodyText>
 
-        {/* Continuacao de como usar */}
-        <BodyText>{translate('tutorial.howToUse2')}</BodyText>
+            <TouchableOpacity onPress={() => navigate('Mapa')}>
+                <ImageContainer>
+                    <Feath name='map' />
+                    <Subtitle>{translate('tutorial.healthMap')}</Subtitle>
+                </ImageContainer>
+            </TouchableOpacity>
 
-        {/* Diario */}
-        <TouchableOpacity onPress={() => navigate('Diario')}>
-          <Subtitle>{translate('tutorial.diary')}</Subtitle>
-        </TouchableOpacity>
-        <BodyText>{translate('tutorial.diaryCont')}</BodyText>
+            <BodyText>{translate('tutorial.healthMapCont')}</BodyText>
+            <Image source={require('../../../img/tutorial/image1.jpeg')} />
+            <BodyText>{translate('tutorial.healthMapCont2')}</BodyText>
+            <Image source={require('../../../img/tutorial/image2.jpeg')} />
+            <BodyText>{translate('tutorial.healthMapCont3')}</BodyText>
 
-        {/* Mapa da Saude */}
-        <TouchableOpacity onPress={() => navigate('Mapa')}>
-          <Subtitle>{translate('tutorial.healthMap')}</Subtitle>
-        </TouchableOpacity>
-        <BodyText>{translate('tutorial.healthMapCont')}</BodyText>
+            <TouchableOpacity onPress={() => navigate('Dicas')}>
+                <ImageContainer>
+                    <Feath name='heart' />
+                    <Subtitle>{translate('tutorial.advices')}</Subtitle>
+                </ImageContainer>
+            </TouchableOpacity>
+            <BodyText>{translate('tutorial.advicesCont')}</BodyText>
 
-        {/* Dicas de Saude */}
-        <TouchableOpacity onPress={() => navigate('Dicas')}>
-          <Subtitle>{translate('tutorial.advices')}</Subtitle>
-        </TouchableOpacity>
-        <BodyText>{translate('tutorial.advicesCont')}</BodyText>
+            <TouchableOpacity onPress={() => navigate('Noticias')}>
+                <ImageContainer>
+                    <Feath name='message-square' />
+                    <Subtitle>{translate('tutorial.news')}</Subtitle>
+                </ImageContainer>
+            </TouchableOpacity>
+            <BodyText>{translate('tutorial.newsCont')}</BodyText>
 
-        {/* Mudando para Noticias, titulo */}
-        <TouchableOpacity onPress={() => navigate('Noticias')}>
-          <Subtitle>{translate('tutorial.news')}</Subtitle>
-        </TouchableOpacity>
-        <BodyText>{translate('tutorial.newsCont')}</BodyText>
-
-        <BodyText>{translate('tutorial.newsPs')}</BodyText>
-      </ScrollViewStyled>
-    );
-  }
+            <BodyText>{translate('tutorial.newsPs')}</BodyText>
+        </ScrollViewStyled>
+    )
 }
 
-export default Tutorial;
+export default Tutorial

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Modal } from 'react-native'
 import moment from 'moment'
 
@@ -42,6 +42,7 @@ import {
 import { validPerson } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
+import { getCategories } from '../../../api/categories'
 
 const NovoPerfil = ({ navigation }) => {
     const { token, user } = useUser()
@@ -61,6 +62,28 @@ const NovoPerfil = ({ navigation }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+    const [categoryId, setCategoryId] = useState(null)
+    const [allCategories, setAllCategories] = useState(null)
+
+    const getAppCategories = async () => {
+        const response = await getCategories()
+
+        if (response.status === 200) {
+            const { categories } = response.data
+
+            const auxCategories = categories.map(({ id, name }) => {
+                return {
+                    key: id,
+                    label: name,
+                }
+            })
+            setAllCategories(auxCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
 
     const showLoadingAlert = () => {
         setShowAlert(true)
@@ -78,6 +101,7 @@ const NovoPerfil = ({ navigation }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: categoryId,
         }
 
         if (!validPerson(household, institutionError)) return
@@ -221,6 +245,19 @@ const NovoPerfil = ({ navigation }) => {
                     setAlert={setLoadingAlert}
                     setErrorCallback={setInstituitionComponentError}
                 />
+
+                {allCategories ? (
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={allCategories}
+                            selectedKey={categoryId}
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategoryId(option.key)}
+                        />
+                    </FormInline>
+                ) : null}
 
                 <FormInline>
                     <FormLabel>Parentesco:</FormLabel>
