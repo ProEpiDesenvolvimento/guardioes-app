@@ -35,35 +35,48 @@ export const validForm = (questions, answers) => {
     return valid
 }
 
-export const getDoseInfo = (vaccine, doses, newDoseDate, currentDose) => {
-    const doseDateTime = new Date(newDoseDate).getTime()
+export const checkDose = (vaccine, doses, newDoseDate, currentDose) => {
+    const newDoseTime = new Date(newDoseDate).getTime()
 
-    const dates = []
+    // Select doses from the same cycle and sort by date
+    const cycleDoses = []
     doses.forEach((dose) => {
         if (
+            dose.id !== currentDose.id &&
             (dose.vaccine.id === vaccine.id ||
-                dose.vaccine.disease === vaccine.disease) &&
-            dose.id !== currentDose.id
+                dose.vaccine.disease === vaccine.disease)
         ) {
-            dates.push(new Date(dose.date).getTime())
+            cycleDoses.push({
+                dose: dose.dose,
+                time: new Date(dose.date).getTime(),
+            })
         }
     })
-    dates.push(doseDateTime)
-    dates.sort()
+    cycleDoses.push({ time: new Date(newDoseDate).getTime() })
+    cycleDoses.sort((a, b) => a.time - b.time)
 
-    let number = 1
+    // Get the current dose position and frequency in new sorted array
+    let position = 1
     let count = 0
-    dates.forEach((date, index) => {
-        if (date === doseDateTime) {
+    cycleDoses.forEach((dose, index) => {
+        if (dose.time === newDoseTime) {
             if (count === 0) {
-                number = index + 1
+                position = index + 1
                 count += 1
             } else {
                 count += 1
             }
         }
     })
-    return { number, overlap: count > 1 }
+
+    // Check if a dose already exists on this position
+    let alreadyExists = false
+    cycleDoses.forEach((dose) => {
+        if (dose.dose === position) {
+            alreadyExists = true
+        }
+    })
+    return { position, overlap: count > 1 || alreadyExists }
 }
 
 export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
@@ -75,7 +88,7 @@ export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
             translate('vaccination.messageError')
         )
         valid = false
-    } else if (doseInfo.number > vaccine.doses) {
+    } else if (doseInfo.position > vaccine.doses) {
         Alert.alert(
             translate('vaccination.titleError2'),
             translate('vaccination.messageError2')
@@ -83,8 +96,8 @@ export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
         valid = false
     } else if (doseInfo.overlap) {
         Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
+            translate('vaccination.titleError2'),
+            translate('vaccination.messageError3')
         )
         valid = false
     }

@@ -383,7 +383,9 @@ export default {
         messageError: 'Por favor, preencha todos os campos corretamente.',
         titleError2: 'Erro ao adicionar dose',
         messageError2:
-            'Você atingiu o limite de doses de vacina para essa doença.',
+            'Você atingiu o limite de doses para esse tipo de vacina.',
+        messageError3:
+            'Verifique se a data está correta ou corrija a dose antiga.',
         confirmDeleteDose: 'Deletar dose',
         confirmDeleteDose2: 'Deseja deletar essa dose?',
         titleModal: 'Informações da vacina',

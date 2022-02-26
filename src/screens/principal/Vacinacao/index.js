@@ -15,7 +15,6 @@ import {
     Button,
     ModalButton,
     ModalButtonText,
-    KeyboardScrollView,
     FormInline,
     DateSelector,
     FormInlineCheck,
@@ -24,25 +23,26 @@ import {
     SendContainer,
     SendText,
 } from '../../../components/NormalForms'
-import { VaccineScroll } from './styles'
 import {
+    ScrollViewStyled,
+    CardWrapper,
+    CardTitle,
+    CardWhite,
+    CardNameWhite,
+    CardDetailsWhite,
     AvatarWrapper,
     InfoContainer,
     InfoWrapper,
     ButtonsWrapper,
-    HouseholdWrapper,
-    HouseholdTitle,
-    Household,
-    HouseholdName,
-    HouseholdRelation,
-} from '../Perfis/styles'
+} from '../../../components/Cards'
+import { VaccineScroll } from './styles'
 
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
-import { getDoseInfo, validVaccination } from '../../../utils/formConsts'
+import { checkDose, validVaccination } from '../../../utils/formConsts'
 import {
     getVaccines,
     sendDose,
@@ -115,11 +115,11 @@ const Vacinacao = () => {
     const editDose = async () => {
         const doseDate = moment(newDoseDate, 'DD-MM-YYYY').toISOString()
 
-        const doseInfo = getDoseInfo(vaccineSelected, doses, doseDate, doseSelected)
+        const doseInfo = checkDose(vaccineSelected, doses, doseDate, doseSelected)
         const newDose = {
             id: doseSelected.id,
             date: doseDate,
-            dose: doseInfo.number,
+            dose: doseInfo.position,
             user_id: user.id,
             vaccine_id: vaccineSelected.id,
         }
@@ -148,10 +148,10 @@ const Vacinacao = () => {
     const createDose = async () => {
         const doseDate = moment(newDoseDate, 'DD-MM-YYYY').toISOString()
 
-        const doseInfo = getDoseInfo(vaccineSelected, doses, doseDate, {})
+        const doseInfo = checkDose(vaccineSelected, doses, doseDate, {})
         const newDose = {
             date: doseDate,
-            dose: doseInfo.number,
+            dose: doseInfo.position,
             user_id: user.id,
             vaccine_id: vaccineSelected.id,
         }
@@ -277,15 +277,13 @@ const Vacinacao = () => {
                 </ModalContainer>
             </Modal>
 
-            <KeyboardScrollView keyboardShouldPersistTaps='always'>
-                <HouseholdWrapper>
-                    <HouseholdTitle>
-                        {translate('vaccination.doses')}
-                    </HouseholdTitle>
-                </HouseholdWrapper>
+            <ScrollViewStyled>
+                <CardWrapper>
+                    <CardTitle>{translate('vaccination.doses')}</CardTitle>
+                </CardWrapper>
 
                 {doses.map((dose) => (
-                    <Household key={dose.id}>
+                    <CardWhite key={dose.id}>
                         <AvatarWrapper>
                             <Avatar
                                 size={scale(58)}
@@ -296,14 +294,14 @@ const Vacinacao = () => {
                         </AvatarWrapper>
                         <InfoContainer>
                             <InfoWrapper>
-                                <HouseholdName>
+                                <CardNameWhite>
                                     {dose.vaccine.name}
-                                </HouseholdName>
-                                <HouseholdRelation>
+                                </CardNameWhite>
+                                <CardDetailsWhite>
                                     {moment(new Date(dose.date)).format(
                                         'DD/MM/YYYY'
                                     )}
-                                </HouseholdRelation>
+                                </CardDetailsWhite>
                             </InfoWrapper>
                             <ButtonsWrapper>
                                 <Button
@@ -326,7 +324,7 @@ const Vacinacao = () => {
                                 </Button>
                             </ButtonsWrapper>
                         </InfoContainer>
-                    </Household>
+                    </CardWhite>
                 ))}
 
                 <Modal // Dose
@@ -400,7 +398,7 @@ const Vacinacao = () => {
                         <SendText>{translate('vaccination.add')}</SendText>
                     </SendContainer>
                 </Button>
-            </KeyboardScrollView>
+            </ScrollViewStyled>
 
             <LoadingModal show={loadingAlert} />
         </Container>
