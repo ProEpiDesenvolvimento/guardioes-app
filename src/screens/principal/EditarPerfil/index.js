@@ -47,7 +47,8 @@ import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
-import Autocomplete from '../../../components/Autocomplete'
+import Autocomplete from '../../../components/Autocomplete';
+import { getAppGroup } from '../../../api/groups';
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
@@ -76,6 +77,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
+    const [isVigilance, setIsVigilance] = useState(false);
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
@@ -143,6 +145,16 @@ const EditarPerfil = ({ navigation, route }) => {
         }
     }
 
+    const checkIfIsVigilance = async (group_id) => {
+        const response = await getAppGroup(group_id)
+        if(response.data.group.group_manager.vigilance_email) {
+            setIsVigilance(true)
+        } else {
+            setIsVigilance(false)
+        }
+        setLoadingAlert(false)
+    }
+
     const editUser = async () => {
         const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
         const isBrazil = country === 'Brazil'
@@ -158,6 +170,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            is_vigilance: isVigilance,
         }
 
         if (!validPerson(newUser, institutionError)) return
@@ -238,6 +251,7 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const setUserInstitutionCallback = (idCode, groupId) => {
+        checkIfIsVigilance(groupId)
         setIdCode(idCode)
         setGroupId(groupId)
     }
