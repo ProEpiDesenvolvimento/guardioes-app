@@ -118,13 +118,14 @@ const Register = ({ navigation }) => {
     }
 
     const handleCreate = async () => {
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         Keyboard.dismiss()
 
         const user = {
             email,
             password,
             user_name: name,
-            birthdate: birth,
+            birthdate: birthDate,
             gender,
             race,
             country,
@@ -230,6 +231,7 @@ const Register = ({ navigation }) => {
                                 format='DD-MM-YYYY'
                                 minDate='01-01-1918'
                                 maxDate={moment()
+                                    .local()
                                     .subtract(13, 'years')
                                     .format('DD-MM-YYYY')}
                                 locale='pt-BR'

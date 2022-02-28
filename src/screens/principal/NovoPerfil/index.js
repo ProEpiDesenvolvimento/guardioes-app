@@ -91,9 +91,11 @@ const NovoPerfil = ({ navigation }) => {
     }
 
     const handleCreate = async () => {
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
+
         const household = {
             description: name,
-            birthdate: birth,
+            birthdate: birthDate,
             gender,
             race,
             kinship,
@@ -202,7 +204,7 @@ const NovoPerfil = ({ navigation }) => {
                             date={birth}
                             format='DD-MM-YYYY'
                             minDate='01-01-1918'
-                            maxDate={moment().format('DD-MM-YYYY')}
+                            maxDate={moment().local().format('DD-MM-YYYY')}
                             locale='pt-BR'
                             confirmBtnText={translate(
                                 'birthDetails.confirmButton'

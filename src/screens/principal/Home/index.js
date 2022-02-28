@@ -281,7 +281,7 @@ const Home = ({ navigation }) => {
             latitude: local.latitude,
             longitude: local.longitude,
             symptom: [],
-            created_at: moment().format('YYYY-MM-DD'),
+            created_at: moment().local().toISOString(),
         }
 
         const response = await createSurvey({ survey }, user.id, token)

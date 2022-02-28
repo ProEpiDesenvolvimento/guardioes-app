@@ -127,7 +127,7 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const editHousehold = async () => {
-        const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
 
         const newHousehold = {
             id,
@@ -172,7 +172,7 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const editUser = async () => {
-        const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         const isBrazil = country === 'Brazil'
 
         const newUser = {
@@ -382,7 +382,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             date={birth}
                             format='DD-MM-YYYY'
                             minDate='01-01-1918'
-                            maxDate={moment().format('DD-MM-YYYY')}
+                            maxDate={moment().local().format('DD-MM-YYYY')}
                             locale='pt-BR'
                             confirmBtnText={translate(
                                 'birthDetails.confirmButton'
