@@ -46,7 +46,7 @@ import { useUser } from '../../../hooks/user'
 import { getAppSymptoms } from '../../../api/symptoms'
 import { createSurvey } from '../../../api/surveys'
 
-const today = moment().format('DD-MM-YYYY')
+const today = moment().local().format('DD-MM-YYYY')
 
 const BadReport = ({ navigation }) => {
     const {
@@ -274,16 +274,17 @@ const BadReport = ({ navigation }) => {
         }
 
         const householdID = person.is_household ? person.id : null
+        const badSinceDate = moment(badSince, 'DD-MM-YYYY').toISOString()
         const survey = {
             household_id: householdID,
             latitude: local.latitude,
             longitude: local.longitude,
-            bad_since: badSince,
+            bad_since: badSinceDate,
             traveled_to: hasTraveled,
             went_to_hospital: wentToHospital,
             contact_with_symptom: contactWithSymptom,
             symptom: personSymptoms,
-            created_at: moment().format('YYYY-MM-DD'),
+            created_at: moment().local().toISOString(),
         }
 
         const response = await createSurvey({ survey }, user.id, token)
@@ -352,7 +353,7 @@ const BadReport = ({ navigation }) => {
                         date={badSince}
                         format='DD-MM-YYYY'
                         minDate='01-01-2018'
-                        maxDate={moment().format('DD-MM-YYYY')}
+                        maxDate={moment().local().format('DD-MM-YYYY')}
                         locale='pt-BR'
                         confirmBtnText={translate('birthDetails.confirmButton')}
                         cancelBtnText={translate('birthDetails.cancelButton')}
