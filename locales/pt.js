@@ -173,7 +173,8 @@ export default {
             first:
                 'Teve contato com alguem que apresentava os mesmos sintomas?',
             second: 'Procurou algum serviço hospitalar?',
-            third: 'Deixou seu local de residência nos ultimos 14 dias?',
+            third: 'Esteve em ',
+            thirdContinuation: ' 2 dias antes ou após o início dos sintomas?',
             fourth: 'Para que país você viajou?',
             fifth: 'Aperte na bandeira para selecionar!',
         },

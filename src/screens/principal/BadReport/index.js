@@ -79,11 +79,21 @@ const BadReport = ({ navigation }) => {
     const [alertMessage, setAlertMessage] = useState(null)
 
     const [inviteSurveilance, setInviteSurveilance] = useState(false)
+    const [instituition, setInstituition] = useState('')
 
     const person = getCurrentUserInfo()
 
     useEffect(() => {
         getSymptoms()
+    }, [])
+
+    useEffect(() => {
+        let instituition = person.group ? person.group : null
+        if(instituition) {
+            instituition = instituition.split('/')
+            instituition = instituition[instituition.length - 1]
+            setInstituition(instituition)
+        }
     }, [])
 
     useEffect(() => {
@@ -392,12 +402,14 @@ const BadReport = ({ navigation }) => {
                         {translate('badReport.answerQuestions')}
                     </FormTitle>
                 </FormTitleWrapper>
-
-                <CheckBoxStyled
-                    title={translate('badReport.checkboxes.third')}
+                {group ? (
+                    <CheckBoxStyled
+                    title={translate('badReport.checkboxes.third') + `${instituition}` + translate('badReport.checkboxes.thirdContinuation')}
                     checked={hasTraveled}
                     onPress={() => setHasTraveled(!hasTraveled)}
                 />
+                ): null }
+                
                 {/*
                 {hasTraveled ? (
                     <FormInline>
