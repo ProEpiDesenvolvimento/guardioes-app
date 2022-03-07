@@ -375,8 +375,16 @@ export default {
     },
     vaccination: {
         title: 'Vaccination',
+        doses: 'Doses',
         titleError: 'Invalid fields',
         messageError: 'Please fill in all fields correctly.',
+        titleError2: 'Error adding dose',
+        messageError2:
+            'You have reached the dose limit for this type of vaccine.',
+        messageError3:
+            'Check that the date is correct or correct the old dose.',
+        confirmDeleteDose: 'Delete dose?',
+        confirmDeleteDose2: 'Do you want to delete this dose?',
         titleModal: 'Vaccine information',
         nameVaccine: 'Name: ',
         laboratoryVaccine: 'Laboratory: ',
@@ -384,15 +392,12 @@ export default {
         dosesVaccine: 'Number of doses: ',
         minIntervalVaccine: 'Interval between doses: ',
         intervalVaccinePeriod: ' days',
-        question1Label:
-            'Have you already received the 1st dose of the COVID-19 vaccine?',
-        question2Label:
-            'Have you already received the 2nd dose of the COVID-19 vaccine?',
-        vaccine1Label: '1st dose (or single) vaccine:',
-        vaccine2Label: '2nd dose vaccine:',
+        titleAddDose: 'Add new dose',
+        titleEditDose: 'Edit dose ',
         dateField: 'Date',
-        yesField: 'Yes',
-        noField: 'No',
+        delete: 'Delete',
+        save: 'Save',
+        add: 'Add',
     },
     drawer: {
         reportRumor: 'Report Rumor',

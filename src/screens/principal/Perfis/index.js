@@ -8,20 +8,20 @@ import { Avatar } from 'react-native-elements'
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
     ScrollViewStyled,
-    User,
+    CardWrapper,
+    CardTitle,
+    CardBlue,
+    CardWhite,
+    CardNameBlue,
+    CardNameWhite,
+    CardDetailsBlue,
+    CardDetailsWhite,
     AvatarWrapper,
     InfoContainer,
     InfoWrapper,
-    Name,
-    Relation,
     ButtonsWrapper,
     Button,
-    HouseholdWrapper,
-    HouseholdTitle,
-    Household,
-    HouseholdName,
-    HouseholdRelation,
-} from './styles'
+} from '../../../components/Cards'
 
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -41,10 +41,6 @@ const Perfis = ({ navigation }) => {
     } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        getFullUser()
-    }, [])
 
     const getFullUser = async () => {
         const response = await getUser(user.id, token)
@@ -107,13 +103,17 @@ const Perfis = ({ navigation }) => {
         }
     }
 
+    useEffect(() => {
+        getFullUser()
+    }, [])
+
     if (isLoading) {
         return <ScreenLoader />
     }
 
     return (
         <ScrollViewStyled>
-            <User>
+            <CardBlue>
                 <AvatarWrapper>
                     <Avatar
                         containerStyle={styles.Avatar}
@@ -125,8 +125,10 @@ const Perfis = ({ navigation }) => {
                 </AvatarWrapper>
                 <InfoContainer>
                     <InfoWrapper>
-                        <Name>{user.user_name}</Name>
-                        <Relation>{translate('profiles.owner')}</Relation>
+                        <CardNameBlue>{user.user_name}</CardNameBlue>
+                        <CardDetailsBlue>
+                            {translate('profiles.owner')}
+                        </CardDetailsBlue>
                     </InfoWrapper>
                     <ButtonsWrapper>
                         <Button
@@ -144,19 +146,17 @@ const Perfis = ({ navigation }) => {
                         </Button>
                     </ButtonsWrapper>
                 </InfoContainer>
-            </User>
+            </CardBlue>
 
             {households.length > 0 ? (
-                <HouseholdWrapper>
-                    <HouseholdTitle>
-                        {translate('profiles.households')}
-                    </HouseholdTitle>
-                </HouseholdWrapper>
+                <CardWrapper>
+                    <CardTitle>{translate('profiles.households')}</CardTitle>
+                </CardWrapper>
             ) : null}
 
             {households.map((household) => {
                 return (
-                    <Household key={household.id}>
+                    <CardWhite key={household.id}>
                         <AvatarWrapper>
                             <Avatar
                                 size={scale(58)}
@@ -169,12 +169,12 @@ const Perfis = ({ navigation }) => {
                         </AvatarWrapper>
                         <InfoContainer>
                             <InfoWrapper>
-                                <HouseholdName>
+                                <CardNameWhite>
                                     {household.description}
-                                </HouseholdName>
-                                <HouseholdRelation>
+                                </CardNameWhite>
+                                <CardDetailsWhite>
                                     {household.kinship}
-                                </HouseholdRelation>
+                                </CardDetailsWhite>
                             </InfoWrapper>
                             <ButtonsWrapper>
                                 <Button
@@ -192,7 +192,7 @@ const Perfis = ({ navigation }) => {
                                 </Button>
                             </ButtonsWrapper>
                         </InfoContainer>
-                    </Household>
+                    </CardWhite>
                 )
             })}
         </ScrollViewStyled>

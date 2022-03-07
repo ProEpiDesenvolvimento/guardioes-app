@@ -153,7 +153,7 @@ const EditarPerfil = ({ navigation, route }) => {
         const response = await updateHousehold(newHousehold, user.id, token)
 
         if (response.status === 200) {
-            const oldHousehold = households.filter((h) => h.id === id)[0]
+            const [oldHousehold] = households.filter((h) => h.id === id)
             const newHouseholds = households.filter((h) => h.id !== id)
 
             newHouseholds.push({
@@ -477,7 +477,7 @@ const EditarPerfil = ({ navigation, route }) => {
                     <FormInlineCheck>
                         <CheckBoxStyled
                             title={translate('register.vaccination')}
-                            checked={!!user.vaccine}
+                            checked={!!user.doses.length}
                             onPress={() => navigation.navigate('Vacinacao')}
                         />
                     </FormInlineCheck>

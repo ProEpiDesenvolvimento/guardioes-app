@@ -1,5 +1,4 @@
 import { Alert } from 'react-native'
-import moment from 'moment'
 
 import translate from '../../locales/i18n'
 
@@ -36,49 +35,69 @@ export const validForm = (questions, answers) => {
     return valid
 }
 
-export const validVaccination = (vaccination) => {
-    let valid = true
-    const isFirstDoseAfter = moment(vaccination.first_dose_date).isAfter(
-        vaccination.second_dose_date
-    )
+export const checkDose = (vaccine, doses, newDoseDate, currentDose) => {
+    const newDoseTime = new Date(newDoseDate).getTime()
 
-    if (
-        vaccination.has_dose1 &&
-        (vaccination.first_dose_date === 'Invalid date' ||
-            !vaccination.vaccine_id)
-    ) {
+    // Select doses from the same cycle and sort by date
+    const cycleDoses = []
+    doses.forEach((dose) => {
+        if (
+            dose.id !== currentDose.id &&
+            (dose.vaccine.id === vaccine.id ||
+                dose.vaccine.disease === vaccine.disease)
+        ) {
+            cycleDoses.push({
+                dose: dose.dose,
+                time: new Date(dose.date).getTime(),
+            })
+        }
+    })
+    cycleDoses.push({ time: new Date(newDoseDate).getTime() })
+    cycleDoses.sort((a, b) => a.time - b.time)
+
+    // Get the current dose position and frequency in new sorted array
+    let position = 1
+    let count = 0
+    cycleDoses.forEach((dose, index) => {
+        if (dose.time === newDoseTime) {
+            if (count === 0) {
+                position = index + 1
+                count += 1
+            } else {
+                count += 1
+            }
+        }
+    })
+
+    // Check if a dose already exists on this position
+    let alreadyExists = false
+    cycleDoses.forEach((dose) => {
+        if (dose.dose === position) {
+            alreadyExists = true
+        }
+    })
+    return { position, overlap: count > 1 || alreadyExists }
+}
+
+export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
+    let valid = true
+
+    if (!newDoseDate || !vaccine.id) {
         Alert.alert(
             translate('vaccination.titleError'),
             translate('vaccination.messageError')
         )
         valid = false
-    } else if (
-        vaccination.has_dose2 &&
-        (vaccination.second_dose_date === 'Invalid date' ||
-            !vaccination.vaccine_id)
-    ) {
+    } else if (doseInfo.position > vaccine.doses) {
         Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
+            translate('vaccination.titleError2'),
+            translate('vaccination.messageError2')
         )
         valid = false
-    } else if (
-        vaccination.first_dose_date &&
-        vaccination.first_dose_date === vaccination.second_dose_date
-    ) {
+    } else if (doseInfo.overlap) {
         Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
-        )
-        valid = false
-    } else if (
-        vaccination.first_dose_date &&
-        vaccination.second_dose_date &&
-        isFirstDoseAfter
-    ) {
-        Alert.alert(
-            translate('vaccination.titleError'),
-            translate('vaccination.messageError')
+            translate('vaccination.titleError2'),
+            translate('vaccination.messageError3')
         )
         valid = false
     }
