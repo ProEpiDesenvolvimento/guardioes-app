@@ -171,8 +171,8 @@ export default {
             first:
                 'Have you had contact with someone who had the same symptoms?',
             second: 'Did you look for a hospital service?',
-            third:
-                'Have you left your place of residence for the past 14 days?',
+            third:'Were you at the ',
+            thirdContinuation:' 2 days before or after the onset of symptoms?',
             fourth: 'What country did you travel to?',
             fifth: 'Click on the flag to select!',
         },
