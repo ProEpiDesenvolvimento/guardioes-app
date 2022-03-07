@@ -78,7 +78,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
-    const [isVigilance, setIsVigilance] = useState(false)
+    const [isVigilance, setIsVigilance] = useState(person.is_vigilance)
     const [category, setCategory] = useState(person.category)
     const [allCategories, setAllCategories] = useState(null)
 
