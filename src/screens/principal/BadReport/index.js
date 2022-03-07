@@ -88,7 +88,6 @@ const BadReport = ({ navigation }) => {
         getGroupName()
     }, [])
 
-
     useEffect(() => {
         if (
             !user.is_vigilance &&
@@ -400,14 +399,19 @@ const BadReport = ({ navigation }) => {
                         {translate('badReport.answerQuestions')}
                     </FormTitle>
                 </FormTitleWrapper>
+
                 {group ? (
                     <CheckBoxStyled
-                        title={translate('badReport.checkboxes.third') + `${instituition}` + translate('badReport.checkboxes.thirdContinuation')}
+                        title={
+                            translate('badReport.checkboxes.third') +
+                            instituition +
+                            translate('badReport.checkboxes.thirdContinuation')
+                        }
                         checked={hasTraveled}
                         onPress={() => setHasTraveled(!hasTraveled)}
                     />
                 ) : null}
-                
+
                 {/*
                 {hasTraveled ? (
                     <FormInline>
