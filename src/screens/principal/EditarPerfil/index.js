@@ -48,6 +48,7 @@ import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
+import { getAppGroup } from '../../../api/groups'
 import { getCategories } from '../../../api/categories'
 
 const EditarPerfil = ({ navigation, route }) => {
@@ -77,8 +78,13 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
+    const [isVigilance, setIsVigilance] = useState(person.is_vigilance)
     const [category, setCategory] = useState(person.category)
     const [allCategories, setAllCategories] = useState(null)
+
+    const [modalRiskGroup, setModalRiskGroup] = useState(false)
+    const [institutionError, setInstituitionError] = useState(null)
+    const [loadingAlert, setLoadingAlert] = useState(false)
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -100,9 +106,9 @@ const EditarPerfil = ({ navigation, route }) => {
         getAppCategories()
     }, [])
 
-    const [modalRiskGroup, setModalRiskGroup] = useState(false)
-    const [institutionError, setInstituitionError] = useState(null)
-    const [loadingAlert, setLoadingAlert] = useState(false)
+    useEffect(() => {
+        checkIfIsVigilance(groupId)
+    }, [groupId])
 
     const removeHousehold = async () => {
         const household = {
@@ -171,6 +177,24 @@ const EditarPerfil = ({ navigation, route }) => {
         }
     }
 
+    const checkIfIsVigilance = async (groupId) => {
+        if (groupId) {
+            const response = await getAppGroup(groupId)
+            if (response.status === 200) {
+                const { group } = response.data
+
+                if (
+                    group.group_manager &&
+                    !group.group_manager.vigilance_email
+                ) {
+                    setIsVigilance(false)
+                }
+            }
+        } else {
+            setIsVigilance(false)
+        }
+    }
+
     const editUser = async () => {
         const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         const isBrazil = country === 'Brazil'
@@ -186,6 +210,7 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            is_vigilance: isVigilance,
             category_id: category.key,
             category: {
                 id: category.key,

@@ -55,8 +55,8 @@ class InstitutionSelector extends Component {
             return false
         }
 
-        const doesTheSelectedGroupRequireID =
-            this.state.selectedGroup.group_manager.require_id !== null
+        const doesTheSelectedGroupRequireID = 
+            this.state.selectedGroup.group_manager ? this.state.selectedGroup.group_manager.require_id !== null : false
 
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
@@ -159,7 +159,7 @@ class InstitutionSelector extends Component {
                 if (response.status === 200) {
                     this.setState({ selectedGroup: response.data.group })
 
-                    if (response.data.group.group_manager.require_id != null) {
+                    if (response.data.group.group_manager && response.data.group.group_manager.require_id != null) {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
