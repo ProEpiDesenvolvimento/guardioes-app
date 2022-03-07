@@ -82,6 +82,10 @@ const EditarPerfil = ({ navigation, route }) => {
     const [category, setCategory] = useState(person.category)
     const [allCategories, setAllCategories] = useState(null)
 
+    const [modalRiskGroup, setModalRiskGroup] = useState(false)
+    const [institutionError, setInstituitionError] = useState(null)
+    const [loadingAlert, setLoadingAlert] = useState(false)
+
     const getAppCategories = async () => {
         const response = await getCategories()
 
@@ -105,10 +109,6 @@ const EditarPerfil = ({ navigation, route }) => {
     useEffect(() => {
         checkIfIsVigilance(groupId)
     }, [groupId])
-
-    const [modalRiskGroup, setModalRiskGroup] = useState(false)
-    const [institutionError, setInstituitionError] = useState(null)
-    const [loadingAlert, setLoadingAlert] = useState(false)
 
     const removeHousehold = async () => {
         const household = {
@@ -178,14 +178,20 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const checkIfIsVigilance = async (groupId) => {
-        const response = await getAppGroup(groupId)
-        if (response.status === 200) {
-            const { group } = response.data
+        if (groupId) {
+            const response = await getAppGroup(groupId)
+            if (response.status === 200) {
+                const { group } = response.data
 
-            if (group.group_manager && !group.group_manager.vigilance_email) {
-                setIsVigilance(false)
+                if (
+                    group.group_manager &&
+                    !group.group_manager.vigilance_email
+                ) {
+                    setIsVigilance(false)
+                }
             }
-            setLoadingAlert(false)
+        } else {
+            setIsVigilance(false)
         }
     }
 

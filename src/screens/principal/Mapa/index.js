@@ -29,9 +29,9 @@ const Maps = () => {
         token,
         location,
         getCurrentLocation,
+        getAppTip,
         hideAppTip,
         getCacheData,
-        storeCacheData,
     } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
@@ -59,14 +59,10 @@ const Maps = () => {
             setMapKey(mapKey + 1)
         }
 
-        // Modify on next release
-        const showMapTip = await getCacheData('showMapTip', false)
         const localPin = await getCacheData('localPin', false)
 
-        if (showMapTip === null) {
+        if (getAppTip('mapTip')) {
             setShowAlert(true)
-        } else {
-            hideAppTip('mapTip')
         }
         if (!isOffline && isLoading) {
             await getSurveys(localPin)
@@ -91,8 +87,7 @@ const Maps = () => {
 
     const hideAlert = async () => {
         setShowAlert(false)
-        await storeCacheData('showMapTip', false) // Will be removed on next release
-        await hideAppTip('mapTip')
+        hideAppTip('mapTip')
     }
 
     const getSurveyPerState = async () => {

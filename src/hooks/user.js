@@ -205,6 +205,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
+            vaccines: user.doses.length,
         })
     }
 
@@ -240,7 +241,6 @@ export const UserProvider = ({ children }) => {
             'lastReport',
             'surveysData',
             'contentsData',
-            'showMapTip', // Will be removed on next release
         ])
 
         RNSecureStorage.exists('userEmail').then((exists) =>
