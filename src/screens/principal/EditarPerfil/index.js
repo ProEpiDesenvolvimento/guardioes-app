@@ -102,6 +102,10 @@ const EditarPerfil = ({ navigation, route }) => {
         getAppCategories()
     }, [])
 
+    useEffect(() => {
+        checkIfIsVigilance(groupId)
+    }, [groupId])
+
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
@@ -288,7 +292,6 @@ const EditarPerfil = ({ navigation, route }) => {
     const setUserInstitutionCallback = (idCode, groupId) => {
         setIdCode(idCode)
         setGroupId(groupId)
-        checkIfIsVigilance(groupId)
     }
 
     const setInstituitionComponentError = (error) => {
