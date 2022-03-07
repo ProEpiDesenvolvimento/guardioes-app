@@ -173,14 +173,12 @@ const EditarPerfil = ({ navigation, route }) => {
         }
     }
 
-    const checkIfIsVigilance = async (group_id) => {
-        const response = await getAppGroup(group_id)
-        if (response.status == 200) {
+    const checkIfIsVigilance = async (groupId) => {
+        const response = await getAppGroup(groupId)
+        if (response.status === 200) {
             const { group } = response.data
 
-            if(group.group_manager && group.group_manager.vigilance_email) {
-                setIsVigilance(true)
-            } else {
+            if (group.group_manager && !group.group_manager.vigilance_email) {
                 setIsVigilance(false)
             }
             setLoadingAlert(false)
@@ -288,9 +286,9 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const setUserInstitutionCallback = (idCode, groupId) => {
-        checkIfIsVigilance(groupId)
         setIdCode(idCode)
         setGroupId(groupId)
+        checkIfIsVigilance(groupId)
     }
 
     const setInstituitionComponentError = (error) => {
