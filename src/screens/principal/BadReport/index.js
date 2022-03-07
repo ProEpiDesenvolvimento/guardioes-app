@@ -85,16 +85,9 @@ const BadReport = ({ navigation }) => {
 
     useEffect(() => {
         getSymptoms()
+        getGroupName()
     }, [])
 
-    useEffect(() => {
-        let instituition = person.group ? person.group : null
-        if(instituition) {
-            instituition = instituition.split('/')
-            instituition = instituition[instituition.length - 1]
-            setInstituition(instituition)
-        }
-    }, [])
 
     useEffect(() => {
         if (
@@ -105,6 +98,11 @@ const BadReport = ({ navigation }) => {
             setInviteSurveilance(true)
         }
     }, [])
+
+    const getGroupName = () => {
+        const groupName = person.group ? person.group.split('/')[3] : null
+        setInstituition(groupName)
+    }
 
     const showConfirmation = (status, data) => {
         const message = getSurveyConfirmation(status, data)
@@ -404,11 +402,11 @@ const BadReport = ({ navigation }) => {
                 </FormTitleWrapper>
                 {group ? (
                     <CheckBoxStyled
-                    title={translate('badReport.checkboxes.third') + `${instituition}` + translate('badReport.checkboxes.thirdContinuation')}
-                    checked={hasTraveled}
-                    onPress={() => setHasTraveled(!hasTraveled)}
-                />
-                ): null }
+                        title={translate('badReport.checkboxes.third') + `${instituition}` + translate('badReport.checkboxes.thirdContinuation')}
+                        checked={hasTraveled}
+                        onPress={() => setHasTraveled(!hasTraveled)}
+                    />
+                ) : null}
                 
                 {/*
                 {hasTraveled ? (
