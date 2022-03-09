@@ -17,6 +17,7 @@ export { default as PasswordIcon } from './icons/password.svg'
 
 // Help
 export { default as TermsIcon } from './icons/terms-and-conditions.svg'
+export { default as FAQIcon } from './icons/faq.svg'
 export { default as TutorialIcon } from './icons/online-learning.svg'
 export { default as InfoIcon } from './icons/info.svg'
 

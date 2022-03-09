@@ -132,6 +132,7 @@ export default {
     },
     ajuda: {
         title: 'Help',
+        faqBtn: 'FAQ',
         tutorialBtn: 'Tutorial',
         useTermsBtn: 'Terms and policies',
         aboutBtn: 'About',
@@ -408,7 +409,6 @@ export default {
         share: 'Share',
         shareLink: 'Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n',
         toHelp: 'Help',
-        toFAQ: 'FAQ',
         participateSuccess: "You're already participating!",
         participateQuestion: 'Do you want to participate?',
         confirmRead:

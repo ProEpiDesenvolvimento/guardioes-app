@@ -168,17 +168,6 @@ const LeftMenu = ({ navigation }) => {
                     <TextOption>{translate('drawer.toHelp')}</TextOption>
                 </UserOptionGreen>
             </Button>
-            <Button onPress={() => navigation.navigate('FAQ')}>
-                <UserOptionGreen>
-                    <Feather
-                        name='message-circle'
-                        size={scale(26)}
-                        color='#ffffff'
-                        style={styles.iconStyle}
-                    />
-                    <TextOption>{translate('drawer.toFAQ')}</TextOption>
-                </UserOptionGreen>
-            </Button>
 
             <SocialContainer>
                 <Button

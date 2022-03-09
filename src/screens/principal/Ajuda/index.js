@@ -4,7 +4,12 @@ import { Help, Box, Button, IconWrapper, InfoWrapper, Title } from './styles'
 
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
-import { TermsIcon, TutorialIcon, InfoIcon } from '../../../img/imageConst'
+import {
+    FAQIcon,
+    TermsIcon,
+    TutorialIcon,
+    InfoIcon,
+} from '../../../img/imageConst'
 
 const Ajuda = ({ navigation }) => {
     return (
@@ -16,6 +21,17 @@ const Ajuda = ({ navigation }) => {
                     </IconWrapper>
                     <InfoWrapper>
                         <Title>{translate('ajuda.tutorialBtn')}</Title>
+                    </InfoWrapper>
+                </Button>
+            </Box>
+
+            <Box>
+                <Button onPress={() => navigation.navigate('FAQ')}>
+                    <IconWrapper>
+                        <FAQIcon height={scale(45)} width={scale(45)} />
+                    </IconWrapper>
+                    <InfoWrapper>
+                        <Title>{translate('ajuda.faqBtn')}</Title>
                     </InfoWrapper>
                 </Button>
             </Box>
