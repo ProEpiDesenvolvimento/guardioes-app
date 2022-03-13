@@ -498,16 +498,6 @@ const EditarPerfil = ({ navigation, route }) => {
                     </CheckLabel>
                 </FormInlineCheck>
 
-                {!isHousehold ? (
-                    <FormInlineCheck>
-                        <CheckBoxStyled
-                            title={translate('register.vaccination')}
-                            checked={!!user.doses.length}
-                            onPress={() => navigation.navigate('Vacinacao')}
-                        />
-                    </FormInlineCheck>
-                ) : null}
-
                 <InstitutionSelector
                     setUserInstitutionCallback={setUserInstitutionCallback}
                     setAlert={setLoadingAlert}

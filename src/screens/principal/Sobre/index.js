@@ -1,19 +1,12 @@
 import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
 
-import {
-    ScrollViewStyled,
-    Title,
-    ImageContainer,
-    BodyText,
-    VersionText,
-} from './styles'
+import { ScrollViewStyled, Title, ImageContainer, BodyText } from './styles'
 
 import translate from '../../../../locales/i18n'
 import { UnBLogo, ProEpiLogo } from '../../../img/imageConst'
 import { redirectAlert } from '../../../utils/consts'
 import { scale } from '../../../utils/scalling'
-import { version } from '../../../../app.json'
 
 const Sobre = () => {
     return (
@@ -53,8 +46,6 @@ const Sobre = () => {
             </ImageContainer>
 
             <BodyText>{translate('about.textoSobre')}</BodyText>
-
-            <VersionText>v{version}</VersionText>
         </ScrollViewStyled>
     )
 }
