@@ -50,7 +50,7 @@ import {
     handleAvatar,
     getInitials,
     getSurveyConfirmation,
-    showSurveilanceInvite
+    showSurveillanceInvite
 } from '../../../utils/consts'
 import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
@@ -95,7 +95,7 @@ const Home = ({ navigation }) => {
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertTitle, setAlertTitle] = useState(null)
     const [alertMessage, setAlertMessage] = useState(null)
-    const [inviteSurveilance, setInviteSurveilance] = useState(false)
+    const [inviteSurveillance, setInviteSurveillance] = useState(false)
 
     const person = getCurrentUserInfo()
 
@@ -121,7 +121,7 @@ const Home = ({ navigation }) => {
             group.group_manager &&
             group.group_manager.vigilance_email
         ) {
-            setInviteSurveilance(true)
+            setInviteSurveillance(true)
         }
     }, [])
 
@@ -301,8 +301,8 @@ const Home = ({ navigation }) => {
 
         updateUserScore()
         if (response.status === 201) {
-            if (inviteSurveilance) {
-                showSurveilanceInvite(
+            if (inviteSurveillance) {
+                showSurveillanceInvite(
                     person.name, 
                     response.status, 
                     response.data, 

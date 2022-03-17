@@ -37,7 +37,7 @@ import {
     getInitials,
     redirectAlert,
     getSurveyConfirmation,
-    showSurveilanceInvite
+    showSurveillanceInvite
 } from '../../../utils/consts'
 import { countryChoices, localSymptom } from '../../../utils/selector'
 import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
@@ -169,7 +169,7 @@ const BadReport = ({ navigation }) => {
                         if (!inviteSurveilance) {
                             showWhatsappAlert(status, body)
                         } else {
-                            showSurveilanceInvite(
+                            showSurveillanceInvite(
                                 person.name,
                                 status,
                                 body,
@@ -188,7 +188,7 @@ const BadReport = ({ navigation }) => {
                         if (!inviteSurveilance) {
                             showConfirmation(status, body)
                         } else {
-                            showSurveilanceInvite(
+                            showSurveillanceInvite(
                                 person.name,
                                 status,
                                 body,
