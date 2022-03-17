@@ -76,7 +76,6 @@ export const SocialContainer = styled.View`
     margin-left: ${scale(75)}px;
     margin-right: ${scale(75)}px;
     justify-content: space-around;
-    align-content: center;
     align-items: center;
     flex-wrap: wrap;
 `

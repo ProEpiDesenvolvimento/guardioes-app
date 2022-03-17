@@ -134,6 +134,7 @@ export default {
     },
     ajuda: {
         title: 'Ayuda',
+        faqBtn: 'FAQ',
         tutorialBtn: 'Tutorial',
         useTermsBtn: 'Condiciones y Políticas',
         aboutBtn: 'Acerca de',
@@ -144,7 +145,8 @@ export default {
         howToUse:
             '\nLa funcionalidad básica de Guardianes de la salud (GdS) son los informes de salud. Se puede encontrar en la página de inicio, pero hay otras funciones. Si desea obtener más información, siga leyendo.',
         home: 'Pagina de inicio',
-        homeCont: 'En esta pestaña puede seleccionar cómo se siente (bien o mal). Si es malo, puede marcar los síntomas y señalar cuánto tiempo ha estado, si es así. \ N \ nTambién puede personalizar su GdS colocando su foto en el ícono al lado de su nombre (recordando que la foto no se guarda permanentemente en la aplicación , por lo que si cierra sesión en su cuenta, deberá volver a insertar su foto).',
+        homeCont:
+            'En esta pestaña puede seleccionar cómo se siente (bien o mal). Si es malo, puede marcar los síntomas y señalar cuánto tiempo ha estado, si es así.  N  nTambién puede personalizar su GdS colocando su foto en el ícono al lado de su nombre (recordando que la foto no se guarda permanentemente en la aplicación , por lo que si cierra sesión en su cuenta, deberá volver a insertar su foto).',
         news: 'Pantalla de Noticias',
         newsCont:
             'La pantalla de noticias es la última opción que encuentra al inicio de la aplicación. En esta parte se encuentran noticias diarias sobre la pandemia y la salud en general. ¡Aprovecha que ya estás aquí y echa un vistazo a lo que hemos preparado allí! Para acceder a la pestaña no es necesario tener una cuenta de Twitter ni establecer un enlace (no recibirás ningún tipo de notificación o correo electrónico).',
@@ -155,14 +157,14 @@ export default {
             'La pestaña de consejos es una herramienta importante para que aprenda más sobre su salud, se actualiza dos veces al mes y tiene información sobre vacunas, enlaces útiles, cómo prevenir una pandemia y mucho más.',
         diary: 'Diario de la Salud',
         diaryCont:
-            'Esta es una de las características más importantes de la aplicación, allí puede ver a través del calendario de salud y el gráfico circular todos los informes que ha realizado diariamente. \ N \ nPuede usar su calendario de salud si necesita estos datos para aclarar algo en una cita con el médico.',
+            'Esta es una de las características más importantes de la aplicación, allí puede ver a través del calendario de salud y el gráfico circular todos los informes que ha realizado diariamente.  N  nPuede usar su calendario de salud si necesita estos datos para aclarar algo en una cita con el médico.',
         healthMap: 'Mapa de la Salud',
         healthMapCont:
             'Esta pestaña mostrará cómo se sienten las personas en su región. Cada punto del mapa representa a una persona o grupo de personas.',
         healthMapCont2:
             'Al hacer clic en cualquier punto del mapa, puede ver el estado de salud de las personas que informaron en esa región. No se exponen datos sensibles del usuario.',
         healthMapCont3:
-            'Esta función lo ayuda a obtener una idea de la salud de las personas que lo rodean y adónde planea ir. \ N \ nSi ve que en un área determinada hay muchos informes de síntomas de COVID-19, puede evitar pasar, posponga su viaje al lugar o redoblar las medidas de prevención al pasar por estas regiones'
+            'Esta función lo ayuda a obtener una idea de la salud de las personas que lo rodean y adónde planea ir.  N  nSi ve que en un área determinada hay muchos informes de síntomas de COVID-19, puede evitar pasar, posponga su viaje al lugar o redoblar las medidas de prevención al pasar por estas regiones',
     },
     badReport: {
         title: '¿Que estas sintiendo?',
@@ -175,7 +177,8 @@ export default {
                 '¿Tuvo contacto con alguien que presentaba los mismos síntomas?',
             second: '¿Buscó algún servicio hospitalario?',
             third: '¿Estuvo en la ',
-            thirdContinuation: ' 2 días antes o después del inicio de los síntomas?',
+            thirdContinuation:
+                ' 2 días antes o después del inicio de los síntomas?',
             fourth: '¿Para qué país usted ha viajado?',
             fifth: '¡Apriete en la bandera para seleccionar!',
         },
@@ -221,7 +224,7 @@ export default {
         title: 'Diario',
         year: ' año',
         years: ' años',
-        participate: 'Participaciones',
+        participations: 'Participaciones',
         good: 'Bien',
         bad: 'Mal',
         report: ' dia',
@@ -241,7 +244,7 @@ export default {
         statusLast7DaysGood: 'Te has sentido bien',
         statusLast7DaysBad: 'Usted no estaba bien',
         vaccination: 'Vacunación:',
-        vaccinationData: 'Agregue sus datos de vacunación',
+        vaccinationData: 'Actualice sus datos de vacunación',
         bioSecurity: 'Biosecurity:',
         bioSecurityQuestions: 'Responde preguntas sobre tu institución',
         userHowYouFelling: '¿Cómo te sientes hoy?',
@@ -266,7 +269,8 @@ export default {
     },
     maps: {
         title: 'Mapa',
-        guide: `Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.`,
+        guide:
+            'Cada punto en el mapa representa una persona o grupo de personas.\n\nEl color de un grupo representa el porcentaje de síntomas y el tamaño, el número de personas.\n\nPuede tocar los puntos para obtener más información.',
         confirmGuide: 'OK!',
     },
     news: {
@@ -284,21 +288,16 @@ export default {
     },
     about: {
         title: 'Acerca de',
-
         tituloBtnUnb: 'Universidade de Brasilia',
         mensagemBtnUnb: '¿Desea ser redirigido al sitio web de UnB?',
         linkBtnUnb: 'https://www.unb.br',
-
         tituloBtnProEpi:
             'ProEpi - Associação Brasileira de Profissionais de Epidemiologia de Campo',
         mensagemBtnProEpi: '¿Desea ser redirigido a la página web del ProEpi?',
         linkBtnProEPi: 'https://proepi.org.br/',
-
         textoSobreTitulo: '\nSobre la Aplicación Guardianes de la Salud\n',
         textoSobre:
             'La historia de la aplicación Guardianes de la Salud comenzó en 2014, cuando el Ministerio de Salud tomó la iniciativa de promover la vigilancia participativa de los eventos de salud durante la Copa Mundial de la FIFA 2014.\n\nDesde entonces, en diferentes versiones y con el apoyo de diferentes socios, la aplicación ya se ha utilizado durante otros eventos, como los Juegos Olímpicos de Río 2016.\n\nLa aplicación Guardians of Health tiene el gran objetivo de fortalecer la capacidad de detectar brotes y emergencias de salud pública.\n\nEsta versión de la aplicación es una asociación de ProEpi (Asociación Brasileña de Profesionales de Epidemiología de Campo) con la Universidad de Brasilia.',
-        textoVigilancia:
-            'A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone.',
     },
     useTerms: {
         title: 'Condiciones y Políticas',
@@ -335,7 +334,7 @@ export default {
                 '\n11. CONSIDERAÇÕES FINAIS:\n\nO acesso ao aplicativo representa a aceitação expressa e irrestrita dos Termos de Uso acima descritos. \nAo concordar com esses termos o usuário concede uma licença perpétua, isenta de royalties, licença incondicional para o “Guardiões da Saúde”, mantido pela Associação Brasileira de Profissionais de Epidemiologia de Campo - ProEpi e todas as organizações sucessoras, para publicar a sua contribuição de forma agregada, nunca individualizada, no próprio aplicativo, bem como divulgá-la aos serviços de vigilância em saúde pública.  \nVocê também concorda que o aplicativo “Guardiões da Saúde” tem o direito, mas não a obrigação, de editar ou remover qualquer contribuição, ou incluí-la no texto, em conjunto com outras contribuições, a critério exclusivo da equipe relacionada a essa aplicação.\nO aplicativo “Guardiões da Saúde” não faz a indicação de qualquer diagnóstico, tratamentos ou medicamentos para a COVID 19 ou qualquer outra doença, caso o usuário constate mediante autoavaliação qualquer sintoma provável de Covid 19 ou qualquer outra doença, deverá imediatamente procurar um médico de sua confiança ou procurar atendimento em uma Unidade de Saúde mais próxima de sua localidade.\nSeu acesso é proibido em territórios onde o conteúdo seja considerado ilegal. Aqueles que optarem por acessar aplicativo a partir de outras localidades o farão por iniciativa própria e serão responsáveis pelo cumprimento das leis locais aplicáveis.\nOs dados não deverão ser usados ou exportados em descumprimento das leis brasileiras. Qualquer pendência em relação aos dados será dirimida pelas leis brasileiras;\nSe você tiver alguma dúvida sobre o aplicativo “Guardiões da Saúde”, não hesite em nos contatar pelo e-mail: support@proepi.zendesk.com',
             textoTermos_12:
                 '\n12. DO FORO\n\nPara solucionar eventuais litígios fica eleito o Foro da Cidade de Brasília – DF, Brasil.',
-            textoTituloPoliticas: "POLÍTICAS DE USO DE DADOS PESSOAIS",
+            textoTituloPoliticas: 'POLÍTICAS DE USO DE DADOS PESSOAIS',
             textoPoliticas_1:
                 '\nBem-vindo(a)! Obrigado por utilizar o Guardiões da Saúde!\nEste instrumento tem a finalidade de demonstrar a transparência no tratamento de dados pessoais, orientando-se pela prática da boa-fé e obediência aos princípios escupidos no art. 6º da Lei 13.709/18, Lei Geral de Proteção de Dados Pessoais.\nO aplicativo Guardiões da Saúde é mantido pela ASSOCIAÇÃO BRASILEIRA DE PROFISSIONAIS DE EPIDEMIOLOGIA DE CAMPO - PROEPI, pessoa jurídica de direito privado, com natureza e fins não lucrativos e não partidários, inscrita no CNPJ/MF sob o nº 20.399.059/0001-01, com sede no SRTVS Quadra 701, Bloco O, Edifício Multiempresarial, Asa Sul, Brasília/DF, CEP: 70.340-000, que atua na qualidade de Controlador\nEste termo foi elaborado em conformidade com Lei a Geral de Proteção de Dados Pessoais, Lei 13.709/18.\nEste instrumento tem a finalidade de demonstrar a transparência no tratamento de dados, orientando-se pela prática da boa-fé e obediência aos princípios escupidos no art. 6º da Lei Geral de Proteção de Dados Pessoais.\nEsta política de privacidade e uso de dados pessoais se aplica a todos usuários e/ou visitantes do aplicativo, aos que fizerem o download do aplicativo ou ainda a quem de qualquer outra maneira tenha acesso ao aplicativo.',
             textoPoliticas_2:
@@ -352,7 +351,7 @@ export default {
                 '\nDO TÉRMINO DO TRATAMENTO DE DADOS\n\nNão mantemos as suas informações pessoais por mais tempo do que o necessário para os objetivos para os quais são processadas. Assim, o término do tratamento de dados se dará com a finalidade atingida ou quando os dados deixarem de ser necessários para o alcance da finalidade que se destinam.\n\nPode ainda o titular se valendo do seu direito revogar o consentimento a qualquer tempo, bem como pode ocorrer também o término do tratamento de dados de acordo com as hipóteses previstas no art. 15 da LGPD.\n\nOs dados pessoais poderão excepcionalmente ser conservados, seguindo-se as regras do art. 16 da LGPD.\n\nDA REVOGAÇÃO DO CONSENTIMENTO\nO usuário poderá a qualquer tempo revogar o seu consentimento e solicitar a eliminação de seus dados pessoais do banco de dados do aplicativo, sendo que para isso deverá entrar em contato através do e-mail support@proepi.zendesk.com  e requerer a exclusão de seus dados, bem como poderá ainda da mesma maneira, solicitar a correção de seus dados, alteração, requerer informações sobre segurança e uso de dados pessoais.\n\nÉ importante destacar que a revogação do consentimento para uso de dados pessoais implica na impossibilidade de acesso e uso do aplicativo, já que o consentimento é obrigatório e indispensável para seu uso.\n\nDAS ALTERAÇÕES DA POLÍTICA DE USO DE DADOS PESSOAIS\n\nA atual versão da Política de Privacidade foi formulada e atualizada pela última vez em: 11/08/2021.\nReservamos o direito de modificar essa política de privacidade a qualquer momento, independente de aviso prévio ou autorização.\nAs modificações deste termo de privacidade poderão servir para refletir alterações na legislação, em nossos serviços prestados através do aplicativo ou ainda quando for o caso, para avanços tecnológicos.\nAssim, recomenda-se ao usuário que revise os termos com frequência. As alterações da política de privacidade surtirão efeito imediatamente após a sua publicação na plataforma. Nossos termos de uso, política de privacidade e uso de dados pessoais estarão sempre disponíveis, atualizados no aplicativo e de fácil acesso ao usuário.',
             textoPoliticas_8:
                 '\nCOMO ENTRAR EM CONTATO COM A PROEPI\n\nVocê pode entrar em contato com a ProEpi, através do e-mail support@proepi.zendesk.com,este e-mail é um canal de comunicação do nosso encarregado de Proteção de Dados Pessoais, que se destina exclusivamente para tratar sobre quaisquer dúvidas relacionadas a política de privacidade, podendo ainda, fazer reclamação sobre qualquer violação das leis de proteção de dados, solicitar correção de dados incompletos, inexatos ou desatualizados e também requerer a revogação de consentimento e eliminação de dados do aplicativo (perfil de usuário).\nDa Legislação e do Foro\nPara a solução de qualquer controvérsia decorrente deste instrumento será aplicada integralmente a Lei Brasileira. \nFica eleito o foro da Cidade de Brasília – DF, para dirimir eventuais litígios.\n\n\nLeonardo B. Macedo\nEncarregado de Dados (DPO)\nProEpi\n',
-            },
+        },
         compilation: 3,
     },
     vigilanceTerms: {
@@ -409,18 +408,12 @@ export default {
         toEdit: 'Editar perfiles',
         logOut: 'Dejar',
         app: 'Aplicación',
-        toSurveillance: 'Vigilancia activa',
+        toSurveillance: 'Vigilancia Activa',
+        toVaccination: 'Vacunación',
         share: 'Compartir',
         shareLink:
             'Guardianes de la Salud\nhttps://linktr.ee/guardioesdasaude\n',
         toHelp: 'Ayuda',
-        toFAQ: 'FAQ',
-        participateSuccess: '¡Ya estás participando!',
-        participateQuestion: 'Quieres participar?',
-        confirmRead:
-            'Confirmo que he leído la información y estoy al tanto de los cambios que se realizarán después de la confirmación',
-        cancelParticipation: 'Cancelar Participación',
-        participate: 'Participar',
     },
     map: {
         people: 'Personas: ',
@@ -435,8 +428,19 @@ export default {
         title: 'Rumor',
         rumorSent: 'Rumor registered! ',
     },
-    surveilanceInvite: {
-        title: 'Sea parte de la vigilancia activa',
+    surveillance: {
+        title: 'Vigilancia Activa',
+        whatIs: '¿Qué es?',
+        phone: 'Ingresa tu teléfono:',
+        textAbout:
+            'A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone.',
+        participateSuccess: '¡Ya estás participando!',
+        participateQuestion: 'Quieres participar?',
+        confirmRead:
+            'Confirmo que he leído la información y estoy al tanto de los cambios que se realizarán después de la confirmación',
+        cancelParticipation: 'Cancelar Participación',
+        participate: 'Participar',
+        titleMessage: 'Sea parte de la vigilancia activa',
         message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
         cancelButton: 'No',
         redirectButton: 'Si, seré parte',

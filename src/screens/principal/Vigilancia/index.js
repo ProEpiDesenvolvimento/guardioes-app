@@ -96,16 +96,16 @@ const Vigilancia = ({ navigation }) => {
             </Modal>
 
             <KeyboardScrollView>
-                <Title>O que é?</Title>
-                <BodyText>{translate('about.textoVigilancia')}</BodyText>
+                <Title>{translate('surveillance.whatIs')}</Title>
+                <BodyText>{translate('surveillance.textAbout')}</BodyText>
                 <Title>
                     {user.is_vigilance
-                        ? translate('drawer.participateSuccess')
-                        : translate('drawer.participateQuestion')}
+                        ? translate('surveillance.participateSuccess')
+                        : translate('surveillance.participateQuestion')}
                 </Title>
                 {!user.is_vigilance ? (
                     <FormInline>
-                        <FormLabel>Informe seu telefone:</FormLabel>
+                        <FormLabel>{translate('surveillance.phone')}</FormLabel>
                         <NormalInput
                             placeholder='5561988888888'
                             maxLength={13}
@@ -120,7 +120,7 @@ const Vigilancia = ({ navigation }) => {
                 {!user.is_vigilance ? (
                     <FormInlineCheck>
                         <CheckBoxStyled
-                            title={translate('drawer.confirmRead')}
+                            title={translate('surveillance.confirmRead')}
                             checked={acceptedTerms}
                             onPress={() => setAcceptedTerms(!acceptedTerms)}
                         />
@@ -140,8 +140,8 @@ const Vigilancia = ({ navigation }) => {
                     <SendContainer>
                         <SendText>
                             {user.is_vigilance
-                                ? translate('drawer.cancelParticipation')
-                                : translate('drawer.participate')}
+                                ? translate('surveillance.cancelParticipation')
+                                : translate('surveillance.participate')}
                         </SendText>
                     </SendContainer>
                 </Button>

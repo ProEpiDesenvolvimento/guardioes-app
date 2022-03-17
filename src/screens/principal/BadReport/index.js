@@ -150,20 +150,20 @@ const BadReport = ({ navigation }) => {
     }
 
     const showSurveilanceInvite = (status, body, func) => {
-        const title = translate('surveilanceInvite.title')
-        const message = `${person.name}, ${translate(
-            'surveilanceInvite.message'
+        const title = translate('surveillance.titleMessage')
+        const message = `${getNameParts(person.name)}, ${translate(
+            'surveillance.message'
         )}`
 
         Alert.alert(title, message, [
             {
-                text: translate('surveilanceInvite.cancelButton'),
+                text: translate('surveillance.cancelButton'),
                 onPress: () => {
                     func(status, body)
                 },
             },
             {
-                text: translate('surveilanceInvite.redirectButton'),
+                text: translate('surveillance.redirectButton'),
                 onPress: () => {
                     navigation.dispatch(
                         CommonActions.reset({

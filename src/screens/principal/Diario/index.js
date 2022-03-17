@@ -356,7 +356,7 @@ const Diario = () => {
                         <UserReports>
                             <ReportsTitleWrapper>
                                 <ReportsTitle>
-                                    {translate('diary.participate')}
+                                    {translate('diary.participations')}
                                 </ReportsTitle>
                                 <ReportsSubtitle>
                                     Total: {daysMarked}
