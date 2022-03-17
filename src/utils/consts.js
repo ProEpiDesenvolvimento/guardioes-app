@@ -148,20 +148,20 @@ export const getSurveyConfirmation = (status, body) => {
 }
 
 export const showSurveilanceInvite = (name, status, body, func, navigation) => {
-    const title = translate('surveilanceInvite.title')
+    const title = translate('surveillance.title')
     const message = `${name}, ${translate(
-        'surveilanceInvite.message'
+        'surveillance.message'
     )}`
 
     Alert.alert(title, message, [
         {
-            text: translate('surveilanceInvite.cancelButton'),
+            text: translate('surveillance.cancelButton'),
             onPress: () => {
                 func(status, body)
             },
         },
         {
-            text: translate('surveilanceInvite.redirectButton'),
+            text: translate('surveillance.redirectButton'),
             onPress: () => {
                 navigation.dispatch(
                     CommonActions.reset({
