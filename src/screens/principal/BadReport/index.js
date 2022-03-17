@@ -4,8 +4,6 @@ import moment from 'moment'
 
 import Share from 'react-native-share'
 import { Avatar } from 'react-native-elements'
-import { CommonActions } from '@react-navigation/native'
-
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
 import {
@@ -39,6 +37,7 @@ import {
     getInitials,
     redirectAlert,
     getSurveyConfirmation,
+    showSurveilanceInvite
 } from '../../../utils/consts'
 import { countryChoices, localSymptom } from '../../../utils/selector'
 import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
@@ -149,36 +148,6 @@ const BadReport = ({ navigation }) => {
         )
     }
 
-    const showSurveilanceInvite = (status, body, func) => {
-        const title = translate('surveilanceInvite.title')
-        const message = `${person.name}, ${translate(
-            'surveilanceInvite.message'
-        )}`
-
-        Alert.alert(title, message, [
-            {
-                text: translate('surveilanceInvite.cancelButton'),
-                onPress: () => {
-                    func(status, body)
-                },
-            },
-            {
-                text: translate('surveilanceInvite.redirectButton'),
-                onPress: () => {
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 1,
-                            routes: [
-                                { name: 'HomeDrawer' },
-                                { name: 'Vigilancia' },
-                            ],
-                        })
-                    )
-                },
-            },
-        ])
-    }
-
     const showSyndromeAlert = (status, body) => {
         let alert = []
 
@@ -201,9 +170,11 @@ const BadReport = ({ navigation }) => {
                             showWhatsappAlert(status, body)
                         } else {
                             showSurveilanceInvite(
+                                person.name,
                                 status,
                                 body,
-                                showWhatsappAlert
+                                showWhatsappAlert,
+                                navigation
                             )
                         }
                     },
@@ -218,9 +189,11 @@ const BadReport = ({ navigation }) => {
                             showConfirmation(status, body)
                         } else {
                             showSurveilanceInvite(
+                                person.name,
                                 status,
                                 body,
-                                showConfirmation
+                                showConfirmation,
+                                navigation
                             )
                         }
                     },
@@ -229,7 +202,7 @@ const BadReport = ({ navigation }) => {
         }
 
         Alert.alert(
-            body.messages.top_syndrome_message.title,
+            body.messages.top_syndrome_message?.title,
             body.messages.top_syndrome_message.warning_message,
             alert,
             { cancelable: false }

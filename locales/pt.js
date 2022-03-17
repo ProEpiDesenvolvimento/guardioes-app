@@ -436,7 +436,7 @@ export default {
     surveilanceInvite: {
         title: 'Faça parte da vigilância ativa',
         message:
-            'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
+            'Você ainda não é um(a) vigilante ativo(a). Deseja participar?',
         cancelButton: 'Não',
         redirectButton: 'Sim, vou fazer parte',
     },

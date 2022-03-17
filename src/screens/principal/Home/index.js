@@ -50,6 +50,7 @@ import {
     handleAvatar,
     getInitials,
     getSurveyConfirmation,
+    showSurveilanceInvite
 } from '../../../utils/consts'
 import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
@@ -94,6 +95,7 @@ const Home = ({ navigation }) => {
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertTitle, setAlertTitle] = useState(null)
     const [alertMessage, setAlertMessage] = useState(null)
+    const [inviteSurveilance, setInviteSurveilance] = useState(false)
 
     const person = getCurrentUserInfo()
 
@@ -112,6 +114,16 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         showOfflineAlert(isOffline)
     }, [isOffline])
+
+    useEffect(() => {
+        if (
+            !user.is_vigilance &&
+            group.group_manager &&
+            group.group_manager.vigilance_email
+        ) {
+            setInviteSurveilance(true)
+        }
+    }, [])
 
     const fetchData = async () => {
         await loadSecondaryData()
@@ -289,6 +301,16 @@ const Home = ({ navigation }) => {
 
         updateUserScore()
         if (response.status === 201) {
+            if (inviteSurveilance) {
+                showSurveilanceInvite(
+                    person.name, 
+                    response.status, 
+                    response.data, 
+                    showConfirmation, 
+                    navigation
+                )
+            }
+
             await storeCacheData('localPin', survey)
 
             const newSurveys = surveys.slice()
