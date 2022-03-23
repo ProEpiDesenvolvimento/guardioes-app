@@ -123,7 +123,7 @@ const Home = ({ navigation }) => {
         ) {
             setInviteSurveillance(true)
         }
-    }, [])
+    }, [group])
 
     const fetchData = async () => {
         await loadSecondaryData()
