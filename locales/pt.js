@@ -439,7 +439,7 @@ export default {
         participate: 'Participar',
         titleMessage: 'Faça parte da vigilância ativa',
         message:
-            'Você ainda não é um(a) vigilante ativo(a). Deseja participar?',
+            'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
         cancelButton: 'Não',
         redirectButton: 'Sim, vou fazer parte',
     },

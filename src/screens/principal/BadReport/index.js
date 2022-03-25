@@ -77,7 +77,7 @@ const BadReport = ({ navigation }) => {
     const [alertTitle, setAlertTitle] = useState(null)
     const [alertMessage, setAlertMessage] = useState(null)
 
-    const [inviteSurveilance, setInviteSurveilance] = useState(false)
+    const [inviteSurveillance, setInviteSurveillance] = useState(false)
     const [instituition, setInstituition] = useState('')
 
     const person = getCurrentUserInfo()
@@ -93,7 +93,7 @@ const BadReport = ({ navigation }) => {
             group.group_manager &&
             group.group_manager.vigilance_email
         ) {
-            setInviteSurveilance(true)
+            setInviteSurveillance(true)
         }
     }, [])
 
@@ -166,13 +166,12 @@ const BadReport = ({ navigation }) => {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        if (!inviteSurveilance) {
+                        if (!inviteSurveillance) {
                             showWhatsappAlert(status, body)
                         } else {
                             showSurveillanceInvite(
                                 person.name,
-                                status,
-                                body,
+                                { status, body },
                                 showWhatsappAlert,
                                 navigation
                             )
@@ -185,13 +184,12 @@ const BadReport = ({ navigation }) => {
                 {
                     text: 'Ok',
                     onPress: () => {
-                        if (!inviteSurveilance) {
+                        if (!inviteSurveillance) {
                             showConfirmation(status, body)
                         } else {
                             showSurveillanceInvite(
                                 person.name,
-                                status,
-                                body,
+                                { status, body },
                                 showConfirmation,
                                 navigation
                             )

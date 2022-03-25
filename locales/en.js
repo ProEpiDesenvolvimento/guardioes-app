@@ -433,7 +433,7 @@ export default {
             'I confirm that I have read the information and am aware of the changes that will be made after confirmation',
         cancelParticipation: 'Cancel Participation',
         participate: 'Participate',
-        titleMessage: 'Be part of active surveilance',
+        titleMessage: 'Be part of active surveillance',
         message:
             'you are not yet an active watchman. Do you want to participate?',
         cancelButton: 'No',

@@ -50,7 +50,7 @@ import {
     handleAvatar,
     getInitials,
     getSurveyConfirmation,
-    showSurveillanceInvite
+    showSurveillanceInvite,
 } from '../../../utils/consts'
 import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
@@ -303,10 +303,9 @@ const Home = ({ navigation }) => {
         if (response.status === 201) {
             if (inviteSurveillance) {
                 showSurveillanceInvite(
-                    person.name, 
-                    response.status, 
-                    response.data, 
-                    showConfirmation, 
+                    person.name,
+                    { status: response.status, body: response.data },
+                    showConfirmation,
                     navigation
                 )
             }

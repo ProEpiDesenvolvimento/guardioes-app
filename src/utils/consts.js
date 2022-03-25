@@ -147,7 +147,12 @@ export const getSurveyConfirmation = (status, body) => {
     return message
 }
 
-export const showSurveillanceInvite = (name, status, body, func, navigation) => {
+export const showSurveillanceInvite = (
+    name,
+    { status, body },
+    func,
+    navigation
+) => {
     const title = translate('surveillance.titleMessage')
     const message = `${getNameParts(name)}, ${translate(
         'surveillance.message'
