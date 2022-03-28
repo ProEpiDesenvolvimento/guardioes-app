@@ -1,5 +1,5 @@
 import { Alert, Linking } from 'react-native'
-
+import { CommonActions } from '@react-navigation/native'
 import { Emojis } from '../img/imageConst'
 import translate from '../../locales/i18n'
 
@@ -145,4 +145,39 @@ export const getSurveyConfirmation = (status, body) => {
     }
 
     return message
+}
+
+export const showSurveillanceInvite = (
+    name,
+    { status, body },
+    func,
+    navigation
+) => {
+    const title = translate('surveillance.titleMessage')
+    const message = `${getNameParts(name)}, ${translate(
+        'surveillance.message'
+    )}`
+
+    Alert.alert(title, message, [
+        {
+            text: translate('surveillance.cancelButton'),
+            onPress: () => {
+                func(status, body)
+            },
+        },
+        {
+            text: translate('surveillance.redirectButton'),
+            onPress: () => {
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            { name: 'HomeDrawer' },
+                            { name: 'Vigilancia' },
+                        ],
+                    })
+                )
+            },
+        },
+    ])
 }
