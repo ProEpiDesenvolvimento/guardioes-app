@@ -15,6 +15,8 @@ import {
     Button,
     ModalButton,
     ModalButtonText,
+    ButtonClose,
+    ModalClose,
     FormInline,
     DateSelector,
     FormInlineCheck,
@@ -266,13 +268,15 @@ const Vacinacao = () => {
                             {translate('vaccination.intervalVaccinePeriod')}
                         </ModalText>
 
-                        <Button onPress={() => setModalVaccine(false)}>
-                            <ModalButton>
-                                <ModalButtonText>
-                                    {translate('register.riskGroupButton')}
-                                </ModalButtonText>
-                            </ModalButton>
-                        </Button>
+                        <ButtonClose onPress={() => setModalVaccine(false)}>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
                     </ModalBox>
                 </ModalContainer>
             </Modal>
@@ -389,6 +393,21 @@ const Vacinacao = () => {
                                     </ModalButtonText>
                                 </ModalButton>
                             </Button>
+
+                            <ButtonClose
+                                onPress={() => {
+                                    setModalDose(false)
+                                    resetModalDose()
+                                }}
+                            >
+                                <ModalClose>
+                                    <Feather
+                                        name='x'
+                                        size={scale(24)}
+                                        color='#ffffff'
+                                    />
+                                </ModalClose>
+                            </ButtonClose>
                         </ModalBox>
                     </ModalContainer>
                 </Modal>

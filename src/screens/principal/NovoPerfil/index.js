@@ -10,8 +10,8 @@ import {
     ModalBox,
     ModalTitle,
     ModalText,
-    ModalButton,
-    ModalButtonText,
+    ButtonClose,
+    ModalClose,
     Container,
     KeyboardScrollView,
     FormInline,
@@ -150,17 +150,15 @@ const NovoPerfil = ({ navigation }) => {
                             {translate('register.riskGroupMessage')}
                         </ModalText>
 
-                        <Button
-                            onPress={() => {
-                                setModalRiskGroup(false)
-                            }}
-                        >
-                            <ModalButton>
-                                <ModalButtonText>
-                                    {translate('register.riskGroupButton')}
-                                </ModalButtonText>
-                            </ModalButton>
-                        </Button>
+                        <ButtonClose onPress={() => setModalRiskGroup(false)}>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
                     </ModalBox>
                 </ModalContainer>
             </Modal>

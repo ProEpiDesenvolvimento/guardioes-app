@@ -21,14 +21,13 @@ import {
     DateSelector,
     FormInlineCheck,
     CheckBoxStyled,
-    Button,
     CheckLabel,
     ModalContainer,
     ModalBox,
     ModalTitle,
     ModalText,
-    ModalButton,
-    ModalButtonText,
+    ButtonClose,
+    ModalClose,
 } from '../../../components/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
@@ -171,13 +170,17 @@ const Register = ({ navigation }) => {
                                 {translate('register.riskGroupMessage')}
                             </ModalText>
 
-                            <Button onPress={() => setModalRiskGroup(false)}>
-                                <ModalButton>
-                                    <ModalButtonText>
-                                        {translate('register.riskGroupButton')}
-                                    </ModalButtonText>
-                                </ModalButton>
-                            </Button>
+                            <ButtonClose
+                                onPress={() => setModalRiskGroup(false)}
+                            >
+                                <ModalClose>
+                                    <Feather
+                                        name='x'
+                                        size={scale(24)}
+                                        color='#ffffff'
+                                    />
+                                </ModalClose>
+                            </ButtonClose>
                         </ModalBox>
                     </ModalContainer>
                 </Modal>
