@@ -371,7 +371,7 @@ const BadReport = ({ navigation }) => {
                     </FormTitle>
                 </FormTitleWrapper>
 
-                {group ? (
+                {user.group_id ? (
                     <CheckBoxStyled
                         title={
                             translate('badReport.checkboxes.third') +

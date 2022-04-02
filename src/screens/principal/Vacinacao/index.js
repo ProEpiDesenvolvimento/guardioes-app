@@ -93,6 +93,7 @@ const Vacinacao = () => {
                         <CheckLabel
                             onPress={() => {
                                 setVaccineInfo(vaccine)
+                                setModalDose(false)
                                 setModalVaccine(true)
                             }}
                         >
@@ -109,6 +110,7 @@ const Vacinacao = () => {
     }
 
     const resetModalDose = () => {
+        setModalDose(false)
         setDoseSelected({})
         setNewDoseDate('')
         setVaccineSelected({})
@@ -139,7 +141,6 @@ const Vacinacao = () => {
             setDoses(newDoses)
 
             resetModalDose()
-            setModalDose(false)
             setLoadingAlert(false)
         } else {
             Alert.alert(translate('register.geralError'))
@@ -170,7 +171,6 @@ const Vacinacao = () => {
             setDoses(newDoses)
 
             resetModalDose()
-            setModalDose(false)
             setLoadingAlert(false)
         } else {
             Alert.alert(translate('register.geralError'))
@@ -194,7 +194,6 @@ const Vacinacao = () => {
             setDoses(newDoses)
 
             resetModalDose()
-            setModalDose(false)
             setLoadingAlert(false)
         } else {
             Alert.alert(translate('register.geralError'))
@@ -242,6 +241,7 @@ const Vacinacao = () => {
                 visible={modalVaccine}
                 onRequestClose={() => {
                     setModalVaccine(!modalVaccine)
+                    setModalDose(true)
                 }}
             >
                 <ModalContainer>
@@ -268,7 +268,12 @@ const Vacinacao = () => {
                             {translate('vaccination.intervalVaccinePeriod')}
                         </ModalText>
 
-                        <ButtonClose onPress={() => setModalVaccine(false)}>
+                        <ButtonClose
+                            onPress={() => {
+                                setModalVaccine(false)
+                                setModalDose(true)
+                            }}
+                        >
                             <ModalClose>
                                 <Feather
                                     name='x'
@@ -336,7 +341,6 @@ const Vacinacao = () => {
                     transparent
                     visible={modalDose}
                     onRequestClose={() => {
-                        setModalDose(!modalDose)
                         resetModalDose()
                     }}
                 >
@@ -394,12 +398,7 @@ const Vacinacao = () => {
                                 </ModalButton>
                             </Button>
 
-                            <ButtonClose
-                                onPress={() => {
-                                    setModalDose(false)
-                                    resetModalDose()
-                                }}
-                            >
+                            <ButtonClose onPress={() => resetModalDose()}>
                                 <ModalClose>
                                     <Feather
                                         name='x'

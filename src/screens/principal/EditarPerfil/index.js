@@ -159,12 +159,12 @@ const EditarPerfil = ({ navigation, route }) => {
         const response = await updateHousehold(newHousehold, user.id, token)
 
         if (response.status === 200) {
-            const [oldHousehold] = households.filter((h) => h.id === id)
+            const { household } = response.data
             const newHouseholds = households.filter((h) => h.id !== id)
 
             newHouseholds.push({
-                ...oldHousehold,
                 ...newHousehold,
+                ...household,
             })
             storeHouseholds(newHouseholds)
 
@@ -224,9 +224,11 @@ const EditarPerfil = ({ navigation, route }) => {
         const response = await updateUser({ user: newUser }, user.id, token)
 
         if (response.status === 200) {
+            const { user } = response.data
+
             storeUser({
-                ...user,
                 ...newUser,
+                ...user,
             })
 
             setLoadingAlert(false)
