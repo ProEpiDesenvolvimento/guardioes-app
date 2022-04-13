@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet } from 'react-native'
 
 import { Marker } from 'react-native-maps'
@@ -50,6 +50,12 @@ const Maps = () => {
         }, [])
     )
 
+    useEffect(() => {
+        if (getAppTip('mapTip')) {
+            setShowAlert(true)
+        }
+    }, [])
+
     const getMapPins = async () => {
         await getCurrentLocation()
 
@@ -59,12 +65,8 @@ const Maps = () => {
             setMapKey(mapKey + 1)
         }
 
-        const localPin = await getCacheData('localPin', false)
-
-        if (getAppTip('mapTip')) {
-            setShowAlert(true)
-        }
         if (!isOffline && isLoading) {
+            const localPin = await getCacheData('localPin', false)
             await getSurveys(localPin)
         }
     }
