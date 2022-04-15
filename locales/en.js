@@ -258,6 +258,9 @@ export default {
         permissionMessage: 'Guardiões da Saúde needs access to your location ',
         permissionMessage2:
             'so that you can submit your health status, view reports and access the Health Map.',
+        errorTitle: 'Error getting your location',
+        errorMessage:
+            'Please allow the use of location in your device settings.',
         cancelText: 'Cancel',
         okText: 'OK',
     },
@@ -409,13 +412,13 @@ export default {
         toHelp: 'Help',
     },
     map: {
-        people: 'People: ',
+        people: 'Reports: ',
         symptomatic: 'Symptomatic: ',
-        noLocal: "These people didn't share your location",
+        noLocal: "These people didn't share their location",
         alert: 'Alert Contacts',
         share:
             "Do you want to share an announcement with people you've had contact with?",
-        noAlert: 'No, I will warn you later',
+        noAlert: 'No, I will warn them later',
     },
     rumor: {
         title: 'Rumor',

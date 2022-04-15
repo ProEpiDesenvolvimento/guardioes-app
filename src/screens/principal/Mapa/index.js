@@ -27,7 +27,6 @@ const Maps = () => {
     const {
         isOffline,
         token,
-        location,
         getCurrentLocation,
         getAppTip,
         hideAppTip,
@@ -57,10 +56,10 @@ const Maps = () => {
     }, [])
 
     const getMapPins = async () => {
-        await getCurrentLocation()
+        const local = await getCurrentLocation()
 
-        if (location.error === 0) {
-            setRegion(location)
+        if (local.error === 0) {
+            setRegion(local)
             setShowUserLocation(true)
             setMapKey(mapKey + 1)
         }
@@ -201,7 +200,8 @@ const Maps = () => {
                     style={styles.map}
                     data={coordsFilter()}
                     initialRegion={region}
-                    customMapStyle={mapStyle}
+                    customMapStyle={mapStyle} // Android
+                    userInterfaceStyle='dark' // iOS
                     renderMarker={{
                         good: renderGoodMarker,
                         bad: renderBadMarker,
