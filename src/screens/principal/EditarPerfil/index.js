@@ -455,22 +455,6 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormGroup>
                 ) : null}
 
-                {allCategories ? (
-                    <FormInline>
-                        <FormLabel>Categoria:</FormLabel>
-                        <Selector
-                            data={allCategories}
-                            initValue={
-                                category.key
-                                    ? category.label
-                                    : translate('selector.label')
-                            }
-                            cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setCategory(option)}
-                        />
-                    </FormInline>
-                ) : null}
-
                 {isHousehold ? (
                     <FormInline>
                         <FormLabel>Parentesco:</FormLabel>
@@ -509,6 +493,22 @@ const EditarPerfil = ({ navigation, route }) => {
                     userIdCode={idCode}
                     setErrorCallback={setInstituitionComponentError}
                 />
+
+                {allCategories ? (
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={allCategories}
+                            initValue={
+                                category.key
+                                    ? category.label
+                                    : translate('selector.label')
+                            }
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategory(option)}
+                        />
+                    </FormInline>
+                ) : null}
 
                 <Button onPress={() => handleEdit()}>
                     <SendContainer>
