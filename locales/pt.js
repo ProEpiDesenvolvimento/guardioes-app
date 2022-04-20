@@ -257,11 +257,14 @@ export default {
         owner: 'Proprietário',
     },
     locationRequest: {
-        permissionTitle: 'Permitir o uso de sua localização',
+        permissionTitle: 'Permita o uso de sua localização',
         permissionMessage:
             'O Guardiões da Saúde precisa do acesso à sua localização ',
         permissionMessage2:
             'para que você possa enviar seu estado de saúde, ver os relatórios e acessar o Mapa da Saúde.',
+        errorTitle: 'Erro ao obter sua localização',
+        errorMessage:
+            'Por favor, autorize a utilização da localização nas configurações do seu dispositivo.',
         cancelText: 'Cancelar',
         okText: 'OK',
     },
@@ -413,7 +416,7 @@ export default {
         toHelp: 'Ajuda',
     },
     map: {
-        people: 'Pessoas: ',
+        people: 'Reports: ',
         symptomatic: 'Sintomáticos: ',
         noLocal: 'Essas pessoas não compartilharam seu local',
         alert: 'Alertar Contatos',

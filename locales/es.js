@@ -259,11 +259,14 @@ export default {
         owner: 'Propietario',
     },
     locationRequest: {
-        permissionTitle: 'Permitir el uso de su ubicación',
+        permissionTitle: 'Permita el uso de su ubicación',
         permissionMessage:
             'Guardianes de la Salud necesitan acceso a su ubicación ',
         permissionMessage2:
             'para que pueda enviar su estado de salud, ver informes y acceder al Mapa de Salud.',
+        errorTitle: 'Error al obtener tu ubicación',
+        errorMessage:
+            'Permita el uso de la ubicación en la configuración de su dispositivo.',
         cancelText: 'Cancelar',
         okText: 'OK',
     },
@@ -416,9 +419,9 @@ export default {
         toHelp: 'Ayuda',
     },
     map: {
-        people: 'Personas: ',
+        people: 'Reports: ',
         symptomatic: 'Sintomáticos: ',
-        noLocal: 'Estas personas no compartieron tu ubicación',
+        noLocal: 'Estas personas no compartieron su ubicación',
         alert: 'Alertar Contactos',
         share:
             '¿Quieres compartir un anuncio con personas con las que has tenido contacto?',
