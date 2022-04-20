@@ -205,7 +205,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
-            doses: user.doses.length,
+            doses: user.doses,
         })
     }
 
