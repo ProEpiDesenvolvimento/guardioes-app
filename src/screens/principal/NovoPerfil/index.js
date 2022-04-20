@@ -225,6 +225,16 @@ const NovoPerfil = ({ navigation }) => {
                     </FormGroupChild>
                 </FormGroup>
 
+                <FormInline>
+                    <FormLabel>Parentesco:</FormLabel>
+                    <Selector
+                        initValue={translate('selector.label')}
+                        cancelText={translate('selector.cancelButton')}
+                        data={householdChoices}
+                        onChange={(option) => setKinship(option.key)}
+                    />
+                </FormInline>
+
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={translate('register.riskGroupLabel')}
@@ -258,16 +268,6 @@ const NovoPerfil = ({ navigation }) => {
                         />
                     </FormInline>
                 ) : null}
-
-                <FormInline>
-                    <FormLabel>Parentesco:</FormLabel>
-                    <Selector
-                        initValue={translate('selector.label')}
-                        cancelText={translate('selector.cancelButton')}
-                        data={householdChoices}
-                        onChange={(option) => setKinship(option.key)}
-                    />
-                </FormInline>
 
                 <Button onPress={() => handleCreate()}>
                     <SendContainer>
