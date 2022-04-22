@@ -16,6 +16,22 @@ export const getVaccines = async (token) => {
     return response
 }
 
+export const getDoses = async (token) => {
+    let response = {}
+
+    try {
+        response = await api.get(`/doses`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
 export const sendDose = async (data, token) => {
     let response = {}
 

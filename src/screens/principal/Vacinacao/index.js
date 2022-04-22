@@ -46,6 +46,7 @@ import { getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { checkDose, validVaccination } from '../../../utils/formConsts'
 import {
+    getDoses,
     getVaccines,
     sendDose,
     updateDose,
@@ -69,15 +70,28 @@ const Vacinacao = () => {
     const [modalDose, setModalDose] = useState(false)
     const [loadingAlert, setLoadingAlert] = useState(false)
 
+    const getUserDoses = async () => {
+        const response = await getDoses(token)
+
+        if (response.status === 200) {
+            const { doses } = response.data
+            setDoses(doses)
+        }
+    }
+
     const getAppVaccines = async () => {
         const response = await getVaccines(token)
 
         if (response.status === 200) {
             const { vaccines } = response.data
             setVaccines(vaccines)
-            setDoses(user.doses)
             setIsLoading(false)
         }
+    }
+
+    const fetchData = async () => {
+        await getUserDoses()
+        await getAppVaccines()
     }
 
     const vaccineSelector = () => {
@@ -226,7 +240,7 @@ const Vacinacao = () => {
     }
 
     useEffect(() => {
-        getAppVaccines()
+        fetchData()
     }, [])
 
     if (isLoading) {
