@@ -54,7 +54,7 @@ import {
 } from '../../../api/vaccines'
 
 const Vacinacao = () => {
-    const { token, user, storeUser } = useUser()
+    const { token, user } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -150,8 +150,6 @@ const Vacinacao = () => {
         if (response.status === 200) {
             const newDoses = doses.filter((d) => d.id !== doseSelected.id)
             newDoses.push(response.data.dose)
-
-            storeUser({ ...user, doses: newDoses })
             setDoses(newDoses)
 
             resetModalDose()
@@ -180,8 +178,6 @@ const Vacinacao = () => {
 
         if (response.status === 200) {
             const newDoses = [...doses, response.data.dose]
-
-            storeUser({ ...user, doses: newDoses })
             setDoses(newDoses)
 
             resetModalDose()
@@ -203,8 +199,6 @@ const Vacinacao = () => {
 
         if (response.status === 204) {
             const newDoses = doses.filter((d) => d.id !== dose.id)
-
-            storeUser({ ...user, doses: newDoses })
             setDoses(newDoses)
 
             resetModalDose()
