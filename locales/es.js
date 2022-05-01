@@ -120,7 +120,8 @@ export default {
         },
         errorMessages: {
             error: 'Error',
-            allFieldsAreFilled: 'Todos los campos deben ser llenados',
+            allFieldsAreFilled:
+                'Todos los campos deben ser llenados correctamente',
         },
         healthProfessional: '¿Eres un profesional de la salud?',
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
@@ -429,7 +430,7 @@ export default {
     },
     rumor: {
         title: 'Rumor',
-        rumorSent: 'Rumor registered! ',
+        rumorSent: 'El rumor fue registrado.',
     },
     surveillance: {
         title: 'Vigilancia Activa',
@@ -443,7 +444,7 @@ export default {
             'Confirmo que he leído la información y estoy al tanto de los cambios que se realizarán después de la confirmación',
         cancelParticipation: 'Cancelar Participación',
         participate: 'Participar',
-        titleMessage: 'Sea parte de la vigilancia activa',
+        titleMessage: 'Sea parte de la Vigilancia Activa',
         message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
         cancelButton: 'No',
         redirectButton: 'Si, seré parte',

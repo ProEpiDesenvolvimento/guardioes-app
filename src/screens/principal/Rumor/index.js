@@ -1,5 +1,12 @@
 import React, { useCallback, useState, useRef } from 'react'
-import { Text, Modal, Keyboard, Platform, StyleSheet } from 'react-native'
+import {
+    Alert,
+    Text,
+    Modal,
+    Keyboard,
+    Platform,
+    StyleSheet,
+} from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
 import MapView, { Marker } from 'react-native-maps'
@@ -26,6 +33,7 @@ import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { createRumor } from '../../../api/rumors'
+import { validRumor } from '../../../utils/formConsts'
 
 const Rumor = ({ navigation }) => {
     const { token, location, getCurrentLocation } = useUser()
@@ -38,7 +46,7 @@ const Rumor = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false)
     const [showMarker, setShowMarker] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
-    const [showProgressBar, setShowProgressBar] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(true)
 
     const eventInput = useRef()
     const casesInput = useRef()
@@ -52,24 +60,26 @@ const Rumor = ({ navigation }) => {
 
     const sendRumor = async () => {
         Keyboard.dismiss()
-        setShowProgressBar(true)
+
+        const newRumor = {
+            title,
+            description,
+            confirmed_cases: confirmedCases,
+            confirmed_deaths: confirmedDeaths,
+            latitude: region.latitude,
+            longitude: region.longitude,
+        }
+
+        if (!validRumor(newRumor, showMarker)) return
         setShowAlert(true)
 
-        const response = await createRumor(
-            {
-                rumor: {
-                    title,
-                    description,
-                    confirmed_cases: confirmedCases,
-                    confirmed_deaths: confirmedDeaths,
-                },
-            },
-            token
-        )
+        const response = await createRumor({ rumor: newRumor }, token)
 
         if (response.status === 201) {
             setShowProgressBar(false)
-            // navigation.navigate('Home')
+        } else {
+            Alert.alert(translate('register.geralError'))
+            setShowAlert(false)
         }
     }
 
@@ -236,17 +246,14 @@ const Rumor = ({ navigation }) => {
                 }
                 message={
                     showProgressBar ? null : (
-                        <Text>
-                            {translate('rumor.rumorSent')} {Emojis.heart}
-                        </Text>
+                        <Text>{translate('rumor.rumorSent')}</Text>
                     )
                 }
-                closeOnTouchOutside={!showProgressBar}
+                closeOnTouchOutside={false}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={!showProgressBar}
                 confirmText={translate('badReport.messages.confirmText')}
-                onCancelPressed={() => setShowAlert(false)}
-                onConfirmPressed={() => setShowAlert(false)}
+                onConfirmPressed={() => navigation.goBack()}
                 onDismiss={() => setShowAlert(false)}
             />
         </Container>
