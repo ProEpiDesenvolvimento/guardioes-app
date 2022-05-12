@@ -1,88 +1,59 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getAppRootGroup = async () => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/groups/root`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-            },
-        })
+        response = await api.get(`/groups/root`)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const getAppGroup = async (id) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/groups/${id}`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-            },
-        })
+        response = await api.get(`/groups/${id}`)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }
 
 export const getAppGroupChildren = async (id) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/groups/${id}/get_children`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-            },
-        })
+        response = await api.get(`/groups/${id}/get_children`)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const getUserGroupPath = async (id) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/groups/${id}/get_path`, {
-            headers: {
-                Accept: 'application/vnd.api+json',
-            },
-        })
+        response = await api.get(`/groups/${id}/get_path`)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const getUserGroupTwitter = async (id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/groups/${id}/get_twitter`, {
+        response = await api.get(`/groups/${id}/get_twitter`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -90,8 +61,5 @@ export const getUserGroupTwitter = async (id, token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }

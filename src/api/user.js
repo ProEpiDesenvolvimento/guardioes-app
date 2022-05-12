@@ -1,12 +1,11 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getUser = async (id, token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/users/${id}`, {
+        response = await api.get(`/users/${id}`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -14,167 +13,74 @@ export const getUser = async (id, token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const authUser = async (data) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/user/login`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user: {
-                    email: data.email,
-                    password: data.password,
-                },
-            }),
-        })
+        response = await api.post(`/user/login`, data)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        token:
-            response.status === 200 ? response.headers.map.authorization : null,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }
 
 export const createUser = async (data) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/user/signup`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                user: {
-                    email: data.email,
-                    password: data.password,
-                    user_name: data.user_name,
-                    birthdate: data.birthdate,
-                    gender: data.gender,
-                    race: data.race,
-                    country: data.country,
-                    state: data.state,
-                    city: data.city,
-                    residence: data.residence,
-                    group_id: data.group_id,
-                    identification_code: data.identification_code,
-                    is_professional: data.is_professional,
-                    risk_group: data.risk_group,
-                    policy_version: data.policy_version,
-                },
-            }),
-        })
+        response = await api.post(`/user/signup`, data)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const updateUser = async (data, id, token) => {
-    const response = await fetch(`${API_URL}/users/${id}`, {
-        method: 'PATCH',
+    const response = await api.patch(`/users/${id}`, data, {
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
             Authorization: token,
         },
-        body: JSON.stringify(data),
     })
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const sendCode = async (data) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/email_reset_password`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: data.email,
-            }),
-        })
+        response = await api.post(`/email_reset_password`, data)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
-    }
+    return response
 }
 
 export const confirmCode = async (data) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/show_reset_token`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                code: data.code,
-            }),
-        })
+        response = await api.post(`/show_reset_token`, data)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }
 
 export const resetPassword = async (data) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/reset_password`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                reset_password_token: data.reset_password_token,
-                password: data.password,
-                password_confirmation: data.password_confirmation,
-            }),
-        })
+        response = await api.post(`/reset_password`, data)
     } catch (err) {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: await response.json(),
-    }
+    return response
 }

@@ -39,11 +39,11 @@ export const StatusMessage = styled.Text`
 `
 
 export const CloseTipButton = styled(TouchableOpacity).attrs({
-    activeOpacity: 0.2,
+    activeOpacity: 0.5,
 })`
     position: absolute;
-    right: -2%;
-    top: -10%;
+    right: -${scale(8)}px;
+    top: -${scale(8)}px;
     z-index: 1;
 `
 

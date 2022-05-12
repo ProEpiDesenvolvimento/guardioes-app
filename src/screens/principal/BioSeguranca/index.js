@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
 
-import Feather from 'react-native-vector-icons/Feather'
-
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
     Container,
@@ -38,7 +36,7 @@ const BioSeguranca = ({ navigation }) => {
         const response = await getForm(group.form_id, token)
 
         if (response.status === 200) {
-            const { form } = response.body
+            const { form } = response.data
             setQuestions(form.form_questions)
             setIsLoading(false)
         }
@@ -51,7 +49,7 @@ const BioSeguranca = ({ navigation }) => {
         if (!validForm(questions, answers)) return
         setLoadingAlert(true)
 
-        const response = await sendFormAnswers(answers, token)
+        const response = await sendFormAnswers({ form_answers: answers }, token)
 
         if (response.status === 201) {
             storeLastForm(lastFormDate)

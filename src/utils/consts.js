@@ -1,15 +1,16 @@
 import { Alert, Linking } from 'react-native'
+import { CommonActions } from '@react-navigation/native'
+import { Emojis } from '../img/imageConst'
 import translate from '../../locales/i18n'
 
 export const getNameParts = (fullName, firstAndLast = false) => {
     if (typeof fullName === 'string') {
-        const nameParts = fullName.split(' ')
-        const { length } = nameParts
+        const names = fullName.split(' ')
 
-        if (firstAndLast && length > 1) {
-            return `${nameParts[0]} ${nameParts[length - 1]}`
+        if (firstAndLast && names.length > 1) {
+            return `${names[0]} ${names[names.length - 1]}`
         }
-        return nameParts[0]
+        return names[0]
     }
     return null
 }
@@ -106,8 +107,77 @@ export const terms = {
         ${translate('useTerms.terms.textoTermos_10')}\n
         ${translate('useTerms.terms.textoTermos_11')}\n
         ${translate('useTerms.terms.textoTermos_12')}\n
-        ${translate('useTerms.terms.textoTermos_13')}`,
+        ${translate('useTerms.terms.textoTituloPoliticas')}\n
+        ${translate('useTerms.terms.textoPoliticas_1')}\n
+        ${translate('useTerms.terms.textoPoliticas_2')}\n
+        ${translate('useTerms.terms.textoPoliticas_3')}\n
+        ${translate('useTerms.terms.textoPoliticas_4')}\n
+        ${translate('useTerms.terms.textoPoliticas_5')}\n
+        ${translate('useTerms.terms.textoPoliticas_6')}\n
+        ${translate('useTerms.terms.textoPoliticas_7')}\n
+        ${translate('useTerms.terms.textoPoliticas_8')}\n
+        `,
     version: translate('useTerms.compilation'),
     disagree: translate('useTerms.disagree'),
     agree: translate('useTerms.agree'),
+}
+
+export const getSurveyConfirmation = (status, body) => {
+    const message = {}
+
+    if (status === 201) {
+        message.alertTitle = translate('badReport.messages.thanks')
+        message.alertMessage = body.feedback_message
+            ? body.feedback_message
+            : translate('badReport.messages.reportSent')
+        message.emojiTitle = Emojis.tada
+        message.emojiMessage = Emojis.heart_eyes
+    } else if (status === 208) {
+        message.alertTitle = translate('badReport.messages.oops')
+        message.alertMessage = translate('badReport.messages.reportSent2')
+        message.emojiTitle = Emojis.warning
+        message.emojiMessage = Emojis.sweat_smile
+    } else {
+        message.alertTitle = translate('badReport.messages.oops')
+        message.alertMessage = translate('badReport.messages.reportNotSent')
+        message.emojiTitle = Emojis.warning
+        message.emojiMessage = Emojis.confused
+    }
+
+    return message
+}
+
+export const showSurveillanceInvite = (
+    name,
+    { status, body },
+    func,
+    navigation
+) => {
+    const title = translate('surveillance.titleMessage')
+    const message = `${getNameParts(name)}, ${translate(
+        'surveillance.message'
+    )}`
+
+    Alert.alert(title, message, [
+        {
+            text: translate('surveillance.cancelButton'),
+            onPress: () => {
+                func(status, body)
+            },
+        },
+        {
+            text: translate('surveillance.redirectButton'),
+            onPress: () => {
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            { name: 'HomeDrawer' },
+                            { name: 'Vigilancia' },
+                        ],
+                    })
+                )
+            },
+        },
+    ])
 }

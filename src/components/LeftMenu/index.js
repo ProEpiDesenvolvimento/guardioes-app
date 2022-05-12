@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Linking, Platform, StyleSheet } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Share from 'react-native-share'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import { Avatar } from 'react-native-elements'
@@ -42,7 +43,7 @@ const LeftMenu = ({ navigation }) => {
             const response = await getAppGroup(user.group_id)
 
             if (response.status === 200) {
-                const { group } = response.body
+                const { group } = response.data
                 setGroup(group)
 
                 if (group.group_manager.vigilance_email) {
@@ -121,6 +122,7 @@ const LeftMenu = ({ navigation }) => {
             </Button>
 
             <Aplicativo>{translate('drawer.app')}</Aplicativo>
+
             {hasSurveillance ? (
                 <Button onPress={() => navigation.navigate('Vigilancia')}>
                     <UserOptionGreen>
@@ -136,25 +138,15 @@ const LeftMenu = ({ navigation }) => {
                     </UserOptionGreen>
                 </Button>
             ) : null}
-            <Button
-                onPress={() => {
-                    Share.open(shareOptions)
-                        .then((res) => {
-                            console.log(res)
-                        })
-                        .catch((err) => {
-                            err && console.log(err)
-                        })
-                }}
-            >
+            <Button onPress={() => navigation.navigate('Vacinacao')}>
                 <UserOptionGreen>
-                    <Feather
-                        name='share-2'
+                    <FontAwesome5
+                        name='syringe'
                         size={scale(26)}
                         color='#ffffff'
                         style={styles.iconStyle}
                     />
-                    <TextOption>{translate('drawer.share')}</TextOption>
+                    <TextOption>{translate('drawer.toVaccination')}</TextOption>
                 </UserOptionGreen>
             </Button>
             <Button onPress={() => navigation.navigate('Ajuda')}>
@@ -168,15 +160,25 @@ const LeftMenu = ({ navigation }) => {
                     <TextOption>{translate('drawer.toHelp')}</TextOption>
                 </UserOptionGreen>
             </Button>
-            <Button onPress={() => navigation.navigate('FAQ')}>
+            <Button
+                onPress={() => {
+                    Share.open(shareOptions)
+                        .then((res) => {
+                            console.log(res)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                }}
+            >
                 <UserOptionGreen>
                     <Feather
-                        name='message-circle'
+                        name='share-2'
                         size={scale(26)}
                         color='#ffffff'
                         style={styles.iconStyle}
                     />
-                    <TextOption>{translate('drawer.toFAQ')}</TextOption>
+                    <TextOption>{translate('drawer.share')}</TextOption>
                 </UserOptionGreen>
             </Button>
 

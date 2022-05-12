@@ -5,7 +5,7 @@ import React, {
     useEffect,
     useContext,
 } from 'react'
-import { PermissionsAndroid, Platform } from 'react-native'
+import { Alert, PermissionsAndroid, Platform } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import Geolocation from 'react-native-geolocation-service'
 import NetInfo from '@react-native-community/netinfo'
@@ -205,18 +205,16 @@ export const UserProvider = ({ children }) => {
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
+            doses: user.doses,
         })
     }
 
     const signIn = async ({ email, password }) => {
-        const response = await authUser({
-            email,
-            password,
-        })
+        const response = await authUser({ user: { email, password } })
 
         if (response.status === 200) {
-            storeUser(response.body.user, response.token)
-            sendUserTagsToOneSignal(response.body.user)
+            storeUser(response.data.user, response.headers.authorization)
+            sendUserTagsToOneSignal(response.data.user)
             setNeedSignIn(false)
         } else if (response.status === 401) {
             signOut()
@@ -228,6 +226,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.deleteTag('city')
         OneSignal.deleteTag('group')
         OneSignal.deleteTag('score')
+        OneSignal.deleteTag('doses')
     }
 
     const signOut = async () => {
@@ -243,7 +242,6 @@ export const UserProvider = ({ children }) => {
             'lastReport',
             'surveysData',
             'contentsData',
-            'showMapTip', // Will be removed on next release
         ])
 
         RNSecureStorage.exists('userEmail').then((exists) =>
@@ -334,7 +332,7 @@ export const UserProvider = ({ children }) => {
     const getCurrentLocation = async () => {
         try {
             if (Platform.OS === 'android') {
-                const granted = await PermissionsAndroid.request(
+                await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                     {
                         title: translate('locationRequest.permissionTitle'),
@@ -345,12 +343,6 @@ export const UserProvider = ({ children }) => {
                         buttonPositive: translate('locationRequest.okText'),
                     }
                 )
-
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    console.log('Location permission granted')
-                } else {
-                    console.log('Location permission denied')
-                }
             }
         } catch (err) {
             console.warn(err)
@@ -370,6 +362,10 @@ export const UserProvider = ({ children }) => {
                     resolve(local)
                 },
                 (error) => {
+                    Alert.alert(
+                        translate('locationRequest.errorTitle'),
+                        translate('locationRequest.errorMessage')
+                    )
                     const local = {
                         latitude: 0,
                         longitude: 0,
@@ -382,7 +378,7 @@ export const UserProvider = ({ children }) => {
                 },
                 {
                     enableHighAccuracy: true,
-                    timeout: 50000,
+                    timeout: 30000,
                 }
             )
         )

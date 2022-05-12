@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Keyboard, Alert, Modal, SafeAreaView } from 'react-native'
 import moment from 'moment'
 
@@ -21,14 +21,13 @@ import {
     DateSelector,
     FormInlineCheck,
     CheckBoxStyled,
-    Button,
     CheckLabel,
     ModalContainer,
     ModalBox,
     ModalTitle,
     ModalText,
-    ModalButton,
-    ModalButtonText,
+    ButtonClose,
+    ModalClose,
 } from '../../../components/NormalForms'
 import { PageTitle, FormLabel, FormTip } from './styles'
 
@@ -46,6 +45,7 @@ import {
 import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
+import { getCategories } from '../../../api/categories'
 
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
@@ -69,22 +69,46 @@ const Register = ({ navigation }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+    const [categoryId, setCategoryId] = useState(null)
+    const [allCategories, setAllCategories] = useState(null)
+
+    const getAppCategories = async () => {
+        const response = await getCategories()
+
+        if (response.status === 200) {
+            const { categories } = response.data
+
+            // Convertendo o json recebido para um aceito pelo Selector
+            const auxCategories = categories.map(({ id, name }) => {
+                return {
+                    key: id,
+                    label: name,
+                }
+            })
+            setAllCategories(auxCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
 
     const passwordInput = useRef()
 
     const loginAfterCreate = async () => {
-        const response = await authUser({
-            email,
-            password,
-        })
+        const response = await authUser({ user: { email, password } })
 
         if (response.status === 200) {
             setLoadingAlert(false)
 
-            await storeUser(response.body.user, response.token, {
-                email,
-                password,
-            })
+            await storeUser(
+                response.data.user,
+                response.headers.authorization,
+                {
+                    email,
+                    password,
+                }
+            )
 
             setTimeout(() => {
                 setNeedSignIn(false)
@@ -97,13 +121,14 @@ const Register = ({ navigation }) => {
     }
 
     const handleCreate = async () => {
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         Keyboard.dismiss()
 
         const user = {
             email,
             password,
             user_name: name,
-            birthdate: birth,
+            birthdate: birthDate,
             gender,
             race,
             country,
@@ -115,18 +140,19 @@ const Register = ({ navigation }) => {
             is_professional: isProfessional,
             risk_group: riskGroup,
             policy_version: terms.version,
+            category_id: categoryId,
         }
 
         if (!validPerson(user, institutionError)) return
         setLoadingAlert(true)
 
-        const response = await createUser(user)
+        const response = await createUser({ user })
 
         if (response.status === 200) {
             loginAfterCreate()
         } else {
             setLoadingAlert(false)
-            Alert.alert(`O email ${response.body.errors[0].detail.email}`)
+            Alert.alert(`O email ${response.data.errors[0].detail.email}`)
         }
     }
 
@@ -159,13 +185,17 @@ const Register = ({ navigation }) => {
                                 {translate('register.riskGroupMessage')}
                             </ModalText>
 
-                            <Button onPress={() => setModalRiskGroup(false)}>
-                                <ModalButton>
-                                    <ModalButtonText>
-                                        {translate('register.riskGroupButton')}
-                                    </ModalButtonText>
-                                </ModalButton>
-                            </Button>
+                            <ButtonClose
+                                onPress={() => setModalRiskGroup(false)}
+                            >
+                                <ModalClose>
+                                    <Feather
+                                        name='x'
+                                        size={scale(24)}
+                                        color='#ffffff'
+                                    />
+                                </ModalClose>
+                            </ButtonClose>
                         </ModalBox>
                     </ModalContainer>
                 </Modal>
@@ -219,6 +249,7 @@ const Register = ({ navigation }) => {
                                 format='DD-MM-YYYY'
                                 minDate='01-01-1918'
                                 maxDate={moment()
+                                    .local()
                                     .subtract(13, 'years')
                                     .format('DD-MM-YYYY')}
                                 locale='pt-BR'
@@ -288,7 +319,9 @@ const Register = ({ navigation }) => {
                                 }
                                 checked={countryCheckbox}
                                 onPress={() => {
-                                    !countryCheckbox ? setCountry(residence) : null
+                                    !countryCheckbox
+                                        ? setCountry(residence)
+                                        : null
                                     setCountryCheckbox(!countryCheckbox)
                                 }}
                             />
@@ -335,6 +368,19 @@ const Register = ({ navigation }) => {
                         setErrorCallback={setInstituitionComponentError}
                         lightTheme
                     />
+
+                    {allCategories ? (
+                        <FormInline>
+                            <FormLabel>Categoria:</FormLabel>
+                            <Selector
+                                data={allCategories}
+                                selectedKey={categoryId}
+                                initValue={translate('selector.label')}
+                                cancelText={translate('selector.cancelButton')}
+                                onChange={(option) => setCategoryId(option.key)}
+                            />
+                        </FormInline>
+                    ) : null}
 
                     <FormInline>
                         <FormLabel>{translate('register.email')}</FormLabel>

@@ -147,7 +147,7 @@ export const StatusText = styled.Text`
 export const Tips = styled.Text`
     width: 88%;
     font-size: ${scale(16)}px;
-    font-family: ArgentumSans-Medium;
+    font-family: ArgentumSans-SemiBold;
     color: #32323b;
     margin-top: ${percentage(7)}px;
     margin-bottom: ${percentage(6)}px;

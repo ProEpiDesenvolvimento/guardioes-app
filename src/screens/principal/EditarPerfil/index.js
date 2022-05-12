@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Modal, Platform } from 'react-native'
 import moment from 'moment'
 
@@ -12,8 +12,8 @@ import {
     ModalTitle,
     ModalText,
     Button,
-    ModalButton,
-    ModalButtonText,
+    ButtonClose,
+    ModalClose,
     Container,
     KeyboardScrollView,
     FormInline,
@@ -48,6 +48,8 @@ import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
+import { getAppGroup } from '../../../api/groups'
+import { getCategories } from '../../../api/categories'
 
 const EditarPerfil = ({ navigation, route }) => {
     const {
@@ -62,7 +64,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const { person } = route.params
 
     const isHousehold = person.is_household
-    const id = person.id
+    const { id } = person
     const [avatar, setAvatar] = useState(person.avatar)
     const [name, setName] = useState(person.name)
     const [email, setEmail] = useState(person.email)
@@ -76,10 +78,37 @@ const EditarPerfil = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
+    const [isVigilance, setIsVigilance] = useState(person.is_vigilance)
+    const [category, setCategory] = useState(person.category)
+    const [allCategories, setAllCategories] = useState(null)
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+
+    const getAppCategories = async () => {
+        const response = await getCategories()
+
+        if (response.status === 200) {
+            const { categories } = response.data
+
+            const auxCategories = categories.map(({ id, name }) => {
+                return {
+                    key: id,
+                    label: name,
+                }
+            })
+            setAllCategories(auxCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
+
+    useEffect(() => {
+        checkIfIsVigilance(groupId)
+    }, [groupId])
 
     const removeHousehold = async () => {
         const household = {
@@ -104,7 +133,7 @@ const EditarPerfil = ({ navigation, route }) => {
     }
 
     const editHousehold = async () => {
-        const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
 
         const newHousehold = {
             id,
@@ -117,6 +146,11 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: category.key,
+            category: {
+                id: category.key,
+                name: category.label,
+            },
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -125,12 +159,12 @@ const EditarPerfil = ({ navigation, route }) => {
         const response = await updateHousehold(newHousehold, user.id, token)
 
         if (response.status === 200) {
-            const oldHousehold = households.filter((h) => h.id === id)[0]
+            const { household } = response.data
             const newHouseholds = households.filter((h) => h.id !== id)
 
             newHouseholds.push({
-                ...oldHousehold,
                 ...newHousehold,
+                ...household,
             })
             storeHouseholds(newHouseholds)
 
@@ -143,8 +177,26 @@ const EditarPerfil = ({ navigation, route }) => {
         }
     }
 
+    const checkIfIsVigilance = async (groupId) => {
+        if (groupId) {
+            const response = await getAppGroup(groupId)
+            if (response.status === 200) {
+                const { group } = response.data
+
+                if (
+                    group.group_manager &&
+                    !group.group_manager.vigilance_email
+                ) {
+                    setIsVigilance(false)
+                }
+            }
+        } else {
+            setIsVigilance(false)
+        }
+    }
+
     const editUser = async () => {
-        const birthDate = moment(birth, 'DD-MM-YYYY').format('YYYY-MM-DD')
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         const isBrazil = country === 'Brazil'
 
         const newUser = {
@@ -158,17 +210,25 @@ const EditarPerfil = ({ navigation, route }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            is_vigilance: isVigilance,
+            category_id: category.key,
+            category: {
+                id: category.key,
+                name: category.label,
+            },
         }
 
         if (!validPerson(newUser, institutionError)) return
         setLoadingAlert(true)
 
-        const response = await updateUser(newUser, user.id, token)
+        const response = await updateUser({ user: newUser }, user.id, token)
 
         if (response.status === 200) {
+            const { user } = response.data
+
             storeUser({
-                ...user,
                 ...newUser,
+                ...user,
             })
 
             setLoadingAlert(false)
@@ -266,13 +326,15 @@ const EditarPerfil = ({ navigation, route }) => {
                             {translate('register.riskGroupMessage')}
                         </ModalText>
 
-                        <Button onPress={() => setModalRiskGroup(false)}>
-                            <ModalButton>
-                                <ModalButtonText>
-                                    {translate('register.riskGroupButton')}
-                                </ModalButtonText>
-                            </ModalButton>
-                        </Button>
+                        <ButtonClose onPress={() => setModalRiskGroup(false)}>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
                     </ModalBox>
                 </ModalContainer>
             </Modal>
@@ -349,7 +411,7 @@ const EditarPerfil = ({ navigation, route }) => {
                             date={birth}
                             format='DD-MM-YYYY'
                             minDate='01-01-1918'
-                            maxDate={moment().format('DD-MM-YYYY')}
+                            maxDate={moment().local().format('DD-MM-YYYY')}
                             locale='pt-BR'
                             confirmBtnText={translate(
                                 'birthDetails.confirmButton'
@@ -363,7 +425,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
                     <FormGroupChild>
                         <FormLabel>{translate('register.country')}</FormLabel>
-                        <Autocomplete 
+                        <Autocomplete
                             data={countryChoices}
                             value={country}
                             onChange={(option) => setCountry(option.key)}
@@ -424,16 +486,6 @@ const EditarPerfil = ({ navigation, route }) => {
                     </CheckLabel>
                 </FormInlineCheck>
 
-                {!isHousehold ? (
-                    <FormInlineCheck>
-                        <CheckBoxStyled
-                            title={translate('register.vaccination')}
-                            checked={!!user.vaccine}
-                            onPress={() => navigation.navigate('Vacinacao')}
-                        />
-                    </FormInlineCheck>
-                ) : null}
-
                 <InstitutionSelector
                     setUserInstitutionCallback={setUserInstitutionCallback}
                     setAlert={setLoadingAlert}
@@ -441,6 +493,22 @@ const EditarPerfil = ({ navigation, route }) => {
                     userIdCode={idCode}
                     setErrorCallback={setInstituitionComponentError}
                 />
+
+                {allCategories ? (
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={allCategories}
+                            initValue={
+                                category.key
+                                    ? category.label
+                                    : translate('selector.label')
+                            }
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategory(option)}
+                        />
+                    </FormInline>
+                ) : null}
 
                 <Button onPress={() => handleEdit()}>
                     <SendContainer>

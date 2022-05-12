@@ -55,13 +55,8 @@ class InstitutionSelector extends Component {
             return false
         }
 
-        const isThereSelectedGroup = this.state.selectedGroup !== null
-        if (!isThereSelectedGroup) {
-            this.setState({ currentError: translate('selector.groupError') })
-        }
-
-        const doesTheSelectedGroupRequireID = this.state.selectedGroup
-            .group_manager.require_id !== null;
+        const doesTheSelectedGroupRequireID = 
+            this.state.selectedGroup.group_manager ? this.state.selectedGroup.group_manager.require_id !== null : false
 
         const isIdPresentIfNeeded = doesTheSelectedGroupRequireID
             ? this.state.userIdCode !== null && this.state.userIdCode.length > 0
@@ -70,7 +65,7 @@ class InstitutionSelector extends Component {
             this.setState({ currentError: translate('selector.codeError') })
         }
 
-        let isIdRightLength = true
+        const isIdRightLength = true
         /*
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
             isIdRightLength =
@@ -87,7 +82,7 @@ class InstitutionSelector extends Component {
         }
         */
 
-        let codeIsNumber = true
+        const codeIsNumber = true
         /*
         if (
             doesTheSelectedGroupRequireID &&
@@ -103,21 +98,11 @@ class InstitutionSelector extends Component {
         }
         */
 
-        if (
-            isThereSelectedGroup &&
-            isIdPresentIfNeeded &&
-            isIdRightLength &&
-            codeIsNumber
-        ) {
+        if (isIdPresentIfNeeded && isIdRightLength && codeIsNumber) {
             this.setState({ currentError: '' })
         }
 
-        return (
-            isThereSelectedGroup &&
-            isIdPresentIfNeeded &&
-            isIdRightLength &&
-            codeIsNumber
-        )
+        return isIdPresentIfNeeded && isIdRightLength && codeIsNumber
     }
 
     updateParent() {
@@ -139,13 +124,30 @@ class InstitutionSelector extends Component {
         getAppRootGroup()
             .then((response) => {
                 if (response.status === 200) {
-                    this.setState({ rootGroup: response.body.group })
-                    this.getChildren(response.body.group.id)
+                    this.setState({ rootGroup: response.data.group })
+                    this.getChildren(response.data.group.id)
                 }
             })
             .then(() => {
                 if (setAlert) this.props.setAlert(false)
             })
+    }
+
+    insertSortToGroupList(data) {
+        const groupList = this.state.groupList.slice()
+
+        groupList.push(data)
+        for (let i = parseInt(groupList.length, 10) - 1; i > 0; i -= 1) {
+            if (groupList[i].id < groupList[i - 1].id) {
+                const tmp = groupList[i]
+                groupList[i] = groupList[i - 1]
+                groupList[i - 1] = tmp
+            } else {
+                break
+            }
+        }
+
+        this.setState({ groupList })
     }
 
     async getGroup(id, setAlert = true) {
@@ -155,9 +157,9 @@ class InstitutionSelector extends Component {
         getAppGroup(id)
             .then((response) => {
                 if (response.status === 200) {
-                    this.setState({ selectedGroup: response.body.group })
+                    this.setState({ selectedGroup: response.data.group })
 
-                    if (response.body.group.group_manager.require_id != null) {
+                    if (response.data.group.group_manager && response.data.group.group_manager.require_id != null) {
                         this.setState({ idCodeInputShow: true })
                     } else {
                         this.setState({ userIdCode: null })
@@ -177,7 +179,7 @@ class InstitutionSelector extends Component {
         getAppGroupChildren(id)
             .then((response) => {
                 if (response.status === 200) {
-                    if (response.body.is_child) {
+                    if (response.data.is_child) {
                         this.setState({ userGroup: id })
                         this.getGroup(id, setAlert)
                         return
@@ -189,11 +191,11 @@ class InstitutionSelector extends Component {
                         key: -1,
                     })
 
-                    const groupList = this.state.groupList.slice()
-                    groupList.push(response.body)
-
+                    this.insertSortToGroupList({
+                        ...response.data,
+                        id: parseInt(id, 10),
+                    })
                     this.setState({ selectionIndexes })
-                    this.setState({ groupList })
                 }
             })
             .then(() => {
@@ -211,10 +213,10 @@ class InstitutionSelector extends Component {
         getUserGroupPath(id)
             .then(async (response) => {
                 if (response.status === 200) {
-                    const { groups } = response.body
+                    const { groups } = response.data
                     const selectionIndexes = []
 
-                    groups.map(async (group) => {
+                    groups.forEach(async (group) => {
                         await this.getChildren(group.id, false)
 
                         selectionIndexes.push({
@@ -264,10 +266,16 @@ class InstitutionSelector extends Component {
                         value={this.state.selectionIndexes[index].label}
                         onChange={(option) => {
                             this.setState({
-                                groupList: this.state.groupList.slice(0, index + 1),
+                                groupList: this.state.groupList.slice(
+                                    0,
+                                    index + 1
+                                ),
                             })
                             this.setState({
-                                selectionIndexes: this.state.selectionIndexes.slice(0, index + 1),
+                                selectionIndexes: this.state.selectionIndexes.slice(
+                                    0,
+                                    index + 1
+                                ),
                             })
                             this.setState({ idCodeInputShow: false })
 
@@ -275,9 +283,11 @@ class InstitutionSelector extends Component {
 
                             this.setState({
                                 selectionIndexes: [
-                                    ...this.state.selectionIndexes.slice(0, index),
+                                    ...this.state.selectionIndexes.slice(
+                                        0,
+                                        index
+                                    ),
                                     option,
-                                    ...this.state.selectionIndexes.slice(index + 1),
                                 ],
                             })
 
@@ -339,7 +349,6 @@ class InstitutionSelector extends Component {
         if (elements.length === 0) {
             return null
         }
-
         let pair = null
         const rowedElements = []
 

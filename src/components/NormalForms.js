@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import ModalSelector from 'react-native-modal-selector'
 import DatePicker from 'react-native-datepicker'
 import { CheckBox } from 'react-native-elements'
+import { TouchableOpacity } from 'react-native'
 import ShadowView from 'react-native-simple-shadow-view'
 
 import { scale, percentage } from '../utils/scalling'
@@ -225,7 +226,7 @@ export const ModalContainer = styled.View`
 export const ModalBox = styled(ShadowView).attrs({})`
     max-height: 90%;
     width: 90%;
-    background-color: #ffffff;
+    background-color: #f4f4f4;
     border-radius: ${scale(18)}px;
     align-self: center;
     justify-content: center;
@@ -264,4 +265,20 @@ export const ModalButtonText = styled.Text`
     font-size: ${scale(14)}px;
     text-align: center;
     color: #348eac;
+`
+
+export const ButtonClose = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})`
+    position: absolute;
+    right: -${scale(8)}px;
+    top: -${scale(8)}px;
+    z-index: 1;
+`
+
+export const ModalClose = styled.View`
+    align-items: center;
+    background-color: #348eac;
+    border-radius: ${scale(22)}px;
+    padding: ${scale(4)}px;
 `

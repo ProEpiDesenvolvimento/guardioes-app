@@ -119,7 +119,8 @@ export default {
         },
         errorMessages: {
             error: 'Erro',
-            allFieldsAreFilled: 'Todos os campos devem ser preenchidos',
+            allFieldsAreFilled:
+                'Todos os campos devem ser preenchidos corretamente',
         },
         healthProfessional: 'Você é um profissional da saúde?',
         riskGroupLabel: 'Faz parte do grupo de risco?',
@@ -133,32 +134,37 @@ export default {
     },
     ajuda: {
         title: 'Ajuda',
+        faqBtn: 'FAQ',
         tutorialBtn: 'Tutorial',
         useTermsBtn: 'Termos e Políticas',
         aboutBtn: 'Sobre',
     },
     tutorial: {
         title: 'Tutorial',
-        tutorial: 'Tutorial de como usar o app',
+        tutorial: 'Tutorial',
         howToUse:
-            '\nPara usar o aplicativo basta clicar no ícone de reportar na tela inicial:',
-        howToUse2:
-            'Em seguida, escolha como reportar, bem ou mal. Caso escolha mal você poderá escolher os sintomas e desde quando se sente mal. Pronto, esse é o uso básico do aplicativo, caso queria aprender mais continue lendo para ver algumas dicas e outras funcionalidades',
+            '\nA funcionalidade básica do Guardiões da Saúde (GdS) é o reporte de saúde. Ela se encontra na Página Principal, mas existem outras funcionalidades. Se quiser aprender mais, continue lendo.',
+        home: 'Página Inicial',
+        homeCont:
+            'Nessa aba você pode selecionar como você está se sentindo (bem ou mal). Caso esteja mal você poderá marcar os sintomas e sinalizar há quanto tempo está se assim.\n\nVocê também pode personalizar seu GdS colocando uma foto sua no ícone ao lado do seu nome (lembrando que a foto não fica salva permanentemente no aplicativo, então caso você saia de seu conta é necessário inserir sua foto novamente). ',
         news: 'Tela de Notícias',
         newsCont:
-            'A tela de notícias é uma das funções que você acha na tela inicial, ela fica ligada no perfil do Guardiões e lá você pode ver muitas informações pois essa página está sempre atualizada.\n Já que você está por aqui dê uma passadinha lá.',
+            'A tela de notícias é a última opção que você encontra na parte inicial do app. Nessa parte estão notícias diárias sobre a pandemia e saúde em geral. Aproveita que você já está aqui e dá uma olhada no que preparamos lá! Para acessar a aba não é necessário ter uma conta no Twitter e nem estabelecer vínculo (não receberá nenhum tipo de notificação ou email).',
         newsPs:
-            'Ps: você não precisa ter conta no Twitter e você não recebe nenhum tipo de notificação/email.',
+            'PS: você não precisa ter conta no Twitter e não receberá nenhum tipo de notificação ou email.',
         advices: 'Dicas de Saúde',
         advicesCont:
-            'Aqui você encontra algumas informações importantes pra dar uma olhada, como Dengue Chicungunya e Zika, telefones úteis e também, com auxílio do Google Maps você tem acesso à hospitais e farmácias perto de você.',
+            'A aba de dicas é uma importante ferramenta para que você aprenda mais sobre a sua saúde, ela é atualizada duas vezes ao mês e conta com informações sobre vacinas, links úteis, como se prevenir na pandemia e muito mais.',
         diary: 'Diário da Saúde',
         diaryCont:
-            'Essa é uma das telas mais importantes, aqui você consegue visualizar todos os envios que você tenha feito e também tem um calendário caso você precise desses dados para esclarecer algo em um consulta médica, por exemplo.',
+            'Essa é uma das funcionalidade mais importantes do aplicativo, lá você consegue visualizar por meio do calendário da saúde e do gráfico pizza todos os reportes que você tem feito diariamente.\n\nVocê pode usar seu calendário da saúde caso você precise desses dados para esclarecer algo em uma consulta médica.',
         healthMap: 'Mapa da Saúde',
         healthMapCont:
-            'No Mapa da Saúde se tem acesso à todos os envios feitos na sua região, isso, é claro, sem expor nenhum dado sensível dos usuários. Essa função ajuda o usuário a ter uma visão de como anda a saúde das pessoas a sua volta para que ela consiga até se prevenir. \
-        Por exemplo, se você ver que em uma certa área tem muitos relatos de sintomas de gripe você pode tomar um suco de laranja, ou se tiver sintomas de Dengue você pode evitar passar no lugar.',
+            'É nessa aba que vai aparecer como as pessoas na sua região estão se sentindo. Cada ponto no mapa representa uma pessoa ou grupo de pessoas.',
+        healthMapCont2:
+            'Ao clicar em algum ponto do mapa você consegue ver o estado de saúde das pessoas que relataram naquela região. Nenhum dado sensível do usuário é exposto.',
+        healthMapCont3:
+            'Essa função te ajuda a ter uma visão de como está a saúde das pessoas a sua volta e nos locais que você pretende ir.\n\nSe você ver que em uma certa área tem muitos relatos de sintomas da COVID-19 você pode evitar passar no lugar, adiar sua ida até o local ou redobrar as medidas de prevenção ao passar nessas regiões.',
     },
     badReport: {
         title: 'O que está sentindo?',
@@ -170,20 +176,23 @@ export default {
             first:
                 'Teve contato com alguem que apresentava os mesmos sintomas?',
             second: 'Procurou algum serviço hospitalar?',
-            third: 'Deixou seu local de residência nos ultimos 14 dias?',
+            third: 'Esteve em ',
+            thirdContinuation: ' 2 dias antes ou após o início dos sintomas?',
             fourth: 'Para que país você viajou?',
             fifth: 'Aperte na bandeira para selecionar!',
         },
         yes: 'Sim',
         checkboxConfirm: 'Confirmar',
-        alertMessages: {
+        messages: {
             button: 'Mostrar Mapa',
             sending: 'Enviando...',
             thanks: 'Obrigado!',
             oops: 'Oops!',
             reportSent: 'Seu relato foi enviado.',
-            reportNotSent:
+            reportSent2:
                 'Notamos que você já relatou seu estado de saúde por essa opção hoje.',
+            reportNotSent:
+                'Houve um erro ao enviar seu relato de saúde. Tente novamente mais tarde.',
             seeADoctor:
                 'Recomendamos que, caso os sintomas continuem, procure atendimento médico!',
             confirmText: 'Confirmar',
@@ -214,7 +223,7 @@ export default {
         title: 'Diário',
         year: ' ano',
         years: ' anos',
-        participate: 'Participações',
+        participations: 'Participações',
         good: 'Bem',
         bad: 'Mal',
         report: ' dia',
@@ -234,7 +243,7 @@ export default {
         statusLast7DaysGood: 'Você tem se sentido bem',
         statusLast7DaysBad: 'Você não esteve bem',
         vaccination: 'Vacinação:',
-        vaccinationData: 'Adicione seus dados de vacinação',
+        vaccinationData: 'Atualize seus dados de vacinação',
         bioSecurity: 'Biossegurança:',
         bioSecurityQuestions: 'Responda perguntas sobre sua Instituição',
         userHowYouFelling: 'Como está se sentindo hoje?',
@@ -249,17 +258,21 @@ export default {
         owner: 'Proprietário',
     },
     locationRequest: {
-        permissionTitle: 'Permitir o uso de sua localização',
+        permissionTitle: 'Permita o uso de sua localização',
         permissionMessage:
             'O Guardiões da Saúde precisa do acesso à sua localização ',
         permissionMessage2:
             'para que você possa enviar seu estado de saúde, ver os relatórios e acessar o Mapa da Saúde.',
+        errorTitle: 'Erro ao obter sua localização',
+        errorMessage:
+            'Por favor, autorize a utilização da localização nas configurações do seu dispositivo.',
         cancelText: 'Cancelar',
         okText: 'OK',
     },
     maps: {
         title: 'Mapa',
-        guide: `Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.`,
+        guide:
+            'Cada ponto no mapa representa uma pessoa ou grupo de pessoas.\n\nA cor de um grupo representa a porcentagem de sintomáticos e o tamanho, o número de pessoas.\n\nVocê pode apertar nos pontos para saber mais.',
         confirmGuide: 'Entendido!',
     },
     news: {
@@ -277,21 +290,16 @@ export default {
     },
     about: {
         title: 'Sobre',
-
         tituloBtnUnb: 'Universidade de Brasilia',
         mensagemBtnUnb: 'Deseja ser redirecionado ao website da UnB?',
         linkBtnUnb: 'https://www.unb.br',
-
         tituloBtnProEpi:
             'ProEpi - Associação Brasileira de Profissionais de Epidemiologia de Campo',
         mensagemBtnProEpi: 'Deseja ser redirecionado ao website da ProEpi?',
         linkBtnProEPi: 'https://proepi.org.br/',
-
         textoSobreTitulo: '\nProjeto Guardiões da Saúde\n',
         textoSobre:
             'A história do aplicativo Guardiões da Saúde teve início em 2014, quando o Ministério da Saúde teve a iniciativa de promover a vigilância participativa de eventos de saúde durante a Copa do Mundo FIFA 2014.\n\nDesde então, em diferentes versões e com o apoio de diferentes parceiros, o app já foi utilizado durante outros eventos, como os Jogos Olímpicos Rio 2016.\n\nO app Guardiões da Saúde tem o grande objetivo de fortalecer a capacidade de detecção de surtos e emergências em saúde pública.\n\nEsta versão do aplicativo é uma parceria da ProEpi (Associação Brasileira de Profissionais de Epidemiologia de Campo) com a Universidade de Brasília.',
-        textoVigilancia:
-            'A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone.',
     },
     useTerms: {
         title: 'Termos e Políticas',
@@ -303,35 +311,50 @@ export default {
         disagree: 'Não aceito',
         terms: {
             textoTermosTitulo:
-                'Por favor, leia estes termos legais de uso antes de usar o aplicativo "Guardiões da Saúde". Para realizar qualquer colaboração, acesse ou baixe qualquer informação deste aplicativo. Ao acessar ou usar o aplicativo "Guardiões da Saúde", você aceita e concorda em obedecer aos termos e condições estabelecidos nos "Termos de Uso". Esses termos consistem em um contrato de colaboração entre você e o aplicativo "Guardiões da Saúde", que abrange todo o seu acesso e uso, que inclui o uso de todas as informações, dados, ferramentas, produtos, serviços e outros conteúdos disponíveis no aplicativo. Ao usar este aplicativo, você confirma que entende e concorda com as seguintes condições:',
+                '\nBem-vindo ao Guardiões da Saúde!\nConvidamos você para acessar nosso aplicativo e usar de nossos serviços, porém antes de utilizar nosso aplicativo é necessário que você leia, entenda e concorde com nossos Termos de Uso e com nossa Política de Uso de Dados Pessoais.\n\nEste termo descreve detalhadamente os seus direitos e nossos direitos em relação a utilização dos serviços que disponibilizamos através de nosso aplicativo.\n\nPortanto, leia estes termos cuidadosamente, antes de fazer o uso do aplicativo, caso você não concorde com estes nossos Termos de Uso ou ainda, não concorde com a nossa Política de Uso de Dados Pessoais, você não poderá acessar ou utilizar os serviços do aplicativo Guardiões da Saúde.',
             textoTermos_1:
-                '\n1. RESPEITO AS LEIS \n\n O usuário registrado deve acessar o aplicativo "Guardiões da Saúde" somente para fins legais e relacionados à saúde. O usuário concorda em usar o aplicativo apenas para os fins apropriados e de acordo com estes termos e limitações legais, bem como com qualquer política aplicável no Brasil. Seu acesso é proibido em territórios onde o conteúdo é considerado ilegal. Aqueles que optarem por acessar este site de outros lugares, o farão por sua própria iniciativa e serão responsáveis pelo cumprimento das leis locais aplicáveis. Os materiais não devem ser usados ou exportados em violação das leis brasileira. Qualquer pendência em relação aos materiais será resolvida pelas leis brasileira. A alteração não autorizada do conteúdo deste site é expressamente proibida.',
+                '\n1. DA ACEITAÇÃO DOS TERMOS DE USO\n\nEste termo constitui um contrato entre as partes, aplicam-se a qualquer pessoa física ou pessoa jurídica interessada em fazer o uso do aplicativo, caso você não concorde com nossa política de “Termos de uso” ou ainda nossa “Política de Uso de Dados Pessoais”, não utilize o aplicativo.\n\nAo se cadastrar em nosso aplicativo sempre será requerido ao usuário a autorização e o consentimento para coleta do uso de dados pessoais, caso você usuário não autorize a coleta e o tratamento de seus dados pessoais não será possível usar nosso aplicativo, pois o consentimento expresso é condição indispensável para uso do aplicativo.\n\nAssim, ao utilizar os nossos serviços, você reconhece, aceita e concorda com todas as provisões da nossa Política de uso de dados pessoais, incluindo, sem limitação, o uso e tratamento de suas informações de conta e seu conteúdo de acordo com nossa política.',
             textoTermos_2:
-                '\n2. RESTRIÇÕES DE USO: \n\n O uso do aplicativo só é permitido para maiores de 13 (treze) anos.',
+                '\n2. RESTRIÇÕES DE USO\n\nEste aplicativo não deve ser usado por pessoas menores de 12 anos sem o consentimento de seus pais ou responsáveis, sendo que o seu uso por crianças e adolescentes de acordo com previsão do Estatuto da Criança e do Adolescente - ECA, deverá ocorrer sob orientação dos pais ou responsável.\nO aplicativo também não deve ser utilizado por aqueles usuários que não concordem com os termos de uso do aplicativo ou sua política de uso de dados pessoais.',
             textoTermos_3:
-                '\n3. RESPONSABILIDADE PELO CONTEÚDO: \n\n Instituições e desenvolvedores do aplicativo "Guardiões da Saúde" não são responsáveis ​​pelo conteúdo de qualquer informação legal ou ilegal, possivelmente trocados pelos usuários através de redes sociais ou para a aplicação "Guardiões da Saúde". Os comentários compartilhados pelo usuário através das redes sociais não representam a opinião das instituições envolvidas no projeto e a responsabilidade cabe ao autor da mensagem. O usuário concorda que ele é o único responsável por sua própria conduta e pela veracidade das informações fornecidas durante o uso do serviço e que ele é responsável pelas consequências decorrentes do fornecimento intencional de dados incorretos. O usuário concorda que o uso do aplicativo "Guardiões da Saúde" não irá publicar, enviar, distribuir ou divulgar conteúdo ou informação difamatório, obsceno ou ilegal, incluindo informações confidenciais pertencentes a outras pessoas ou empresas e marcas registradas ou protegidas por direitos autorais, sem a autorização expressa do proprietário desses direitos. Ninguém pode agir em seu nome no uso do aplicativo "Guardiões da Saúde". Você é responsável pelo conteúdo que indivíduos não autorizados produzem ao usar este aplicativo usando seu perfil registrado com sua permissão. Essa regra não se aplica a casos de violação ou outros problemas de segurança do aplicativo.',
+                '\n3. RESPONSABILIDADE PELO CONTEÚDO\n\nO “Guardiões da Saúde” não é responsável pelo conteúdo de quaisquer informações eventualmente trocadas pelos usuários entre si, ou para o “Guardiões da Saúde”, sejam elas lícitas ou ilícitas;\n\nVocê usuário concorda que é o único responsável pela sua própria conduta e pela veracidade das informações fornecidas ao utilizar o aplicativo e que é responsável pelas consequências que resultem do fornecimento intencional de dados incorretos ou inverídicos.\n\nO usuário concorda que ao usar o aplicativo não publicará, enviará, distribuirá ou divulgará conteúdo ou informações de caráter difamatório, obsceno ou ilícito, inclusive informações de propriedades exclusivas pertencentes a outras pessoas ou empresas, bem como marcas registradas ou informações protegidas por direitos autorais, sem a expressa autorização do detentor desses direitos.\n\nNinguém pode agir em seu nome para o uso do “Guardiões da Saúde”. O usuário é responsável pelo conteúdo que outros indivíduos, autorizados por ele, produzirem ao usar o aplicativo cadastrado em seu perfil. Essa regra não se aplica aos casos de violação (utilização não autorizada) ou outros problemas de segurança do aplicativo.\n\nO “Guardiões da Saúde” ou seus mantenedores não assumem responsabilidade por quaisquer prejuízos e/ou danos a pessoas ou bens, em consequência de qualquer utilização das ideias, conteúdos, instruções, métodos, produtos ou procedimentos contidos neste aplicativo.\n\nEm hipótese alguma os profissionais envolvidos com o desenvolvimento ou gestão desse aplicativo serão responsabilizados por qualquer decisão ou ação tomada pelo usuário com base no conteúdo do “Guardiões da Saúde”.',
             textoTermos_4:
-                '\n4. ACESSIBILIDADE AO CONTEÚDO: \n\n A equipe de aplicação "Guardiões da Saúde" não garante que este aplicativo seja parcial ou totalmente funcional para uso fora do território nacional. Se optar por aceder à aplicação de outros países, fá-lo-á por sua própria iniciativa e por sua conta e risco. Você é responsável pela conformidade com as leis locais e, na medida em que as leis locais são aplicáveis, você concorda especificamente em cumprir todas as leis aplicáveis relativas à transmissão de dados técnicos exportados desse local.',
+                '\n4. PROPRIEDADE INTELECTUAL:\n\nA propriedade intelectual produzida e apresentada por meio do aplicativo Guardiões da Saúde é de propriedade exclusiva da ASSOCIAÇÃO     BRASILEIRA      DE PROFISSIONAIS DE EPIDEMIOLOGIA DE CAMPO – ProEpi e aos que atuarem como colaboradores no desenvolvimento e atualização deste aplicativo. \n\nA aplicação “Guardiões da Saúde” é um software de código aberto usado por terceiros e está sujeito aos termos da licença internacional http://opensource.org/licenses/gpl-3.0 GNU General Public License, versão 3 (GPL-3.0). Os direitos e uso do conteúdo e dos relatórios gerados pelo aplicativo são cedidos pelos desenvolvedores, em especial aqueles que decorrem dos termos da licença Creative Commons – Atriubuição-NãoComercial 4.0 internacional.\n\nO USUÁRIO não adquire, pelo presente instrumento ou pela utilização do APLICATIVO, nenhum direito de propriedade intelectual ou outros direitos exclusivos, incluindo patentes, desenhos, marcas, direitos autorais ou quaisquer direitos sobre informações confidenciais ou segredos de negócio, bem como todo conteúdo disponibilizado no aplicativo mobile, incluindo, mas não se limitando a textos, gráficos, imagens, logotipos, ícones, fotografias, conteúdo editorial, notificações, softwares e qualquer outro material, sobre ou relacionados ao APLICATIVO ou nenhuma parte dele.\n\nO USUÁRIO também não adquire nenhum direito sobre ou relacionado ao aplicativo ou qualquer componente dele, além dos direitos expressamente licenciados ao USUÁRIO sob o presente contrato ou em qualquer outro contrato mutuamente acordado por escrito entre o USUÁRIO e a PROEPI. \n\nQuaisquer direitos não expressamente concedidos sob o presente instrumento são reservados. Também será de propriedade exclusiva da ProEpi ou está devidamente licenciado, todo o conteúdo disponibilizado no aplicativo mobile, incluindo, mas não se limitando a, textos, gráficos, imagens, logos, ícones, fotografias, conteúdo editorial, notificações, softwares e qualquer outro material.',
             textoTermos_5:
-                '\n5. PROPRIEDADE INTELECTUAL: \n\n O direito de autoria do conteúdo produzido e apresentado nesta aplicação pertence aos respectivos autores e colaboradores deste aplicativo. Esta premissa não se aplica a informações consideradas de domínio público ou de utilidade pública. Todas as outras marcas comerciais, marcas de serviço, nomes e logotipos que aparecem nesse aplicativo são de propriedade de seus respectivos proprietários.\n\n A aplicação "Guardiões da Saúde" é um software de código aberto usado por terceiros está sujeito aos termos da licença internacional http://opensource.org/licenses/gpl-3.0 GNU General Public License, versão 3 (GPL-3.0 ). Direitos de uso do conteúdo e relatórios gerados pelo aplicativo são atribuídos pelos desenvolvedores, especialmente os dos termos da licença Creative Commons http://creativecommons.org/licenses/by-nc/4.0/ - Atribuição - Não Comercial 4.0 Internacional http://creativecommons.org.br/as-licencas/attachment/by-nc/. \n\n Somente as informações fornecidas pelos serviços de saúde devem ser consideradas oficiais para divulgação pública no que tem a ver com os dados relacionados a esse tópico. Nenhuma das informações do aplicativo "Guardiões da Saúde", apesar do esforço da equipe para garantir a qualidade, a atualidade e a autenticidade das informações, deve ser considerada oficial para divulgação pública. Os dados coletados através do aplicativo "Guardiões da Saúde" são provenientes de usuários que voluntariamente forneceram as informações e que podem ser influenciados pela sua capacidade de acessar dispositivos móveis ou computadores com especificações tecnológicas mínimas. \n\n Dessa forma, as informações geradas a partir dessa estratégia podem ser insuficientes para representar estatisticamente o perfil epidemiológico real do período e do local do relato. A informação lúdica ou utilidade pública pode apresentar erros ou eventuais falhas de atualização, sendo recomendada sua validação pelos usuários em casos de emergência ou qualquer outra situação de ameaça à sua saúde ou integridade.',
+                '\n5. DO PREÇO\n\nO Cadastro de USUÁRIOS no APLICATIVO é gratuito, bem como o seu uso.',
             textoTermos_6:
-                '\n6. LEIS, REGULAMENTOS, DIREITOS E DEVERES \n\n É política da equipe de aplicação "Guardiões da Saúde" cumprir todas as leis e regulamentos aplicáveis ​​e atuais. Caso qualquer disposição destes Termos de Uso esteja em conflito com qualquer lei ou regulamento aplicável, a lei ou regulamento aplicável substituirá a disposição contrária. Estes Termos de Uso e ao uso do aplicativo "Guardiões da Saúde" são e serão regidos e interpretados de acordo com as leis internas do Brasil, sem levar em conta as suas regras de conflito de leis. Em caso de qualquer conflito entre as leis, regras e regulamentos do Brasil e do exterior, as leis, regras e regulamentos do Brasil prevalecerão. A aplicação "Guardiões da Saúde" pode, mas não é necessária para monitorar, revisar e restringir o acesso a qualquer uma das áreas onde os usuários transmitem informações e pode retirar o acesso a qualquer desta informação ou comunicação. Se você tiver alguma dúvida sobre o aplicativo "Guardiões da Saúde", não hesite em nos contatar pelo e-mail: contato@proepi.org.br',
+                '\n6. DAS PROIBIÇÕES AO USUÁRIO\n\nEm hipótese alguma é permitido ao USUÁRIO ou a terceiros por ele autorizados, de forma geral:\n\na) Copiar, ceder, sublicenciar, vender, dar em locação ou em garantia, reproduzir, doar, alienar de qualquer forma, transferir total ou parcialmente, sob quaisquer modalidades, gratuita ou onerosamente, provisória ou permanentemente, o APLICATIVO objeto deste CONTRATO, assim como seus módulos, partes, manuais ou quaisquer informações a ele relativas;\n\nb) Retirar ou alterar, total ou parcialmente, os avisos de reserva de direito existente no APLICATIVO e na documentação;\n\nc) Praticar engenharia reversa, descompilação ou desmontagem do APLICATIVO.',
             textoTermos_7:
-                '\n7. USO DE CONTRIBUIÇÕES: \n\n Ao enviar uma contribuição por escrito ou publicar informações no aplicativo "Guardiões da Saúde", você concede uma licença perpétua, isenta de royalties, licença incondicional para este aplicativo e qualquer organização sucessora, para publicar sua contribuição no aplicativo "Guardiões da Saúde". ", Bem como divulgá-lo, de forma agregada (nunca individual), exceto para usuários que permitirem a vigilância ativa institucional, a outros meios de comunicação, e discuti-lo ou referenciá-lo em quaisquer publicações oriundas do aplicativo "Guardiões da Saúde". Você também concorda que o aplicativo "Guardiões da Saúde" tem o direito, mas não a obrigação, de editar ou remover qualquer contribuição, ou incluí-la no texto, em conjunto com outras contribuições, a critério exclusivo da equipe relacionada a essa aplicação.',
+                '\n7. DA INSENÇÃO DE RESPONSABILIDADE DA PROEPI\n\nA ProEpi não se responsabiliza:\na. Por falha de operação, operação por pessoas não autorizadas ou qualquer outra causa em que não exista culpa da PROEPI;\nb. Por problemas definidos como “caso fortuito” ou “força maior”, contemplados pelo Art. 393 do Código Civil Brasileiro;\nc. Por eventuais problemas oriundos de ações de terceiros que possam interferir na qualidade do serviço;',
             textoTermos_8:
-                '\n8. SEGURANÇA E GARANTIA DE PRIVACIDADE: \n\n O sigilo e a privacidade de todas as informações produzidas por você no aplicativo "Guardiões da Saúde" serão garantidos e o acesso às informações seguirá as regras fornecidas na Lei de Acesso à Informação. Reservamo-nos o direito de usar essas informações internamente e, neste escopo, sua contribuição será vinculada ao seu e-mail e será anônima para qualquer finalidade de análise dos dados. Informamos também que, para atender ao objetivo principal da aplicação, que é identificar aglomerados de indivíduos com sintomas, as informações sobre seu estado de saúde serão geolocalizadas através da captura do sinal GPS de seu dispositivo. O aplicativo "Guardiões da Saúde", seus colaboradores e usuários, incluindo agências governamentais e não governamentais, dependem dos usuários para a precisão das contribuições. A equipe não é responsável por erros ou imprecisões em qualquer envio. A deturpação deliberada de informações por um usuário pode constituir uma violação da lei e, se grave, será informada às autoridades governamentais apropriadas.',
+                '\n8. DAS SANÇÕES\n\nSem prejuízos das demais medidas legais cabíveis, a PROEPI, poderá a qualquer momento, independente de autorização ou notificação prévia, advertir, suspender, eliminar contas de usuários que:\n1. violar quaisquer dispositivos deste “Termos de Uso” ou nossa “Política de Uso de Dados Pessoais”;\n\n2. descumprir seus deveres de usuário, incluir informações falsas no seu cadastro, informar dados falsos ou ainda promover ações para provocar o mau funcionamento do aplicativo;\n\n3. que tiver comportamento incompatível com a boa-fé contratual, bem como comportamento que ofenda a terceiros, comentários de cunho ofensivo cujo o conteúdo seja ligado a raça, cor, orientação sexual, religiosa ou ainda de qualquer outra característica com finalidade preconceituosa;\n\n4. usar o aplicativo para fins ilícitos ou mesmo finalidade divergente da pretendida por seus idealizadores;',
             textoTermos_9:
-                '\n9. ATUALIZAÇÃO DOS GUARDIÕES DE APLICAÇÃO EM SAÚDE: \n\n Pode haver modificações neste aplicativo e em seus Termos de Uso. A menos que você indique o contrário, seu uso do Webapp e do aplicativo indica a aceitação integral dos Termos de Uso nessa versão atual, toda vez que você usar o aplicativo. "Guardiões da Saúde". Fique atento às atualizações e, em caso de dúvida, os Termos de Uso estarão sempre disponíveis para acesso e acordo ou não.',
+                '\n9. RESPONSABILIDADE POR PROBLEMAS TECNOLÓGICOS:\n\nPoderá ocorrer eventualmente, a indisponibilidade de todo conteúdo ou parte dele no “Guardiões da Saúde”, podendo ainda não funcionar corretamente em algum momento. Fazemos esforços razoáveis para evitar problemas tecnológicos, mas falhas podem ocorrer nesse aplicativo, por problemas tecnológicos das mais diversas naturezas, tais como vírus, rotinas de programação prejudiciais ou problemas relacionados ao aparelho do usuário;\nO “Guardiões da Saúde” não se responsabiliza por qualquer dano ou prejuízo causado pelo desempenho ou falha no desempenho de toda ou qualquer parte do aplicativo. O “Guardiões da Saúde” não se responsabiliza por quaisquer defeitos, atrasos ou erros resultantes da utilização deste aplicativo pelo usuário;\nO uso de todas as funcionalidades da aplicação “Guardiões da Saúde” requer disponibilidade de acesso à Internet pelo usuário, através de rede wi-fi ou cabo de dados. A ausência desse pré-requisito pode limitar o uso do aplicativo com todo o seu potencial de uso. A equipe de aplicação dos “Guardiões da Saúde”, considerando este aviso, não assume nenhuma responsabilidade como resultado dessa limitação. A isenção de responsabilidade aplica-se a todos e quaisquer danos ou prejuízos, incluindo aqueles causados por qualquer falha de desempenho, erro, omissão, interrupção, apagamento, defeito, atraso na operação ou transmissão, vírus de computador, falha de linha de comunicação, roubo, destruição ou acesso não autorizado, a alteração ou uso do aplicativo, seja por violação de contrato, comportamento ilícito, negligência ou qualquer outra causa de ação;',
             textoTermos_10:
-                '\n10. RESPONSABILIDADE POR AÇÕES COM BASE NO CONTEÚDO: \n\n O aplicativo "Guardiões da Saúde" não assume responsabilidade por nenhum dano e/ou dano a pessoas ou propriedades, como resultado de qualquer uso de ideias, conteúdo, instruções, métodos, produtos ou procedimentos contidos naquele aplicativo. Sob nenhuma circunstância os profissionais envolvidos com o desenvolvimento ou gerenciamento deste aplicativo serão responsabilizados por qualquer decisão ou ação tomada por você com base no referido conteúdo. Em face de ameaças ou qualquer outro risco para sua saúde ou integridade, sempre busque orientações validadas e atualizadas dos serviços locais de saúde pública.',
+                '\n10. DA ATUALIZAÇÃO DO “GUARDIÕES DA SAÚDE”\n\nAs modificações desse aplicativo, de seu Termos de Uso e/ou Política de Uso de Dados Pessoais poderão ocorrer e independem de aviso prévio. O usuário deve ficar atento as atualizações e, em caso de dúvida, os “Termos de Uso” estarão sempre disponíveis para acesso e concordância ou não\nA menos que indique o contrário, uso do aplicativo indica a aceitação integral destes termos na versão vigente (atualizada) cada vez que o usuário usar o “Guardiões da Saúde”.',
             textoTermos_11:
-                '\n11. RESPONSABILIDADE POR PROBLEMAS TECNOLÓGICOS: \n\n Eventualmente, todo o conteúdo ou qualquer parte do aplicativo "Guardiões da Saúde" pode não estar disponível e pode não funcionar corretamente a qualquer momento. Faremos todos os esforços razoáveis ​​para evitar problemas tecnológicos, mas pode ocorrer a qualquer momento nesta aplicação problemas tecnológicos de diversas naturezas, tais como vírus, rotinas de programação nocivos ou problemas relacionados com o dispositivo. O Webapp e o aplicativo são fornecidos "como estão" e "conforme disponíveis". Sem limitar o nosso aviso geral, não garante a disponibilidade, integridade, oportunidade, funcionalidade, confiabilidade, seqüenciamento ou velocidade de entrega nesta aplicação ou qualquer parte do conteúdo. O aplicativo "Guardiões da Saúde" não é responsável por nenhum dano ou prejuízo causado pelo desempenho ou falha no desempenho de toda ou qualquer parte do aplicativo. O aplicativo "Guardiões da Saúde" não é responsável por qualquer defeito, atraso ou erro resultante do uso deste aplicativo. O uso de todas as funcionalidades da aplicação "Guardiões da Saúde" requer disponibilidade de acesso à Internet pelo usuário, através de rede wi-fi ou cabo de dados. A ausência desse pré-requisito pode limitar o uso do aplicativo com todo o seu potencial de uso. A equipe de aplicação dos "Guardiões da Saúde", considerando este aviso, não assume nenhuma responsabilidade como resultado dessa limitação. Este aviso aplica-se a todos e quaisquer danos, incluindo aqueles causados ​​por qualquer falha de desempenho, erro, omissão, interrupção, apagamento, defeito, atraso na operação ou transmissão, vírus de computador, falha na linha de comunicação, roubo, destruição ou acesso não autorizado a alteração ou utilização de qualquer propriedade, seja por violação de contrato, comportamento ilícito, negligência ou qualquer outra causa de ação.',
+                '\n11. CONSIDERAÇÕES FINAIS:\n\nO acesso ao aplicativo representa a aceitação expressa e irrestrita dos Termos de Uso acima descritos. \nAo concordar com esses termos o usuário concede uma licença perpétua, isenta de royalties, licença incondicional para o “Guardiões da Saúde”, mantido pela Associação Brasileira de Profissionais de Epidemiologia de Campo - ProEpi e todas as organizações sucessoras, para publicar a sua contribuição de forma agregada, nunca individualizada, no próprio aplicativo, bem como divulgá-la aos serviços de vigilância em saúde pública.  \nVocê também concorda que o aplicativo “Guardiões da Saúde” tem o direito, mas não a obrigação, de editar ou remover qualquer contribuição, ou incluí-la no texto, em conjunto com outras contribuições, a critério exclusivo da equipe relacionada a essa aplicação.\nO aplicativo “Guardiões da Saúde” não faz a indicação de qualquer diagnóstico, tratamentos ou medicamentos para a COVID 19 ou qualquer outra doença, caso o usuário constate mediante autoavaliação qualquer sintoma provável de Covid 19 ou qualquer outra doença, deverá imediatamente procurar um médico de sua confiança ou procurar atendimento em uma Unidade de Saúde mais próxima de sua localidade.\nSeu acesso é proibido em territórios onde o conteúdo seja considerado ilegal. Aqueles que optarem por acessar aplicativo a partir de outras localidades o farão por iniciativa própria e serão responsáveis pelo cumprimento das leis locais aplicáveis.\nOs dados não deverão ser usados ou exportados em descumprimento das leis brasileiras. Qualquer pendência em relação aos dados será dirimida pelas leis brasileiras;\nSe você tiver alguma dúvida sobre o aplicativo “Guardiões da Saúde”, não hesite em nos contatar pelo e-mail: support@proepi.zendesk.com',
             textoTermos_12:
-                '\n12. RESPONSABILIDADE POR INFORMAÇÕES DE TERCEIROS: \n\n A provisão através do Webapp e a aplicação de links e referências a outros sites, publicações ou recursos de informação não constituem endosso a esses sites ou seus recursos pelo aplicativo "Guardiões da Saúde", seus agentes ou representantes. A equipe de aplicação "Guardiões da Saúde" não faz representações ou afirmações sobre a qualidade, conteúdo e precisão das informações, serviços ou produtos que possam ser fornecidos por esses recursos e, especificamente, está isenta de quaisquer garantias, incluindo, mas não limitado a garantias implícitas ou expressas de comercialização ou adequação a qualquer uso, aplicação ou propósito específico.',
-            textoTermos_13:
-                '\n13. CONSIDERAÇÕES FINAIS \n\n O acesso ao serviço representa a aceitação expressa e irrestrita dos Termos de Uso descritos acima. Ao concordar com estes termos, você concede uma licença perpétua, isenta de royalties, licença incondicional para o aplicativo "Guardiões da Saúde" e todas as organizações sucessoras, para publicar sua contribuição de forma agregada, no próprio aplicativo, bem como divulgá-los aos serviços de vigilância de saúde pública relacionados. Você também concorda que o aplicativo "Guardiões da Saúde" tem o direito, mas não a obrigação, de editar ou remover qualquer contribuição a critério exclusivo da equipe do aplicativo.\n',
+                '\n12. DO FORO\n\nPara solucionar eventuais litígios fica eleito o Foro da Cidade de Brasília – DF, Brasil.',
+            textoTituloPoliticas: 'POLÍTICAS DE USO DE DADOS PESSOAIS',
+            textoPoliticas_1:
+                '\nBem-vindo(a)! Obrigado por utilizar o Guardiões da Saúde!\nEste instrumento tem a finalidade de demonstrar a transparência no tratamento de dados pessoais, orientando-se pela prática da boa-fé e obediência aos princípios escupidos no art. 6º da Lei 13.709/18, Lei Geral de Proteção de Dados Pessoais.\nO aplicativo Guardiões da Saúde é mantido pela ASSOCIAÇÃO BRASILEIRA DE PROFISSIONAIS DE EPIDEMIOLOGIA DE CAMPO - PROEPI, pessoa jurídica de direito privado, com natureza e fins não lucrativos e não partidários, inscrita no CNPJ/MF sob o nº 20.399.059/0001-01, com sede no SRTVS Quadra 701, Bloco O, Edifício Multiempresarial, Asa Sul, Brasília/DF, CEP: 70.340-000, que atua na qualidade de Controlador\nEste termo foi elaborado em conformidade com Lei a Geral de Proteção de Dados Pessoais, Lei 13.709/18.\nEste instrumento tem a finalidade de demonstrar a transparência no tratamento de dados, orientando-se pela prática da boa-fé e obediência aos princípios escupidos no art. 6º da Lei Geral de Proteção de Dados Pessoais.\nEsta política de privacidade e uso de dados pessoais se aplica a todos usuários e/ou visitantes do aplicativo, aos que fizerem o download do aplicativo ou ainda a quem de qualquer outra maneira tenha acesso ao aplicativo.',
+            textoPoliticas_2:
+                '\nA quem se destina o aplicativo\nO uso deste aplicativo é voltado para pessoas maiores de 12 anos, assim os dados pessoais referentes as crianças, pessoas com 12 anos incompletos, somente devem podem ser coletados através do consentimento dos seus responsáveis.\nAssim, os adolescentes, pessoas da faixa etária compreendida dos 12 anos até 18 anos incompletos só devem fazer o uso do aplicativo com consentimento de seus pais ou responsáveis.\nO Controlador, no tratamento de dados pessoais das pessoas adolescentes referidas acima se compromete a fazê-lo em cumprimento ao disposto no art. 14 da Lei Geral de Proteção de Dados, no melhor interesse para essas pessoas.',
+            textoPoliticas_3:
+                '\nCOMO COLETAMOS OS DADOS\n\nOs dados são inseridos pelo titular, através do preenchimento de formulários que servem para cadastra-lo como usuário no aplicativo.\n\nTodos os dados somente serão coletados após o consentimento pelo seu titular.\n\nQUAIS DADOS COLETAMOS E SUA FINALIDADE\n\nSão coletados os seguintes dados pessoais, fornecidos pelo titular:\nNome\nGênero\nRaça\nData de nascimento\nPaís de origem\nEstado\nEndereço\nProfissão\nTelefone\nE-mail\n\nEstes dados são coletados com a finalidade de viabilizar a prestação de serviços e aprimorar a experiência de usuário, além disto, servem para identificar o usuário no aplicativo. Podem ainda ser coletados pelo aplicativo, dados sensíveis relativos à saúde, genética, origem étnica ou racial, que serão fornecidos pelo usuário e somente serão colhidos com o consentimento do mesmo. Estes dados tem como finalidade checar, monitorar a incidência de prováveis sintomas relacionados a COVID-19, cruzando informações relacionadas a fatores locais, regionais, genéticos, que servirão para fins didáticos de estudos e pesquisas sobre a doença da Covid -19.',
+            textoPoliticas_4:
+                '\nDO CONSENTIMENTO E RESPONSABILIZAÇÃO\n\nApós o usuário realizar o download da aplicação e criar um perfil de usuário através do preenchimento de formulário que consta na plataforma, o titular terá oportunidade de expressar seu consentimento de forma inequívoca com esta política de uso de dados pessoais e concordância com todo seus termos expressos, somente com consentimento do usuário é que é possível se cadastrar e fazer uso do aplicativo.\nTodos os dados pessoais mencionados neste termo somente serão colhidos com o consentimento do usuário titular dos dados. É a partir do seu consentimento que tratamos os seus dados pessoais. O consentimento é a manifestação livre, informada e inequívoca pela qual você autoriza a ProEpi a tratar seus dados pessoais.\nAssim, em consonância com a Lei Geral de Proteção de Dados Pessoais, seus dados somente serão coletados, tratados e armazenados mediante prévio e expresso consentimento.\nA aceitação de nosso termo de política de privacidade e uso de dados pessoais deverá ser feita quando você acessar o aplicativo, através de confirmação inequívoca de concordância, garantindo seu uso de boa-fé e para fins lícitos, mantendo-se a veracidade das informações inseridas pelo usuário na plataforma, sob pena de exclusão do usuário do aplicativo e ainda a sua responsabilização tanto na esfera cível e criminal.',
+            textoPoliticas_5:
+                '\nDO COMPARTILHAMENTO DE DADOS COM TERCEIROS\n\nA Controladora poderá, com o consentimento do titular, compartilhar os dados pessoais fornecidos pelo usuário com seus parceiros, que também atuarão como Controladores.\n\nAlém da ProEpi, atuam ainda como na condição de Controladores:\n\n\t1. Universidade Federal de Educação, Ciência e Tecnologia do Norte de Minas;\n\nOs demais Controladores apenas terão acesso aos dados pessoais referentes aos usuários que pertencerem a sua instituição.\n\nOs parceiros da Controladora utilizarão os dados pessoais com observância as regras dispostas na Lei Geral de Proteção de Dados Pessoais.\nA Controladora fica ainda autorizada a compartilhar os dados pessoais do Titular com outros agentes de tratamento de dados, caso seja necessário para as finalidades listadas neste termo, observados os princípios e as garantias estabelecidas pela Lei nº 13.709/18.',
+            textoPoliticas_6:
+                '\nDA SEGURANÇA NO TRATAMENTO DE DADOS\n\nPara mantermos suas informações pessoais seguras, usamos ferramentas físicas, eletrônicas e gerenciais orientadas para a proteção da sua privacidade.\nAplicamos essas ferramentas levando em consideração a natureza dos dados pessoais coletados, o contexto e a finalidade do tratamento e os riscos que eventuais violações gerariam para os direitos e liberdades do titular dos dados coletados e tratados.\nEntre as medidas que adotamos, destacamos as seguintes:\n\t• Apenas pessoas autorizadas têm acesso a seus dados pessoais;\n\t• O acesso a seus dados pessoais é feito somente após o compromisso de confidencialidade;\n\t• Seus dados pessoais são armazenados em ambiente seguro e idôneo;\n\nDA ISENÇÃO DE RESPONSABILIDADE\n\nEmbora adotemos elevados padrões de segurança a fim de evitar incidentes, não há nenhuma plataforma virtual inteiramente livre de riscos.\n\nNesse sentido, a ProEpi não se responsabiliza por:\nI – Quaisquer consequências decorrentes da negligência, imprudência ou imperícia dos usuários em relação a seus dados individuais. \nII – Ações maliciosas de terceiros, como ataques de hackers;\nIII – Inveracidade das informações inseridas pelo usuário nos registros necessários para a utilização dos serviços do aplicativo;\nQuaisquer consequências decorrentes de informações falsas ou inseridas de má-fé são de inteira responsabilidade do usuário, podendo incorrer em sanção na esfera cível como também criminal.',
+            textoPoliticas_7:
+                '\nDO TÉRMINO DO TRATAMENTO DE DADOS\n\nNão mantemos as suas informações pessoais por mais tempo do que o necessário para os objetivos para os quais são processadas. Assim, o término do tratamento de dados se dará com a finalidade atingida ou quando os dados deixarem de ser necessários para o alcance da finalidade que se destinam.\n\nPode ainda o titular se valendo do seu direito revogar o consentimento a qualquer tempo, bem como pode ocorrer também o término do tratamento de dados de acordo com as hipóteses previstas no art. 15 da LGPD.\n\nOs dados pessoais poderão excepcionalmente ser conservados, seguindo-se as regras do art. 16 da LGPD.\n\nDA REVOGAÇÃO DO CONSENTIMENTO\nO usuário poderá a qualquer tempo revogar o seu consentimento e solicitar a eliminação de seus dados pessoais do banco de dados do aplicativo, sendo que para isso deverá entrar em contato através do e-mail support@proepi.zendesk.com  e requerer a exclusão de seus dados, bem como poderá ainda da mesma maneira, solicitar a correção de seus dados, alteração, requerer informações sobre segurança e uso de dados pessoais.\n\nÉ importante destacar que a revogação do consentimento para uso de dados pessoais implica na impossibilidade de acesso e uso do aplicativo, já que o consentimento é obrigatório e indispensável para seu uso.\n\nDAS ALTERAÇÕES DA POLÍTICA DE USO DE DADOS PESSOAIS\n\nA atual versão da Política de Privacidade foi formulada e atualizada pela última vez em: 11/08/2021.\nReservamos o direito de modificar essa política de privacidade a qualquer momento, independente de aviso prévio ou autorização.\nAs modificações deste termo de privacidade poderão servir para refletir alterações na legislação, em nossos serviços prestados através do aplicativo ou ainda quando for o caso, para avanços tecnológicos.\nAssim, recomenda-se ao usuário que revise os termos com frequência. As alterações da política de privacidade surtirão efeito imediatamente após a sua publicação na plataforma. Nossos termos de uso, política de privacidade e uso de dados pessoais estarão sempre disponíveis, atualizados no aplicativo e de fácil acesso ao usuário.',
+            textoPoliticas_8:
+                '\nCOMO ENTRAR EM CONTATO COM A PROEPI\n\nVocê pode entrar em contato com a ProEpi, através do e-mail support@proepi.zendesk.com,este e-mail é um canal de comunicação do nosso encarregado de Proteção de Dados Pessoais, que se destina exclusivamente para tratar sobre quaisquer dúvidas relacionadas a política de privacidade, podendo ainda, fazer reclamação sobre qualquer violação das leis de proteção de dados, solicitar correção de dados incompletos, inexatos ou desatualizados e também requerer a revogação de consentimento e eliminação de dados do aplicativo (perfil de usuário).\nDa Legislação e do Foro\nPara a solução de qualquer controvérsia decorrente deste instrumento será aplicada integralmente a Lei Brasileira. \nFica eleito o foro da Cidade de Brasília – DF, para dirimir eventuais litígios.\n\n\nLeonardo B. Macedo\nEncarregado de Dados (DPO)\nProEpi\n',
         },
-        compilation: 2,
+        compilation: 3,
     },
     vigilanceTerms: {
         title: 'POLÍTICA DE PRIVACIDADE E PROTEÇÃO DE DADOS',
@@ -358,8 +381,16 @@ export default {
     },
     vaccination: {
         title: 'Vacinação',
+        doses: 'Doses',
         titleError: 'Campos inválidos',
         messageError: 'Por favor, preencha todos os campos corretamente.',
+        titleError2: 'Erro ao adicionar dose',
+        messageError2:
+            'Você atingiu o limite de doses para esse tipo de vacina.',
+        messageError3:
+            'Verifique se a data está correta ou corrija a dose antiga.',
+        confirmDeleteDose: 'Deletar dose',
+        confirmDeleteDose2: 'Deseja deletar essa dose?',
         titleModal: 'Informações da vacina',
         nameVaccine: 'Nome: ',
         laboratoryVaccine: 'Laboratório: ',
@@ -367,15 +398,12 @@ export default {
         dosesVaccine: 'Número de doses: ',
         minIntervalVaccine: 'Intervalo entre as doses: ',
         intervalVaccinePeriod: ' dias',
-        question1Label:
-            'Você já recebeu a 1ª dose da vacina contra a COVID-19?',
-        question2Label:
-            'Você já recebeu a 2ª dose da vacina contra a COVID-19?',
-        vaccine1Label: 'Vacina da 1º dose (ou única):',
-        vaccine2Label: 'Vacina da 2º dose:',
+        titleAddDose: 'Adicionar dose',
+        titleEditDose: 'Editar dose ',
         dateField: 'Data',
-        yesField: 'Sim',
-        noField: 'Não',
+        delete: 'Apagar',
+        save: 'Salvar',
+        add: 'Adicionar',
     },
     drawer: {
         reportRumor: 'Reportar Rumor',
@@ -383,19 +411,13 @@ export default {
         logOut: 'Sair',
         app: 'Aplicativo',
         toSurveillance: 'Vigilância Ativa',
+        toVaccination: 'Vacinação',
         share: 'Compartilhar',
         shareLink: 'Guardiões da Saúde\nhttps://linktr.ee/guardioesdasaude\n',
         toHelp: 'Ajuda',
-        toFAQ: 'FAQ',
-        participateSuccess: 'Você já está participando!',
-        participateQuestion: 'Deseja participar?',
-        confirmRead:
-            'Confirmo que li as informações e estou ciente das alterações que serão realizadas após a confirmação',
-        cancelParticipation: 'Cancelar Participação',
-        participate: 'Participar',
     },
     map: {
-        people: 'Pessoas: ',
+        people: 'Reports: ',
         symptomatic: 'Sintomáticos: ',
         noLocal: 'Essas pessoas não compartilharam seu local',
         alert: 'Alertar Contatos',
@@ -405,10 +427,21 @@ export default {
     },
     rumor: {
         title: 'Rumor',
-        rumorSent: 'Rumor registrado! ',
+        rumorSent: 'O Rumor foi registrado.',
     },
-    surveilanceInvite: {
-        title: 'Faça parte da vigilância ativa',
+    surveillance: {
+        title: 'Vigilância Ativa',
+        whatIs: 'O que é?',
+        phone: 'Informe seu telefone:',
+        textAbout:
+            'A Vigilância Ativa Institucional tem o intuito de conhecer, monitorar e identificar a situação de saúde dos usuários do aplicativo, que pertencem a alguma instituição, com enfoque nos sintomas relatados da COVID-19. Assim, ao apresentar os sintomas, o mesmo receberá auxílio de especialistas da área de saúde via telefone.',
+        participateSuccess: 'Você já está participando!',
+        participateQuestion: 'Deseja participar?',
+        confirmRead:
+            'Confirmo que li as informações e estou ciente das alterações que serão realizadas após a confirmação',
+        cancelParticipation: 'Cancelar Participação',
+        participate: 'Participar',
+        titleMessage: 'Faça parte da Vigilância Ativa',
         message:
             'você ainda não é um(a) vigilante ativo(a). Deseja participar?',
         cancelButton: 'Não',

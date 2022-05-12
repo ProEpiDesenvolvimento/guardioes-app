@@ -1,12 +1,11 @@
-import { API_URL } from 'react-native-dotenv'
+import api from './api'
 
 export const getVaccines = async (token) => {
     let response = {}
 
     try {
-        response = await fetch(`${API_URL}/vaccines`, {
+        response = await api.get(`/vaccines`, {
             headers: {
-                Accept: 'application/vnd.api+json',
                 Authorization: token,
             },
         })
@@ -14,8 +13,69 @@ export const getVaccines = async (token) => {
         console.log(err)
     }
 
-    return {
-        status: response.status,
-        body: response.status === 200 ? await response.json() : null,
+    return response
+}
+
+export const getDoses = async (token) => {
+    let response = {}
+
+    try {
+        response = await api.get(`/doses`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
     }
+
+    return response
+}
+
+export const sendDose = async (data, token) => {
+    let response = {}
+
+    try {
+        response = await api.post(`/doses`, data, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
+export const updateDose = async (data, token) => {
+    let response = {}
+
+    try {
+        response = await api.patch(`/doses/${data.id}`, data, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
+export const deleteDose = async (data, token) => {
+    let response = {}
+
+    try {
+        response = await api.delete(`/doses/${data.id}`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
 }

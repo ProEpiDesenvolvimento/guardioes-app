@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Modal } from 'react-native'
 import moment from 'moment'
 
@@ -10,8 +10,8 @@ import {
     ModalBox,
     ModalTitle,
     ModalText,
-    ModalButton,
-    ModalButtonText,
+    ButtonClose,
+    ModalClose,
     Container,
     KeyboardScrollView,
     FormInline,
@@ -42,6 +42,7 @@ import {
 import { validPerson } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
+import { getCategories } from '../../../api/categories'
 
 const NovoPerfil = ({ navigation }) => {
     const { token, user } = useUser()
@@ -61,6 +62,28 @@ const NovoPerfil = ({ navigation }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+    const [categoryId, setCategoryId] = useState(null)
+    const [allCategories, setAllCategories] = useState(null)
+
+    const getAppCategories = async () => {
+        const response = await getCategories()
+
+        if (response.status === 200) {
+            const { categories } = response.data
+
+            const auxCategories = categories.map(({ id, name }) => {
+                return {
+                    key: id,
+                    label: name,
+                }
+            })
+            setAllCategories(auxCategories)
+        }
+    }
+
+    useEffect(() => {
+        getAppCategories()
+    }, [])
 
     const showLoadingAlert = () => {
         setShowAlert(true)
@@ -68,9 +91,11 @@ const NovoPerfil = ({ navigation }) => {
     }
 
     const handleCreate = async () => {
+        const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
+
         const household = {
             description: name,
-            birthdate: birth,
+            birthdate: birthDate,
             gender,
             race,
             kinship,
@@ -78,6 +103,7 @@ const NovoPerfil = ({ navigation }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
+            category_id: categoryId,
         }
 
         if (!validPerson(household, institutionError)) return
@@ -124,17 +150,15 @@ const NovoPerfil = ({ navigation }) => {
                             {translate('register.riskGroupMessage')}
                         </ModalText>
 
-                        <Button
-                            onPress={() => {
-                                setModalRiskGroup(false)
-                            }}
-                        >
-                            <ModalButton>
-                                <ModalButtonText>
-                                    {translate('register.riskGroupButton')}
-                                </ModalButtonText>
-                            </ModalButton>
-                        </Button>
+                        <ButtonClose onPress={() => setModalRiskGroup(false)}>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
                     </ModalBox>
                 </ModalContainer>
             </Modal>
@@ -178,7 +202,7 @@ const NovoPerfil = ({ navigation }) => {
                             date={birth}
                             format='DD-MM-YYYY'
                             minDate='01-01-1918'
-                            maxDate={moment().format('DD-MM-YYYY')}
+                            maxDate={moment().local().format('DD-MM-YYYY')}
                             locale='pt-BR'
                             confirmBtnText={translate(
                                 'birthDetails.confirmButton'
@@ -201,6 +225,16 @@ const NovoPerfil = ({ navigation }) => {
                     </FormGroupChild>
                 </FormGroup>
 
+                <FormInline>
+                    <FormLabel>Parentesco:</FormLabel>
+                    <Selector
+                        initValue={translate('selector.label')}
+                        cancelText={translate('selector.cancelButton')}
+                        data={householdChoices}
+                        onChange={(option) => setKinship(option.key)}
+                    />
+                </FormInline>
+
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={translate('register.riskGroupLabel')}
@@ -222,15 +256,18 @@ const NovoPerfil = ({ navigation }) => {
                     setErrorCallback={setInstituitionComponentError}
                 />
 
-                <FormInline>
-                    <FormLabel>Parentesco:</FormLabel>
-                    <Selector
-                        initValue={translate('selector.label')}
-                        cancelText={translate('selector.cancelButton')}
-                        data={householdChoices}
-                        onChange={(option) => setKinship(option.key)}
-                    />
-                </FormInline>
+                {allCategories ? (
+                    <FormInline>
+                        <FormLabel>Categoria:</FormLabel>
+                        <Selector
+                            data={allCategories}
+                            selectedKey={categoryId}
+                            initValue={translate('selector.label')}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setCategoryId(option.key)}
+                        />
+                    </FormInline>
+                ) : null}
 
                 <Button onPress={() => handleCreate()}>
                     <SendContainer>
