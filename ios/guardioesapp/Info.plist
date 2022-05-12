@@ -30,14 +30,12 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>http://gds.proepi.org.br</key>
+			<key>https://gds.proepi.org.br</key>
 			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
 				<key>NSIncludesSubdomains</key>
 				<true/>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSTemporaryExceptionMinimumTLSVersion</key>
-				<string>TLSv1.1</string>
 			</dict>
 			<key>localhost</key>
 			<dict>
@@ -47,7 +45,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>A sua camera será usada para fotografia do avatar.</string>
+	<string>A sua camera será usada para a fotografia do avatar.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -55,9 +53,9 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>A sua camera será usada para fotografia do avatar.</string>
+	<string>A sua camera será usada para a fotografia do avatar.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>A sua camera será usada para fotografia do avatar.</string>
+	<string>A sua camera será usada para a fotografia do avatar.</string>
 	<key>OneSignal_app_groups_key</key>
 	<string>group.com.guardioesapp.onesignal</string>
 	<key>UIAppFonts</key>
