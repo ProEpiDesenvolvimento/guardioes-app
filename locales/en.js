@@ -99,6 +99,7 @@ export default {
             'We need your home country to show you information about it',
         nationalityRequired: 'Birth country cannot be left blank',
         kinshipRequired: 'Relationship must be completed',
+        categoryRequired: 'Category cannot be left blank',
         geralError: 'An error occurred, please try again later.',
         confirmDeleteUser: 'Delete profile',
         confirmDeleteUser2: 'Do you want to delete this profile?',

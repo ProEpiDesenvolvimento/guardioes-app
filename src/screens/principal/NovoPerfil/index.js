@@ -62,7 +62,7 @@ const NovoPerfil = ({ navigation }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
-    const [categoryId, setCategoryId] = useState(null)
+    const [category, setCategory] = useState({})
     const [allCategories, setAllCategories] = useState(null)
 
     const getAppCategories = async () => {
@@ -103,7 +103,8 @@ const NovoPerfil = ({ navigation }) => {
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
-            category_id: categoryId,
+            category_id: category.key,
+            category_required: !!allCategories,
         }
 
         if (!validPerson(household, institutionError)) return
@@ -261,10 +262,13 @@ const NovoPerfil = ({ navigation }) => {
                         <FormLabel>Categoria:</FormLabel>
                         <Selector
                             data={allCategories}
-                            selectedKey={categoryId}
-                            initValue={translate('selector.label')}
+                            initValue={
+                                category.key
+                                    ? category.label
+                                    : translate('selector.label')
+                            }
                             cancelText={translate('selector.cancelButton')}
-                            onChange={(option) => setCategoryId(option.key)}
+                            onChange={(option) => setCategory(option)}
                         />
                     </FormInline>
                 ) : null}

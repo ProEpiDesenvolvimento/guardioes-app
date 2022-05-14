@@ -101,6 +101,7 @@ export default {
             'Necesitamos su país de residencia para mostrarle información al respecto',
         nationalityRequired: 'Lo país de origen no se puede dejar en blanco',
         kinshipRequired: 'La relación debe completarse',
+        categoryRequired: 'Categoría no se puede dejar en blanco',
         geralError: 'Se produjo un error, inténtelo de nuevo más tarde.',
         confirmDeleteUser: 'Borrar perfil',
         confirmDeleteUser2: '¿Quieres eliminar este perfil?',
