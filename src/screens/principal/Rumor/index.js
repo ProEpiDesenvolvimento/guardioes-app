@@ -96,7 +96,8 @@ const Rumor = ({ navigation }) => {
                     <MapView
                         style={{ flex: 1 }}
                         region={region}
-                        customMapStyle={mapStyle}
+                        customMapStyle={mapStyle} // Android
+                        userInterfaceStyle='dark' // iOS
                         showsUserLocation
                         onPress={(e) => {
                             console.warn(
