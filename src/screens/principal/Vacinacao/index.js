@@ -296,7 +296,11 @@ const Vacinacao = () => {
 
             <ScrollViewStyled>
                 <CardWrapper>
-                    <CardTitle>{translate('vaccination.doses')}</CardTitle>
+                    <CardTitle>
+                        {doses.length > 0
+                            ? translate('vaccination.doses')
+                            : translate('vaccination.noDoses')}
+                    </CardTitle>
                 </CardWrapper>
 
                 {doses.map((dose) => (

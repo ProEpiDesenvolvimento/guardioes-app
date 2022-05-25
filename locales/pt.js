@@ -383,6 +383,7 @@ export default {
     vaccination: {
         title: 'Vacinação',
         doses: 'Doses',
+        noDoses: 'Nenhuma dose encontrada',
         titleError: 'Campos inválidos',
         messageError: 'Por favor, preencha todos os campos corretamente.',
         titleError2: 'Erro ao adicionar dose',
