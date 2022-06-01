@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert } from 'react-native'
+import { ONESIGNAL_APP_ID } from 'react-native-dotenv'
 import OneSignal from 'react-native-onesignal'
 
 import { enableScreens } from 'react-native-screens'
@@ -17,7 +18,7 @@ const Guardioes = () => {
     useEffect(() => {
         const initOneSignal = async () => {
             /* ONESIGNAL SETUP */
-            OneSignal.setAppId('61c9e02a-d703-4e1c-aff1-3bce49948818')
+            OneSignal.setAppId(ONESIGNAL_APP_ID)
             OneSignal.setLogLevel(5, 0)
             OneSignal.promptForPushNotificationsWithUserResponse((response) => {
                 console.log('Prompt response:', response)

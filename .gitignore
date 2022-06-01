@@ -40,6 +40,7 @@ buck-out/
 \.buckd/
 *.env
 *.env.*
+!.env.example
 *.keystore
 !debug.keystore
 android/app/gds-upload-keystore.jks
