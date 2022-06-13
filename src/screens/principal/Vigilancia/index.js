@@ -23,17 +23,21 @@ import {
 } from '../../../components/NormalForms'
 import { Title, BodyText } from './styles'
 
+import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
 import { scale } from '../../../utils/scalling'
+import { validPerson } from '../../../utils/consts'
 import { updateUser } from '../../../api/user'
 
 const Vigilancia = ({ navigation }) => {
     const { token, user, storeUser } = useUser()
 
     const [showModalTerms, setShowModalTerms] = useState(false)
-    const [acceptedTerms, setAcceptedTerms] = useState(user.is_vigilance)
-    const [phone, setPhone] = useState(user.phone)
+    const [acceptedTerms, setAcceptedTerms] = useState(!!user.is_vigilance)
+    const [phone, setPhone] = useState(user.phone ? user.phone : '')
+
+    const [loadingAlert, setLoadingAlert] = useState(false)
 
     const handleEdit = async () => {
         if (!acceptedTerms) {
@@ -45,9 +49,13 @@ const Vigilancia = ({ navigation }) => {
         }
 
         const vigilance = {
+            birthdate: user.birthdate,
             is_vigilance: !user.is_vigilance,
             phone: !user.is_vigilance ? phone : null,
         }
+
+        if (!validPerson(vigilance, null)) return
+        setLoadingAlert(true)
 
         const response = await updateUser({ user: vigilance }, user.id, token)
         console.warn(response.status)
@@ -146,6 +154,8 @@ const Vigilancia = ({ navigation }) => {
                     </SendContainer>
                 </Button>
             </KeyboardScrollView>
+
+            <LoadingModal show={loadingAlert} />
         </Container>
     )
 }
