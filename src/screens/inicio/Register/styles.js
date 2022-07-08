@@ -24,5 +24,6 @@ export const FormTip = styled.Text`
     font-family: ArgentumSans;
     font-size: ${scale(12)}px;
     color: #ffffff;
+    margin-top: ${scale(6)}px;
     margin-left: ${scale(12)}px;
 `

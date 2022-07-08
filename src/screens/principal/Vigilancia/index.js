@@ -109,7 +109,7 @@ const Vigilancia = ({ navigation }) => {
                         >
                             <ModalButton>
                                 <ModalButtonText>
-                                    {translate('register.riskGroupButton')}
+                                    {translate('register.modalButton')}
                                 </ModalButtonText>
                             </ModalButton>
                         </Button>

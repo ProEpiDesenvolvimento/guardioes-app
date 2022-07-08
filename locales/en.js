@@ -130,7 +130,12 @@ export default {
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
             '\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.',
-        riskGroupButton: 'Back',
+        genderTitle: 'Gender',
+        genderMessage:
+            'Cisgender (or cis) are people whose gender identity matches the one assigned at birth.\n\n' +
+            'Transgender (or trans) are people whose gender identity is the opposite of biological sex.\n\n' +
+            'Non-binary are people whose gender identity is not established.',
+        modalButton: 'Back',
     },
     ajuda: {
         title: 'Help',
