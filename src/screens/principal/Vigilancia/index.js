@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Modal, ScrollView } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
@@ -35,8 +35,8 @@ const Vigilancia = ({ navigation }) => {
     const { token, user, storeUser } = useUser()
 
     const [showModalTerms, setShowModalTerms] = useState(false)
-    const [acceptedTerms, setAcceptedTerms] = useState(!!user.is_vigilance)
-    const [phone, setPhone] = useState(user.phone ? user.phone : '')
+    const [acceptedTerms, setAcceptedTerms] = useState(false)
+    const [phone, setPhone] = useState('')
 
     const [loadingAlert, setLoadingAlert] = useState(false)
 
@@ -63,11 +63,24 @@ const Vigilancia = ({ navigation }) => {
 
         if (response.status === 200) {
             storeUser(response.data.user)
+            setLoadingAlert(false)
             navigation.goBack()
         } else {
             Alert.alert(translate('register.geralError'))
         }
     }
+
+    useEffect(() => {
+        if (user.phone) {
+            setPhone(user.phone)
+        } else {
+            setPhone('')
+        }
+    }, [user.phone])
+
+    useEffect(() => {
+        setAcceptedTerms(!!user.is_vigilance)
+    }, [user.is_vigilance])
 
     return (
         <Container>
@@ -112,36 +125,33 @@ const Vigilancia = ({ navigation }) => {
                         ? translate('surveillance.participateSuccess')
                         : translate('surveillance.participateQuestion')}
                 </Title>
-                {!user.is_vigilance ? (
-                    <FormInline>
-                        <FormLabel>{translate('surveillance.phone')}</FormLabel>
-                        <NormalInput
-                            placeholder='(61) 98888-8888'
-                            maxLength={16}
-                            returnKeyType='done'
-                            keyboardType='number-pad'
-                            value={phone}
-                            onChangeText={(text) => setPhone(maskPhone(text))}
-                        />
-                    </FormInline>
-                ) : null}
 
-                {!user.is_vigilance ? (
-                    <FormInlineCheck>
-                        <CheckBoxStyled
-                            title={translate('surveillance.confirmRead')}
-                            checked={acceptedTerms}
-                            onPress={() => setAcceptedTerms(!acceptedTerms)}
+                <FormInline>
+                    <FormLabel>{translate('surveillance.phone')}</FormLabel>
+                    <NormalInput
+                        placeholder='(61) 98888-8888'
+                        maxLength={16}
+                        returnKeyType='done'
+                        keyboardType='number-pad'
+                        value={phone}
+                        onChangeText={(text) => setPhone(maskPhone(text))}
+                    />
+                </FormInline>
+
+                <FormInlineCheck>
+                    <CheckBoxStyled
+                        title={translate('surveillance.confirmRead')}
+                        checked={acceptedTerms}
+                        onPress={() => setAcceptedTerms(!acceptedTerms)}
+                    />
+                    <CheckLabel onPress={() => setShowModalTerms(true)}>
+                        <Feather
+                            name='help-circle'
+                            size={scale(25)}
+                            color='#348EAC'
                         />
-                        <CheckLabel onPress={() => setShowModalTerms(true)}>
-                            <Feather
-                                name='help-circle'
-                                size={scale(25)}
-                                color='#348EAC'
-                            />
-                        </CheckLabel>
-                    </FormInlineCheck>
-                ) : null}
+                    </CheckLabel>
+                </FormInlineCheck>
 
                 <FormInline />
 
