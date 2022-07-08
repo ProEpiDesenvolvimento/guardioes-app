@@ -71,6 +71,13 @@ export const FormGroupChild = styled.View`
     margin: 0;
 `
 
+export const FormInlineSelector = styled.View`
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`
+
 export const FormInlineCheck = styled.View`
     width: 100%;
     flex-direction: row;
@@ -91,6 +98,7 @@ export const Selector = styled(ModalSelector).attrs({
         borderRadius: scale(12),
         borderWidth: 0,
         paddingVertical: scale(10),
+        paddingHorizontal: scale(12),
     },
     selectTextStyle: {
         fontFamily: 'ArgentumSans',
@@ -129,7 +137,7 @@ export const Selector = styled(ModalSelector).attrs({
         color: '#ffffff',
     },
 })`
-    width: 90%;
+    width: 80%;
 `
 
 export const DateSelector = styled(DatePicker).attrs({
@@ -154,7 +162,7 @@ export const DateSelector = styled(DatePicker).attrs({
         },
     },
 })`
-    width: 90%;
+    width: 80%;
     border-radius: ${scale(12)}px;
     background-color: #ffffff;
 `
