@@ -323,7 +323,7 @@ const Register = ({ navigation }) => {
                                 minDate='01-01-1918'
                                 maxDate={moment()
                                     .local()
-                                    .subtract(13, 'years')
+                                    .subtract(12, 'years')
                                     .format('DD-MM-YYYY')}
                                 locale='pt-BR'
                                 confirmBtnText={translate(

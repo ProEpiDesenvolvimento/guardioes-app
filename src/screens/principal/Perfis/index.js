@@ -58,7 +58,7 @@ const Perfis = ({ navigation }) => {
         let birthDate = ''
 
         if (!user.birthdate) {
-            bornDate.setFullYear(bornDate.getFullYear() - 13)
+            bornDate.setFullYear(bornDate.getFullYear() - 12)
             birthDate = moment(new Date(bornDate)).format('DD-MM-YYYY')
         } else {
             birthDate = moment(new Date(user.birthdate)).format('DD-MM-YYYY')
@@ -82,7 +82,7 @@ const Perfis = ({ navigation }) => {
         let birthDate = ''
 
         if (!household.birthdate) {
-            bornDate.setFullYear(bornDate.getFullYear() - 13)
+            bornDate.setFullYear(bornDate.getFullYear() - 12)
             birthDate = moment(new Date(bornDate)).format('DD-MM-YYYY')
         } else {
             birthDate = moment(new Date(household.birthdate)).format(

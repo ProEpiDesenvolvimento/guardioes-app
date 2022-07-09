@@ -9,8 +9,6 @@ import {
     FormInlineCheck,
     CheckBoxStyled,
     ModalText,
-    ModalButton,
-    ModalButtonText,
     CheckLabel,
     Container,
     KeyboardScrollView,
@@ -20,6 +18,8 @@ import {
     SendContainer,
     SendText,
     Button,
+    ButtonClose,
+    ModalClose,
 } from '../../../components/NormalForms'
 import { Title, BodyText } from './styles'
 
@@ -104,15 +104,17 @@ const Vigilancia = ({ navigation }) => {
                             </ModalText>
                         </ScrollView>
 
-                        <Button
+                        <ButtonClose
                             onPress={() => setShowModalTerms(!showModalTerms)}
                         >
-                            <ModalButton>
-                                <ModalButtonText>
-                                    {translate('register.modalButton')}
-                                </ModalButtonText>
-                            </ModalButton>
-                        </Button>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
                     </ModalBox>
                 </ModalContainer>
             </Modal>
