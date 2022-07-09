@@ -64,7 +64,7 @@ const Vigilancia = ({ navigation }) => {
         if (response.status === 200) {
             storeUser(response.data.user)
             setLoadingAlert(false)
-            navigation.goBack()
+            // navigation.goBack()
         } else {
             Alert.alert(translate('register.geralError'))
         }
@@ -135,6 +135,7 @@ const Vigilancia = ({ navigation }) => {
                         maxLength={16}
                         returnKeyType='done'
                         keyboardType='number-pad'
+                        editable={!user.is_vigilance}
                         value={phone}
                         onChangeText={(text) => setPhone(maskPhone(text))}
                     />
@@ -143,6 +144,7 @@ const Vigilancia = ({ navigation }) => {
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={translate('surveillance.confirmRead')}
+                        disabled={!!user.is_vigilance}
                         checked={acceptedTerms}
                         onPress={() => setAcceptedTerms(!acceptedTerms)}
                     />
