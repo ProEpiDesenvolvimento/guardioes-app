@@ -74,6 +74,7 @@ const Register = ({ navigation }) => {
     const [countryCheckbox, setCountryCheckbox] = useState(true)
     const [modalGender, setModalGender] = useState(false)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
+    const [key, setKey] = useState(0)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [category, setCategory] = useState({})
@@ -94,10 +95,16 @@ const Register = ({ navigation }) => {
                     [
                         {
                             text: 'Não',
-                            onPress: () => console.log('Cancel Pressed'),
+                            onPress: () => console.log('Not Expocrato'),
                             style: 'cancel',
                         },
-                        { text: 'Sim', onPress: () => setGroupId(42) },
+                        {
+                            text: 'Sim',
+                            onPress: () => {
+                                setGroupId(7631)
+                                setKey(key + 1)
+                            },
+                        },
                     ],
                     { cancelable: false }
                 )
@@ -323,7 +330,7 @@ const Register = ({ navigation }) => {
                                 minDate='01-01-1918'
                                 maxDate={moment()
                                     .local()
-                                    .subtract(13, 'years')
+                                    .subtract(12, 'years')
                                     .format('DD-MM-YYYY')}
                                 locale='pt-BR'
                                 confirmBtnText={translate(
@@ -436,7 +443,7 @@ const Register = ({ navigation }) => {
                     </FormInlineCheck>
 
                     <InstitutionSelector
-                        key={groupId}
+                        key={key}
                         setUserInstitutionCallback={setUserInstitutionCallback}
                         setAlert={setLoadingAlert}
                         userGroup={groupId}

@@ -64,7 +64,7 @@ const Diario = () => {
     } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
-    const [personAge, setPersonAge] = useState(13)
+    const [personAge, setPersonAge] = useState(12)
     const [allDatesMarked, setAllDatesMarked] = useState([])
     const [datesMarked, setDatesMarked] = useState([])
     const [daysMarked, setDaysMarked] = useState(0)

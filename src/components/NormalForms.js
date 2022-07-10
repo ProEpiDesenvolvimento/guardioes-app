@@ -45,6 +45,7 @@ export const NormalInput = styled.TextInput`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #32323b;
+    opacity: ${({ editable = true }) => (editable ? 1 : 0.5)};
     border-radius: ${scale(12)}px;
     padding-vertical: 0px;
     padding-horizontal: ${scale(12)}px;
@@ -173,6 +174,7 @@ export const CheckBoxStyled = styled(CheckBox).attrs((props) => ({
         width: props.full ? '100%' : 'auto',
         alignSelf: 'center',
         backgroundColor: '#ffffff',
+        opacity: props.disabled ? 0.5 : 1,
         borderRadius: scale(15),
         borderWidth: 0,
         marginLeft: 0,

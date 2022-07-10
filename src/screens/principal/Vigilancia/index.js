@@ -9,8 +9,6 @@ import {
     FormInlineCheck,
     CheckBoxStyled,
     ModalText,
-    ModalButton,
-    ModalButtonText,
     CheckLabel,
     Container,
     KeyboardScrollView,
@@ -20,6 +18,8 @@ import {
     SendContainer,
     SendText,
     Button,
+    ButtonClose,
+    ModalClose,
 } from '../../../components/NormalForms'
 import { Title, BodyText } from './styles'
 
@@ -64,7 +64,7 @@ const Vigilancia = ({ navigation }) => {
         if (response.status === 200) {
             storeUser(response.data.user)
             setLoadingAlert(false)
-            navigation.goBack()
+            // navigation.goBack()
         } else {
             Alert.alert(translate('register.geralError'))
         }
@@ -104,15 +104,17 @@ const Vigilancia = ({ navigation }) => {
                             </ModalText>
                         </ScrollView>
 
-                        <Button
+                        <ButtonClose
                             onPress={() => setShowModalTerms(!showModalTerms)}
                         >
-                            <ModalButton>
-                                <ModalButtonText>
-                                    {translate('register.modalButton')}
-                                </ModalButtonText>
-                            </ModalButton>
-                        </Button>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
                     </ModalBox>
                 </ModalContainer>
             </Modal>
@@ -133,6 +135,7 @@ const Vigilancia = ({ navigation }) => {
                         maxLength={16}
                         returnKeyType='done'
                         keyboardType='number-pad'
+                        editable={!user.is_vigilance}
                         value={phone}
                         onChangeText={(text) => setPhone(maskPhone(text))}
                     />
@@ -141,6 +144,7 @@ const Vigilancia = ({ navigation }) => {
                 <FormInlineCheck>
                     <CheckBoxStyled
                         title={translate('surveillance.confirmRead')}
+                        disabled={!!user.is_vigilance}
                         checked={acceptedTerms}
                         onPress={() => setAcceptedTerms(!acceptedTerms)}
                     />
