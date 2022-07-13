@@ -17,6 +17,7 @@ import {
     NormalInput,
     FormGroup,
     FormGroupChild,
+    FormInlineSelector,
     Selector,
     DateSelector,
     FormInlineCheck,
@@ -48,7 +49,12 @@ import { createUser, authUser } from '../../../api/user'
 import { getCategories } from '../../../api/categories'
 
 const Register = ({ navigation }) => {
-    const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
+    const {
+        getCurrentLocation, // remove on next release
+        storeUser,
+        setIsLoggedIn,
+        setNeedSignIn,
+    } = useUser()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -66,11 +72,45 @@ const Register = ({ navigation }) => {
     const [isProfessional, setIsProfessional] = useState(false)
 
     const [countryCheckbox, setCountryCheckbox] = useState(true)
+    const [modalGender, setModalGender] = useState(false)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
+    const [key, setKey] = useState(0)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [category, setCategory] = useState({})
     const [allCategories, setAllCategories] = useState(null)
+
+    // remove on next release
+    const verifyExpocrato = async () => {
+        const location = await getCurrentLocation()
+
+        if (location.latitude > -7.279839 && location.latitude < -7.208763) {
+            if (
+                location.longitude > -39.452225 &&
+                location.longitude < -39.357848
+            ) {
+                Alert.alert(
+                    'Festival Expocrato',
+                    'Você está no município de Crato, deseja fazer parte do evento Expocrato?',
+                    [
+                        {
+                            text: 'Não',
+                            onPress: () => console.log('Not Expocrato'),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'Sim',
+                            onPress: () => {
+                                setGroupId(7631)
+                                setKey(key + 1)
+                            },
+                        },
+                    ],
+                    { cancelable: false }
+                )
+            }
+        }
+    }
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -91,6 +131,7 @@ const Register = ({ navigation }) => {
 
     useEffect(() => {
         getAppCategories()
+        verifyExpocrato()
     }, [])
 
     const passwordInput = useRef()
@@ -170,6 +211,35 @@ const Register = ({ navigation }) => {
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
             <GradientBackground>
+                <Modal // Modal View for Gender Message
+                    animationType='fade'
+                    transparent
+                    visible={modalGender}
+                    onRequestClose={() => setModalGender(!modalGender)}
+                >
+                    <ModalContainer>
+                        <ModalBox>
+                            <ModalTitle>
+                                {translate('register.genderTitle')}
+                            </ModalTitle>
+
+                            <ModalText>
+                                {translate('register.genderMessage')}
+                            </ModalText>
+
+                            <ButtonClose onPress={() => setModalGender(false)}>
+                                <ModalClose>
+                                    <Feather
+                                        name='x'
+                                        size={scale(24)}
+                                        color='#ffffff'
+                                    />
+                                </ModalClose>
+                            </ButtonClose>
+                        </ModalBox>
+                    </ModalContainer>
+                </Modal>
+
                 <Modal // Modal View for Risk Group Message
                     animationType='fade'
                     transparent
@@ -222,12 +292,21 @@ const Register = ({ navigation }) => {
                             <FormLabel>
                                 {translate('register.gender')}
                             </FormLabel>
-                            <Selector
-                                data={genderChoices}
-                                initValue={translate('selector.label')}
-                                cancelText={translate('selector.cancelButton')}
-                                onChange={(option) => setGender(option.key)}
-                            />
+                            <FormInlineSelector>
+                                <Selector
+                                    data={genderChoices}
+                                    initValue={translate('selector.label')}
+                                    cancelText={translate('selector.cancelButton')}
+                                    onChange={(option) => setGender(option.key)}
+                                />
+                                <CheckLabel onPress={() => setModalGender(true)}>
+                                    <Feather
+                                        name='help-circle'
+                                        size={scale(25)}
+                                        color='#ffffff'
+                                    />
+                                </CheckLabel>
+                            </FormInlineSelector>
                         </FormGroupChild>
 
                         <FormGroupChild>
@@ -251,7 +330,7 @@ const Register = ({ navigation }) => {
                                 minDate='01-01-1918'
                                 maxDate={moment()
                                     .local()
-                                    .subtract(13, 'years')
+                                    .subtract(12, 'years')
                                     .format('DD-MM-YYYY')}
                                 locale='pt-BR'
                                 confirmBtnText={translate(
@@ -364,8 +443,10 @@ const Register = ({ navigation }) => {
                     </FormInlineCheck>
 
                     <InstitutionSelector
+                        key={key}
                         setUserInstitutionCallback={setUserInstitutionCallback}
                         setAlert={setLoadingAlert}
+                        userGroup={groupId}
                         setErrorCallback={setInstituitionComponentError}
                         lightTheme
                     />

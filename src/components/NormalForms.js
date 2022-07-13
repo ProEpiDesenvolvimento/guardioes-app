@@ -45,6 +45,7 @@ export const NormalInput = styled.TextInput`
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     color: #32323b;
+    opacity: ${({ editable = true }) => (editable ? 1 : 0.5)};
     border-radius: ${scale(12)}px;
     padding-vertical: 0px;
     padding-horizontal: ${scale(12)}px;
@@ -71,6 +72,13 @@ export const FormGroupChild = styled.View`
     margin: 0;
 `
 
+export const FormInlineSelector = styled.View`
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`
+
 export const FormInlineCheck = styled.View`
     width: 100%;
     flex-direction: row;
@@ -91,6 +99,7 @@ export const Selector = styled(ModalSelector).attrs({
         borderRadius: scale(12),
         borderWidth: 0,
         paddingVertical: scale(10),
+        paddingHorizontal: scale(12),
     },
     selectTextStyle: {
         fontFamily: 'ArgentumSans',
@@ -129,7 +138,7 @@ export const Selector = styled(ModalSelector).attrs({
         color: '#ffffff',
     },
 })`
-    width: 90%;
+    width: 80%;
 `
 
 export const DateSelector = styled(DatePicker).attrs({
@@ -154,7 +163,7 @@ export const DateSelector = styled(DatePicker).attrs({
         },
     },
 })`
-    width: 90%;
+    width: 80%;
     border-radius: ${scale(12)}px;
     background-color: #ffffff;
 `
@@ -165,6 +174,7 @@ export const CheckBoxStyled = styled(CheckBox).attrs((props) => ({
         width: props.full ? '100%' : 'auto',
         alignSelf: 'center',
         backgroundColor: '#ffffff',
+        opacity: props.disabled ? 0.5 : 1,
         borderRadius: scale(15),
         borderWidth: 0,
         marginLeft: 0,
