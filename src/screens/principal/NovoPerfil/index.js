@@ -104,7 +104,7 @@ const NovoPerfil = ({ navigation }) => {
             identification_code: idCode,
             risk_group: riskGroup,
             category_id: category.key,
-            category_required: !!allCategories,
+            category_required: allCategories.length > 0,
         }
 
         if (!validPerson(household, institutionError)) return
