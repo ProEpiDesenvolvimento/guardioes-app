@@ -147,7 +147,7 @@ const EditarPerfil = ({ navigation, route }) => {
             identification_code: idCode,
             risk_group: riskGroup,
             category_id: category.key,
-            category_required: !!allCategories,
+            category_required: allCategories.length > 0,
         }
 
         if (!validPerson(newHousehold, institutionError)) return
@@ -209,7 +209,7 @@ const EditarPerfil = ({ navigation, route }) => {
             risk_group: riskGroup,
             is_vigilance: isVigilance,
             category_id: category.key,
-            category_required: !!allCategories,
+            category_required: allCategories.length > 0,
         }
 
         if (!validPerson(newUser, institutionError)) return

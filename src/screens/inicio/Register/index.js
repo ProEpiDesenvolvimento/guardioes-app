@@ -182,7 +182,7 @@ const Register = ({ navigation }) => {
             risk_group: riskGroup,
             policy_version: terms.version,
             category_id: category.key,
-            category_required: !!allCategories,
+            category_required: allCategories.length > 0,
         }
 
         if (!validPerson(user, institutionError)) return
