@@ -49,12 +49,7 @@ import { createUser, authUser } from '../../../api/user'
 import { getCategories } from '../../../api/categories'
 
 const Register = ({ navigation }) => {
-    const {
-        getCurrentLocation, // remove on next release
-        storeUser,
-        setIsLoggedIn,
-        setNeedSignIn,
-    } = useUser()
+    const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -80,38 +75,6 @@ const Register = ({ navigation }) => {
     const [category, setCategory] = useState({})
     const [allCategories, setAllCategories] = useState(null)
 
-    // remove on next release
-    const verifyExpocrato = async () => {
-        const location = await getCurrentLocation()
-
-        if (location.latitude > -7.279839 && location.latitude < -7.208763) {
-            if (
-                location.longitude > -39.452225 &&
-                location.longitude < -39.357848
-            ) {
-                Alert.alert(
-                    'Festival Expocrato',
-                    'Você está no município de Crato, deseja fazer parte do evento Expocrato?',
-                    [
-                        {
-                            text: 'Não',
-                            onPress: () => console.log('Not Expocrato'),
-                            style: 'cancel',
-                        },
-                        {
-                            text: 'Sim',
-                            onPress: () => {
-                                setGroupId(7631)
-                                setKey(key + 1)
-                            },
-                        },
-                    ],
-                    { cancelable: false }
-                )
-            }
-        }
-    }
-
     const getAppCategories = async () => {
         const response = await getCategories()
 
@@ -131,7 +94,6 @@ const Register = ({ navigation }) => {
 
     useEffect(() => {
         getAppCategories()
-        verifyExpocrato()
     }, [])
 
     const passwordInput = useRef()
