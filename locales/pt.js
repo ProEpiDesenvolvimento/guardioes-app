@@ -127,7 +127,7 @@ export default {
         healthProfessional: 'Você é um profissional da saúde?',
         riskGroupLabel: 'Faz parte do grupo de risco?',
         vaccination: 'Possui dados de vacinação?',
-        institution: 'É integrante de alguma instituição?',
+        institution: 'É integrante de alguma instituição cadastrada?',
         idCode: 'Código de Identificação:',
         riskGroupTitle: 'Grupos de Risco:',
         riskGroupMessage:
