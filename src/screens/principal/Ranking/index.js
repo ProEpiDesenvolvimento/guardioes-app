@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
 
 import { Avatar } from 'react-native-elements'
 
@@ -95,9 +94,9 @@ const Ranking = ({ navigation }) => {
                 />
             </FormInline>
 
-            {ranking.map((user, index) => {
+            {ranking.map((person, index) => {
                 return (
-                    <CardWhite key={user.id}>
+                    <CardWhite key={person.id}>
                         <AvatarWrapper>
                             <NumWrapper>
                                 <NumText>{index + 1}.</NumText>
@@ -106,7 +105,7 @@ const Ranking = ({ navigation }) => {
                             <Avatar
                                 size={scale(58)}
                                 source={handleAvatar(null)}
-                                title={getInitials(user.user_name)}
+                                title={getInitials(person.user_name)}
                                 activeOpacity={0.5}
                                 showEditButton
                                 rounded
@@ -126,10 +125,16 @@ const Ranking = ({ navigation }) => {
                         <InfoContainer>
                             <InfoWrapper>
                                 <CardNameWhite>
-                                    {getNameParts(user.user_name, true)}
+                                    {getNameParts(person.user_name, true)}
                                 </CardNameWhite>
                                 <CardDetailsWhite>
-                                    {user.streak} dias
+                                    {person.streak === 1
+                                        ? person.streak +
+                                          translate('diary.day') +
+                                          translate('diary.consecutive')
+                                        : person.streak +
+                                          translate('diary.days') +
+                                          translate('diary.consecutive')}
                                 </CardDetailsWhite>
                             </InfoWrapper>
                         </InfoContainer>
@@ -139,12 +144,5 @@ const Ranking = ({ navigation }) => {
         </ScrollViewStyled>
     )
 }
-
-const styles = StyleSheet.create({
-    Avatar: {
-        borderColor: '#ffffff',
-        borderWidth: 3,
-    },
-})
 
 export default Ranking

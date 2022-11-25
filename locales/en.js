@@ -229,8 +229,11 @@ export default {
         participations: 'Participations',
         good: 'Good',
         bad: 'Bad',
-        report: ' day',
-        reports: ' days',
+        day: ' day',
+        days: ' days',
+        ranking: 'See General Ranking',
+        consecutive: ' in a row',
+        consecutives: ' in a row',
         statisticsTitle: 'Statistics',
         goodPercent: '% days - Good',
         badPercent: '% days - Bad',
@@ -449,6 +452,9 @@ export default {
             'you are not an active vigilant yet. Do you want to participate?',
         cancelButton: 'No',
         redirectButton: "Yes, I'll be part",
+    },
+    ranking: {
+        title: 'Ranking',
     },
     autocomplete: {
         searchBar: 'Search here',

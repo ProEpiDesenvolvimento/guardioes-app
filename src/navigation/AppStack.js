@@ -122,7 +122,7 @@ const AppStack = () => {
             <Stack.Screen
                 name='Ranking'
                 component={Ranking}
-                options={{ title: 'Ranking' }}
+                options={{ title: translate('ranking.title') }}
             />
             <Stack.Screen
                 name='Ajuda'
