@@ -49,6 +49,22 @@ export const updateUser = async (data, id, token) => {
     return response
 }
 
+export const getUsersRanking = async (token) => {
+    let response = {}
+
+    try {
+        response = await api.get(`/user/ranking`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
 export const sendCode = async (data) => {
     let response = {}
 

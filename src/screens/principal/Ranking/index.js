@@ -21,7 +21,7 @@ import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
-import { getUserRanking } from '../../../api/user'
+import { getUsersRanking } from '../../../api/user'
 
 const Ranking = ({ navigation }) => {
     const { token, user, avatar } = useUser()
@@ -32,7 +32,7 @@ const Ranking = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true)
 
     const getRanking = async () => {
-        const response = await getUserRanking(token)
+        const response = await getUsersRanking(token)
 
         if (response.status === 200) {
             setRanking(response.data.users)
