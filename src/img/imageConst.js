@@ -24,6 +24,7 @@ export { default as InfoIcon } from './icons/info.svg'
 // Diary Icons
 export { default as HappyIcon } from './icons/happy.svg'
 export { default as SadIcon } from './icons/sad.svg'
+export { default as BadgeIcon } from './icons/badge.svg'
 
 // Map Marker
 export const greenMarker = require('./mapIcons/green-marker.png')

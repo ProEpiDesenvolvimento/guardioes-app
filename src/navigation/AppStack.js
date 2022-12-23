@@ -25,6 +25,7 @@ import TermosPoliticas from '../screens/principal/TermosPoliticas'
 import Tutorial from '../screens/principal/Tutorial'
 import Vacinacao from '../screens/principal/Vacinacao'
 import Vigilancia from '../screens/principal/Vigilancia'
+import Ranking from '../screens/principal/Ranking'
 
 import translate from '../../locales/i18n'
 import { scale } from '../utils/scalling'
@@ -117,6 +118,11 @@ const AppStack = () => {
                 name='Vigilancia'
                 component={Vigilancia}
                 options={{ title: translate('drawer.toSurveillance') }}
+            />
+            <Stack.Screen
+                name='Ranking'
+                component={Ranking}
+                options={{ title: 'Ranking' }}
             />
             <Stack.Screen
                 name='Ajuda'
