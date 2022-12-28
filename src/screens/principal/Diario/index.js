@@ -411,37 +411,43 @@ const Diario = ({ navigation }) => {
                                     </ReportsIll>
                                 </ReportsButton>
 
-                                <ReportsButton
-                                    onPress={() =>
-                                        navigation.navigate('Ranking')
-                                    }
-                                >
-                                    <ReportsFull>
-                                        <BadgeIcon
-                                            height={scale(45)}
-                                            width={scale(45)}
-                                            fill='#ffffff'
-                                        />
-                                        <ReportData>
-                                            <ReportDataTitle>
-                                                {translate('diary.ranking')}
-                                            </ReportDataTitle>
-                                            <ReportDataInfo>
-                                                {person.streak === 1
-                                                    ? person.streak +
-                                                      translate('diary.day') +
-                                                      translate(
-                                                          'diary.consecutive'
-                                                      )
-                                                    : person.streak +
-                                                      translate('diary.days') +
-                                                      translate(
-                                                          'diary.consecutive'
-                                                      )}
-                                            </ReportDataInfo>
-                                        </ReportData>
-                                    </ReportsFull>
-                                </ReportsButton>
+                                {!person.is_household && (
+                                    <ReportsButton
+                                        onPress={() =>
+                                            navigation.navigate('Ranking')
+                                        }
+                                    >
+                                        <ReportsFull>
+                                            <BadgeIcon
+                                                height={scale(45)}
+                                                width={scale(45)}
+                                                fill='#ffffff'
+                                            />
+                                            <ReportData>
+                                                <ReportDataTitle>
+                                                    {translate('diary.ranking')}
+                                                </ReportDataTitle>
+                                                <ReportDataInfo>
+                                                    {person.streak === 1
+                                                        ? person.streak +
+                                                          translate(
+                                                              'diary.day'
+                                                          ) +
+                                                          translate(
+                                                              'diary.consecutive'
+                                                          )
+                                                        : person.streak +
+                                                          translate(
+                                                              'diary.days'
+                                                          ) +
+                                                          translate(
+                                                              'diary.consecutive'
+                                                          )}
+                                                </ReportDataInfo>
+                                            </ReportData>
+                                        </ReportsFull>
+                                    </ReportsButton>
+                                )}
                             </ReportsWrapper>
                         </UserReports>
                     </UserDash>
