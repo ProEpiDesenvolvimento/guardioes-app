@@ -166,35 +166,46 @@ export const ReportsSubtitle = styled.Text`
     color: #32323b;
 `
 
-export const ReportsAll = styled.View`
+export const ReportsWrapper = styled.View`
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
+`
+
+export const ReportsButton = styled(TouchableOpacity).attrs({
+    activeOpacity: 0.5,
+})`
+    margin-bottom: ${percentage(6)}px;
+`
+
+const reports = `
+    min-width: 47%;
+    border-radius: ${scale(18)}px;
+    flex-direction: row;
+    align-items: center;
+    padding: ${scale(12)}px;
+    shadow-opacity: 0.4;
+    shadow-radius: 6px;
+    shadow-offset: 0px 0px;
 `
 
 export const ReportsWell = styled(ShadowView).attrs({})`
-    min-width: 47%;
+    ${reports}
     background-color: #5dd39e;
-    border-radius: ${scale(18)}px;
-    flex-direction: row;
-    align-items: center;
-    padding: ${scale(12)}px;
-    shadow-color: #000000;
-    shadow-opacity: 0.1;
-    shadow-radius: 6px;
-    shadow-offset: 0px 4px;
+    shadow-color: #5dd39e;
 `
 
 export const ReportsIll = styled(ShadowView).attrs({})`
-    min-width: 47%;
+    ${reports}
     background-color: #f18f01;
-    border-radius: ${scale(18)}px;
-    flex-direction: row;
-    align-items: center;
-    padding: ${scale(12)}px;
-    shadow-color: #000000;
-    shadow-opacity: 0.1;
-    shadow-radius: 6px;
-    shadow-offset: 0px 4px;
+    shadow-color: #f18f01;
+`
+
+export const ReportsFull = styled(ShadowView).attrs({})`
+    ${reports}
+    background-color: #348EAC;
+    shadow-color: #348EAC;
+    min-width: 100%;
 `
 
 export const ReportData = styled.View`

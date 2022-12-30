@@ -34,9 +34,11 @@ import {
     ReportsTitleWrapper,
     ReportsTitle,
     ReportsSubtitle,
-    ReportsAll,
+    ReportsWrapper,
+    ReportsButton,
     ReportsWell,
     ReportsIll,
+    ReportsFull,
     ReportData,
     ReportDataTitle,
     ReportDataInfo,
@@ -45,14 +47,14 @@ import {
 import translate from '../../../../locales/i18n'
 import { LocaleConfig } from '../../../utils/calendaryMonthNames'
 import { scale } from '../../../utils/scalling'
-import { HappyIcon, SadIcon } from '../../../img/imageConst'
+import { HappyIcon, SadIcon, BadgeIcon } from '../../../img/imageConst'
 import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUserSurveys } from '../../../api/surveys'
 
 LocaleConfig.defaultLocale = translate('lang.code')
 
-const Diario = () => {
+const Diario = ({ navigation }) => {
     const {
         isOffline,
         token,
@@ -271,6 +273,7 @@ const Diario = () => {
                             </UserDetails>
                         </UserInfo>
                     </UserData>
+
                     <UserDash>
                         <SliderContainer>
                             <SwiperStyled showPagination disableGesture={false}>
@@ -282,7 +285,7 @@ const Diario = () => {
                                             )}
                                             markedDates={datesMarked}
                                             onDayPress={(day) => {
-                                                allDatesMarked.map(
+                                                allDatesMarked.forEach(
                                                     (symptomMarker) => {
                                                         if (
                                                             symptomMarker.bad_since ===
@@ -363,47 +366,89 @@ const Diario = () => {
                                 </ReportsSubtitle>
                             </ReportsTitleWrapper>
 
-                            <ReportsAll>
-                                <ReportsWell>
-                                    <HappyIcon
-                                        height={scale(45)}
-                                        width={scale(45)}
-                                        fill='#ffffff'
-                                    />
-                                    <ReportData>
-                                        <ReportDataTitle>
-                                            {translate('diary.good')}
-                                        </ReportDataTitle>
-                                        <ReportDataInfo>
-                                            {daysGood === 1
-                                                ? daysGood +
-                                                  translate('diary.report')
-                                                : daysGood +
-                                                  translate('diary.reports')}
-                                        </ReportDataInfo>
-                                    </ReportData>
-                                </ReportsWell>
+                            <ReportsWrapper>
+                                <ReportsButton>
+                                    <ReportsWell>
+                                        <HappyIcon
+                                            height={scale(45)}
+                                            width={scale(45)}
+                                            fill='#ffffff'
+                                        />
+                                        <ReportData>
+                                            <ReportDataTitle>
+                                                {translate('diary.good')}
+                                            </ReportDataTitle>
+                                            <ReportDataInfo>
+                                                {daysGood === 1
+                                                    ? daysGood +
+                                                      translate('diary.day')
+                                                    : daysGood +
+                                                      translate('diary.days')}
+                                            </ReportDataInfo>
+                                        </ReportData>
+                                    </ReportsWell>
+                                </ReportsButton>
 
-                                <ReportsIll>
-                                    <SadIcon
-                                        height={scale(45)}
-                                        width={scale(45)}
-                                        fill='#ffffff'
-                                    />
-                                    <ReportData>
-                                        <ReportDataTitle>
-                                            {translate('diary.bad')}
-                                        </ReportDataTitle>
-                                        <ReportDataInfo>
-                                            {daysBad === 1
-                                                ? daysBad +
-                                                  translate('diary.report')
-                                                : daysBad +
-                                                  translate('diary.reports')}
-                                        </ReportDataInfo>
-                                    </ReportData>
-                                </ReportsIll>
-                            </ReportsAll>
+                                <ReportsButton>
+                                    <ReportsIll>
+                                        <SadIcon
+                                            height={scale(45)}
+                                            width={scale(45)}
+                                            fill='#ffffff'
+                                        />
+                                        <ReportData>
+                                            <ReportDataTitle>
+                                                {translate('diary.bad')}
+                                            </ReportDataTitle>
+                                            <ReportDataInfo>
+                                                {daysBad === 1
+                                                    ? daysBad +
+                                                      translate('diary.day')
+                                                    : daysBad +
+                                                      translate('diary.days')}
+                                            </ReportDataInfo>
+                                        </ReportData>
+                                    </ReportsIll>
+                                </ReportsButton>
+
+                                {!person.is_household && (
+                                    <ReportsButton
+                                        onPress={() =>
+                                            navigation.navigate('Ranking')
+                                        }
+                                    >
+                                        <ReportsFull>
+                                            <BadgeIcon
+                                                height={scale(45)}
+                                                width={scale(45)}
+                                                fill='#ffffff'
+                                            />
+                                            <ReportData>
+                                                <ReportDataTitle>
+                                                    {translate('diary.ranking')}
+                                                </ReportDataTitle>
+                                                <ReportDataInfo>
+                                                    {person.streak === 1
+                                                        ? person.streak +
+                                                          translate(
+                                                              'diary.day'
+                                                          ) +
+                                                          translate(
+                                                              'diary.consecutive'
+                                                          )
+                                                        : person.streak +
+                                                          translate(
+                                                              'diary.days'
+                                                          ) +
+                                                          translate(
+                                                              'diary.consecutive'
+                                                          )}
+                                                </ReportDataInfo>
+                                            </ReportData>
+                                        </ReportsFull>
+                                    </ReportsButton>
+                                )}
+                            </ReportsWrapper>
                         </UserReports>
                     </UserDash>
                 </ScrollViewStyled>

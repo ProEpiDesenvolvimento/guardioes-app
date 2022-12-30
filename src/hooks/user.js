@@ -165,21 +165,22 @@ export const UserProvider = ({ children }) => {
     }
 
     const storeUser = async (user, token = null, credentials = null) => {
-        const { households } = user
-        const { app } = user
+        if (user) {
+            const { households } = user
+            const { app } = user
 
-        if (households) {
-            storeHouseholds(households)
-            user.households = undefined
+            if (households) {
+                storeHouseholds(households)
+                user.households = undefined
+            }
+            if (app) {
+                setApp(app)
+                user.app = undefined
+            }
+
+            setUser(user)
+            await AsyncStorage.setItem('userData', JSON.stringify(user))
         }
-        if (app) {
-            setApp(app)
-            user.app = undefined
-        }
-
-        setUser(user)
-        await AsyncStorage.setItem('userData', JSON.stringify(user))
-
         if (token) {
             setToken(token)
 

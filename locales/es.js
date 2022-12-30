@@ -128,7 +128,7 @@ export default {
         healthProfessional: '¿Eres un profesional de la salud?',
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
         vaccination: '¿Tiene datos de vacunación?',
-        institution: '¿Eres miembro de alguna institución?',
+        institution: '¿Eres miembro de alguna institución registrada?',
         idCode: 'Código da identificación:',
         riskGroupTitle: 'Grupos de Riesgo:',
         riskGroupMessage:
@@ -235,8 +235,11 @@ export default {
         participations: 'Participaciones',
         good: 'Bien',
         bad: 'Mal',
-        report: ' dia',
-        reports: ' dias',
+        day: ' dia',
+        days: ' dias',
+        ranking: 'Ver Ranking General',
+        consecutive: ' seguido',
+        consecutives: ' seguidos',
         statisticsTitle: 'Estadísticas',
         goodPercent: '% dias - Bien',
         badPercent: '% dias - Mal',
@@ -456,6 +459,9 @@ export default {
         message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
         cancelButton: 'No',
         redirectButton: 'Si, seré parte',
+    },
+    ranking: {
+        title: 'Ranking',
     },
     autocomplete: {
         searchBar: 'Pesquise aquí',
