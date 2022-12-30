@@ -235,8 +235,11 @@ export default {
         participations: 'Participaciones',
         good: 'Bien',
         bad: 'Mal',
-        report: ' dia',
-        reports: ' dias',
+        day: ' dia',
+        days: ' dias',
+        ranking: 'Ver Ranking General',
+        consecutive: ' seguido',
+        consecutives: ' seguidos',
         statisticsTitle: 'Estadísticas',
         goodPercent: '% dias - Bien',
         badPercent: '% dias - Mal',
@@ -456,6 +459,9 @@ export default {
         message: 'todavía no eres un vigilante activo. ¿Quieres participar?',
         cancelButton: 'No',
         redirectButton: 'Si, seré parte',
+    },
+    ranking: {
+        title: 'Ranking',
     },
     autocomplete: {
         searchBar: 'Pesquise aquí',

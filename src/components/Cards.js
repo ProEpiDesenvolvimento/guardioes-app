@@ -80,8 +80,20 @@ export const CardDetailsWhite = styled.Text`
 `
 
 export const AvatarWrapper = styled.View`
+    flex-direction: row;
     justify-content: center;
-    padding-right: ${percentage(4)}px;
+    margin-right: ${percentage(4)}px;
+`
+
+export const NumWrapper = styled.View`
+    justify-content: center;
+    margin-right: ${scale(14)}px;
+`
+
+export const NumText = styled.Text`
+    ${Name}
+    font-size: ${scale(18)}px;
+    color: #348eac;
 `
 
 export const InfoContainer = styled.View`

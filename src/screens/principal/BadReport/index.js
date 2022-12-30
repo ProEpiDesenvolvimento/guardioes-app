@@ -51,6 +51,7 @@ const BadReport = ({ navigation }) => {
     const {
         token,
         user,
+        storeUser,
         group,
         location,
         getCurrentLocation,
@@ -252,12 +253,11 @@ const BadReport = ({ navigation }) => {
         }
 
         const householdID = person.is_household ? person.id : null
-        const badSinceDate = moment(badSince, 'DD-MM-YYYY').toISOString()
         const survey = {
             household_id: householdID,
             latitude: local.latitude,
             longitude: local.longitude,
-            bad_since: badSinceDate,
+            bad_since: moment(badSince, 'DD-MM-YYYY').toISOString(),
             traveled_to: hasTraveled,
             went_to_hospital: wentToHospital,
             contact_with_symptom: contactWithSymptom,
@@ -294,6 +294,7 @@ const BadReport = ({ navigation }) => {
                 symptom: ['symptom'],
             }
             await storeCacheData('localPin', localPin)
+            await storeUser(response.data.user)
 
             const newSurveys = surveys.slice()
             newSurveys.push(response.data.survey)

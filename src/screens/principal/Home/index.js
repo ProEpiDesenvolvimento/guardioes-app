@@ -311,6 +311,7 @@ const Home = ({ navigation }) => {
             }
 
             await storeCacheData('localPin', survey)
+            await storeUser(response.data.user)
 
             const newSurveys = surveys.slice()
             newSurveys.push(response.data.survey)
