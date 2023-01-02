@@ -441,7 +441,7 @@ const Diario = ({ navigation }) => {
                                                               'diary.days'
                                                           ) +
                                                           translate(
-                                                              'diary.consecutive'
+                                                              'diary.consecutives'
                                                           )}
                                                 </ReportDataInfo>
                                             </ReportData>
