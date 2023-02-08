@@ -134,7 +134,7 @@ const Ranking = ({ navigation }) => {
                                           translate('diary.consecutive')
                                         : person.streak +
                                           translate('diary.days') +
-                                          translate('diary.consecutive')}
+                                          translate('diary.consecutives')}
                                 </CardDetailsWhite>
                             </InfoWrapper>
                         </InfoContainer>
