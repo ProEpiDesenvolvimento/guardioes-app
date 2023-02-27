@@ -31,7 +31,6 @@ export const UserProvider = ({ children }) => {
     const [group, setGroup] = useState({})
     const [app, setApp] = useState({})
     const [appTips, setAppTips] = useState({ loading: true })
-    const [score, setScore] = useState(0)
     const [lastReport, setLastReport] = useState('')
     const [lastForm, setLastForm] = useState('')
 
@@ -112,7 +111,6 @@ export const UserProvider = ({ children }) => {
     const loadSecondaryData = async () => {
         // Loads secondary data and verify user credentials
         const avatar = await AsyncStorage.getItem('userAvatar')
-        const score = parseInt(await AsyncStorage.getItem('score'), 10)
         const appTips = JSON.parse(await AsyncStorage.getItem('appTips'))
         const lastReport = await AsyncStorage.getItem('lastReport')
         const lastForm = await AsyncStorage.getItem('lastForm')
@@ -125,9 +123,6 @@ export const UserProvider = ({ children }) => {
 
         if (avatar) {
             setAvatar(avatar)
-        }
-        if (score) {
-            setScore(score)
         }
         if (appTips) {
             setAppTips(appTips)
@@ -238,7 +233,6 @@ export const UserProvider = ({ children }) => {
             'householdsData',
             'householdAvatars',
             'selectedData',
-            'score',
             'appTips',
             'lastReport',
             'surveysData',
@@ -399,40 +393,26 @@ export const UserProvider = ({ children }) => {
         await AsyncStorage.setItem('appTips', JSON.stringify(newTips))
     }
 
-    const updateUserScore = async () => {
-        const lastReportDate = new Date(lastReport)
+    const storeLastReport = async (score) => {
         const todayDate = new Date()
 
-        lastReportDate.setHours(0, 0, 0, 0)
-        let newScore = 0
-
-        const daysDiff = Math.floor(
-            (todayDate.getTime() - lastReportDate.getTime()) /
-                (1000 * 60 * 60 * 24)
-        )
-
-        switch (daysDiff) {
+        switch (score) {
             case 0:
-                newScore = score
-                console.warn('Already reported today')
+                console.warn('Did not report the day before')
                 break
             case 1:
-                newScore = score + 1
-                setScore(newScore)
-                setLastReport(todayDate.toString())
-                console.warn('Reported the day before')
+                setLastReport(todayDate.toISOString())
+                console.warn('First day reporting')
                 break
             default:
-                setScore(newScore)
-                setLastReport(todayDate.toString())
-                console.warn('Did not report the day before')
+                setLastReport(todayDate.toISOString())
+                console.warn('Reported the day before')
         }
 
-        await AsyncStorage.setItem('score', newScore.toString())
         await AsyncStorage.setItem('lastReport', todayDate.toISOString())
+        OneSignal.sendTags({ score })
 
-        OneSignal.sendTags({ score: newScore })
-        console.warn(`User score: ${newScore}`)
+        console.warn(`User streak: ${score}`)
     }
 
     const storeLastForm = async (lastFormDate) => {
@@ -483,9 +463,8 @@ export const UserProvider = ({ children }) => {
                 app,
                 getAppTip,
                 hideAppTip,
-                score,
-                updateUserScore,
                 lastReport,
+                storeLastReport,
                 lastForm,
                 storeLastForm,
                 storeCacheData,
