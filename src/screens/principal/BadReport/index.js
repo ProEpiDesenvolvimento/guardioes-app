@@ -55,7 +55,7 @@ const BadReport = ({ navigation }) => {
         group,
         location,
         getCurrentLocation,
-        updateUserScore,
+        storeLastReport,
         surveys,
         storeSurveys,
         getCurrentUserInfo,
@@ -272,7 +272,6 @@ const BadReport = ({ navigation }) => {
         const delay = (ms) => new Promise((res) => setTimeout(res, ms))
         await delay(50)
 
-        updateUserScore()
         if (response.status === 201) {
             if (!response.data.errors && response.data.messages.top_3) {
                 if (response.data.messages.top_3[0]) {
@@ -295,6 +294,7 @@ const BadReport = ({ navigation }) => {
             }
             await storeCacheData('localPin', localPin)
             await storeUser(response.data.user)
+            storeLastReport(response.data.user?.streak)
 
             const newSurveys = surveys.slice()
             newSurveys.push(response.data.survey)
