@@ -81,7 +81,7 @@ const Home = ({ navigation }) => {
         lastForm,
         getCacheData,
         storeCacheData,
-        updateUserScore,
+        storeLastReport,
         loadSecondaryData,
         selectUser,
         getCurrentUserInfo,
@@ -299,7 +299,6 @@ const Home = ({ navigation }) => {
         const response = await createSurvey({ survey }, user.id, token)
         showConfirmation(response.status, response.data)
 
-        updateUserScore()
         if (response.status === 201) {
             if (inviteSurveillance) {
                 showSurveillanceInvite(
@@ -312,6 +311,7 @@ const Home = ({ navigation }) => {
 
             await storeCacheData('localPin', survey)
             await storeUser(response.data.user)
+            storeLastReport(response.data.user?.streak)
 
             const newSurveys = surveys.slice()
             newSurveys.push(response.data.survey)
