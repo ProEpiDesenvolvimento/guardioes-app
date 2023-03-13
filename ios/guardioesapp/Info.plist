@@ -1,91 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>Guardiões da Saúde</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>Guardiões da Saúde</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(MARKETING_VERSION)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>NSExceptionDomains</key>
+		<key>NSAppTransportSecurity</key>
 		<dict>
-			<key>https://gds.proepi.org.br</key>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<key>https://gds.proepi.org.br</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+				</dict>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+				</dict>
 			</dict>
 		</dict>
+		<key>NSCameraUsageDescription</key>
+		<string>A sua camera será usada para a fotografia do avatar.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>A sua camera será usada para a fotografia do avatar.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>A sua camera será usada para a fotografia do avatar.</string>
+		<key>OneSignal_app_groups_key</key>
+		<string>group.com.guardioesapp.onesignal</string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>ArgentumSans-Medium.otf</string>
+			<string>ArgentumSans.otf</string>
+			<string>ArgentumSans-SemiBold.otf</string>
+			<string>Feather.ttf</string>
+			<string>FontAwesome5_Solid.ttf</string>
+			<string>SimpleLineIcons.ttf</string>
+		</array>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>armv7</string>
+		</array>
+		<key>UIStatusBarStyle</key>
+		<string>UIStatusBarStyleLightContent</string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UIUserInterfaceStyle</key>
+		<string>Light</string>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>guardioesapp</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>A sua camera será usada para a fotografia do avatar.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>A sua camera será usada para a fotografia do avatar.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>A sua camera será usada para a fotografia do avatar.</string>
-	<key>OneSignal_app_groups_key</key>
-	<string>group.com.guardioesapp.onesignal</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>ArgentumSans-Medium.otf</string>
-		<string>ArgentumSans.otf</string>
-		<string>ArgentumSans-SemiBold.otf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleLightContent</string>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-</dict>
 </plist>
