@@ -15,6 +15,10 @@ enableScreens()
 const Guardioes = () => {
     const [isSubscribed, setIsSubscribed] = useState(null)
 
+    const linking = {
+        prefixes: ['guardioesapp://'],
+    }
+
     useEffect(() => {
         const initOneSignal = async () => {
             /* ONESIGNAL SETUP */
@@ -72,7 +76,7 @@ const Guardioes = () => {
     }, [])
 
     return (
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
             <AppProvider>
                 <Routes />
             </AppProvider>
