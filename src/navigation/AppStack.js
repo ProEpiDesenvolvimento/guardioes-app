@@ -1,6 +1,6 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, CommonActions } from '@react-navigation/stack'
 
 import Feather from 'react-native-vector-icons/Feather'
 import {
@@ -33,6 +33,17 @@ import { scale } from '../utils/scalling'
 const Stack = createStackNavigator()
 
 const AppStack = () => {
+    const handleGoBack = (navigation) => {
+        if (navigation.canGoBack()) {
+            navigation.goBack()
+        } else {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeDrawer' }],
+            })
+        }
+    }
+
     return (
         <Stack.Navigator
             screenOptions={({ navigation }) => ({
@@ -43,7 +54,9 @@ const AppStack = () => {
                         />
                         <Container>
                             <HeaderNavigator>
-                                <BackButton onPress={() => navigation.goBack()}>
+                                <BackButton
+                                    onPress={() => handleGoBack(navigation)}
+                                >
                                     <Feather
                                         name='chevron-left'
                                         size={scale(38)}
