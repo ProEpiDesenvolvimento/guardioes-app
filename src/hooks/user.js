@@ -201,7 +201,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
-            doses: user.doses,
+            // doses: user.doses,
         })
     }
 
@@ -221,6 +221,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.removeExternalUserId()
         OneSignal.deleteTag('city')
         OneSignal.deleteTag('group')
+        OneSignal.deleteTag('school_unit_id') // Remove on next release
         OneSignal.deleteTag('score')
         OneSignal.deleteTag('doses')
     }
@@ -410,8 +411,6 @@ export const UserProvider = ({ children }) => {
         }
 
         await AsyncStorage.setItem('lastReport', todayDate.toISOString())
-        OneSignal.sendTags({ score })
-
         console.warn(`User streak: ${score}`)
     }
 
