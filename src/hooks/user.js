@@ -201,7 +201,6 @@ export const UserProvider = ({ children }) => {
         OneSignal.sendTags({
             city: user.city,
             group: userGroup,
-            // doses: user.doses,
         })
     }
 
@@ -320,9 +319,9 @@ export const UserProvider = ({ children }) => {
         )
     }
 
-    const storeSurveys = (surveys) => {
+    const storeSurveys = async (surveys) => {
         setSurveys(surveys)
-        AsyncStorage.setItem('surveysData', JSON.stringify(surveys))
+        await AsyncStorage.setItem('surveysData', JSON.stringify(surveys))
     }
 
     const getCurrentLocation = async () => {
@@ -417,7 +416,7 @@ export const UserProvider = ({ children }) => {
     const storeLastForm = async (lastFormDate) => {
         const newLastForm = lastFormDate.toISOString()
         setLastForm(newLastForm)
-        AsyncStorage.setItem('lastForm', newLastForm)
+        await AsyncStorage.setItem('lastForm', newLastForm)
     }
 
     const storeCacheData = async (key, data) => {
