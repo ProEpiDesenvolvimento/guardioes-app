@@ -65,21 +65,12 @@ const Dicas = () => {
         }, [isOffline])
     )
 
-    const sortContents = (contents = []) => {
-        contents.sort(
-            (a, b) =>
-                new Date(b.updated_at).getTime() -
-                new Date(a.updated_at).getTime()
-        )
-        return contents
-    }
-
     const getAppContents = async () => {
         if (!isOffline) {
             const response = await getContents(token)
 
             if (response.status === 200) {
-                const appContents = sortContents(response.data.contents)
+                const appContents = response.data.contents
                 setContents(appContents)
                 setIsLoading(false)
 
@@ -200,9 +191,7 @@ const Dicas = () => {
                     animationType='fade'
                     transparent
                     visible={modalVisible}
-                    onRequestClose={
-                        () => setModalVisible(!modalVisible) // Exit to modal view
-                    }
+                    onRequestClose={() => setModalVisible(!modalVisible)}
                 >
                     <SafeAreaView style={{ flex: 1 }}>
                         <DetailsContainer>

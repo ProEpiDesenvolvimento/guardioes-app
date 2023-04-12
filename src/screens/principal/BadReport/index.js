@@ -208,24 +208,12 @@ const BadReport = ({ navigation }) => {
         )
     }
 
-    const sortSymptoms = (symptoms = []) => {
-        // Sort in alphabetical order
-        symptoms.sort((a, b) => {
-            if (a.description !== b.description) {
-                if (a.description < b.description) return -1
-                return 1
-            }
-            return 0
-        })
-        return symptoms
-    }
-
     const getSymptoms = async () => {
         const response = await getAppSymptoms(token)
 
         if (response.status === 200) {
-            const sortedSymptoms = sortSymptoms(response.data.symptoms)
-            setSymptoms(sortedSymptoms)
+            const appSymptoms = response.data.symptoms
+            setSymptoms(appSymptoms)
             setIsLoading(false)
         }
     }
