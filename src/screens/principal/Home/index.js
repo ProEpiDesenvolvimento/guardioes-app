@@ -82,7 +82,6 @@ const Home = ({ navigation }) => {
         getCacheData,
         storeCacheData,
         storeLastReport,
-        loadSecondaryData,
         selectUser,
         getCurrentUserInfo,
     } = useUser()
@@ -107,13 +106,20 @@ const Home = ({ navigation }) => {
 
     useEffect(() => {
         if (!isLoading) {
-            fetchData()
+            getCurrentLocation()
+            getCacheSurveys()
         }
     }, [isLoading])
 
     useEffect(() => {
         showOfflineAlert(isOffline)
     }, [isOffline])
+
+    useEffect(() => {
+        if (user.policy_version) {
+            verifyUserTermsConsent()
+        }
+    }, [user])
 
     useEffect(() => {
         if (
@@ -124,14 +130,6 @@ const Home = ({ navigation }) => {
             setInviteSurveillance(true)
         }
     }, [group])
-
-    const fetchData = async () => {
-        await loadSecondaryData()
-
-        verifyUserTermsConsent()
-        getCurrentLocation()
-        getCacheSurveys()
-    }
 
     const verifyUserTermsConsent = () => {
         const currentPolicyTerms = terms.version

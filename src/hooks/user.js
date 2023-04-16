@@ -19,7 +19,6 @@ import { authUser } from '../api/user'
 const UserContext = createContext(null)
 
 export const UserProvider = ({ children }) => {
-    const [credentials, setCredentials] = useState({})
     const [token, setToken] = useState('')
     const [user, setUser] = useState({})
     const [avatar, setAvatar] = useState('')
@@ -86,12 +85,7 @@ export const UserProvider = ({ children }) => {
             await AsyncStorage.getItem('selectedData')
         )
 
-        if (email !== '' && password !== '') {
-            setCredentials({
-                email,
-                password,
-            })
-        } else {
+        if (email === '' && password === '') {
             await signOut()
         }
         if (token !== '') {
@@ -106,9 +100,10 @@ export const UserProvider = ({ children }) => {
 
         SplashScreen.hide()
         setIsLoading(false)
+        loadSecondaryData({ email, password })
     }, [])
 
-    const loadSecondaryData = async () => {
+    const loadSecondaryData = async (credentials) => {
         // Loads secondary data and verify user credentials
         const avatar = await AsyncStorage.getItem('userAvatar')
         const appTips = JSON.parse(await AsyncStorage.getItem('appTips'))
@@ -205,8 +200,10 @@ export const UserProvider = ({ children }) => {
         })
     }
 
-    const signIn = async ({ email, password }) => {
-        const response = await authUser({ user: { email, password } })
+    const signIn = async (credentials) => {
+        const response = await authUser({
+            user: { email: credentials.email, password: credentials.password },
+        })
 
         if (response.status === 200) {
             storeUser(response.data.user, response.headers.authorization)
@@ -443,7 +440,6 @@ export const UserProvider = ({ children }) => {
             value={{
                 token,
                 user,
-                loadSecondaryData,
                 storeUser,
                 selectUser,
                 signOut,
