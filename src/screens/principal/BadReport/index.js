@@ -37,7 +37,7 @@ import {
     getInitials,
     redirectAlert,
     getSurveyConfirmation,
-    showSurveillanceInvite
+    showSurveillanceInvite,
 } from '../../../utils/consts'
 import { countryChoices, localSymptom } from '../../../utils/selector'
 import { cardWhatsapp } from '../../../img/cardWhatsapp/cardWhatsapp_base64'
@@ -86,7 +86,7 @@ const BadReport = ({ navigation }) => {
     useEffect(() => {
         getSymptoms()
         getGroupName()
-    }, [])
+    }, [token])
 
     useEffect(() => {
         if (
@@ -96,7 +96,7 @@ const BadReport = ({ navigation }) => {
         ) {
             setInviteSurveillance(true)
         }
-    }, [])
+    }, [group])
 
     const getGroupName = () => {
         const groupName = person.group ? person.group.split('/')[3] : null

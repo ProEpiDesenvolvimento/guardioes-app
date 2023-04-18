@@ -62,7 +62,7 @@ const Dicas = () => {
     useFocusEffect(
         useCallback(() => {
             getAppContents()
-        }, [isOffline])
+        }, [isOffline, token])
     )
 
     const sortContents = (contents = []) => {

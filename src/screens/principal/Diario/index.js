@@ -83,7 +83,7 @@ const Diario = ({ navigation }) => {
         useCallback(() => {
             getSurveys()
             getPersonAge()
-        }, [isOffline])
+        }, [isOffline, token])
     )
 
     useEffect(() => {

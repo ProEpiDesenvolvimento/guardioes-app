@@ -89,7 +89,7 @@ const BioSeguranca = ({ navigation }) => {
 
     useEffect(() => {
         getBioSecurityForm()
-    }, [])
+    }, [token])
 
     if (isLoading) {
         return <ScreenLoader />
