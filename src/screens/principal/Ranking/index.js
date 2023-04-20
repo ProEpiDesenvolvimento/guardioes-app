@@ -69,7 +69,7 @@ const Ranking = ({ navigation }) => {
 
     useEffect(() => {
         getRanking()
-    }, [])
+    }, [token])
 
     if (isLoading) {
         return <ScreenLoader />

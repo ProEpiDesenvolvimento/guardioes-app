@@ -46,7 +46,7 @@ const Maps = () => {
     useFocusEffect(
         useCallback(() => {
             getMapPins()
-        }, [])
+        }, [token])
     )
 
     useEffect(() => {

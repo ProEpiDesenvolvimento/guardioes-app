@@ -235,7 +235,7 @@ const Vacinacao = () => {
 
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [token])
 
     if (isLoading) {
         return <ScreenLoader />

@@ -105,7 +105,7 @@ const Perfis = ({ navigation }) => {
 
     useEffect(() => {
         getFullUser()
-    }, [])
+    }, [token])
 
     if (isLoading) {
         return <ScreenLoader />

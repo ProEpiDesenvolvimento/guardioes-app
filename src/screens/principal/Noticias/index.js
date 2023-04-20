@@ -129,7 +129,7 @@ const Noticias = () => {
                     keyExtractor={(tweet) => tweet.id_str}
                     renderItem={({ item }) => <NoticiasComponent data={item} />}
                     onEndReached={() => {
-                        const newLenght = length + 4
+                        const newLenght = length + 5
                         setLength(newLenght)
                         setFilteredTweets(tweets.slice(0, newLenght))
                     }}
