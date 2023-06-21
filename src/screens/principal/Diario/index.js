@@ -67,8 +67,7 @@ const Diario = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(true)
     const [personAge, setPersonAge] = useState(12)
-    const [allDatesMarked, setAllDatesMarked] = useState([])
-    const [datesMarked, setDatesMarked] = useState([])
+    const [datesMarked, setDatesMarked] = useState({})
     const [daysMarked, setDaysMarked] = useState(0)
     const [daysMissing, setDaysMissing] = useState(0)
     const [daysGood, setDaysGood] = useState(0)
@@ -119,72 +118,117 @@ const Diario = ({ navigation }) => {
         birthDate.setHours(0, 0, 0, 0)
 
         const diff = todayDate.getTime() - birthDate.getTime()
-        const personAge = Math.floor(diff / (1000 * 60 * 60 * 24 * 365))
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365))
 
-        setPersonAge(personAge)
+        setPersonAge(age)
+    }
+
+    const getMarkedWeek = (dateString, markedDates, bad = false) => {
+        const date = new Date(`${dateString}T03:00:00.000Z`)
+        const dayOfWeek = date.getDay()
+
+        const week = {}
+
+        for (let i = 0; i < 7; i += 1) {
+            const diff = i - dayOfWeek
+            const otherDate = new Date(date)
+            otherDate.setDate(date.getDate() + diff)
+
+            let obj = {}
+
+            switch (i) {
+                case 0:
+                    obj = {
+                        startingDay: true,
+                        color: '#5DD39E',
+                    }
+                    break
+                case 6:
+                    obj = {
+                        endingDay: true,
+                        color: '#5DD39E',
+                    }
+                    break
+                default:
+                    obj = {
+                        color: '#5DD39E',
+                    }
+            }
+
+            if (diff === 0) {
+                obj = {
+                    ...obj,
+                    selected: true,
+                    color: bad ? '#F18F01' : '#5DD39E',
+                }
+
+                //if (bad) {
+                    console.log(i, diff, bad, otherDate)
+                //}
+            }
+
+            const dateKey = otherDate.toISOString().slice(0, 10)
+
+            if (!markedDates[dateKey]?.selected) {
+                week[dateKey] = obj
+            }
+        }
+
+        return week
     }
 
     const defineMarkedDates = () => {
-        const markedDatesGood = []
-        const markedDatesBad = []
-        const markedDatesAll = []
+        const datesGood = []
+        const datesBad = []
+        let markedDatesGood = {}
+        let markedDatesBad = {}
+        let markedDates = {}
+        let date = ''
 
         surveys.forEach((survey) => {
             if (!person.is_household) {
                 if (!survey.household) {
                     if (survey.symptom && survey.symptom.length) {
                         // BadReport
-                        markedDatesBad.push(
-                            survey.created_at.split('T', 1).toString()
-                        )
-                        markedDatesAll.push(survey)
+                        date = survey.created_at.split('T', 1).toString()
+                        datesBad.push(date)
+
+                        const markedWeek = getMarkedWeek(date, markedDates, true)
+                        markedDates = {
+                            ...markedDates,
+                            ...markedWeek,
+                        }
                     } else {
                         // GoodReport
-                        markedDatesGood.push(
-                            survey.created_at.split('T', 1).toString()
-                        )
+                        date = survey.created_at.split('T', 1).toString()
+                        datesGood.push(date)
+
+                        const markedWeek = getMarkedWeek(date, markedDates, false)
+                        markedDates = {
+                            ...markedDates,
+                            ...markedWeek,
+                        }
                     }
                 }
             } else if (survey.household && survey.household.id === person.id) {
                 if (survey.symptom && survey.symptom.length) {
                     // Household BadReport
-                    markedDatesBad.push(
-                        survey.created_at.split('T', 1).toString()
-                    )
-                    markedDatesAll.push(survey)
+                    datesBad.push(survey.created_at.split('T', 1).toString())
                 } else {
                     // Household GoodReport
-                    markedDatesGood.push(
-                        survey.created_at.split('T', 1).toString()
-                    )
+                    datesGood.push(survey.created_at.split('T', 1).toString())
                 }
             }
         })
 
-        setAllDatesMarked(markedDatesAll)
+        // Object.assign(markedDatesGood, markedDatesBad)
+        // console.log('markedDates', markedDates)
 
-        const BadReports = markedDatesBad.reduce(
-            (c, v) =>
-                Object.assign(c, {
-                    [v]: { selected: true, selectedColor: '#F18F01' },
-                }),
-            {}
-        )
-        const GoodReports = markedDatesGood.reduce(
-            (c, v) =>
-                Object.assign(c, {
-                    [v]: { selected: true, selectedColor: '#5DD39E' },
-                }),
-            {}
-        )
-
-        Object.assign(GoodReports, BadReports)
-
-        const daysMarked = Object.keys(GoodReports).length
-        const daysBad = Object.keys(BadReports).length
+        const daysMarked = Object.keys(markedDatesGood).length
+        const daysBad = Object.keys(markedDatesBad).length
         const daysGood = daysMarked - daysBad
 
-        setDatesMarked(GoodReports)
+        setDatesMarked(markedDates)
         setDaysMarked(daysMarked)
         setDaysGood(daysGood)
         setDaysBad(daysBad)
@@ -204,10 +248,10 @@ const Diario = ({ navigation }) => {
         const percentBad = ((daysBad / daysTotal) * 100).toFixed(0)
         const percentMissing = ((daysMissing / daysTotal) * 100).toFixed(0)
 
-        setDaysMissing(daysMissing)
+        setDaysMissing(0)
         setPercentGood(percentGood)
         setPercentBad(percentBad)
-        setPercentMissing(percentMissing)
+        setPercentMissing(0)
     }
 
     const handleCalendarArrows = (direction) => {
@@ -217,10 +261,6 @@ const Diario = ({ navigation }) => {
             )
         }
         return <Feather name='chevron-right' size={scale(25)} color='#c4c4c4' />
-    }
-
-    if (isLoading) {
-        return <ScreenLoader />
     }
 
     const chartData = [
@@ -243,6 +283,10 @@ const Diario = ({ navigation }) => {
             arc: { cornerRadius: 8 },
         },
     ]
+
+    if (isLoading) {
+        return <ScreenLoader />
+    }
 
     return (
         <>
@@ -283,21 +327,8 @@ const Diario = ({ navigation }) => {
                                             current={moment().format(
                                                 'YYYY-MM-DD'
                                             )}
+                                            markingType='period'
                                             markedDates={datesMarked}
-                                            onDayPress={(day) => {
-                                                allDatesMarked.forEach(
-                                                    (symptomMarker) => {
-                                                        if (
-                                                            symptomMarker.bad_since ===
-                                                            day.dateString
-                                                        ) {
-                                                            console.warn(
-                                                                symptomMarker.symptom
-                                                            )
-                                                        }
-                                                    }
-                                                )
-                                            }}
                                             renderArrow={(direction) =>
                                                 handleCalendarArrows(direction)
                                             }
