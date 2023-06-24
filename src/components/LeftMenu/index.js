@@ -93,7 +93,7 @@ const LeftMenu = ({ navigation }) => {
                             style={styles.iconStyle}
                         />
                         <TextOption>
-                            {translate('drawer.reportRumor')}
+                            {translate('drawer.reportEvent')}
                         </TextOption>
                     </UserOptionBlue>
                 </Button>

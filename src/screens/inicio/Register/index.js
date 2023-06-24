@@ -383,7 +383,7 @@ const Register = ({ navigation }) => {
 
                     <FormInlineCheck>
                         <CheckBoxStyled
-                            title={translate('register.healthProfessional')}
+                            title={translate('register.professionalLabel')}
                             checked={isProfessional}
                             onPress={() => setIsProfessional(!isProfessional)}
                         />

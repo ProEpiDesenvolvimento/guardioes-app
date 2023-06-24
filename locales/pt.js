@@ -124,7 +124,7 @@ export default {
             allFieldsAreFilled:
                 'Todos os campos devem ser preenchidos corretamente',
         },
-        healthProfessional: 'Você é um profissional da saúde?',
+        professionalLabel: 'Você é um líder comunitário?',
         riskGroupLabel: 'Faz parte do grupo de risco?',
         vaccination: 'Possui dados de vacinação?',
         institution: 'É integrante de alguma instituição cadastrada?',
@@ -417,7 +417,7 @@ export default {
         add: 'Adicionar',
     },
     drawer: {
-        reportRumor: 'Reportar Rumor',
+        reportEvent: 'Reportar Evento',
         toEdit: 'Editar perfis',
         logOut: 'Sair',
         app: 'Aplicativo',

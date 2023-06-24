@@ -122,7 +122,7 @@ export default {
             error: 'Error',
             allFieldsAreFilled: 'All fields must be filled in correctly',
         },
-        healthProfessional: 'Are you a health professional?',
+        professionalLabel: 'Are you a health professional?',
         riskGroupLabel: 'Are you part of the risk group?',
         institution: 'Are you a member of any registered institution?',
         vaccination: 'Do you have vaccination data?',
@@ -412,7 +412,7 @@ export default {
         add: 'Add',
     },
     drawer: {
-        reportRumor: 'Report Rumor',
+        reportEvent: 'Report Event',
         toEdit: 'Edit profiles',
         logOut: 'Logout',
         app: 'App',
