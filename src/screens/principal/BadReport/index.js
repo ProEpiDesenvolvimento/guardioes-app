@@ -55,7 +55,7 @@ const BadReport = ({ navigation }) => {
         group,
         location,
         getCurrentLocation,
-        updateUserScore,
+        storeLastReport,
         surveys,
         storeSurveys,
         getCurrentUserInfo,
@@ -208,24 +208,12 @@ const BadReport = ({ navigation }) => {
         )
     }
 
-    const sortSymptoms = (symptoms = []) => {
-        // Sort in alphabetical order
-        symptoms.sort((a, b) => {
-            if (a.description !== b.description) {
-                if (a.description < b.description) return -1
-                return 1
-            }
-            return 0
-        })
-        return symptoms
-    }
-
     const getSymptoms = async () => {
         const response = await getAppSymptoms(token)
 
         if (response.status === 200) {
-            const sortedSymptoms = sortSymptoms(response.data.symptoms)
-            setSymptoms(sortedSymptoms)
+            const appSymptoms = response.data.symptoms
+            setSymptoms(appSymptoms)
             setIsLoading(false)
         }
     }
@@ -272,7 +260,6 @@ const BadReport = ({ navigation }) => {
         const delay = (ms) => new Promise((res) => setTimeout(res, ms))
         await delay(50)
 
-        updateUserScore()
         if (response.status === 201) {
             if (!response.data.errors && response.data.messages.top_3) {
                 if (response.data.messages.top_3[0]) {
@@ -295,6 +282,7 @@ const BadReport = ({ navigation }) => {
             }
             await storeCacheData('localPin', localPin)
             await storeUser(response.data.user)
+            storeLastReport(response.data.user?.streak)
 
             const newSurveys = surveys.slice()
             newSurveys.push(response.data.survey)
