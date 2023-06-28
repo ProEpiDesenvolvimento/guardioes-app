@@ -134,43 +134,39 @@ const Diario = ({ navigation }) => {
             const otherDate = new Date(date)
             otherDate.setDate(date.getDate() + diff)
 
-            let obj = {}
+            let markedDay = {}
 
             switch (i) {
                 case 0:
-                    obj = {
+                    markedDay = {
                         startingDay: true,
                         color: '#5DD39E',
                     }
                     break
                 case 6:
-                    obj = {
+                    markedDay = {
                         endingDay: true,
                         color: '#5DD39E',
                     }
                     break
                 default:
-                    obj = {
+                    markedDay = {
                         color: '#5DD39E',
                     }
             }
 
             if (diff === 0) {
-                obj = {
-                    ...obj,
+                markedDay = {
+                    ...markedDay,
                     selected: true,
                     color: bad ? '#F18F01' : '#5DD39E',
                 }
-
-                //if (bad) {
-                    console.log(i, diff, bad, otherDate)
-                //}
             }
 
             const dateKey = otherDate.toISOString().slice(0, 10)
 
-            if (!markedDates[dateKey]?.selected) {
-                week[dateKey] = obj
+            if (!markedDates[dateKey]?.selected || diff === 0) {
+                week[dateKey] = markedDay
             }
         }
 
@@ -178,51 +174,46 @@ const Diario = ({ navigation }) => {
     }
 
     const defineMarkedDates = () => {
-        const datesGood = []
-        const datesBad = []
-        let markedDatesGood = {}
-        let markedDatesBad = {}
-        let markedDates = {}
+        const markedDatesGood = {}
+        const markedDatesBad = {}
+        const markedDates = {}
         let date = ''
 
         surveys.forEach((survey) => {
-            if (!person.is_household) {
-                if (!survey.household) {
-                    if (survey.symptom && survey.symptom.length) {
-                        // BadReport
-                        date = survey.created_at.split('T', 1).toString()
-                        datesBad.push(date)
+            date = survey.created_at.slice(0, 10)
 
-                        const markedWeek = getMarkedWeek(date, markedDates, true)
-                        markedDates = {
-                            ...markedDates,
-                            ...markedWeek,
-                        }
-                    } else {
-                        // GoodReport
-                        date = survey.created_at.split('T', 1).toString()
-                        datesGood.push(date)
+            if (!person.is_household && !survey.household) {
+                if (survey.symptom && survey.symptom.length) {
+                    // User BadReport
+                    markedDatesBad[date] = true
 
-                        const markedWeek = getMarkedWeek(date, markedDates, false)
-                        markedDates = {
-                            ...markedDates,
-                            ...markedWeek,
-                        }
-                    }
+                    const markedWeek = getMarkedWeek(date, markedDates, true)
+                    Object.assign(markedDates, markedWeek)
+                } else {
+                    // User GoodReport
+                    markedDatesGood[date] = true
+
+                    const markedWeek = getMarkedWeek(date, markedDates, false)
+                    Object.assign(markedDates, markedWeek)
                 }
             } else if (survey.household && survey.household.id === person.id) {
-                if (survey.symptom && survey.symptom.length) {
+                if (survey.symptom && survey.symptom?.length) {
                     // Household BadReport
-                    datesBad.push(survey.created_at.split('T', 1).toString())
+                    markedDatesBad[date] = true
+
+                    const markedWeek = getMarkedWeek(date, markedDates, true)
+                    Object.assign(markedDates, markedWeek)
                 } else {
                     // Household GoodReport
-                    datesGood.push(survey.created_at.split('T', 1).toString())
+                    markedDatesGood[date] = true
+
+                    const markedWeek = getMarkedWeek(date, markedDates, false)
+                    Object.assign(markedDates, markedWeek)
                 }
             }
         })
 
-        // Object.assign(markedDatesGood, markedDatesBad)
-        // console.log('markedDates', markedDates)
+        Object.assign(markedDatesGood, markedDatesBad)
 
         const daysMarked = Object.keys(markedDatesGood).length
         const daysBad = Object.keys(markedDatesBad).length
@@ -248,10 +239,10 @@ const Diario = ({ navigation }) => {
         const percentBad = ((daysBad / daysTotal) * 100).toFixed(0)
         const percentMissing = ((daysMissing / daysTotal) * 100).toFixed(0)
 
-        setDaysMissing(0)
+        setDaysMissing(daysMissing)
         setPercentGood(percentGood)
         setPercentBad(percentBad)
-        setPercentMissing(0)
+        setPercentMissing(percentMissing)
     }
 
     const handleCalendarArrows = (direction) => {
