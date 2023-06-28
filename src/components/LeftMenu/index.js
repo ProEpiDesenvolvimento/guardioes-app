@@ -84,7 +84,7 @@ const LeftMenu = ({ navigation }) => {
             </AvatarContainer>
 
             {user.is_professional === true ? (
-                <Button onPress={() => navigation.navigate('Rumor')}>
+                <Button onPress={() => navigation.navigate('EventoForm')}>
                     <UserOptionBlue>
                         <Feather
                             name='info'

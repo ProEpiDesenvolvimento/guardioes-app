@@ -15,6 +15,7 @@ import HomeDrawer from './HomeDrawer'
 import Ajuda from '../screens/principal/Ajuda'
 import BadReport from '../screens/principal/BadReport'
 import BioSeguranca from '../screens/principal/BioSeguranca'
+import EventoForm from '../screens/principal/EventoForm'
 import EditarPerfil from '../screens/principal/EditarPerfil'
 import FAQ from '../screens/principal/FAQ'
 import NovoPerfil from '../screens/principal/NovoPerfil'
@@ -93,6 +94,11 @@ const AppStack = () => {
                 name='BioSeguranca'
                 component={BioSeguranca}
                 options={{ title: translate('biosecurity.title') }}
+            />
+            <Stack.Screen
+                name='EventoForm'
+                component={EventoForm}
+                options={{ title: 'Evento' }}
             />
             <Stack.Screen
                 name='Vacinacao'
