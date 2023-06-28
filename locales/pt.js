@@ -25,7 +25,7 @@ export default {
         codeLengthError: 'O código deve conter exatamente ',
         codeLengthError2: ' dígitos',
     },
-    birthDetails: {
+    dateSelector: {
         format: 'DD-MM-AAAA',
         confirmButton: 'Confirmar',
         cancelButton: 'Cancelar',

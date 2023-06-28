@@ -401,17 +401,17 @@ const EditarPerfil = ({ navigation, route }) => {
                     <FormGroupChild>
                         <FormLabel>{translate('register.birth')}</FormLabel>
                         <DateSelector
-                            placeholder={translate('birthDetails.format')}
+                            placeholder={translate('dateSelector.format')}
                             date={birth}
                             format='DD-MM-YYYY'
                             minDate='01-01-1918'
                             maxDate={moment().local().format('DD-MM-YYYY')}
                             locale='pt-BR'
                             confirmBtnText={translate(
-                                'birthDetails.confirmButton'
+                                'dateSelector.confirmButton'
                             )}
                             cancelBtnText={translate(
-                                'birthDetails.cancelButton'
+                                'dateSelector.cancelButton'
                             )}
                             onDateChange={(date) => setBirth(date)}
                         />

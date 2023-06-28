@@ -378,10 +378,10 @@ const Vacinacao = () => {
                                             .format('DD-MM-YYYY')}
                                         locale='pt-BR'
                                         confirmBtnText={translate(
-                                            'birthDetails.confirmButton'
+                                            'dateSelector.confirmButton'
                                         )}
                                         cancelBtnText={translate(
-                                            'birthDetails.cancelButton'
+                                            'dateSelector.cancelButton'
                                         )}
                                         onDateChange={(date) =>
                                             setNewDoseDate(date)

@@ -316,14 +316,14 @@ const BadReport = ({ navigation }) => {
                 <DateSince>
                     <DateText>{translate('badReport.sickAge')}</DateText>
                     <DateSelector
-                        placeholder={translate('birthDetails.format')}
+                        placeholder={translate('dateSelector.format')}
                         date={badSince}
                         format='DD-MM-YYYY'
                         minDate='01-01-2018'
                         maxDate={moment().local().format('DD-MM-YYYY')}
                         locale='pt-BR'
-                        confirmBtnText={translate('birthDetails.confirmButton')}
-                        cancelBtnText={translate('birthDetails.cancelButton')}
+                        confirmBtnText={translate('dateSelector.confirmButton')}
+                        cancelBtnText={translate('dateSelector.cancelButton')}
                         onDateChange={(date) => setBadSince(date)}
                     />
                 </DateSince>
