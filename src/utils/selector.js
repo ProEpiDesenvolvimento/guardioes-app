@@ -131,6 +131,7 @@ export const householdChoices = [
     { key: 'Mãe', label: 'Mãe' },
     { key: 'Filhos', label: 'Filhos' },
     { key: 'Irmãos', label: 'Irmãos' },
+    { key: 'Parceiros', label: 'Parceiros' },
     { key: 'Avós', label: 'Avós' },
     { key: 'Outros', label: 'Outros' },
 ]
