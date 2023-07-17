@@ -38,6 +38,15 @@ export const FormLabel = styled.Text`
     margin-bottom: ${scale(12)}px;
 `
 
+export const FormTip = styled.Text`
+    align-self: flex-start;
+    font-family: ArgentumSans;
+    font-size: ${scale(12)}px;
+    color: ${(props) => (props.light ? '#ffffff' : '#32323B')};
+    margin-top: ${scale(6)}px;
+    margin-left: ${scale(12)}px;
+`
+
 export const NormalInput = styled.TextInput`
     width: 100%;
     min-height: ${scale(36)}px;
