@@ -63,7 +63,7 @@ const NovoPerfil = ({ navigation }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [category, setCategory] = useState({})
-    const [allCategories, setAllCategories] = useState(null)
+    const [allCategories, setAllCategories] = useState([])
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -166,7 +166,7 @@ const NovoPerfil = ({ navigation }) => {
 
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
                 <FormInline>
-                    <FormLabel>{translate('register.name')}</FormLabel>
+                    <FormLabel>{translate('register.name')} *</FormLabel>
                     <NormalInput
                         value={name}
                         onChangeText={(text) => setName(text)}
@@ -197,7 +197,7 @@ const NovoPerfil = ({ navigation }) => {
 
                 <FormGroup>
                     <FormGroupChild>
-                        <FormLabel>{translate('register.birth')}</FormLabel>
+                        <FormLabel>{translate('register.birth')} *</FormLabel>
                         <DateSelector
                             placeholder={translate('birthDetails.format')}
                             date={birth}
@@ -216,7 +216,7 @@ const NovoPerfil = ({ navigation }) => {
                     </FormGroupChild>
 
                     <FormGroupChild>
-                        <FormLabel>{translate('register.country')}</FormLabel>
+                        <FormLabel>{translate('register.country')} *</FormLabel>
                         <Selector
                             initValue={translate('selector.label')}
                             cancelText={translate('selector.cancelButton')}
@@ -227,7 +227,7 @@ const NovoPerfil = ({ navigation }) => {
                 </FormGroup>
 
                 <FormInline>
-                    <FormLabel>Parentesco:</FormLabel>
+                    <FormLabel>Parentesco: *</FormLabel>
                     <Selector
                         initValue={translate('selector.label')}
                         cancelText={translate('selector.cancelButton')}
@@ -257,9 +257,11 @@ const NovoPerfil = ({ navigation }) => {
                     setErrorCallback={setInstituitionComponentError}
                 />
 
-                {allCategories ? (
+                {allCategories.length > 0 ? (
                     <FormInline>
-                        <FormLabel>Categoria:</FormLabel>
+                        <FormLabel>
+                            {translate('register.category')} *
+                        </FormLabel>
                         <Selector
                             data={allCategories}
                             initValue={
