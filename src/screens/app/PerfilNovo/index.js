@@ -44,7 +44,7 @@ import { useUser } from '../../../hooks/user'
 import { createHousehold } from '../../../api/households'
 import { getCategories } from '../../../api/categories'
 
-const NovoPerfil = ({ navigation }) => {
+const PerfilNovo = ({ navigation }) => {
     const { token, user } = useUser()
 
     const [name, setName] = useState('')
@@ -297,4 +297,4 @@ const NovoPerfil = ({ navigation }) => {
     )
 }
 
-export default NovoPerfil
+export default PerfilNovo

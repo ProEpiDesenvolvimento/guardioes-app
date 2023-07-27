@@ -133,7 +133,7 @@ const Perfis = ({ navigation }) => {
                     <ButtonsWrapper>
                         <Button
                             onPress={() => {
-                                navigation.navigate('EditarPerfil', {
+                                navigation.navigate('PerfilEditar', {
                                     person: getUserInfo(),
                                 })
                             }}
@@ -179,7 +179,7 @@ const Perfis = ({ navigation }) => {
                             <ButtonsWrapper>
                                 <Button
                                     onPress={() => {
-                                        navigation.navigate('EditarPerfil', {
+                                        navigation.navigate('PerfilEditar', {
                                             person: getHouseholdInfo(household),
                                         })
                                     }}

@@ -12,21 +12,20 @@ import {
 } from '../components/Header'
 
 import HomeDrawer from './HomeDrawer'
-import Ajuda from '../screens/principal/Ajuda'
-import BadReport from '../screens/principal/BadReport'
-import BioSeguranca from '../screens/principal/BioSeguranca'
-import EventoForm from '../screens/principal/EventoForm'
-import EditarPerfil from '../screens/principal/EditarPerfil'
-import FAQ from '../screens/principal/FAQ'
-import NovoPerfil from '../screens/principal/NovoPerfil'
-import Perfis from '../screens/principal/Perfis'
-import Rumor from '../screens/principal/Rumor'
-import Sobre from '../screens/principal/Sobre'
-import TermosPoliticas from '../screens/principal/TermosPoliticas'
-import Tutorial from '../screens/principal/Tutorial'
-import Vacinacao from '../screens/principal/Vacinacao'
-import Vigilancia from '../screens/principal/Vigilancia'
-import Ranking from '../screens/principal/Ranking'
+import Ajuda from '../screens/app/Ajuda'
+import BadReport from '../screens/app/BadReport'
+import BioSeguranca from '../screens/app/BioSeguranca'
+import FAQ from '../screens/app/FAQ'
+import Perfis from '../screens/app/Perfis'
+import PerfilEditar from '../screens/app/PerfilEditar'
+import PerfilNovo from '../screens/app/PerfilNovo'
+import Rumor from '../screens/app/Rumor'
+import Sobre from '../screens/app/Sobre'
+import TermosPoliticas from '../screens/app/TermosPoliticas'
+import Tutorial from '../screens/app/Tutorial'
+import Vacinacao from '../screens/app/Vacinacao'
+import Vigilancia from '../screens/app/Vigilancia'
+import Ranking from '../screens/app/Ranking'
 
 import translate from '../../locales/i18n'
 import { scale } from '../utils/scalling'
@@ -86,19 +85,14 @@ const AppStack = () => {
                 options={{ title: translate('badReport.title') }}
             />
             <Stack.Screen
-                name='NovoPerfil'
-                component={NovoPerfil}
+                name='PerfilNovo'
+                component={PerfilNovo}
                 options={{ title: translate('home.addProfile') }}
             />
             <Stack.Screen
                 name='BioSeguranca'
                 component={BioSeguranca}
                 options={{ title: translate('biosecurity.title') }}
-            />
-            <Stack.Screen
-                name='EventoForm'
-                component={EventoForm}
-                options={{ title: 'Evento' }}
             />
             <Stack.Screen
                 name='Vacinacao'
@@ -116,8 +110,8 @@ const AppStack = () => {
                 options={{ title: translate('rumor.title') }}
             />
             <Stack.Screen
-                name='EditarPerfil'
-                component={EditarPerfil}
+                name='PerfilEditar'
+                component={PerfilEditar}
                 options={{ title: translate('register.editProfile') }}
             />
             <Stack.Screen
@@ -163,7 +157,7 @@ const headerOptions = {
     editarPerfil: {
         title: translate('register.editProfile'),
         rightButton: (navigation) => (
-            <BackButton onPress={() => navigation.navigate('NovoPerfil')}>
+            <BackButton onPress={() => navigation.navigate('PerfilNovo')}>
                 <Feather name='user-plus' size={scale(30)} color='#ffffff' />
             </BackButton>
         ),

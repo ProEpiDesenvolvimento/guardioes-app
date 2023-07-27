@@ -1,10 +1,10 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import ForgetPwd from '../screens/inicio/ForgetPwd'
-import Login from '../screens/inicio/Login'
-import Register from '../screens/inicio/Register'
-import Welcome from '../screens/inicio/Welcome'
+import ForgetPwd from '../screens/auth/ForgetPwd'
+import Login from '../screens/auth/Login'
+import Register from '../screens/auth/Register'
+import Welcome from '../screens/auth/Welcome'
 
 const Stack = createStackNavigator()
 

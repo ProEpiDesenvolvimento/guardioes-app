@@ -519,7 +519,7 @@ const Home = ({ navigation }) => {
                                     <Button
                                         onPress={() => {
                                             setModalVisible(!modalVisible)
-                                            navigation.navigate('NovoPerfil')
+                                            navigation.navigate('PerfilNovo')
                                         }}
                                     >
                                         <Feather

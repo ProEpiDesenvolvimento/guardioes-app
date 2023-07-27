@@ -13,11 +13,11 @@ import {
     Button,
 } from './styles'
 
-import translate from '../../../../locales/i18n'
-import { redirectAlert } from '../../../utils/consts'
+import translate from '../../../locales/i18n'
+import { redirectAlert } from '../../utils/consts'
 
-const NoticiasComponent = ({ data }) => {
-    const date = moment(data.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY').format('DD/MM/YY')
+const Noticia = ({ item }) => {
+    const date = moment(item.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY').format('DD/MM/YY')
 
     return (
         <Button
@@ -25,23 +25,23 @@ const NoticiasComponent = ({ data }) => {
                 redirectAlert(
                     translate('news.openBrowser'),
                     translate('news.twitter'),
-                    `https://twitter.com/${data.screen_name}/status/${data.id_str}`
+                    `https://twitter.com/${item.screen_name}/status/${item.id_str}`
                 )
             }
         >
             <NoticiaContainer>
                 <Header>
                     <TwitterInfo>
-                        <TwitterName>{data.name}</TwitterName>
-                        <TwitterHandle>@{data.screen_name}</TwitterHandle>
+                        <TwitterName>{item.name}</TwitterName>
+                        <TwitterHandle>@{item.screen_name}</TwitterHandle>
                     </TwitterInfo>
                     <Data>{date}</Data>
                 </Header>
-                <NoticiaText>{`${data.text.substring(0, 70)}...`}</NoticiaText>
-                {data.images[0] ? (
+                <NoticiaText>{`${item.text.substring(0, 70)}...`}</NoticiaText>
+                {item.images[0] ? (
                     <Imagem
                         source={{
-                            uri: data.images[0],
+                            uri: item.images[0],
                         }}
                     />
                 ) : null}
@@ -50,4 +50,4 @@ const NoticiasComponent = ({ data }) => {
     )
 }
 
-export default NoticiasComponent
+export default Noticia

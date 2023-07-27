@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
-import NoticiasComponent from './NoticiasComponent'
+import Noticia from '../../../components/Noticia'
 import {
     Container,
     NoticiasList,
@@ -127,7 +127,7 @@ const Noticias = () => {
                     }
                     data={filteredTweets}
                     keyExtractor={(tweet) => tweet.id_str}
-                    renderItem={({ item }) => <NoticiasComponent data={item} />}
+                    renderItem={({ item }) => <Noticia item={item} />}
                     onEndReached={() => {
                         const newLenght = length + 4
                         setLength(newLenght)

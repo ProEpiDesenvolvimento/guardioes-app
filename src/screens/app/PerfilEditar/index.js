@@ -51,7 +51,7 @@ import Autocomplete from '../../../components/Autocomplete'
 import { getAppGroup } from '../../../api/groups'
 import { getCategories } from '../../../api/categories'
 
-const EditarPerfil = ({ navigation, route }) => {
+const PerfilEditar = ({ navigation, route }) => {
     const {
         token,
         user,
@@ -532,4 +532,4 @@ const imageOptions = {
     },
 }
 
-export default EditarPerfil
+export default PerfilEditar
