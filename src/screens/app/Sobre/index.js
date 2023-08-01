@@ -3,7 +3,7 @@ import { Image, TouchableOpacity } from 'react-native'
 
 import { ScrollViewStyled, Title, ImageContainer, BodyText } from './styles'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { UnBLogo, ProEpiLogo } from '../../../img/imageConst'
 import { redirectAlert } from '../../../utils/consts'
 import { scale } from '../../../utils/scalling'

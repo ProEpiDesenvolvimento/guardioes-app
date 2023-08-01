@@ -19,7 +19,7 @@ import {
     RedeSocial,
 } from './styles'
 
-import translate from '../../../locales/i18n'
+import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
 import { getInitials, handleAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
@@ -95,6 +95,34 @@ const LeftMenu = ({ navigation }) => {
                         <TextOption>
                             {translate('drawer.reportEvent')}
                         </TextOption>
+                    </UserOptionBlue>
+                </Button>
+            ) : null}
+            {user.is_professional === true ? (
+                <Button onPress={() => navigation.navigate('Eventos')}>
+                    <UserOptionBlue>
+                        <Feather
+                            name='info'
+                            size={scale(26)}
+                            color='#ffffff'
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>
+                            Formulários de Eventos
+                        </TextOption>
+                    </UserOptionBlue>
+                </Button>
+            ) : null}
+            {user.is_professional === true ? (
+                <Button onPress={() => navigation.navigate('EventoAnswers')}>
+                    <UserOptionBlue>
+                        <Feather
+                            name='info'
+                            size={scale(26)}
+                            color='#ffffff'
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>Respostas de Eventos</TextOption>
                     </UserOptionBlue>
                 </Button>
             ) : null}

@@ -16,7 +16,7 @@ import {
     InfoWrapper,
 } from '../../../components/Cards'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'

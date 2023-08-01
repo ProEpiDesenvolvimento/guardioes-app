@@ -13,7 +13,7 @@ import OneSignal from 'react-native-onesignal'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import SplashScreen from 'react-native-splash-screen'
 
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
 import { authUser } from '../api/user'
 
 const UserContext = createContext(null)

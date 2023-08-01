@@ -2,10 +2,10 @@ import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import LeftMenu from '../components/LeftMenu'
+import LeftMenu from '../../components/LeftMenu'
 import TabBar from './TabBar'
 
-import { scale } from '../utils/scalling'
+import { scale } from '../../utils/scalling'
 
 const Drawer = createDrawerNavigator()
 

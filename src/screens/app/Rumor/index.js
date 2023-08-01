@@ -29,7 +29,7 @@ import { CoolAlert } from '../../../components/CoolAlert'
 import { ExitMap, ConfirmMap, MapFormMarker, MapFormText } from './styles'
 import { Emojis } from '../../../img/imageConst'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { createRumor } from '../../../api/rumors'

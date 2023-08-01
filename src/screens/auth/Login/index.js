@@ -16,7 +16,7 @@ import {
 import { CoolAlert } from '../../../components/CoolAlert'
 import { Logo, PageTitle, LabelVisible } from './styles'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { GDSLogoES, GDSLogoBR } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'

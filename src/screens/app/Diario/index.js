@@ -44,7 +44,7 @@ import {
     ReportDataInfo,
 } from './styles'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { LocaleConfig } from '../../../utils/calendaryMonthNames'
 import { scale } from '../../../utils/scalling'
 import { HappyIcon, SadIcon, BadgeIcon } from '../../../img/imageConst'

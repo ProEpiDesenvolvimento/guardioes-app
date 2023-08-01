@@ -9,26 +9,26 @@ import {
     BackButton,
     ScreenTitle,
     Empty,
-} from '../components/Header'
+} from '../../components/Header'
 
 import HomeDrawer from './HomeDrawer'
-import Ajuda from '../screens/app/Ajuda'
-import BadReport from '../screens/app/BadReport'
-import BioSeguranca from '../screens/app/BioSeguranca'
-import FAQ from '../screens/app/FAQ'
-import Perfis from '../screens/app/Perfis'
-import PerfilEditar from '../screens/app/PerfilEditar'
-import PerfilNovo from '../screens/app/PerfilNovo'
-import Rumor from '../screens/app/Rumor'
-import Sobre from '../screens/app/Sobre'
-import TermosPoliticas from '../screens/app/TermosPoliticas'
-import Tutorial from '../screens/app/Tutorial'
-import Vacinacao from '../screens/app/Vacinacao'
-import Vigilancia from '../screens/app/Vigilancia'
-import Ranking from '../screens/app/Ranking'
+import Ajuda from '../../screens/app/Ajuda'
+import BadReport from '../../screens/app/BadReport'
+import BioSeguranca from '../../screens/app/BioSeguranca'
+import FAQ from '../../screens/app/FAQ'
+import Perfis from '../../screens/app/Perfis'
+import PerfilEditar from '../../screens/app/PerfilEditar'
+import PerfilNovo from '../../screens/app/PerfilNovo'
+import Rumor from '../../screens/app/Rumor'
+import Sobre from '../../screens/app/Sobre'
+import TermosPoliticas from '../../screens/app/TermosPoliticas'
+import Tutorial from '../../screens/app/Tutorial'
+import Vacinacao from '../../screens/app/Vacinacao'
+import Vigilancia from '../../screens/app/Vigilancia'
+import Ranking from '../../screens/app/Ranking'
 
 import translate from '../../locales/i18n'
-import { scale } from '../utils/scalling'
+import { scale } from '../../utils/scalling'
 
 const Stack = createStackNavigator()
 

@@ -1,4 +1,4 @@
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
 
 export const localSymptom = [
     { key: 'Casa', label: 'Em Casa' },

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ScrollViewStyled, Terms } from './styles'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 
 const TermosPoliticas = () => {
     return (

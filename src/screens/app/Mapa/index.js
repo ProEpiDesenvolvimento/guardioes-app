@@ -9,7 +9,7 @@ import { CoolAlert } from '../../../components/CoolAlert'
 import { Container, ButtonMapChange, TextMapChange } from './styles'
 
 import ClusteredMapView from '../../../utils/MarkerClustering'
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { greenMarker, redMarker } from '../../../img/imageConst'
 import { useUser } from '../../../hooks/user'
 import { getWeekSurveys } from '../../../api/surveys'

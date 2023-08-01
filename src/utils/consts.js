@@ -1,7 +1,7 @@
 import { Alert, Linking } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Emojis } from '../img/imageConst'
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
 
 export const getNameParts = (fullName, firstAndLast = false) => {
     if (typeof fullName === 'string') {

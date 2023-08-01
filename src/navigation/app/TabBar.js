@@ -3,14 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import Feather from 'react-native-vector-icons/Feather'
 
-import Diario from '../screens/app/Diario'
-import Dicas from '../screens/app/Dicas'
-import Home from '../screens/app/Home'
-import Mapa from '../screens/app/Mapa'
-import Noticias from '../screens/app/Noticias'
+import Diario from '../../screens/app/Diario'
+import Dicas from '../../screens/app/Dicas'
+import Home from '../../screens/app/Home'
+import Mapa from '../../screens/app/Mapa'
+import Noticias from '../../screens/app/Noticias'
 
 import translate from '../../locales/i18n'
-import { scale, vPercentage } from '../utils/scalling'
+import { scale, vPercentage } from '../../utils/scalling'
 
 const Tab = createBottomTabNavigator()
 

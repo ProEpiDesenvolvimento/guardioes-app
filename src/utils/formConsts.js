@@ -1,6 +1,6 @@
 import { Alert } from 'react-native'
 
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
 
 export const isQuestionAnswered = (answers, option) => {
     const answered = answers.filter(

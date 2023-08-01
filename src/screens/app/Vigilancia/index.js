@@ -24,7 +24,7 @@ import {
 import { Title, BodyText } from './styles'
 
 import LoadingModal from '../../../components/Groups/LoadingModal'
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
 import { scale } from '../../../utils/scalling'
 import { validPerson } from '../../../utils/consts'

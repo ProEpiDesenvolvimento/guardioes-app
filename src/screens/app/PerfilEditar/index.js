@@ -34,7 +34,7 @@ import { Delete } from './styles'
 
 import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
 import LoadingModal from '../../../components/Groups/LoadingModal'
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import {
     genderChoices,

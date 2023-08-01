@@ -9,7 +9,7 @@ import {
 } from '../../../components/SnowForms'
 import { Container, Logo, WelcomeText } from './styles'
 
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { GDSLogoES, GDSLogoBR } from '../../../img/imageConst'
 import { terms } from '../../../utils/consts'
 
