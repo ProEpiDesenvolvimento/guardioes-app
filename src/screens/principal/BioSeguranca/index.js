@@ -13,7 +13,7 @@ import {
     SendText,
 } from '../../../components/NormalForms'
 
-import LoadingModal from '../../../components/Groups/LoadingModal'
+import LoadingModal from '../../../components/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
 import {

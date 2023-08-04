@@ -39,7 +39,7 @@ import {
 } from '../../../components/Cards'
 import { VaccineScroll } from './styles'
 
-import LoadingModal from '../../../components/Groups/LoadingModal'
+import LoadingModal from '../../../components/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { getInitials } from '../../../utils/consts'
