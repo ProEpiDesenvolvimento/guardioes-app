@@ -102,7 +102,7 @@ const AppStack = () => {
             <Stack.Screen
                 name='Perfis'
                 component={Perfis}
-                options={headerOptions.editarPerfil}
+                options={headerOptions.editarPerfis}
             />
             <Stack.Screen
                 name='Rumor'
@@ -154,8 +154,8 @@ const AppStack = () => {
 }
 
 const headerOptions = {
-    editarPerfil: {
-        title: translate('register.editProfile'),
+    editarPerfis: {
+        title: translate('drawer.toEdit'),
         rightButton: (navigation) => (
             <BackButton onPress={() => navigation.navigate('NovoPerfil')}>
                 <Feather name='user-plus' size={scale(30)} color='#ffffff' />
