@@ -33,6 +33,7 @@ import {
 import { PageTitle, FormLabel, FormTip } from './styles'
 
 import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
+import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -47,6 +48,7 @@ import { stateOptions, getCity } from '../../../utils/brasil'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
 import { getCategories } from '../../../api/categories'
+import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
@@ -74,6 +76,71 @@ const Register = ({ navigation }) => {
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [category, setCategory] = useState({})
     const [allCategories, setAllCategories] = useState(null)
+    const [formVersion, setFormVersion] = useState({})
+
+    const sendRegisterForm = async (user) => {
+        const answers = []
+        let error = false
+
+        formVersion.data.forEach((question) => {
+            if (question.required && !question.value) {
+                error = true
+            }
+            if (!error) {
+                answers.push({
+                    ...question,
+                    options: undefined,
+                    required: undefined,
+                    text: undefined,
+                    type: undefined,
+                })
+            }
+        })
+
+        if (error) {
+            setLoadingAlert(false)
+            Alert.alert(translate('register.fillRequired'))
+            return
+        }
+
+        const flexibleAnswer = {
+            flexible_form_version_id: formVersion.id,
+            data: JSON.stringify(answers),
+            user_id: user.id,
+        }
+
+        const response = await sendFlexibleAnswer(
+            { flexible_answer: flexibleAnswer },
+            ''
+        )
+
+        if (!response.status === 201) {
+            setLoadingAlert(false)
+            console.warn(response.status)
+            Alert.alert(translate('register.geralError'))
+        }
+    }
+
+    const getRegisterForm = async () => {
+        const response = await getFlexibleForm(2, '')
+
+        if (response.status === 200) {
+            const { flexible_form } = response.data
+
+            if (flexible_form.latest_version) {
+                const parsedData = JSON.parse(flexible_form.latest_version.data)
+                flexible_form.latest_version.data = parsedData
+
+                setFormVersion(flexible_form.latest_version)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (isProfessional) {
+            getRegisterForm()
+        }
+    }, [isProfessional])
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -113,10 +180,14 @@ const Register = ({ navigation }) => {
                 }
             )
 
+            if (isProfessional) {
+                await sendRegisterForm(response.data.user)
+            }
+
             setTimeout(() => {
                 setNeedSignIn(false)
                 setIsLoggedIn(true)
-            }, 1000)
+            }, 500)
         } else {
             setLoadingAlert(false)
             Alert.alert(translate('register.geralError'))
@@ -381,39 +452,46 @@ const Register = ({ navigation }) => {
                         </FormInline>
                     ) : null}
 
-                    <FormInlineCheck>
+                    <FormInlineCheck space={isProfessional}>
                         <CheckBoxStyled
                             title={translate('register.professionalLabel')}
                             checked={isProfessional}
-                            onPress={() => setIsProfessional(!isProfessional)}
+                            onPress={() => {
+                                setIsProfessional(!isProfessional)
+                                // setGroupId()
+                            }}
                         />
                     </FormInlineCheck>
 
-                    <FormInlineCheck>
-                        <CheckBoxStyled
-                            title={translate('register.riskGroupLabel')}
-                            checked={riskGroup}
-                            onPress={() => setRiskGroup(!riskGroup)}
-                        />
-                        <CheckLabel onPress={() => setModalRiskGroup(true)}>
-                            <Feather
-                                name='help-circle'
-                                size={scale(25)}
-                                color='#ffffff'
+                    {!isProfessional ? (
+                        <FormInlineCheck>
+                            <CheckBoxStyled
+                                title={translate('register.riskGroupLabel')}
+                                checked={riskGroup}
+                                onPress={() => setRiskGroup(!riskGroup)}
                             />
-                        </CheckLabel>
-                    </FormInlineCheck>
+                            <CheckLabel onPress={() => setModalRiskGroup(true)}>
+                                <Feather
+                                    name='help-circle'
+                                    size={scale(25)}
+                                    color='#ffffff'
+                                />
+                            </CheckLabel>
+                        </FormInlineCheck>
+                    ) : null}
 
-                    <InstitutionSelector
-                        key={key}
-                        setUserInstitutionCallback={setUserInstitutionCallback}
-                        setAlert={setLoadingAlert}
-                        userGroup={groupId}
-                        setErrorCallback={setInstituitionComponentError}
-                        lightTheme
-                    />
+                    {!isProfessional ? (
+                        <InstitutionSelector
+                            key={key}
+                            setUserInstitutionCallback={setUserInstitutionCallback}
+                            setAlert={setLoadingAlert}
+                            userGroup={groupId}
+                            setErrorCallback={setInstituitionComponentError}
+                            lightTheme
+                        />
+                    ) : null}
 
-                    {allCategories ? (
+                    {allCategories && !isProfessional ? (
                         <FormInline>
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
@@ -427,6 +505,14 @@ const Register = ({ navigation }) => {
                                 onChange={(option) => setCategory(option)}
                             />
                         </FormInline>
+                    ) : null}
+
+                    {isProfessional ? (
+                        <FlexibleFormBuilder
+                            formVersion={formVersion}
+                            setFormVersion={setFormVersion}
+                            light
+                        />
                     ) : null}
 
                     <FormInline>

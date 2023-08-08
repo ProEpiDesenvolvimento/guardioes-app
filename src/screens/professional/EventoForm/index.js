@@ -5,51 +5,81 @@ import ScreenLoader from '../../../components/ScreenLoader'
 import {
     Container,
     KeyboardScrollView,
-    FormInline,
-    FormLabel,
-    NormalInput,
-    DateSelector,
-    CheckBoxStyled,
     Button,
     SendContainer,
     SendText,
 } from '../../../components/NormalForms'
+import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
 import LoadingModal from '../../../components/Groups/LoadingModal'
-import translate from '../../../../locales/i18n'
+import translate from '../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
-import { getEventForm, sendEventAnswer } from '../../../api/events'
+import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
 const EventoForm = ({ navigation }) => {
     const { token, user, group } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
-    const [data, setData] = useState({})
-    const [answers, setAnswers] = useState({})
+    const [formVersion, setFormVersion] = useState({})
 
     const [loadingAlert, setLoadingAlert] = useState(false)
 
     const getEvent = async () => {
-        const response = await getEventForm(1, token)
+        // hardcoded form id
+        const response = await getFlexibleForm(1, token)
 
         if (response.status === 200) {
-            const { event_form } = response.data
-            const parsedData = JSON.parse(event_form.data)
-            setData(parsedData)
+            const { flexible_form } = response.data
+
+            if (flexible_form.latest_version) {
+                const parsedData = JSON.parse(flexible_form.latest_version.data)
+                flexible_form.latest_version.data = parsedData
+
+                setFormVersion(flexible_form.latest_version)
+            }
             setIsLoading(false)
         }
     }
 
+    useEffect(() => {
+        getEvent()
+    }, [])
+
     const sendEvent = async () => {
         setLoadingAlert(true)
 
-        const eventAnswer = {
-            data: JSON.stringify(data),
+        const answers = []
+        let error = false
+
+        formVersion.data.forEach((question) => {
+            if (question.required && !question.value) {
+                error = true
+            }
+            if (!error) {
+                answers.push({
+                    ...question,
+                    options: undefined,
+                    required: undefined,
+                    text: undefined,
+                    type: undefined,
+                })
+            }
+        })
+
+        if (error) {
+            setLoadingAlert(false)
+            Alert.alert(translate('register.fillRequired'))
+            return
+        }
+
+        const flexibleAnswer = {
+            flexible_form_version_id: formVersion.id,
+            data: JSON.stringify(answers),
             user_id: user.id,
         }
 
-        const response = await sendEventAnswer(
-            { event_answer: eventAnswer },
+        const response = await sendFlexibleAnswer(
+            { flexible_answer: flexibleAnswer },
             token
         )
 
@@ -63,22 +93,6 @@ const EventoForm = ({ navigation }) => {
         }
     }
 
-    const handleAnswer = (question, value) => {
-        const dataCopy = { ...data }
-
-        dataCopy.questions.forEach((q) => {
-            if (q.id === question.id) {
-                q.value = value
-            }
-        })
-
-        setData(dataCopy)
-    }
-
-    useEffect(() => {
-        getEvent()
-    }, [])
-
     if (isLoading) {
         return <ScreenLoader />
     }
@@ -86,57 +100,10 @@ const EventoForm = ({ navigation }) => {
     return (
         <Container>
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
-                {data.questions.map((question) => (
-                    <FormInline key={question.id}>
-                        <FormLabel>
-                            {question.text}
-                            {question.required ? '*' : ''}
-                        </FormLabel>
-
-                        {question.type === 'text' ||
-                        question.type === 'number' ? (
-                            <NormalInput
-                                value={question.value}
-                                onChangeText={(text) =>
-                                    handleAnswer(question, text)
-                                }
-                            />
-                        ) : null}
-
-                        {question.type === 'date' ? (
-                            <DateSelector
-                                placeholder={translate('dateSelector.format')}
-                                date={question.value}
-                                format='DD-MM-YYYY'
-                                minDate='01-01-1918'
-                                locale='pt-BR'
-                                confirmBtnText={translate(
-                                    'dateSelector.confirmButton'
-                                )}
-                                cancelBtnText={translate(
-                                    'dateSelector.cancelButton'
-                                )}
-                                onDateChange={(date) =>
-                                    handleAnswer(question, date)
-                                }
-                            />
-                        ) : null}
-
-                        {question.options.map((option) => {
-                            return (
-                                <CheckBoxStyled
-                                    key={option.id}
-                                    title={option.label}
-                                    checked={question.value === option.value}
-                                    onPress={() =>
-                                        handleAnswer(question, option.value)
-                                    }
-                                    full
-                                />
-                            )
-                        })}
-                    </FormInline>
-                ))}
+                <FlexibleFormBuilder
+                    formVersion={formVersion}
+                    setFormVersion={setFormVersion}
+                />
 
                 <Button onPress={() => sendEvent()}>
                     <SendContainer>

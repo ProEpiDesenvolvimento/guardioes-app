@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Linking, Platform, StyleSheet } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Share from 'react-native-share'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import { Avatar } from 'react-native-elements'
@@ -23,44 +22,18 @@ import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
 import { getInitials, handleAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
-import { getAppGroup } from '../../api/groups'
 
-const LeftMenu = ({ navigation }) => {
+const LeftMenuProfessional = ({ navigation }) => {
     const {
         user,
         avatar,
         households,
         householdAvatars,
         signOut,
-        setGroup,
         setIsProfessional,
     } = useUser()
 
-    const [hasSurveillance, setHasSurveillance] = useState(false)
     let index = households.length
-
-    const getActiveSurveillance = async () => {
-        if (user.group_id) {
-            const response = await getAppGroup(user.group_id)
-
-            if (response.status === 200) {
-                const { group } = response.data
-                setGroup(group)
-
-                if (group.group_manager.vigilance_email) {
-                    setHasSurveillance(true)
-                } else {
-                    setHasSurveillance(false)
-                }
-            }
-        } else {
-            setHasSurveillance(false)
-        }
-    }
-
-    useEffect(() => {
-        getActiveSurveillance()
-    }, [user.group_id])
 
     return (
         <ScrollViewStyled>
@@ -84,31 +57,17 @@ const LeftMenu = ({ navigation }) => {
                 ))}
             </AvatarContainer>
 
-            {user.is_professional === true ? (
-                <Button onPress={() => setIsProfessional(true)}>
-                    <UserOptionBlue>
-                        <Feather
-                            name='info'
-                            size={scale(26)}
-                            color='#ffffff'
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            {translate('drawer.reportEvent')}
-                        </TextOption>
-                    </UserOptionBlue>
-                </Button>
-            ) : null}
-
-            <Button onPress={() => navigation.navigate('Perfis')}>
+            <Button onPress={() => setIsProfessional(false)}>
                 <UserOptionBlue>
                     <Feather
-                        name='settings'
+                        name='info'
                         size={scale(26)}
                         color='#ffffff'
                         style={styles.iconStyle}
                     />
-                    <TextOption>{translate('drawer.toEdit')}</TextOption>
+                    <TextOption>
+                        Alterar para Vigilância Participativa
+                    </TextOption>
                 </UserOptionBlue>
             </Button>
             <Button onPress={() => signOut()}>
@@ -125,32 +84,6 @@ const LeftMenu = ({ navigation }) => {
 
             <Aplicativo>{translate('drawer.app')}</Aplicativo>
 
-            {hasSurveillance ? (
-                <Button onPress={() => navigation.navigate('Vigilancia')}>
-                    <UserOptionGreen>
-                        <Feather
-                            name='shield'
-                            size={scale(26)}
-                            color='#ffffff'
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            {translate('drawer.toSurveillance')}
-                        </TextOption>
-                    </UserOptionGreen>
-                </Button>
-            ) : null}
-            <Button onPress={() => navigation.navigate('Vacinacao')}>
-                <UserOptionGreen>
-                    <FontAwesome5
-                        name='syringe'
-                        size={scale(26)}
-                        color='#ffffff'
-                        style={styles.iconStyle}
-                    />
-                    <TextOption>{translate('drawer.toVaccination')}</TextOption>
-                </UserOptionGreen>
-            </Button>
             <Button onPress={() => navigation.navigate('Ajuda')}>
                 <UserOptionGreen>
                     <Feather
@@ -240,4 +173,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default LeftMenu
+export default LeftMenuProfessional

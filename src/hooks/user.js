@@ -38,6 +38,7 @@ export const UserProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [isOffline, setIsOffline] = useState(false)
     const [needSignIn, setNeedSignIn] = useState(true)
+    const [isProfessional, setIsProfessional] = useState(true)
 
     useEffect(() => {
         loadStoredData()
@@ -476,6 +477,8 @@ export const UserProvider = ({ children }) => {
                 isOffline,
                 needSignIn,
                 setNeedSignIn,
+                isProfessional,
+                setIsProfessional,
             }}
         >
             {children}
