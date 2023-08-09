@@ -36,7 +36,7 @@ const TabBar = () => {
                     return (
                         <Feather
                             name={iconName}
-                            size={scale(26)}
+                            size={scale(24)}
                             color={color}
                         />
                     )
@@ -46,7 +46,7 @@ const TabBar = () => {
                 activeTintColor: '#348eac',
                 inactiveTintColor: '#c4c4c4',
                 style: {
-                    height: vPercentage(9.8),
+                    height: vPercentage(9.6),
                     backgroundColor: '#ffffff',
                     borderTopWidth: 0,
                     borderTopLeftRadius: scale(20),
