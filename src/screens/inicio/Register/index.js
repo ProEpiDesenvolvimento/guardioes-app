@@ -418,7 +418,7 @@ const Register = ({ navigation }) => {
                         key={key}
                         setUserInstitutionCallback={setUserInstitutionCallback}
                         setAlert={setLoadingAlert}
-                        userGroup={groupId}
+                        userGroupId={groupId}
                         setErrorCallback={setInstituitionComponentError}
                         lightTheme
                     />

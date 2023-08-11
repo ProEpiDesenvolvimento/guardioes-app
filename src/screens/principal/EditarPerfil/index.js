@@ -483,7 +483,7 @@ const EditarPerfil = ({ navigation, route }) => {
                 <InstitutionSelector
                     setUserInstitutionCallback={setUserInstitutionCallback}
                     setAlert={setLoadingAlert}
-                    userGroup={groupId}
+                    userGroupId={groupId}
                     userIdCode={idCode}
                     setErrorCallback={setInstituitionComponentError}
                 />
