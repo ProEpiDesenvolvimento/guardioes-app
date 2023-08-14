@@ -53,8 +53,8 @@ export default {
         title: 'Esqueci a senha',
         informEmail: 'Informe seu email para verificação:',
         sendButton: 'Enviar',
-        invalidEmail: 'E-mail Inválido',
-        tryAgain: 'Tente Novamente',
+        invalidEmail: 'E-mail não cadastrado',
+        tryAgain: 'Tente novamente',
         differentsPass: 'Senhas não conferem!',
         passwordChanged: 'Senha Redefinida',
     },
@@ -130,7 +130,10 @@ export default {
         riskGroupLabel: 'Faz parte do grupo de risco?',
         vaccination: 'Possui dados de vacinação?',
         institution: 'É integrante de alguma instituição cadastrada?',
-        idCode: 'Código de Identificação:',
+        noInstitutionFound:
+            'Não possuímos instituições cadastradas nesse local',
+        noInstitutionFoundDesc:
+            'Mostre o aplicativo para sua instituição e faça parte dessa iniciativa.',
         riskGroupTitle: 'Grupos de Risco:',
         riskGroupMessage:
             '\t Pessoas acima de 60 anos ou pessoas de qualquer idade que tenham comorbidades, como cardiopatia, diabetes, pneumopatia, doença neurológica ou renal, imunodepressão, obesidade, asma e puérperas (fase pós-parto).',

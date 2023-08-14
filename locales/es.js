@@ -53,8 +53,8 @@ export default {
         title: 'Recuperar mi contraseña',
         informEmail: 'Ingrese su email para verificación:',
         sendButton: 'Enviar',
-        invalidEmail: 'Email inválido',
-        tryAgain: 'Inténtalo de Nuevo',
+        invalidEmail: 'Email no encontrado',
+        tryAgain: 'Inténtalo de nuevo',
         differentsPass: '¡Las Contraseñas no Coinciden!',
         passwordChanged: 'Restablecer la contraseña',
     },
@@ -131,7 +131,10 @@ export default {
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
         vaccination: '¿Tiene datos de vacunación?',
         institution: '¿Eres miembro de alguna institución registrada?',
-        idCode: 'Código da identificación:',
+        noInstitutionFound:
+            'No tenemos instituciones registradas en este sitio',
+        noInstitutionFoundDesc:
+            'Muestre la aplicación a su institución y sea parte de esta iniciativa.',
         riskGroupTitle: 'Grupos de Riesgo:',
         riskGroupMessage:
             '\t Personas mayores de 60 años o personas de cualquier edad que tienen comorbilidades, como enfermedades cardíacas, diabetes, neumopatía, enfermedades neurológicas o renales, inmunodepresión, obesidad, asma y mujeres posparto.',

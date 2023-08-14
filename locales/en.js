@@ -53,7 +53,7 @@ export default {
         title: 'Forgot password',
         informEmail: 'Enter your email for verification:',
         sendButton: 'Send',
-        invalidEmail: 'Invalid E-mail',
+        invalidEmail: 'E-mail not registered',
         tryAgain: 'Try again',
         differentsPass: "Passwords don't match!",
         passwordChanged: 'Reset Password',
@@ -127,6 +127,10 @@ export default {
         healthProfessional: 'Are you a health professional?',
         riskGroupLabel: 'Are you part of the risk group?',
         institution: 'Are you a member of any registered institution?',
+        noInstitutionFound:
+            'We do not have institutions registered in this location',
+        noInstitutionFoundDesc:
+            'Show this app to your institution and join us.',
         vaccination: 'Do you have vaccination data?',
         idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
