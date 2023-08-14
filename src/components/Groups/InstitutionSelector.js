@@ -23,34 +23,30 @@ class InstitutionSelector extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            groupCheckbox: false,
-            groupList: [],
+            hasGroup: false,
+            showIdCodeInput: false,
+            selectionGroups: [],
             selectionIndexes: [],
             rootGroup: null,
-            idCodeInputShow: false,
-            userGroup: props.userGroup || null,
-            userIdCode: props.userIdCode || null,
             selectedGroup: null,
+            userGroupId: props.userGroupId || null,
+            userIdCode: props.userIdCode || null,
             currentError: '',
             lightTheme: props.lightTheme || false,
         }
         this.props.setErrorCallback('')
         // User already has a group, then find his group
-        if (props.userGroup !== null && props.userGroup !== undefined) {
-            this.getRootGroup(false)
-            this.buildPath(props.userGroup)
+        if (props.userGroupId) {
+            this.buildPath(props.userGroupId)
         }
     }
 
     // eslint-disable-next-line react/sort-comp
     isInputValid() {
-        if (this.state.groupCheckbox === false) {
+        if (this.state.hasGroup === false) {
             return true
         }
-        if (
-            this.state.selectedGroup === null ||
-            this.state.selectedGroup === undefined
-        ) {
+        if (!this.state.selectedGroup) {
             this.setState({ currentError: translate('selector.groupError') })
             return false
         }
@@ -101,21 +97,34 @@ class InstitutionSelector extends Component {
         if (isIdPresentIfNeeded && isIdRightLength && codeIsNumber) {
             this.setState({ currentError: '' })
         }
-
         return isIdPresentIfNeeded && isIdRightLength && codeIsNumber
     }
 
     updateParent() {
-        if (!this.state.groupCheckbox || this.isInputValid()) {
-            const idCode = this.state.groupCheckbox
-                ? this.state.userIdCode
-                : null
-            const group = this.state.groupCheckbox ? this.state.userGroup : null
+        if (!this.state.hasGroup || this.isInputValid()) {
+            const idCode = this.state.hasGroup ? this.state.userIdCode : null
+            const group = this.state.hasGroup ? this.state.userGroupId : null
+
             this.props.setUserInstitutionCallback(idCode, group)
             this.props.setErrorCallback('')
         } else {
             this.props.setErrorCallback(this.state.currentError)
         }
+    }
+
+    insertToGroupList(group) {
+        const { selectionGroups } = this.state
+
+        const sortedChildren = group.children.sort((a, b) =>
+            a.description.localeCompare(b.description)
+        )
+
+        const newGroup = {
+            ...group,
+            children: sortedChildren,
+        }
+        selectionGroups.push(newGroup)
+        this.setState({ selectionGroups })
     }
 
     async getRootGroup(setAlert = true) {
@@ -133,34 +142,20 @@ class InstitutionSelector extends Component {
             })
     }
 
-    insertSortToGroupList(data) {
-        const groupList = this.state.groupList.slice()
-
-        groupList.push(data)
-        for (let i = parseInt(groupList.length, 10) - 1; i > 0; i -= 1) {
-            if (groupList[i].id < groupList[i - 1].id) {
-                const tmp = groupList[i]
-                groupList[i] = groupList[i - 1]
-                groupList[i - 1] = tmp
-            } else {
-                break
-            }
-        }
-
-        this.setState({ groupList })
-    }
-
     async getGroup(id, setAlert = true) {
         if (setAlert) this.props.setAlert(true)
-        this.setState({ idCodeInputShow: false })
+        this.setState({ showIdCodeInput: false })
 
         getAppGroup(id)
             .then((response) => {
                 if (response.status === 200) {
                     this.setState({ selectedGroup: response.data.group })
 
-                    if (response.data.group.group_manager && response.data.group.group_manager.require_id != null) {
-                        this.setState({ idCodeInputShow: true })
+                    if (
+                        response.data.group.group_manager &&
+                        response.data.group.group_manager.require_id != null
+                    ) {
+                        this.setState({ showIdCodeInput: true })
                     } else {
                         this.setState({ userIdCode: null })
                     }
@@ -168,32 +163,31 @@ class InstitutionSelector extends Component {
             })
             .then(() => {
                 this.updateParent()
-                if (setAlert) this.props.setAlert(false)
+                setTimeout(() => {
+                    if (setAlert) this.props.setAlert(false)
+                }, 1000)
             })
     }
 
     async getChildren(id, setAlert = true) {
         if (setAlert) this.props.setAlert(true)
-        this.setState({ idCodeInputShow: false })
+        this.setState({ showIdCodeInput: false })
 
         getAppGroupChildren(id)
             .then((response) => {
                 if (response.status === 200) {
                     if (response.data.is_child) {
-                        this.setState({ userGroup: id })
+                        this.setState({ userGroupId: id })
                         this.getGroup(id, setAlert)
                         return
                     }
 
-                    const selectionIndexes = this.state.selectionIndexes.slice()
+                    this.insertToGroupList(response.data)
+
+                    const { selectionIndexes } = this.state
                     selectionIndexes.push({
                         label: translate('selector.label'),
                         key: -1,
-                    })
-
-                    this.insertSortToGroupList({
-                        ...response.data,
-                        id: parseInt(id, 10),
                     })
                     this.setState({ selectionIndexes })
                 }
@@ -206,27 +200,27 @@ class InstitutionSelector extends Component {
             })
     }
 
-    // This builds the path of current users group
-    async buildPath(id) {
+    async getGroupPath(id) {
         this.props.setAlert(true)
 
         getUserGroupPath(id)
             .then(async (response) => {
                 if (response.status === 200) {
                     const { groups } = response.data
-                    const selectionIndexes = []
 
-                    groups.forEach(async (group) => {
+                    const selectionIndexes = []
+                    // eslint-disable-next-line no-restricted-syntax
+                    for (const group of groups) {
                         await this.getChildren(group.id, false)
 
                         selectionIndexes.push({
                             label: group.description,
                             key: group.id,
                         })
-                    })
-
+                    }
                     this.setState({ selectionIndexes })
-                    this.setState({ groupCheckbox: true })
+
+                    this.setState({ hasGroup: true })
                 }
             })
             .then(() => {
@@ -235,24 +229,39 @@ class InstitutionSelector extends Component {
             })
     }
 
+    // This builds the path of current user group
+    async buildPath(userGroupId) {
+        await this.getRootGroup(false)
+        await this.getGroupPath(userGroupId)
+    }
+
     capitalizeFirstWords = (str) => {
         return str.replace(/\w\S*/g, (txt) => {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
         })
     }
 
+    rowElements = (el1, el2, index) => {
+        const key = index + 100000
+        return (
+            <FormGroup key={key}>
+                {el1}
+                {el2}
+            </FormGroup>
+        )
+    }
+
     groupComponent(group, index) {
         if (group.children.length === 0) {
             Alert.alert(
-                'Não possuimos instituições cadastradas nesse município',
-                'Mostre o aplicativo para sua instituição e faça parte dessa iniciaiva.'
+                translate('register.noInstitutionFound'),
+                translate('register.noInstitutionFoundDesc')
             )
             return null
         }
-
         if (this.state.selectionIndexes[index]) {
             return (
-                <FormGroupChild key={index}>
+                <FormGroupChild>
                     <FormLabel light={this.state.lightTheme}>
                         {this.capitalizeFirstWords(group.label)}:
                     </FormLabel>
@@ -265,40 +274,34 @@ class InstitutionSelector extends Component {
                         })}
                         value={this.state.selectionIndexes[index].label}
                         onChange={(option) => {
-                            this.setState({
-                                groupList: this.state.groupList.slice(
+                            this.setState((prevState) => ({
+                                selectionGroups: prevState.selectionGroups.slice(
                                     0,
                                     index + 1
                                 ),
-                            })
-                            this.setState({
-                                selectionIndexes: this.state.selectionIndexes.slice(
-                                    0,
-                                    index + 1
-                                ),
-                            })
-                            this.setState({ idCodeInputShow: false })
-
-                            this.getChildren(option.key)
-
-                            this.setState({
+                            }))
+                            this.setState((prevState) => ({
                                 selectionIndexes: [
-                                    ...this.state.selectionIndexes.slice(
+                                    ...prevState.selectionIndexes.slice(
                                         0,
                                         index
                                     ),
                                     option,
                                 ],
-                            })
+                            }))
+
+                            this.setState({ showIdCodeInput: false })
 
                             if (!group.is_child) {
                                 this.setState({
-                                    userGroup: null,
                                     selectedGroup: null,
+                                    userGroupId: null,
                                     userIdCode: null,
                                 })
                                 this.updateParent()
                             }
+
+                            this.getChildren(option.key)
                         }}
                     />
                 </FormGroupChild>
@@ -308,9 +311,9 @@ class InstitutionSelector extends Component {
         return null
     }
 
-    idCodeComponent(index) {
+    idCodeComponent() {
         return (
-            <FormGroupChild key={index}>
+            <FormGroupChild>
                 <FormLabel light={this.state.lightTheme}>
                     {this.state.selectedGroup.group_manager.require_id}
                 </FormLabel>
@@ -328,27 +331,18 @@ class InstitutionSelector extends Component {
         )
     }
 
-    rowElements = (el1, el2, index) => {
-        const key = index + 100
-        return (
-            <FormGroup key={key}>
-                {el1}
-                {el2}
-            </FormGroup>
-        )
-    }
-
     groupItemsManager() {
-        const elements = this.state.groupList.map((g, i) =>
+        const elements = this.state.selectionGroups.map((g, i) =>
             this.groupComponent(g, i)
         )
 
-        if (this.state.idCodeInputShow) {
-            elements.push(this.idCodeComponent(elements.length))
+        if (this.state.showIdCodeInput) {
+            elements.push(this.idCodeComponent())
         }
         if (elements.length === 0) {
             return null
         }
+
         let pair = null
         const rowedElements = []
 
@@ -374,22 +368,22 @@ class InstitutionSelector extends Component {
                 <FormInlineCheck space>
                     <CheckBoxStyled
                         title={translate('register.institution')}
-                        checked={this.state.groupCheckbox}
+                        checked={this.state.hasGroup}
                         onPress={async () => {
                             if (
-                                !this.state.groupCheckbox &&
+                                !this.state.hasGroup &&
                                 this.state.rootGroup === null
                             ) {
                                 this.getRootGroup()
                             }
-                            await this.setState({
-                                groupCheckbox: !this.state.groupCheckbox,
-                            })
+                            await this.setState((prevState) => ({
+                                hasGroup: !prevState.hasGroup,
+                            }))
                             this.updateParent()
                         }}
                     />
                 </FormInlineCheck>
-                {this.state.groupCheckbox ? this.groupItemsManager() : null}
+                {this.state.hasGroup ? this.groupItemsManager() : null}
             </>
         )
     }
