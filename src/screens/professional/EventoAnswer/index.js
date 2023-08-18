@@ -7,6 +7,7 @@ import {
     FormInline,
     FormLabel,
     NormalInput,
+    Selector,
     DateSelector,
     CheckBoxStyled,
 } from '../../../components/NormalForms'
@@ -32,7 +33,7 @@ const EventoAnswer = ({ route }) => {
 
         formVersion.data.forEach((q) => {
             answer.data.forEach((a) => {
-                if (q.id === a.id) {
+                if (q.field === a.field) {
                     newData.push({
                         ...q,
                         value: a.value,
@@ -44,7 +45,6 @@ const EventoAnswer = ({ route }) => {
         const newFormVersion = { ...formVersion }
         newFormVersion.data = newData
 
-        console.log(newFormVersion)
         setFormBuild(newFormVersion)
     }
 
@@ -94,7 +94,7 @@ const EventoAnswer = ({ route }) => {
                 </FormInline>
 
                 {formBuild.data?.map((question) => (
-                    <FormInline key={question.id}>
+                    <FormInline key={question.field}>
                         <FormLabel>
                             {question.text}
                             {question.required ? '*' : ''}
@@ -119,17 +119,29 @@ const EventoAnswer = ({ route }) => {
                             />
                         ) : null}
 
-                        {question.options.map((option) => {
-                            return (
-                                <CheckBoxStyled
-                                    key={option.id}
-                                    title={option.label}
-                                    checked={option.label === question.value}
-                                    disabled
-                                    full
-                                />
-                            )
-                        })}
+                        {question.type === 'select' ? (
+                            <Selector
+                                initValue={
+                                    question.value
+                                        ? question.value
+                                        : translate('selector.label')
+                                }
+                                cancelText={translate('selector.cancelButton')}
+                                disabled
+                            />
+                        ) : null}
+
+                        {question.type === 'multiple'
+                            ? question.options.map((option) => (
+                                  <CheckBoxStyled
+                                      key={option.id}
+                                      title={option.label}
+                                      checked={option.label === question.value}
+                                      disabled
+                                      full
+                                  />
+                              ))
+                            : null}
                     </FormInline>
                 ))}
             </KeyboardScrollView>

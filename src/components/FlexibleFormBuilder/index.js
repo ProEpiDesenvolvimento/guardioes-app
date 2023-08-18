@@ -16,7 +16,7 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
         const newFormVersion = { ...formVersion }
 
         newFormVersion.data.forEach((q) => {
-            if (q.id === question.id) {
+            if (q.field === question.field) {
                 q.value = value
             }
         })
@@ -27,7 +27,7 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
     return (
         <>
             {formVersion.data?.map((question) => (
-                <FormInline key={question.id}>
+                <FormInline key={question.field}>
                     <FormLabel light={light}>
                         {question.text}
                         {question.required ? ' *' : ''}

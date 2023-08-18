@@ -169,7 +169,7 @@ const Home = ({ navigation }) => {
                                     {translate('home.hello') +
                                         getNameParts(person.name)}
                                 </TextName>
-                                <AppName>Líder Comunitário</AppName>
+                                <AppName>Líderança Comunitária</AppName>
                             </NamesContainer>
                             <Avatar
                                 containerStyle={styles.avatar}
@@ -183,7 +183,7 @@ const Home = ({ navigation }) => {
                     </Background>
 
                     <StatusContainer>
-                        <TextStyle>Deseja reportar um sinal hoje?</TextStyle>
+                        <TextStyle>Quer informar um sinal de alerta?</TextStyle>
                         <StatusBemMal>
                             <Report
                                 disabled={isOffline}
@@ -191,7 +191,7 @@ const Home = ({ navigation }) => {
                                     navigation.navigate('EventoForm')
                                 }
                             >
-                                <StatusText>Reportar</StatusText>
+                                <StatusText>Informar</StatusText>
                             </Report>
                         </StatusBemMal>
                     </StatusContainer>
@@ -210,7 +210,7 @@ const Home = ({ navigation }) => {
                                 />
                             }
                             title='Sinais:'
-                            message='Veja os Sinais de Alerta já reportados'
+                            message='Veja os sinais de alerta já informados'
                         />
                     </TipButton>
                 </ScrollViewStyled>

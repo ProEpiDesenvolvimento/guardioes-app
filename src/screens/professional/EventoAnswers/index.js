@@ -34,8 +34,9 @@ const EventoAnswers = ({ navigation }) => {
 
     const getEventLocation = (event) => {
         if (event.data) {
-            // hardcoded location question id
-            const location = event.data.find((question) => question.id === 13)
+            const location = event.data.find(
+                (question) => question.field === 'evento_local_ocorrencia'
+            )
             if (location) {
                 return location.value
             }

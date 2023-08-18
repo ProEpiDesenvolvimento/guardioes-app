@@ -94,7 +94,7 @@ const LeftMenu = ({ navigation }) => {
                             style={styles.iconStyle}
                         />
                         <TextOption>
-                            {translate('drawer.reportEvent')}
+                            Alterar para Vigilância Comunitária
                         </TextOption>
                     </UserOptionBlue>
                 </Button>

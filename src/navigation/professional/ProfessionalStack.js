@@ -66,12 +66,12 @@ const ProfessionalStack = () => {
             <Stack.Screen
                 name='EventoAnswers'
                 component={EventoAnswers}
-                options={{ title: 'Sinais registrados' }}
+                options={{ title: 'Sinais informados' }}
             />
             <Stack.Screen
                 name='EventoForm'
                 component={EventoForm}
-                options={{ title: 'Registrar sinal' }}
+                options={{ title: 'Informar sinal' }}
             />
             <Stack.Screen
                 name='EventoAnswer'
