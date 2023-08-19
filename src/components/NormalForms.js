@@ -87,7 +87,7 @@ export const FormInlineCheck = styled.View`
     margin-bottom: ${(props) => (props.space ? `${scale(12)}px` : '0px')};
 `
 
-export const Selector = styled(ModalSelector).attrs({
+export const Selector = styled(ModalSelector).attrs((props) => ({
     initValueTextStyle: {
         fontFamily: 'ArgentumSans',
         fontSize: scale(13),
@@ -100,6 +100,7 @@ export const Selector = styled(ModalSelector).attrs({
         borderWidth: 0,
         paddingVertical: scale(10),
         paddingHorizontal: scale(12),
+        opacity: props.disabled ? 0.5 : 1,
     },
     selectTextStyle: {
         fontFamily: 'ArgentumSans',
@@ -137,7 +138,7 @@ export const Selector = styled(ModalSelector).attrs({
         fontSize: scale(14),
         color: '#ffffff',
     },
-})`
+}))`
     width: 80%;
 `
 
