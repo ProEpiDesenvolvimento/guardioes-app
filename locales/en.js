@@ -249,7 +249,7 @@ export default {
         title: 'Home',
         hello: 'Hi, ',
         nowAGuardian: 'Health Guardian',
-        addProfile: 'Add a Profile',
+        addProfile: 'Add a profile',
         alerts: 'Alerts',
         statusLast7Days: 'Status in the last 7 days:',
         statusLast7DaysGood: 'You have been feeling well',
@@ -419,7 +419,7 @@ export default {
     },
     drawer: {
         reportRumor: 'Report Rumor',
-        toEdit: 'Edit profiles',
+        profiles: 'Edit profiles',
         logOut: 'Logout',
         app: 'App',
         toSurveillance: 'Active Surveillance',

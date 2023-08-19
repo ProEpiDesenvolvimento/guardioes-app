@@ -252,7 +252,7 @@ export default {
         title: 'Início',
         hello: 'Olá, ',
         nowAGuardian: 'Guardião da Saúde',
-        addProfile: 'Adicionar Perfil',
+        addProfile: 'Adicionar perfil',
         alerts: 'Alertas',
         statusLast7Days: 'Status nos últimos 7 dias:',
         statusLast7DaysGood: 'Você tem se sentido bem',
@@ -423,7 +423,7 @@ export default {
     },
     drawer: {
         reportRumor: 'Reportar Rumor',
-        toEdit: 'Editar perfis',
+        profiles: 'Editar perfis',
         logOut: 'Sair',
         app: 'Aplicativo',
         toSurveillance: 'Vigilância Ativa',
