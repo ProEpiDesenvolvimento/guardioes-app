@@ -100,3 +100,12 @@ export const resetPassword = async (data) => {
 
     return response
 }
+
+export const requestDeletionUser = async (id, token) => {
+    const response = await api.get(`/user/request_deletion/${id}`, {
+        headers: {
+            Authorization: token,
+        },
+    })
+    return response
+}

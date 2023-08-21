@@ -16,6 +16,7 @@ import Ajuda from '../screens/principal/Ajuda'
 import BadReport from '../screens/principal/BadReport'
 import BioSeguranca from '../screens/principal/BioSeguranca'
 import EditarPerfil from '../screens/principal/EditarPerfil'
+import ExcluirConta from '../screens/principal/ExcluirConta'
 import FAQ from '../screens/principal/FAQ'
 import NovoPerfil from '../screens/principal/NovoPerfil'
 import Perfis from '../screens/principal/Perfis'
@@ -148,6 +149,11 @@ const AppStack = () => {
                 name='FAQ'
                 component={FAQ}
                 options={{ title: translate('faq.title') }}
+            />
+            <Stack.Screen
+                name='ExcluirConta'
+                component={ExcluirConta}
+                options={{ title: translate('deleteAccount.title') }}
             />
         </Stack.Navigator>
     )

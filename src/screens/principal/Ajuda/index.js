@@ -57,6 +57,17 @@ const Ajuda = ({ navigation }) => {
                     </InfoWrapper>
                 </Button>
             </Box>
+
+            <Box>
+                <Button onPress={() => navigation.navigate('ExcluirConta')}>
+                    <IconWrapper>
+                        <InfoIcon height={scale(45)} width={scale(45)} />
+                    </IconWrapper>
+                    <InfoWrapper>
+                        <Title>{translate('deleteAccount.title')}</Title>
+                    </InfoWrapper>
+                </Button>
+            </Box>
         </Help>
     )
 }

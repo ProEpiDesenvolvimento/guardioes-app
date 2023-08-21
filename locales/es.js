@@ -472,4 +472,17 @@ export default {
         searchBar: 'Pesquise aquí',
         noResult: 'No hay resultados',
     },
+    deleteAccount: {
+        title: 'Eliminar cuenta',
+        confirmation: '¿Deseas retirar tu contribución a la salud pública?\n',
+        message:
+            'Al solicitar la eliminación de tu cuenta, TODOS los datos asociados a ella se eliminarán de la aplicación en un plazo de 30 días.\n\n',
+        message2:
+            'Si deseas cancelar el proceso, por favor responde lo antes posible al correo de confirmación que se te enviará.',
+        button: 'Confirmar eliminación',
+        alert:
+            'Después del período mencionado, no será posible recuperar los datos eliminados. ¿Deseas continuar?',
+        cancel: 'Cancelar',
+        confirm: 'Sí',
+    },
 }

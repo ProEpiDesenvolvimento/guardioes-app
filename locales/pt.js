@@ -105,8 +105,8 @@ export default {
         phoneRequired: 'O Telefone não pode ficar em branco',
         categoryRequired: 'A Categoria não pode ficar em branco',
         geralError: 'Ocorreu um erro, tente novamente depois.',
-        confirmDeleteUser: 'Deletar perfil',
-        confirmDeleteUser2: 'Deseja deletar esse perfil?',
+        confirmDeleteUser: 'Excluir perfil',
+        confirmDeleteUser2: 'Deseja excluir esse perfil?',
         selectImage: 'Selecione imagem de perfil',
         pickPhoto: 'Tirar uma foto',
         library: 'Selecionar da Galeria',
@@ -405,8 +405,8 @@ export default {
             'Você atingiu o limite de doses para esse tipo de vacina.',
         messageError3:
             'Verifique se a data está correta ou corrija a dose antiga.',
-        confirmDeleteDose: 'Deletar dose',
-        confirmDeleteDose2: 'Deseja deletar essa dose?',
+        confirmDeleteDose: 'Excluir dose',
+        confirmDeleteDose2: 'Deseja excluir essa dose?',
         titleModal: 'Informações da vacina',
         nameVaccine: 'Nome: ',
         laboratoryVaccine: 'Laboratório: ',
@@ -469,5 +469,18 @@ export default {
     autocomplete: {
         searchBar: 'Pesquise aqui',
         noResult: 'Sem resultados',
+    },
+    deleteAccount: {
+        title: 'Excluir conta',
+        confirmation: 'Você quer remover sua contribuição a saúde pública?\n',
+        message:
+            'Ao solicitar a exclusão da sua conta, TODOS os dados associados a ela serão removidos do aplicativo em um prazo de 30 dias.\n\n',
+        message2:
+            'Se você desejar cancelar o processo, por favor, responda o mais rápido possível ao email de confirmação que lhe será enviado.',
+        button: 'Confirmar exclusão',
+        alert:
+            'Após o período mencionado, não será possível recuperar os dados excluídos. Deseja continuar?',
+        cancel: 'Cancelar',
+        confirm: 'Sim',
     },
 }

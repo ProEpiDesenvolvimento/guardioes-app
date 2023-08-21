@@ -466,4 +466,18 @@ export default {
         searchBar: 'Search here',
         noResult: 'No results',
     },
+    deleteAccount: {
+        title: 'Delete Account',
+        confirmation:
+            'Do you want to withdraw your contribution to public health?\n',
+        message:
+            'By requesting the deletion of your account, ALL data associated with it will be removed from the application within a 30-day period.\n\n',
+        message2:
+            'If you wish to cancel the process, please respond as soon as possible to the confirmation email that will be sent to you.',
+        button: 'Confirm deletion',
+        alert:
+            'After the mentioned period, it will not be possible to recover the deleted data. Do you want to proceed?',
+        cancel: 'Cancel',
+        confirm: 'Yes',
+    },
 }
