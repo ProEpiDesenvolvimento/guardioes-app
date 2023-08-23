@@ -9,6 +9,7 @@ import {
     TermsIcon,
     TutorialIcon,
     InfoIcon,
+    AccountIcon,
 } from '../../../img/imageConst'
 
 const Ajuda = ({ navigation }) => {
@@ -61,7 +62,7 @@ const Ajuda = ({ navigation }) => {
             <Box>
                 <Button onPress={() => navigation.navigate('ExcluirConta')}>
                     <IconWrapper>
-                        <InfoIcon height={scale(45)} width={scale(45)} />
+                        <AccountIcon height={scale(45)} width={scale(45)} />
                     </IconWrapper>
                     <InfoWrapper>
                         <Title>{translate('deleteAccount.title')}</Title>

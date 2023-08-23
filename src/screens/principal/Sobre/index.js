@@ -1,7 +1,12 @@
 import React from 'react'
 import { Image, TouchableOpacity } from 'react-native'
 
-import { ScrollViewStyled, Title, ImageContainer, BodyText } from './styles'
+import {
+    ScrollViewStyled,
+    Title,
+    ImageContainer,
+    BodyText,
+} from '../../../components/PageItems'
 
 import translate from '../../../../locales/i18n'
 import { UnBLogo, ProEpiLogo } from '../../../img/imageConst'
