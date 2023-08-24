@@ -53,7 +53,7 @@ export default {
         title: 'Forgot password',
         informEmail: 'Enter your email for verification:',
         sendButton: 'Send',
-        invalidEmail: 'Invalid E-mail',
+        invalidEmail: 'E-mail not registered',
         tryAgain: 'Try again',
         differentsPass: "Passwords don't match!",
         passwordChanged: 'Reset Password',
@@ -86,9 +86,11 @@ export default {
         country: 'Birth country:',
         residence: 'Home country:',
         originCountry: ' is your birth country?',
+        category: 'Category:',
         email: 'Email:',
         password: 'Password:',
-        passwordCondition: 'Password must be at leats 8 characters long.',
+        passwordCondition: '- Password must be at leats 8 characters long',
+        fieldsRequired: '- Fields marked with * are required',
         signupButton: 'Sign up',
         editProfile: 'Edit Profile',
         emptyName: 'Name cannot be left blank',
@@ -125,6 +127,10 @@ export default {
         healthProfessional: 'Are you a health professional?',
         riskGroupLabel: 'Are you part of the risk group?',
         institution: 'Are you a member of any registered institution?',
+        noInstitutionFound:
+            'We do not have institutions registered in this location',
+        noInstitutionFoundDesc:
+            'Show this app to your institution and join us.',
         vaccination: 'Do you have vaccination data?',
         idCode: 'Identification code:',
         riskGroupTitle: 'Risk Groups:',
@@ -243,7 +249,7 @@ export default {
         title: 'Home',
         hello: 'Hi, ',
         nowAGuardian: 'Health Guardian',
-        addProfile: 'Add a Profile',
+        addProfile: 'Add a profile',
         alerts: 'Alerts',
         statusLast7Days: 'Status in the last 7 days:',
         statusLast7DaysGood: 'You have been feeling well',
@@ -413,7 +419,7 @@ export default {
     },
     drawer: {
         reportRumor: 'Report Rumor',
-        toEdit: 'Edit profiles',
+        profiles: 'Edit profiles',
         logOut: 'Logout',
         app: 'App',
         toSurveillance: 'Active Surveillance',
@@ -459,5 +465,19 @@ export default {
     autocomplete: {
         searchBar: 'Search here',
         noResult: 'No results',
+    },
+    deleteAccount: {
+        title: 'Delete Account',
+        confirmation:
+            'Do you want to withdraw your contribution to public health?\n',
+        message:
+            'By requesting the deletion of your account, ALL data associated with it will be removed from the application within a 30-day period.\n\n',
+        message2:
+            'If you wish to cancel the process, please respond as soon as possible to the confirmation email that will be sent to you.',
+        button: 'Confirm deletion',
+        alert:
+            'After the mentioned period, it will not be possible to recover the deleted data. Do you want to proceed?',
+        cancel: 'Cancel',
+        confirm: 'Yes',
     },
 }

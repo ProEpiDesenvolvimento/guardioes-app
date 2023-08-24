@@ -48,6 +48,9 @@ export { default as VaccineIcon } from './advices/vaccine.svg'
 export { default as VirusIcon } from './advices/virus.svg'
 export { default as WashIcon } from './advices/wash.svg'
 
+// Account
+export { default as AccountIcon } from './icons/account.svg'
+
 // Emojis
 export const Emojis = {
     cloud: (

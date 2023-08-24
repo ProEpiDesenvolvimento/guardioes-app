@@ -53,8 +53,8 @@ export default {
         title: 'Esqueci a senha',
         informEmail: 'Informe seu email para verificação:',
         sendButton: 'Enviar',
-        invalidEmail: 'E-mail Inválido',
-        tryAgain: 'Tente Novamente',
+        invalidEmail: 'E-mail não cadastrado',
+        tryAgain: 'Tente novamente',
         differentsPass: 'Senhas não conferem!',
         passwordChanged: 'Senha Redefinida',
     },
@@ -87,9 +87,11 @@ export default {
         country: 'País de origem:',
         residence: 'País de residência:',
         originCountry: ' é seu país de origem?',
+        category: 'Categoria:',
         email: 'Email:',
         password: 'Senha:',
-        passwordCondition: 'A senha deve conter no mínimo 8 caracteres',
+        passwordCondition: '- A senha deve conter no mínimo 8 caracteres',
+        fieldsRequired: '- Os campos marcados com * são obrigatórios',
         signupButton: 'Cadastrar',
         editProfile: 'Editar Perfil',
         emptyName: 'O Nome não pode ficar em branco',
@@ -103,8 +105,8 @@ export default {
         phoneRequired: 'O Telefone não pode ficar em branco',
         categoryRequired: 'A Categoria não pode ficar em branco',
         geralError: 'Ocorreu um erro, tente novamente depois.',
-        confirmDeleteUser: 'Deletar perfil',
-        confirmDeleteUser2: 'Deseja deletar esse perfil?',
+        confirmDeleteUser: 'Excluir perfil',
+        confirmDeleteUser2: 'Deseja excluir esse perfil?',
         selectImage: 'Selecione imagem de perfil',
         pickPhoto: 'Tirar uma foto',
         library: 'Selecionar da Galeria',
@@ -128,7 +130,10 @@ export default {
         riskGroupLabel: 'Faz parte do grupo de risco?',
         vaccination: 'Possui dados de vacinação?',
         institution: 'É integrante de alguma instituição cadastrada?',
-        idCode: 'Código de Identificação:',
+        noInstitutionFound:
+            'Não possuímos instituições cadastradas nesse local',
+        noInstitutionFoundDesc:
+            'Mostre o aplicativo para sua instituição e faça parte dessa iniciativa.',
         riskGroupTitle: 'Grupos de Risco:',
         riskGroupMessage:
             '\t Pessoas acima de 60 anos ou pessoas de qualquer idade que tenham comorbidades, como cardiopatia, diabetes, pneumopatia, doença neurológica ou renal, imunodepressão, obesidade, asma e puérperas (fase pós-parto).',
@@ -247,7 +252,7 @@ export default {
         title: 'Início',
         hello: 'Olá, ',
         nowAGuardian: 'Guardião da Saúde',
-        addProfile: 'Adicionar Perfil',
+        addProfile: 'Adicionar perfil',
         alerts: 'Alertas',
         statusLast7Days: 'Status nos últimos 7 dias:',
         statusLast7DaysGood: 'Você tem se sentido bem',
@@ -400,8 +405,8 @@ export default {
             'Você atingiu o limite de doses para esse tipo de vacina.',
         messageError3:
             'Verifique se a data está correta ou corrija a dose antiga.',
-        confirmDeleteDose: 'Deletar dose',
-        confirmDeleteDose2: 'Deseja deletar essa dose?',
+        confirmDeleteDose: 'Excluir dose',
+        confirmDeleteDose2: 'Deseja excluir essa dose?',
         titleModal: 'Informações da vacina',
         nameVaccine: 'Nome: ',
         laboratoryVaccine: 'Laboratório: ',
@@ -418,7 +423,7 @@ export default {
     },
     drawer: {
         reportRumor: 'Reportar Rumor',
-        toEdit: 'Editar perfis',
+        profiles: 'Editar perfis',
         logOut: 'Sair',
         app: 'Aplicativo',
         toSurveillance: 'Vigilância Ativa',
@@ -464,5 +469,18 @@ export default {
     autocomplete: {
         searchBar: 'Pesquise aqui',
         noResult: 'Sem resultados',
+    },
+    deleteAccount: {
+        title: 'Excluir conta',
+        confirmation: 'Você quer remover sua contribuição a saúde pública?\n',
+        message:
+            'Ao solicitar a exclusão da sua conta, TODOS os dados associados a ela serão removidos do aplicativo em um prazo de 30 dias.\n\n',
+        message2:
+            'Se você desejar cancelar o processo, por favor, responda o mais rápido possível ao email de confirmação que lhe será enviado.',
+        button: 'Confirmar exclusão',
+        alert:
+            'Após o período mencionado, não será possível recuperar os dados excluídos. Deseja continuar?',
+        cancel: 'Cancelar',
+        confirm: 'Sim',
     },
 }

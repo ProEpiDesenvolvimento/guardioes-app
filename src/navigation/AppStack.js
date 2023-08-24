@@ -16,6 +16,7 @@ import Ajuda from '../screens/principal/Ajuda'
 import BadReport from '../screens/principal/BadReport'
 import BioSeguranca from '../screens/principal/BioSeguranca'
 import EditarPerfil from '../screens/principal/EditarPerfil'
+import ExcluirConta from '../screens/principal/ExcluirConta'
 import FAQ from '../screens/principal/FAQ'
 import NovoPerfil from '../screens/principal/NovoPerfil'
 import Perfis from '../screens/principal/Perfis'
@@ -102,7 +103,7 @@ const AppStack = () => {
             <Stack.Screen
                 name='Perfis'
                 component={Perfis}
-                options={headerOptions.editarPerfil}
+                options={headerOptions.editarPerfis}
             />
             <Stack.Screen
                 name='Rumor'
@@ -149,13 +150,18 @@ const AppStack = () => {
                 component={FAQ}
                 options={{ title: translate('faq.title') }}
             />
+            <Stack.Screen
+                name='ExcluirConta'
+                component={ExcluirConta}
+                options={{ title: translate('deleteAccount.title') }}
+            />
         </Stack.Navigator>
     )
 }
 
 const headerOptions = {
-    editarPerfil: {
-        title: translate('register.editProfile'),
+    editarPerfis: {
+        title: translate('drawer.profiles'),
         rightButton: (navigation) => (
             <BackButton onPress={() => navigation.navigate('NovoPerfil')}>
                 <Feather name='user-plus' size={scale(30)} color='#ffffff' />

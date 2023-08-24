@@ -81,15 +81,17 @@ const ForgetPwd = ({ navigation }) => {
         const response = await sendCode({ email })
 
         if (response.status === 200) {
-            console.warn(response)
             goToNextScreen()
             setShowAlert(false)
-        } else {
-            console.warn(response)
+        } else if (response.status === 400) {
             Alert.alert(
                 translate('forgetPwd.invalidEmail'),
                 translate('forgetPwd.tryAgain')
             )
+            setShowAlert(false)
+        } else {
+            console.warn(response)
+            Alert.alert(translate('register.geralError'))
             setShowAlert(false)
         }
     }

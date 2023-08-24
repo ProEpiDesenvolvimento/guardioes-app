@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { scale, percentage } from '../../../utils/scalling'
+import { scale, percentage } from '../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
@@ -17,14 +17,13 @@ export const Title = styled.Text`
     text-align: center;
     color: #348eac;
     include-font-padding: false;
-    line-height: ${scale(20)}px;
     padding: 0;
 `
 
 export const ImageContainer = styled.View`
     flex-direction: row;
     justify-content: space-evenly;
-    margin-top: ${scale(20)}px;
+    margin-top: ${scale(10)}px;
     margin-bottom: ${scale(20)}px;
 `
 
@@ -33,4 +32,5 @@ export const BodyText = styled.Text`
     font-size: ${scale(14)}px;
     text-align: justify;
     color: #2b3d51;
+    margin-bottom: ${scale(20)}px;
 `

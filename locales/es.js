@@ -53,8 +53,8 @@ export default {
         title: 'Recuperar mi contraseña',
         informEmail: 'Ingrese su email para verificación:',
         sendButton: 'Enviar',
-        invalidEmail: 'Email inválido',
-        tryAgain: 'Inténtalo de Nuevo',
+        invalidEmail: 'Email no encontrado',
+        tryAgain: 'Inténtalo de nuevo',
         differentsPass: '¡Las Contraseñas no Coinciden!',
         passwordChanged: 'Restablecer la contraseña',
     },
@@ -86,11 +86,13 @@ export default {
         birth: 'Nacimiento:',
         country: 'País de origen:',
         residence: 'País de residencia:',
-        originCountry: 'es su país de origen?',
+        originCountry: ' es su país de origen?',
+        category: 'Categoría:',
         email: 'Email:',
         password: 'Contraseña:',
         passwordCondition:
-            'La Contraseña debe contener un mínimo de 8 caracteres',
+            '- La contraseña debe contener un mínimo de 8 caracteres',
+        fieldsRequired: '- Los campos con * son obligatorios',
         signupButton: 'Registro',
         editProfile: 'Editar Perfil',
         emptyName: 'El Nombre no se puede dejar en blanco',
@@ -129,7 +131,10 @@ export default {
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',
         vaccination: '¿Tiene datos de vacunación?',
         institution: '¿Eres miembro de alguna institución registrada?',
-        idCode: 'Código da identificación:',
+        noInstitutionFound:
+            'No tenemos instituciones registradas en este sitio',
+        noInstitutionFoundDesc:
+            'Muestre la aplicación a su institución y sea parte de esta iniciativa.',
         riskGroupTitle: 'Grupos de Riesgo:',
         riskGroupMessage:
             '\t Personas mayores de 60 años o personas de cualquier edad que tienen comorbilidades, como enfermedades cardíacas, diabetes, neumopatía, enfermedades neurológicas o renales, inmunodepresión, obesidad, asma y mujeres posparto.',
@@ -249,7 +254,7 @@ export default {
         title: 'Inicio',
         hello: '¡Hola, ',
         nowAGuardian: 'Guardián de la Salud',
-        addProfile: 'Añadir Perfil',
+        addProfile: 'Añadir perfil',
         alerts: 'Alertas',
         statusLast7Days: 'Estado en los últimos 7 días:',
         statusLast7DaysGood: 'Te has sentido bien',
@@ -420,7 +425,7 @@ export default {
     },
     drawer: {
         reportRumor: 'Informar Rumor',
-        toEdit: 'Editar perfiles',
+        profiles: 'Editar perfiles',
         logOut: 'Dejar',
         app: 'Aplicación',
         toSurveillance: 'Vigilancia Activa',
@@ -466,5 +471,18 @@ export default {
     autocomplete: {
         searchBar: 'Pesquise aquí',
         noResult: 'No hay resultados',
+    },
+    deleteAccount: {
+        title: 'Eliminar cuenta',
+        confirmation: '¿Deseas retirar tu contribución a la salud pública?\n',
+        message:
+            'Al solicitar la eliminación de tu cuenta, TODOS los datos asociados a ella se eliminarán de la aplicación en un plazo de 30 días.\n\n',
+        message2:
+            'Si deseas cancelar el proceso, por favor responde lo antes posible al correo de confirmación que se te enviará.',
+        button: 'Confirmar eliminación',
+        alert:
+            'Después del período mencionado, no será posible recuperar los datos eliminados. ¿Deseas continuar?',
+        cancel: 'Cancelar',
+        confirm: 'Sí',
     },
 }

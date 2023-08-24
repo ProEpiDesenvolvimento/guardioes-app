@@ -106,7 +106,7 @@ const LeftMenu = ({ navigation }) => {
                         color='#ffffff'
                         style={styles.iconStyle}
                     />
-                    <TextOption>{translate('drawer.toEdit')}</TextOption>
+                    <TextOption>{translate('drawer.profiles')}</TextOption>
                 </UserOptionBlue>
             </Button>
             <Button onPress={() => signOut()}>

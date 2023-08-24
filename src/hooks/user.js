@@ -195,14 +195,14 @@ export const UserProvider = ({ children }) => {
     }
 
     const sendUserTagsToOneSignal = (user) => {
-        const userGroup = user.group ? user.group.split('/')[3] : null
+        const userGroupName = user.group ? user.group.split('/')[3] : null
 
         OneSignal.setExternalUserId(user.id.toString())
         OneSignal.deleteTag('school_unit_id') // Remove on future release
         OneSignal.deleteTag('score') // Remove on future release
         OneSignal.sendTags({
             city: user.city,
-            group: userGroup,
+            group: userGroupName,
             doses: user.doses, // Check on next release
         })
     }

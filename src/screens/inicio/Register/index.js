@@ -14,6 +14,8 @@ import {
 import {
     KeyboardScrollView,
     FormInline,
+    FormLabel,
+    FormTip,
     NormalInput,
     FormGroup,
     FormGroupChild,
@@ -30,10 +32,10 @@ import {
     ButtonClose,
     ModalClose,
 } from '../../../components/NormalForms'
-import { PageTitle, FormLabel, FormTip } from './styles'
+import { PageTitle } from './styles'
 
 import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
-import LoadingModal from '../../../components/Groups/LoadingModal'
+import LoadingModal from '../../../components/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { UserIcon } from '../../../img/imageConst'
@@ -73,7 +75,7 @@ const Register = ({ navigation }) => {
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [category, setCategory] = useState({})
-    const [allCategories, setAllCategories] = useState(null)
+    const [allCategories, setAllCategories] = useState([])
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -242,7 +244,9 @@ const Register = ({ navigation }) => {
                     <PageTitle>{translate('register.title')}</PageTitle>
 
                     <FormInline>
-                        <FormLabel>{translate('register.name')}</FormLabel>
+                        <FormLabel light>
+                            {translate('register.name')} *
+                        </FormLabel>
                         <NormalInput
                             returnKeyType='next'
                             onChangeText={(text) => setName(text)}
@@ -251,7 +255,7 @@ const Register = ({ navigation }) => {
 
                     <FormGroup>
                         <FormGroupChild>
-                            <FormLabel>
+                            <FormLabel light>
                                 {translate('register.gender')}
                             </FormLabel>
                             <FormInlineSelector>
@@ -261,7 +265,9 @@ const Register = ({ navigation }) => {
                                     cancelText={translate('selector.cancelButton')}
                                     onChange={(option) => setGender(option.key)}
                                 />
-                                <CheckLabel onPress={() => setModalGender(true)}>
+                                <CheckLabel
+                                    onPress={() => setModalGender(true)}
+                                >
                                     <Feather
                                         name='help-circle'
                                         size={scale(25)}
@@ -272,7 +278,9 @@ const Register = ({ navigation }) => {
                         </FormGroupChild>
 
                         <FormGroupChild>
-                            <FormLabel>{translate('register.race')}</FormLabel>
+                            <FormLabel light>
+                                {translate('register.race')}
+                            </FormLabel>
                             <Selector
                                 data={raceChoices}
                                 initValue={translate('selector.label')}
@@ -284,7 +292,9 @@ const Register = ({ navigation }) => {
 
                     <FormGroup>
                         <FormGroupChild>
-                            <FormLabel>{translate('register.birth')}</FormLabel>
+                            <FormLabel light>
+                                {translate('register.birth')} *
+                            </FormLabel>
                             <DateSelector
                                 placeholder={translate('birthDetails.format')}
                                 date={birth}
@@ -306,8 +316,8 @@ const Register = ({ navigation }) => {
                         </FormGroupChild>
 
                         <FormGroupChild>
-                            <FormLabel>
-                                {translate('register.residence')}
+                            <FormLabel light>
+                                {translate('register.residence')} *
                             </FormLabel>
 
                             <Selector
@@ -325,7 +335,7 @@ const Register = ({ navigation }) => {
                     {residence === 'Brazil' ? (
                         <FormGroup>
                             <FormGroupChild>
-                                <FormLabel>Estado:</FormLabel>
+                                <FormLabel light>Estado: *</FormLabel>
                                 <Selector
                                     data={stateOptions}
                                     initValue={translate('selector.label')}
@@ -337,7 +347,7 @@ const Register = ({ navigation }) => {
                             </FormGroupChild>
 
                             <FormGroupChild>
-                                <FormLabel>Município:</FormLabel>
+                                <FormLabel light>Município: *</FormLabel>
                                 <Selector
                                     data={getCity(state)}
                                     initValue={
@@ -357,13 +367,13 @@ const Register = ({ navigation }) => {
                             <CheckBoxStyled
                                 title={
                                     residence +
-                                    translate('register.originCountry')
+                                    translate('register.originCountry') + ' *'
                                 }
                                 checked={countryCheckbox}
                                 onPress={() => {
-                                    !countryCheckbox
-                                        ? setCountry(residence)
-                                        : null
+                                    if (!countryCheckbox) {
+                                        setCountry(residence)
+                                    }
                                     setCountryCheckbox(!countryCheckbox)
                                 }}
                             />
@@ -408,14 +418,16 @@ const Register = ({ navigation }) => {
                         key={key}
                         setUserInstitutionCallback={setUserInstitutionCallback}
                         setAlert={setLoadingAlert}
-                        userGroup={groupId}
+                        userGroupId={groupId}
                         setErrorCallback={setInstituitionComponentError}
                         lightTheme
                     />
 
-                    {allCategories ? (
+                    {allCategories.length > 0 ? (
                         <FormInline>
-                            <FormLabel>Categoria:</FormLabel>
+                            <FormLabel light>
+                                {translate('register.category')} *
+                            </FormLabel>
                             <Selector
                                 data={allCategories}
                                 initValue={
@@ -430,7 +442,9 @@ const Register = ({ navigation }) => {
                     ) : null}
 
                     <FormInline>
-                        <FormLabel>{translate('register.email')}</FormLabel>
+                        <FormLabel light>
+                            {translate('register.email')} *
+                        </FormLabel>
                         <NormalInput
                             autoCapitalize='none'
                             keyboardType='email-address'
@@ -445,7 +459,9 @@ const Register = ({ navigation }) => {
                     </FormInline>
 
                     <FormInline>
-                        <FormLabel>{translate('register.password')}</FormLabel>
+                        <FormLabel light>
+                            {translate('register.password')} *
+                        </FormLabel>
                         <NormalInput
                             autoCapitalize='none'
                             multiline={false}
@@ -454,8 +470,11 @@ const Register = ({ navigation }) => {
                             ref={passwordInput}
                             onChangeText={(text) => setPassword(text)}
                         />
-                        <FormTip>
+                        <FormTip light>
                             {translate('register.passwordCondition')}
+                        </FormTip>
+                        <FormTip light>
+                            {translate('register.fieldsRequired')}
                         </FormTip>
                     </FormInline>
 

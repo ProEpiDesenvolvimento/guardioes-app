@@ -33,7 +33,7 @@ import {
 import { Delete } from './styles'
 
 import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
-import LoadingModal from '../../../components/Groups/LoadingModal'
+import LoadingModal from '../../../components/LoadingModal'
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import {
@@ -80,7 +80,7 @@ const EditarPerfil = ({ navigation, route }) => {
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
     const [isVigilance, setIsVigilance] = useState(person.is_vigilance)
     const [category, setCategory] = useState(person.category)
-    const [allCategories, setAllCategories] = useState(null)
+    const [allCategories, setAllCategories] = useState([])
 
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
@@ -368,7 +368,7 @@ const EditarPerfil = ({ navigation, route }) => {
                 ) : null}
 
                 <FormInline>
-                    <FormLabel>{translate('register.name')}</FormLabel>
+                    <FormLabel>{translate('register.name')} *</FormLabel>
                     <NormalInput
                         value={name}
                         onChangeText={(text) => setName(text)}
@@ -399,7 +399,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
                 <FormGroup>
                     <FormGroupChild>
-                        <FormLabel>{translate('register.birth')}</FormLabel>
+                        <FormLabel>{translate('register.birth')} *</FormLabel>
                         <DateSelector
                             placeholder={translate('birthDetails.format')}
                             date={birth}
@@ -418,7 +418,7 @@ const EditarPerfil = ({ navigation, route }) => {
                     </FormGroupChild>
 
                     <FormGroupChild>
-                        <FormLabel>{translate('register.country')}</FormLabel>
+                        <FormLabel>{translate('register.country')} *</FormLabel>
                         <Autocomplete
                             data={countryChoices}
                             value={country}
@@ -430,7 +430,7 @@ const EditarPerfil = ({ navigation, route }) => {
                 {country === 'Brazil' && !isHousehold ? (
                     <FormGroup>
                         <FormGroupChild>
-                            <FormLabel>Estado:</FormLabel>
+                            <FormLabel>Estado: *</FormLabel>
                             <Autocomplete
                                 data={stateOptions}
                                 value={state}
@@ -439,7 +439,7 @@ const EditarPerfil = ({ navigation, route }) => {
                         </FormGroupChild>
 
                         <FormGroupChild>
-                            <FormLabel>Município:</FormLabel>
+                            <FormLabel>Município: *</FormLabel>
                             <Autocomplete
                                 data={getCity(state)}
                                 value={city}
@@ -451,7 +451,7 @@ const EditarPerfil = ({ navigation, route }) => {
 
                 {isHousehold ? (
                     <FormInline>
-                        <FormLabel>Parentesco:</FormLabel>
+                        <FormLabel>Parentesco: *</FormLabel>
                         <Selector
                             data={householdChoices}
                             initValue={kinship}
@@ -483,14 +483,16 @@ const EditarPerfil = ({ navigation, route }) => {
                 <InstitutionSelector
                     setUserInstitutionCallback={setUserInstitutionCallback}
                     setAlert={setLoadingAlert}
-                    userGroup={groupId}
+                    userGroupId={groupId}
                     userIdCode={idCode}
                     setErrorCallback={setInstituitionComponentError}
                 />
 
-                {allCategories ? (
+                {allCategories.length > 0 ? (
                     <FormInline>
-                        <FormLabel>Categoria:</FormLabel>
+                        <FormLabel>
+                            {translate('register.category')} *
+                        </FormLabel>
                         <Selector
                             data={allCategories}
                             initValue={
