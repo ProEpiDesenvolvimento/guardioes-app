@@ -161,7 +161,7 @@ const AppStack = () => {
 
 const headerOptions = {
     editarPerfis: {
-        title: translate('drawer.toEdit'),
+        title: translate('drawer.profiles'),
         rightButton: (navigation) => (
             <BackButton onPress={() => navigation.navigate('NovoPerfil')}>
                 <Feather name='user-plus' size={scale(30)} color='#ffffff' />
