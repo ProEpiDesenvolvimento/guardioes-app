@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { scale, percentage } from '../../../utils/scalling'
+import { scale, percentage } from '../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
