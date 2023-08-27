@@ -29,6 +29,7 @@
     "react-native-emoji": "^1.8.0",
     "react-native-geolocation-service": "^4.0.2",
     "react-native-gesture-handler": "^1.8.0",
+    "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-i18n": "^2.0.15",
     "react-native-image-picker": "^2.3.4",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
