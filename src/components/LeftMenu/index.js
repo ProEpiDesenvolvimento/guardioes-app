@@ -32,33 +32,25 @@ const LeftMenu = ({ navigation }) => {
         households,
         householdAvatars,
         signOut,
+        group,
         setGroup,
     } = useUser()
 
-    const [hasSurveillance, setHasSurveillance] = useState(false)
     let index = households.length
 
-    const getActiveSurveillance = async () => {
+    const getUserGroup = async () => {
         if (user.group_id) {
             const response = await getAppGroup(user.group_id)
 
             if (response.status === 200) {
                 const { group } = response.data
                 setGroup(group)
-
-                if (group.group_manager.vigilance_email) {
-                    setHasSurveillance(true)
-                } else {
-                    setHasSurveillance(false)
-                }
             }
-        } else {
-            setHasSurveillance(false)
         }
     }
 
     useEffect(() => {
-        getActiveSurveillance()
+        getUserGroup()
     }, [user.group_id])
 
     return (
@@ -123,7 +115,7 @@ const LeftMenu = ({ navigation }) => {
 
             <Aplicativo>{translate('drawer.app')}</Aplicativo>
 
-            {hasSurveillance ? (
+            {group.group_manager?.vigilance_email ? (
                 <Button onPress={() => navigation.navigate('Vigilancia')}>
                     <UserOptionGreen>
                         <Feather
@@ -135,6 +127,19 @@ const LeftMenu = ({ navigation }) => {
                         <TextOption>
                             {translate('drawer.toSurveillance')}
                         </TextOption>
+                    </UserOptionGreen>
+                </Button>
+            ) : null}
+            {group.group_manager?.has_quiz ? (
+                <Button onPress={() => navigation.navigate('Quizzes')}>
+                    <UserOptionGreen>
+                        <Feather
+                            name='book'
+                            size={scale(26)}
+                            color='#ffffff'
+                            style={styles.iconStyle}
+                        />
+                        <TextOption>Quiz</TextOption>
                     </UserOptionGreen>
                 </Button>
             ) : null}

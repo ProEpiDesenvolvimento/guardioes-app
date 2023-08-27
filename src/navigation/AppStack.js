@@ -20,6 +20,8 @@ import ExcluirConta from '../screens/principal/ExcluirConta'
 import FAQ from '../screens/principal/FAQ'
 import NovoPerfil from '../screens/principal/NovoPerfil'
 import Perfis from '../screens/principal/Perfis'
+import Quiz from '../screens/principal/Quiz'
+import Quizzes from '../screens/principal/Quizzes'
 import Rumor from '../screens/principal/Rumor'
 import Sobre from '../screens/principal/Sobre'
 import TermosPoliticas from '../screens/principal/TermosPoliticas'
@@ -99,6 +101,16 @@ const AppStack = () => {
                 name='Vacinacao'
                 component={Vacinacao}
                 options={{ title: translate('vaccination.title') }}
+            />
+            <Stack.Screen
+                name='Quizzes'
+                component={Quizzes}
+                options={{ title: 'Quizzes' }}
+            />
+            <Stack.Screen
+                name='Quiz'
+                component={Quiz}
+                options={{ title: 'Quiz' }}
             />
             <Stack.Screen
                 name='Perfis'
