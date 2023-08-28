@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
+import PlaceSelector from '../PlaceSelector'
 import {
     FormInline,
     FormLabel,
@@ -11,7 +12,12 @@ import {
 
 import translate from '../../locales/i18n'
 
-const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
+const FlexibleFormBuilder = ({
+    formVersion,
+    setFormVersion,
+    disabled,
+    light,
+}) => {
     const handleAnswer = (question, value) => {
         const newFormVersion = { ...formVersion }
 
@@ -20,7 +26,38 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
                 q.value = value
             }
         })
+        setFormVersion(newFormVersion)
+    }
 
+    const handlePlace = (option) => {
+        const newFormVersion = { ...formVersion }
+        const place = option.label.split(',')
+
+        newFormVersion.data.forEach((question) => {
+            if (question.type === 'geo_country') {
+                if (place.length > 2) {
+                    question.value = place[2].trim()
+                } else if (place[1]) {
+                    question.value = place[1].trim()
+                } else if (place[0]) {
+                    question.value = place[0].trim()
+                }
+            }
+            if (question.type === 'geo_state') {
+                if (place.length > 1) {
+                    question.value = place[1].trim()
+                } else {
+                    question.value = ''
+                }
+            }
+            if (question.type === 'geo_city') {
+                if (place.length > 2) {
+                    question.value = place[0].trim()
+                } else {
+                    question.value = ''
+                }
+            }
+        })
         setFormVersion(newFormVersion)
     }
 
@@ -39,6 +76,7 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
                             onChangeText={(text) =>
                                 handleAnswer(question, text)
                             }
+                            editable={!disabled}
                         />
                     ) : null}
 
@@ -58,6 +96,7 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
                             onDateChange={(date) =>
                                 handleAnswer(question, date)
                             }
+                            disabled={disabled}
                         />
                     ) : null}
 
@@ -73,6 +112,7 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
                             onChange={(option) =>
                                 handleAnswer(question, option.value)
                             }
+                            disabled={disabled}
                         />
                     ) : null}
 
@@ -86,9 +126,37 @@ const FlexibleFormBuilder = ({ formVersion, setFormVersion, light }) => {
                                       handleAnswer(question, option.value)
                                   }
                                   full
+                                  disabled={disabled}
                               />
                           ))
                         : null}
+
+                    {question.type === 'geo_country' ? (
+                        <NormalInput value={question.value} editable={false} />
+                    ) : null}
+
+                    {question.type === 'geo_state' ? (
+                        <NormalInput value={question.value} editable={false} />
+                    ) : null}
+
+                    {question.type === 'geo_city' ? (
+                        <NormalInput value={question.value} editable={false} />
+                    ) : null}
+
+                    {question.type === 'geo_location' ? (
+                        <PlaceSelector
+                            value={
+                                question.value ? question.value : 'Selecionar'
+                            }
+                            placeholder={translate('autocomplete.searchBar')}
+                            textCancel={translate('selector.cancelButton')}
+                            onChange={(option) => {
+                                handleAnswer(question, option.value)
+                                handlePlace(option)
+                            }}
+                            disabled={disabled}
+                        />
+                    ) : null}
                 </FormInline>
             ))}
         </>

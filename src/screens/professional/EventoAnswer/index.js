@@ -6,14 +6,9 @@ import {
     KeyboardScrollView,
     FormInline,
     FormLabel,
-    NormalInput,
-    Selector,
-    DateSelector,
-    CheckBoxStyled,
 } from '../../../components/NormalForms'
+import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
-import LoadingModal from '../../../components/Groups/LoadingModal'
-import translate from '../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleAnswer } from '../../../api/events'
 
@@ -25,8 +20,6 @@ const EventoAnswer = ({ route }) => {
     const [formVersion, setFormVersion] = useState({})
     const [answer, setAnswer] = useState({})
     const [formBuild, setFormBuild] = useState({})
-
-    const [loadingAlert, setLoadingAlert] = useState(false)
 
     const buildAnswers = async () => {
         const newData = []
@@ -93,60 +86,12 @@ const EventoAnswer = ({ route }) => {
                     </FormLabel>
                 </FormInline>
 
-                {formBuild.data?.map((question) => (
-                    <FormInline key={question.field}>
-                        <FormLabel>
-                            {question.text}
-                            {question.required ? '*' : ''}
-                        </FormLabel>
-
-                        {question.type === 'text' ||
-                        question.type === 'number' ? (
-                            <NormalInput
-                                value={question.value}
-                                editable={false}
-                            />
-                        ) : null}
-
-                        {question.type === 'date' ? (
-                            <DateSelector
-                                placeholder={translate('dateSelector.format')}
-                                date={question.value}
-                                format='DD-MM-YYYY'
-                                minDate='01-01-1918'
-                                locale='pt-BR'
-                                disabled
-                            />
-                        ) : null}
-
-                        {question.type === 'select' ? (
-                            <Selector
-                                initValue={
-                                    question.value
-                                        ? question.value
-                                        : translate('selector.label')
-                                }
-                                cancelText={translate('selector.cancelButton')}
-                                disabled
-                            />
-                        ) : null}
-
-                        {question.type === 'multiple'
-                            ? question.options.map((option) => (
-                                  <CheckBoxStyled
-                                      key={option.id}
-                                      title={option.label}
-                                      checked={option.label === question.value}
-                                      disabled
-                                      full
-                                  />
-                              ))
-                            : null}
-                    </FormInline>
-                ))}
+                <FlexibleFormBuilder
+                    formVersion={formBuild}
+                    setFormVersion={setFormBuild}
+                    disabled
+                />
             </KeyboardScrollView>
-
-            <LoadingModal show={loadingAlert} />
         </Container>
     )
 }
