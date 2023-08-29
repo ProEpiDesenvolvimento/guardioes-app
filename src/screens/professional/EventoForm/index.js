@@ -13,6 +13,7 @@ import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../locales/i18n'
+import { capitalizeFirstWords } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
@@ -23,6 +24,21 @@ const EventoForm = ({ navigation }) => {
     const [formVersion, setFormVersion] = useState({})
 
     const [loadingAlert, setLoadingAlert] = useState(false)
+
+    const formattedForm = (formVersion) => {
+        formVersion.data.forEach((question) => {
+            if (question.type === 'geo_country') {
+                question.value = user.country
+            }
+            if (question.type === 'geo_state') {
+                question.value = capitalizeFirstWords(user.state)
+            }
+            if (question.type === 'geo_city') {
+                question.value = capitalizeFirstWords(user.city)
+            }
+        })
+        return formVersion
+    }
 
     const getEvent = async () => {
         // hardcoded form id
@@ -35,7 +51,10 @@ const EventoForm = ({ navigation }) => {
                 const parsedData = JSON.parse(flexible_form.latest_version.data)
                 flexible_form.latest_version.data = parsedData
 
-                setFormVersion(flexible_form.latest_version)
+                const newFormVersion = formattedForm(
+                    flexible_form.latest_version
+                )
+                setFormVersion(newFormVersion)
             }
             setIsLoading(false)
         }

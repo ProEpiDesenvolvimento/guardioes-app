@@ -23,6 +23,7 @@ Crie um arquivo **.env** na pasta do projeto com as linhas:
 ```shell
 API_URL=
 ONESIGNAL_APP_ID=
+GOOGLE_CLOUD_API_KEY=
 ```
 
 **O API_URL é a url da sua aplicação rodando no repositório [guardioes_api](https://github.com/ProEpiDesenvolvimento/guardioes-api).**
