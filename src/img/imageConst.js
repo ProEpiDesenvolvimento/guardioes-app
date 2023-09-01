@@ -21,6 +21,10 @@ export { default as FAQIcon } from './icons/faq.svg'
 export { default as TutorialIcon } from './icons/online-learning.svg'
 export { default as InfoIcon } from './icons/info.svg'
 
+// Quiz
+export { default as WarningIcon } from './icons/warning.svg'
+export { default as AwardIcon } from './icons/award.svg'
+
 // Diary Icons
 export { default as HappyIcon } from './icons/happy.svg'
 export { default as SadIcon } from './icons/sad.svg'
