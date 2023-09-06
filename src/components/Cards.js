@@ -50,7 +50,6 @@ const Name = `
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
     include-font-padding: false;
-    margin-bottom: ${scale(5)}px;
 `
 
 export const CardNameBlue = styled.Text`
@@ -67,6 +66,7 @@ const Details = `
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     include-font-padding: false;
+    margin-top: ${scale(5)}px;
 `
 
 export const CardDetailsBlue = styled.Text`

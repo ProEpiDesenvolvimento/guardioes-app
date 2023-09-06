@@ -93,6 +93,14 @@ const EventoAnswers = ({ navigation }) => {
                                         'DD/MM/YYYY'
                                     )}
                                 </CardDetailsWhite>
+                                <CardDetailsWhite>
+                                    Status:{' '}
+                                    {
+                                        answer.external_system_data?._embedded
+                                            .signals[0].dados
+                                            .signal_stage_state_id[1]
+                                    }
+                                </CardDetailsWhite>
                             </InfoWrapper>
                             <ButtonsWrapper>
                                 <Button
