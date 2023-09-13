@@ -14,11 +14,10 @@ import { getFlexibleAnswer } from '../../../api/events'
 
 const EventoAnswer = ({ route }) => {
     const { token } = useUser()
-    const { id } = route.params
+    const { answer } = route.params
 
     const [isLoading, setIsLoading] = useState(true)
     const [formVersion, setFormVersion] = useState({})
-    const [answer, setAnswer] = useState({})
     const [formBuild, setFormBuild] = useState({})
 
     const buildAnswers = async () => {
@@ -41,37 +40,23 @@ const EventoAnswer = ({ route }) => {
         setFormBuild(newFormVersion)
     }
 
-    const getAnswer = async () => {
-        const response = await getFlexibleAnswer(id, token)
+    const getFlexibleFormVersion = async () => {
+        const parsedData = JSON.parse(answer.flexible_form_version.data)
+        answer.flexible_form_version.data = parsedData
 
-        if (response.status === 200) {
-            const flexibleAnswer = response.data.flexible_answer
-
-            const parsedData = JSON.parse(flexibleAnswer.data)
-            flexibleAnswer.data = parsedData
-
-            if (flexibleAnswer.flexible_form_version) {
-                const parsedVersionData = JSON.parse(
-                    flexibleAnswer.flexible_form_version.data
-                )
-                flexibleAnswer.flexible_form_version.data = parsedVersionData
-
-                setAnswer(flexibleAnswer)
-                setFormVersion(flexibleAnswer.flexible_form_version)
-            }
-            setIsLoading(false)
-        }
+        setFormVersion(answer.flexible_form_version)
+        setIsLoading(false)
     }
-
-    useEffect(() => {
-        getAnswer()
-    }, [])
 
     useEffect(() => {
         if (formVersion.data && answer.data) {
             buildAnswers()
         }
     }, [formVersion])
+
+    useEffect(() => {
+        getFlexibleFormVersion()
+    }, [])
 
     if (isLoading) {
         return <ScreenLoader />

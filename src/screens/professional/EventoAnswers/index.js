@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { Alert } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
-import { Avatar } from 'react-native-elements'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
@@ -13,7 +12,6 @@ import {
     CardWhite,
     CardNameWhite,
     CardDetailsWhite,
-    AvatarWrapper,
     InfoContainer,
     InfoWrapper,
     ButtonsWrapper,
@@ -22,12 +20,11 @@ import {
 
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
-import { getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleAnswers } from '../../../api/events'
 
 const EventoAnswers = ({ navigation }) => {
-    const { token, user } = useUser()
+    const { isOffline, token, storeCacheData, getCacheData } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [flexibleAnswers, setFlexibleAnswers] = useState([])
@@ -46,27 +43,46 @@ const EventoAnswers = ({ navigation }) => {
     }
 
     const getAllFlexibleAnswers = async () => {
-        const response = await getFlexibleAnswers(token)
+        if (!isOffline) {
+            const response = await getFlexibleAnswers(token)
 
-        if (response.status === 200) {
-            const appFlexibleAnswers = response.data.flexible_answers
+            if (response.status === 200) {
+                const appFlexibleAnswers = response.data.flexible_answers
 
-            const parsedAnswers = appFlexibleAnswers.map((answer) => {
-                const parsedData = JSON.parse(answer.data)
-                return {
-                    ...answer,
-                    data: parsedData,
-                }
-            })
+                const parsedAnswers = appFlexibleAnswers.map((answer) => {
+                    const parsedData = JSON.parse(answer.data)
+                    return {
+                        ...answer,
+                        data: parsedData,
+                    }
+                })
 
-            setFlexibleAnswers(parsedAnswers)
+                storeCacheData('flexibleAnswers', parsedAnswers)
+                setFlexibleAnswers(parsedAnswers)
+            }
+            setIsLoading(false)
+        } else {
+            const parsedAnswers = await getCacheData('flexibleAnswers', false)
+
+            if (parsedAnswers) {
+                setFlexibleAnswers(parsedAnswers)
+                setIsLoading(false)
+            }
         }
-        setIsLoading(false)
     }
 
     useEffect(() => {
         getAllFlexibleAnswers()
     }, [])
+
+    useEffect(() => {
+        if (isOffline) {
+            Alert.alert(
+                'Sem conexão com a Internet!',
+                'Será mostrada a última lista armazenada no aplicativo.'
+            )
+        }
+    }, [isOffline])
 
     if (isLoading) {
         return <ScreenLoader />
@@ -97,7 +113,7 @@ const EventoAnswers = ({ navigation }) => {
                                     Status:{' '}
                                     {
                                         answer.external_system_data?._embedded
-                                            .signals[0].dados
+                                            ?.signals[0].dados
                                             .signal_stage_state_id[1]
                                     }
                                 </CardDetailsWhite>
@@ -106,7 +122,7 @@ const EventoAnswers = ({ navigation }) => {
                                 <Button
                                     onPress={() => {
                                         navigation.navigate('EventoAnswer', {
-                                            id: answer.id,
+                                            answer,
                                         })
                                     }}
                                 >
@@ -124,12 +140,5 @@ const EventoAnswers = ({ navigation }) => {
         </ScrollViewStyled>
     )
 }
-
-const styles = StyleSheet.create({
-    Avatar: {
-        borderColor: '#ffffff',
-        borderWidth: 3,
-    },
-})
 
 export default EventoAnswers

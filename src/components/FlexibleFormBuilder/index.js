@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react'
 
 import PlaceSelector from '../PlaceSelector'
@@ -15,6 +16,7 @@ import translate from '../../locales/i18n'
 const FlexibleFormBuilder = ({
     formVersion,
     setFormVersion,
+    isOffline,
     disabled,
     light,
 }) => {
@@ -144,18 +146,32 @@ const FlexibleFormBuilder = ({
                     ) : null}
 
                     {question.type === 'geo_location' ? (
-                        <PlaceSelector
-                            value={
-                                question.value ? question.value : 'Selecionar'
-                            }
-                            placeholder={translate('autocomplete.searchBar')}
-                            textCancel={translate('selector.cancelButton')}
-                            onChange={(option) => {
-                                handleAnswer(question, option.value)
-                                handlePlace(option)
-                            }}
-                            disabled={disabled}
-                        />
+                        isOffline ? (
+                            <NormalInput
+                                value={question.value}
+                                onChangeText={(text) =>
+                                    handleAnswer(question, text)
+                                }
+                                editable={!disabled}
+                            />
+                        ) : (
+                            <PlaceSelector
+                                value={
+                                    question.value
+                                        ? question.value
+                                        : 'Selecionar'
+                                }
+                                placeholder={translate(
+                                    'autocomplete.searchBar'
+                                )}
+                                textCancel={translate('selector.cancelButton')}
+                                onChange={(option) => {
+                                    handleAnswer(question, option.value)
+                                    handlePlace(option)
+                                }}
+                                disabled={disabled}
+                            />
+                        )
                     ) : null}
                 </FormInline>
             ))}
