@@ -41,6 +41,7 @@ import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
+import { sendFlexibleAnswer } from '../../../api/events'
 
 const Home = ({ navigation }) => {
     const {
@@ -56,9 +57,12 @@ const Home = ({ navigation }) => {
         hideAppTip,
         loadSecondaryData,
         getCurrentUserInfo,
+        storeCacheData,
+        getCacheData,
     } = useUser()
 
     const [showTermsConsent, setShowTermsConsent] = useState(false)
+    const [hasSignalForm, setHasSignalForm] = useState(true)
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [alertTitle, setAlertTitle] = useState(null)
@@ -74,6 +78,7 @@ const Home = ({ navigation }) => {
 
     useEffect(() => {
         showOfflineAlert(isOffline)
+        signalAnswersRoutine()
     }, [isOffline])
 
     const fetchData = async () => {
@@ -81,6 +86,52 @@ const Home = ({ navigation }) => {
 
         verifyUserTermsConsent()
         getCurrentLocation()
+    }
+
+    const signalAnswersRoutine = async () => {
+        const signalForm = await getCacheData('signalForm', false)
+
+        if (signalForm) {
+            setHasSignalForm(true)
+        } else {
+            setHasSignalForm(false)
+        }
+
+        const pendingAnswers = await getCacheData('pendingAnswers', false)
+
+        if (!isOffline && pendingAnswers) {
+            const failedAnswers = []
+
+            if (pendingAnswers.length > 0) {
+                Alert.alert(
+                    'Sinais de alerta',
+                    'Por favor, aguarde, enviando registros armazenados no aplicativo.'
+                )
+            }
+
+            while (pendingAnswers.length > 0) {
+                const pendingAnswer = pendingAnswers.pop()
+
+                // eslint-disable-next-line no-await-in-loop
+                const response = await sendFlexibleAnswer(
+                    { flexible_answer: pendingAnswer },
+                    token
+                )
+
+                if (response.status !== 201) {
+                    console.warn(response.status)
+                    failedAnswers.push(pendingAnswer)
+                }
+            }
+
+            if (failedAnswers.length > 0) {
+                Alert.alert(
+                    'Erro',
+                    'Não foi possível enviar todos os sinais de alerta. Tente novamente mais tarde.'
+                )
+            }
+            await storeCacheData('pendingAnswers', failedAnswers)
+        }
     }
 
     const verifyUserTermsConsent = () => {
@@ -186,7 +237,7 @@ const Home = ({ navigation }) => {
                         <TextStyle>Quer informar um sinal de alerta?</TextStyle>
                         <StatusBemMal>
                             <Report
-                                disabled={isOffline}
+                                disabled={isOffline && !hasSignalForm}
                                 onPress={() =>
                                     navigation.navigate('EventoForm')
                                 }

@@ -18,7 +18,14 @@ import { useUser } from '../../../hooks/user'
 import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
 const EventoForm = ({ navigation }) => {
-    const { token, user, group } = useUser()
+    const {
+        isOffline,
+        token,
+        user,
+        group,
+        storeCacheData,
+        getCacheData,
+    } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [formVersion, setFormVersion] = useState({})
@@ -41,22 +48,34 @@ const EventoForm = ({ navigation }) => {
     }
 
     const getEvent = async () => {
-        // hardcoded form id
-        const response = await getFlexibleForm(1, token)
+        if (!isOffline) {
+            // hardcoded form id
+            const response = await getFlexibleForm(1, token)
 
-        if (response.status === 200) {
-            const { flexible_form } = response.data
+            if (response.status === 200) {
+                const { flexible_form } = response.data
 
-            if (flexible_form.latest_version) {
-                const parsedData = JSON.parse(flexible_form.latest_version.data)
-                flexible_form.latest_version.data = parsedData
+                if (flexible_form.latest_version) {
+                    const parsedData = JSON.parse(
+                        flexible_form.latest_version.data
+                    )
+                    flexible_form.latest_version.data = parsedData
 
-                const newFormVersion = formattedForm(
-                    flexible_form.latest_version
-                )
-                setFormVersion(newFormVersion)
+                    const newFormVersion = formattedForm(
+                        flexible_form.latest_version
+                    )
+                    storeCacheData('signalForm', newFormVersion)
+                    setFormVersion(newFormVersion)
+                }
+                setIsLoading(false)
             }
-            setIsLoading(false)
+        } else {
+            const signalFormVersion = await getCacheData('signalForm', false)
+
+            if (signalFormVersion) {
+                setFormVersion(signalFormVersion)
+                setIsLoading(false)
+            }
         }
     }
 
@@ -97,18 +116,36 @@ const EventoForm = ({ navigation }) => {
             user_id: user.id,
         }
 
-        const response = await sendFlexibleAnswer(
-            { flexible_answer: flexibleAnswer },
-            token
-        )
+        if (!isOffline) {
+            const response = await sendFlexibleAnswer(
+                { flexible_answer: flexibleAnswer },
+                token
+            )
 
-        if (response.status === 201) {
+            if (response.status === 201) {
+                setLoadingAlert(false)
+                navigation.navigate('Home')
+            } else {
+                console.warn(response.status)
+                Alert.alert(translate('register.geralError'))
+                setLoadingAlert(false)
+            }
+        } else {
+            let newSignalAnswers = await getCacheData('pendingAnswers', false)
+
+            if (!newSignalAnswers) {
+                newSignalAnswers = []
+            }
+            newSignalAnswers.push(flexibleAnswer)
+
+            await storeCacheData('pendingAnswers', newSignalAnswers)
+
+            Alert.alert(
+                'Sem conexão com a Internet!',
+                'Seus registros ficarão armazenados no aplicativo. Quando houver conexão, por favor, abra o aplicativo e aguarde o envio dos dados.'
+            )
             setLoadingAlert(false)
             navigation.navigate('Home')
-        } else {
-            console.warn(response.status)
-            Alert.alert(translate('register.geralError'))
-            setLoadingAlert(false)
         }
     }
 
@@ -122,6 +159,7 @@ const EventoForm = ({ navigation }) => {
                 <FlexibleFormBuilder
                     formVersion={formVersion}
                     setFormVersion={setFormVersion}
+                    isOffline={isOffline}
                 />
 
                 <Button onPress={() => sendEvent()}>
