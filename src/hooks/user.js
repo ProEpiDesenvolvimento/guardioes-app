@@ -205,6 +205,7 @@ export const UserProvider = ({ children }) => {
             city: user.city,
             group: userGroup,
             doses: user.doses, // Check on next release
+            is_professional: user.is_professional ? 1 : 0,
         })
     }
 
@@ -227,6 +228,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.deleteTag('school_unit_id') // Remove on future release
         OneSignal.deleteTag('score') // Remove on future release
         OneSignal.deleteTag('doses')
+        OneSignal.deleteTag('is_professional')
     }
 
     const signOut = async () => {
