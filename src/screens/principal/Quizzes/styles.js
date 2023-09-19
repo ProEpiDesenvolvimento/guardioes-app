@@ -36,7 +36,10 @@ export const IconWrapper = styled.View`
 
 export const InfoWrapper = styled.View`
     flex: 1;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 `
 
 export const Title = styled.Text`

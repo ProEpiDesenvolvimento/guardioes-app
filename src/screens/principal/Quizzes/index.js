@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import moment from 'moment'
+import { useFocusEffect } from '@react-navigation/native'
 
 import Feather from 'react-native-vector-icons/Feather'
 import ScreenLoader from '../../../components/ScreenLoader'
@@ -14,7 +15,7 @@ import {
 } from '../../../api/flexibleForms'
 
 const Quizzes = ({ navigation }) => {
-    const { token } = useUser()
+    const { isOffline, token } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -22,46 +23,42 @@ const Quizzes = ({ navigation }) => {
     const [formAnswers, setFormAnswers] = useState([])
     const [quizzes, setQuizzes] = useState([])
 
-    const isQuizDisabled = (quiz) => {
+    const getQuizIconName = (quiz) => {
         const formData = quiz.flexible_form_version.data
 
         if (quiz.done) {
-            return true
+            return 'check-square'
         }
         if (formData) {
             const startDate = moment(formData.start_date)
             const endDate = moment(formData.end_date)
-            const now = moment()
+            const now = moment().local()
 
             if (now.isBetween(startDate, endDate)) {
-                return false
+                return 'unlock'
             }
-            return true
+            return 'lock'
         }
-        return true
-    }
-
-    const getQuizIcon = (quiz) => {
-        const formData = quiz.flexible_form_version.data
-
-        if (quiz.done) {
-            return (
-                <Feather name='check-square' size={scale(26)} color='#348eac' />
-            )
-        }
-        if (quiz.flexible_form_version?.data) {
-            return <Feather name='unlock' size={scale(26)} color='#348eac' />
-        }
-        return <Feather name='lock' size={scale(26)} color='#348eac' />
+        return 'unlock'
     }
 
     const formattedQuizzes = () => {
         const newQuizzes = []
 
-        forms.forEach((form, index) => {
+        forms.forEach((form) => {
             const answers = formAnswers.filter(
                 (answer) => answer.flexible_form.id === form.id
             )
+            const answer = answers[0]
+
+            if (answer?.data) {
+                try {
+                    const parsedData = JSON.parse(answer.data)
+                    answer.data = parsedData
+                } catch {
+                    answer.data = {}
+                }
+            }
 
             if (form.flexible_form_version?.data) {
                 try {
@@ -76,11 +73,11 @@ const Quizzes = ({ navigation }) => {
 
             newQuizzes.push({
                 ...form,
+                percentage: answer?.data.percentage || 0,
                 done: answers.length > 0,
             })
         })
 
-        console.log(newQuizzes)
         setQuizzes(newQuizzes)
     }
 
@@ -92,7 +89,6 @@ const Quizzes = ({ navigation }) => {
 
             setFormAnswers(flexible_answers)
         }
-        setIsLoading(false)
     }
 
     const getForms = async () => {
@@ -103,22 +99,26 @@ const Quizzes = ({ navigation }) => {
 
             setForms(flexible_forms)
         }
+        setIsLoading(false)
     }
 
     const fetchData = async () => {
-        await getForms()
+        setIsLoading(true)
+        setQuizzes([])
+        setForms([])
         await getAnswers()
+        await getForms()
     }
 
     useEffect(() => {
-        if (formAnswers.length > 0 && forms.length > 0) {
-            formattedQuizzes()
-        }
+        formattedQuizzes()
     }, [formAnswers, forms])
 
-    useEffect(() => {
-        fetchData()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            fetchData()
+        }, [isOffline])
+    )
 
     if (isLoading) {
         return <ScreenLoader />
@@ -126,22 +126,32 @@ const Quizzes = ({ navigation }) => {
 
     return (
         <Help>
-            {quizzes.map((quiz) => (
-                <Button
-                    key={quiz.id}
-                    onPress={() => navigation.navigate('Quiz', { quiz })}
-                    disabled={isQuizDisabled(quiz)}
-                >
-                    <Box>
-                        <IconWrapper>
-                            {getQuizIcon(quiz)}
-                        </IconWrapper>
-                        <InfoWrapper>
-                            <Title>{quiz.title}</Title>
-                        </InfoWrapper>
-                    </Box>
-                </Button>
-            ))}
+            {quizzes.map((quiz) => {
+                const iconName = getQuizIconName(quiz)
+                return (
+                    <Button
+                        key={quiz.id}
+                        onPress={() => navigation.navigate('Quiz', { quiz })}
+                        disabled={
+                            iconName === 'lock' || iconName === 'check-square'
+                        }
+                    >
+                        <Box>
+                            <IconWrapper>
+                                <Feather
+                                    name={iconName}
+                                    size={scale(26)}
+                                    color='#348eac'
+                                />
+                            </IconWrapper>
+                            <InfoWrapper>
+                                <Title>{quiz.title}</Title>
+                                <Title>{quiz.percentage.toFixed(0)}/100</Title>
+                            </InfoWrapper>
+                        </Box>
+                    </Button>
+                )
+            })}
         </Help>
     )
 }
