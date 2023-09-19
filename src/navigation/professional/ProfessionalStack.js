@@ -14,6 +14,7 @@ import {
 import Ajuda from '../../screens/app/Ajuda'
 import HomeDrawer from './HomeDrawer'
 import EventoAnswer from '../../screens/professional/EventoAnswer'
+import EventoAnswersCards from '../../screens/professional/EventoAnswersCards'
 import EventoAnswers from '../../screens/professional/EventoAnswers'
 import EventoForm from '../../screens/professional/EventoForm'
 
@@ -64,9 +65,14 @@ const ProfessionalStack = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
+                name='EventoAnswersCards'
+                component={EventoAnswersCards}
+                options={{ title: 'Sinais informados' }}
+            />
+            <Stack.Screen
                 name='EventoAnswers'
                 component={EventoAnswers}
-                options={{ title: 'Sinais informados' }}
+                options={{ title: 'Sinais filtrados' }}
             />
             <Stack.Screen
                 name='EventoForm'

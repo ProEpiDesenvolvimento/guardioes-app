@@ -250,7 +250,9 @@ const Home = ({ navigation }) => {
                     <Tips>{translate('home.alerts')}</Tips>
 
                     <TipButton
-                        onPress={() => navigation.navigate('EventoAnswers')}
+                        onPress={() =>
+                            navigation.navigate('EventoAnswersCards')
+                        }
                     >
                         <UserTip
                             icon={

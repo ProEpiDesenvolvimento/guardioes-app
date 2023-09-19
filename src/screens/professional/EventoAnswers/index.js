@@ -23,11 +23,8 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleAnswers } from '../../../api/events'
 
-const EventoAnswers = ({ navigation }) => {
-    const { isOffline, token, storeCacheData, getCacheData } = useUser()
-
-    const [isLoading, setIsLoading] = useState(true)
-    const [flexibleAnswers, setFlexibleAnswers] = useState([])
+const EventoAnswers = ({ navigation, route }) => {
+    const { status, flexibleAnswers } = route.params
 
     const getEventLocation = (event) => {
         if (event.data) {
@@ -40,52 +37,6 @@ const EventoAnswers = ({ navigation }) => {
             return 'S/L'
         }
         return 'S/L'
-    }
-
-    const getAllFlexibleAnswers = async () => {
-        if (!isOffline) {
-            const response = await getFlexibleAnswers(token)
-
-            if (response.status === 200) {
-                const appFlexibleAnswers = response.data.flexible_answers
-
-                const parsedAnswers = appFlexibleAnswers.map((answer) => {
-                    const parsedData = JSON.parse(answer.data)
-                    return {
-                        ...answer,
-                        data: parsedData,
-                    }
-                })
-
-                storeCacheData('flexibleAnswers', parsedAnswers)
-                setFlexibleAnswers(parsedAnswers)
-            }
-            setIsLoading(false)
-        } else {
-            const parsedAnswers = await getCacheData('flexibleAnswers', false)
-
-            if (parsedAnswers) {
-                setFlexibleAnswers(parsedAnswers)
-                setIsLoading(false)
-            }
-        }
-    }
-
-    useEffect(() => {
-        getAllFlexibleAnswers()
-    }, [])
-
-    useEffect(() => {
-        if (isOffline) {
-            Alert.alert(
-                'Sem conexão com a Internet!',
-                'Será mostrada a última lista armazenada no aplicativo.'
-            )
-        }
-    }, [isOffline])
-
-    if (isLoading) {
-        return <ScreenLoader />
     }
 
     return (
