@@ -3,6 +3,9 @@ export default {
         code: 'en',
     },
     genderChoices: {
+        male: 'Male',
+        female: 'Female',
+        other: 'Other',
         cisWoman: 'Cis Woman',
         cisMan: 'Cis Man',
         transWoman: 'Trans Woman',
@@ -122,7 +125,7 @@ export default {
             error: 'Error',
             allFieldsAreFilled: 'All fields must be filled in correctly',
         },
-        professionalLabel: 'Are you a health professional?',
+        professionalLabel: 'Are you a community leader?',
         riskGroupLabel: 'Are you part of the risk group?',
         institution: 'Are you a member of any registered institution?',
         vaccination: 'Do you have vaccination data?',
@@ -130,11 +133,6 @@ export default {
         riskGroupTitle: 'Risk Groups:',
         riskGroupMessage:
             '\t People over 60 years old or people of any age who have comorbidities, such as heart disease, diabetes, pneumopathy, neurological or kidney disease, immunodepression, obesity, asthma and postpartum women.',
-        genderTitle: 'Gender',
-        genderMessage:
-            'Cisgender (or cis) are people whose gender identity matches the one assigned at birth.\n\n' +
-            'Transgender (or trans) are people whose gender identity is the opposite of biological sex.\n\n' +
-            'Non-binary are people whose gender identity is not established.',
         modalButton: 'Back',
     },
     ajuda: {

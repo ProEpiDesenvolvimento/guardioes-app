@@ -244,35 +244,6 @@ const Register = ({ navigation }) => {
         <>
             <SafeAreaView style={{ flex: 0, backgroundColor: '#5DD39E' }} />
             <GradientBackground>
-                <Modal // Modal View for Gender Message
-                    animationType='fade'
-                    transparent
-                    visible={modalGender}
-                    onRequestClose={() => setModalGender(!modalGender)}
-                >
-                    <ModalContainer>
-                        <ModalBox>
-                            <ModalTitle>
-                                {translate('register.genderTitle')}
-                            </ModalTitle>
-
-                            <ModalText>
-                                {translate('register.genderMessage')}
-                            </ModalText>
-
-                            <ButtonClose onPress={() => setModalGender(false)}>
-                                <ModalClose>
-                                    <Feather
-                                        name='x'
-                                        size={scale(24)}
-                                        color='#ffffff'
-                                    />
-                                </ModalClose>
-                            </ButtonClose>
-                        </ModalBox>
-                    </ModalContainer>
-                </Modal>
-
                 <Modal // Modal View for Risk Group Message
                     animationType='fade'
                     transparent
@@ -332,13 +303,6 @@ const Register = ({ navigation }) => {
                                     cancelText={translate('selector.cancelButton')}
                                     onChange={(option) => setGender(option.key)}
                                 />
-                                <CheckLabel onPress={() => setModalGender(true)}>
-                                    <Feather
-                                        name='help-circle'
-                                        size={scale(25)}
-                                        color='#ffffff'
-                                    />
-                                </CheckLabel>
                             </FormInlineSelector>
                         </FormGroupChild>
 

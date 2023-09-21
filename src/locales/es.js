@@ -3,6 +3,9 @@ export default {
         code: 'es',
     },
     genderChoices: {
+        male: 'Masculino',
+        female: 'Femenino',
+        other: 'Otro',
         cisWoman: 'Mujer Cisgénero',
         cisMan: 'Hombre Cisgénero',
         transWoman: 'Mujer Transgénero',
@@ -133,11 +136,6 @@ export default {
         riskGroupTitle: 'Grupos de Riesgo:',
         riskGroupMessage:
             '\t Personas mayores de 60 años o personas de cualquier edad que tienen comorbilidades, como enfermedades cardíacas, diabetes, neumopatía, enfermedades neurológicas o renales, inmunodepresión, obesidad, asma y mujeres posparto.',
-        genderTitle: 'Género:',
-        genderMessage:
-            'Cisgénero (o cis) son personas cuya identidad de género coincide con la asignada al nacer.\n\n' +
-            'Transgénero (o trans) son personas cuya identidad de género es opuesta al sexo biológico.\n\n' +
-            'No binario son personas cuya identidad de género no está establecida.',
         modalButton: 'Vuelve',
     },
     ajuda: {

@@ -11,11 +11,9 @@ export const localSymptom = [
 ]
 
 export const genderChoices = [
-    { key: 'Mulher Cis', label: translate('genderChoices.cisWoman') },
-    { key: 'Homem Cis', label: translate('genderChoices.cisMan') },
-    { key: 'Mulher Trans', label: translate('genderChoices.transWoman') },
-    { key: 'Homem Trans', label: translate('genderChoices.transMan') },
-    { key: 'Não-binárie', label: translate('genderChoices.nonBinary') },
+    { key: 'Masculino', label: translate('genderChoices.male') },
+    { key: 'Feminino', label: translate('genderChoices.female') },
+    { key: 'Outro', label: translate('genderChoices.other') },
 ]
 
 export const raceChoices = [
@@ -131,6 +129,7 @@ export const householdChoices = [
     { key: 'Mãe', label: 'Mãe' },
     { key: 'Filhos', label: 'Filhos' },
     { key: 'Irmãos', label: 'Irmãos' },
+    { key: 'Parceiros', label: 'Parceiros' },
     { key: 'Avós', label: 'Avós' },
     { key: 'Outros', label: 'Outros' },
 ]
