@@ -288,9 +288,9 @@ export default {
     },
     news: {
         title: 'News',
-        subtitle: 'Tweets feed of Guardiões',
+        subtitle: 'Posts feed of Guardiões',
         openBrowser: 'Do you want to open the browser?',
-        twitter: 'You will be redirected to twitter.com',
+        twitter: 'You will be redirected to x.com',
     },
     report: {
         goodChoice: 'Good',

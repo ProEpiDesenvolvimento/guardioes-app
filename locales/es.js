@@ -294,9 +294,9 @@ export default {
     },
     news: {
         title: 'Noticias',
-        subtitle: 'Feed de tweets de Guardianes',
+        subtitle: 'Feed de posts de Guardianes',
         openBrowser: '¿Quieres abrir el navegador?',
-        twitter: 'Serás redirigido a twitter.com.',
+        twitter: 'Serás redirigido a x.com',
     },
     report: {
         goodChoice: 'Bien',
