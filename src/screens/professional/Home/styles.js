@@ -138,16 +138,6 @@ export const Mal = styled(TouchableOpacity).attrs({
     shadow-color: ${(props) => (props.disabled ? '#c4c4c4' : '#f18f01')};
 `
 
-export const Report = styled(TouchableOpacity).attrs({
-    activeOpacity: 0.5,
-})`
-    ${BemMal}
-    background: ${(props) => (props.disabled ? '#c4c4c4' : '#348eac')};
-    border-radius: ${scale(18)}px;
-    margin-left: ${scale(2)}px;
-    shadow-color: ${(props) => (props.disabled ? '#c4c4c4' : '#348eac')};
-`
-
 export const StatusText = styled.Text`
     font-size: ${scale(14)}px;
     font-family: ArgentumSans-Medium;

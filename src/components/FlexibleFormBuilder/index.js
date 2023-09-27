@@ -23,7 +23,7 @@ const FlexibleFormBuilder = ({
     const handleAnswer = (question, value) => {
         const newFormVersion = { ...formVersion }
 
-        newFormVersion.data.forEach((q) => {
+        newFormVersion.data.questions.forEach((q) => {
             if (q.field === question.field) {
                 q.value = value
             }
@@ -35,7 +35,7 @@ const FlexibleFormBuilder = ({
         const newFormVersion = { ...formVersion }
         const place = option.label.split(',')
 
-        newFormVersion.data.forEach((question) => {
+        newFormVersion.data.questions.forEach((question) => {
             if (question.type === 'geo_country') {
                 if (place.length > 2) {
                     question.value = place[2].trim()
@@ -65,7 +65,7 @@ const FlexibleFormBuilder = ({
 
     return (
         <>
-            {formVersion.data?.map((question) => (
+            {formVersion.data?.questions?.map((question) => (
                 <FormInline key={question.field}>
                     <FormLabel light={light}>
                         {question.text}

@@ -23,8 +23,8 @@ const EventoAnswer = ({ route }) => {
     const buildAnswers = async () => {
         const newData = []
 
-        formVersion.data.forEach((q) => {
-            answer.data.forEach((a) => {
+        formVersion.data.questions.forEach((q) => {
+            answer.data.answers.forEach((a) => {
                 if (q.field === a.field) {
                     newData.push({
                         ...q,
@@ -35,7 +35,7 @@ const EventoAnswer = ({ route }) => {
         })
 
         const newFormVersion = { ...formVersion }
-        newFormVersion.data = newData
+        newFormVersion.data.questions = newData
 
         setFormBuild(newFormVersion)
     }

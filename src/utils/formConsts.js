@@ -1,6 +1,7 @@
 import { Alert } from 'react-native'
 
 import translate from '../locales/i18n'
+import { capitalizeFirstWords } from './consts'
 
 export const isQuestionAnswered = (answers, option) => {
     const answered = answers.filter(
@@ -127,4 +128,19 @@ export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
         valid = false
     }
     return valid
+}
+
+export const formattedForm = (formVersion, user) => {
+    formVersion.data.questions.forEach((question) => {
+        if (question.type === 'geo_country') {
+            question.value = user.country
+        }
+        if (question.type === 'geo_state') {
+            question.value = capitalizeFirstWords(user.state)
+        }
+        if (question.type === 'geo_city') {
+            question.value = capitalizeFirstWords(user.city)
+        }
+    })
+    return formVersion
 }

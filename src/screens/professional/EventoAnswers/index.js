@@ -28,7 +28,7 @@ const EventoAnswers = ({ navigation, route }) => {
 
     const getEventLocation = (event) => {
         if (event.data) {
-            const location = event.data.find(
+            const location = event.data.answers.find(
                 (question) => question.field === 'evento_local_ocorrencia'
             )
             if (location) {
