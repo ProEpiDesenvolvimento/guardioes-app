@@ -1,13 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StatusBar, Text, StyleSheet, Alert } from 'react-native'
-import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import { Avatar } from 'react-native-elements'
-import { useFocusEffect } from '@react-navigation/native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import UserTip from '../../../components/UserTip'
@@ -25,7 +22,8 @@ import {
     TextStyle,
     StatusBemMal,
     StatusText,
-    Report,
+    Bem,
+    Mal,
     Tips,
     TipButton,
 } from './styles'
@@ -36,12 +34,14 @@ import {
     getNameParts,
     handleAvatar,
     getInitials,
+    getSurveyConfirmation,
 } from '../../../utils/consts'
+import { formattedForm } from '../../../utils/formConsts'
 import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
-import { sendFlexibleAnswer } from '../../../api/events'
+import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
 const Home = ({ navigation }) => {
     const {
@@ -52,14 +52,13 @@ const Home = ({ navigation }) => {
         user,
         storeUser,
         getCurrentLocation,
-        group,
-        getAppTip,
-        hideAppTip,
         loadSecondaryData,
         getCurrentUserInfo,
         storeCacheData,
         getCacheData,
     } = useUser()
+
+    const [formVersion, setFormVersion] = useState({})
 
     const [showTermsConsent, setShowTermsConsent] = useState(false)
     const [hasSignalForm, setHasSignalForm] = useState(true)
@@ -70,22 +69,65 @@ const Home = ({ navigation }) => {
 
     const person = getCurrentUserInfo()
 
-    useEffect(() => {
-        if (!isLoading) {
-            fetchData()
+    const showConfirmation = (status, body) => {
+        const message = getSurveyConfirmation(status, body)
+
+        setAlertTitle(
+            <Text>
+                {message.alertTitle} {message.emojiTitle}
+            </Text>
+        )
+        setAlertMessage(
+            <Text>
+                {message.alertMessage} {message.emojiMessage}
+            </Text>
+        )
+
+        setShowProgressBar(false)
+        console.log(message.alertMessage)
+    }
+
+    const showLoadingAlert = () => {
+        setAlertMessage(null)
+        setShowAlert(true)
+        setShowProgressBar(true)
+    }
+
+    const sendEvent = async () => {
+        showLoadingAlert()
+
+        const flexibleAnswer = {
+            flexible_form_version_id: formVersion.id,
+            data: JSON.stringify({ report_type: 'negative', answers: [] }),
+            user_id: user.id,
         }
-    }, [isLoading])
 
-    useEffect(() => {
-        showOfflineAlert(isOffline)
-        signalAnswersRoutine()
-    }, [isOffline])
+        if (!isOffline) {
+            const response = await sendFlexibleAnswer(
+                { flexible_answer: flexibleAnswer },
+                token
+            )
+            showConfirmation(response.status, response.data)
 
-    const fetchData = async () => {
-        await loadSecondaryData()
+            if (response.status !== 201) {
+                console.warn(response.data)
+            }
+        } else {
+            let newSignalAnswers = await getCacheData('pendingAnswers', false)
 
-        verifyUserTermsConsent()
-        getCurrentLocation()
+            if (!newSignalAnswers) {
+                newSignalAnswers = []
+            }
+            newSignalAnswers.push(flexibleAnswer)
+
+            await storeCacheData('pendingAnswers', newSignalAnswers)
+
+            Alert.alert(
+                'Sem conexão com a Internet!',
+                'Seus registros ficarão armazenados no aplicativo. Quando houver conexão, por favor, abra o aplicativo e aguarde o envio dos dados.'
+            )
+            setShowProgressBar(false)
+        }
     }
 
     const signalAnswersRoutine = async () => {
@@ -131,6 +173,37 @@ const Home = ({ navigation }) => {
                 )
             }
             await storeCacheData('pendingAnswers', failedAnswers)
+        }
+    }
+
+    const getEvent = async () => {
+        if (!isOffline) {
+            // hardcoded form id
+            const response = await getFlexibleForm(1, token)
+
+            if (response.status === 200) {
+                const { flexible_form } = response.data
+
+                if (flexible_form.latest_version) {
+                    const parsedData = JSON.parse(
+                        flexible_form.latest_version.data
+                    )
+                    flexible_form.latest_version.data = parsedData
+
+                    const newFormVersion = formattedForm(
+                        flexible_form.latest_version,
+                        user
+                    )
+                    storeCacheData('signalForm', newFormVersion)
+                    setFormVersion(newFormVersion)
+                }
+            }
+        } else {
+            const signalFormVersion = await getCacheData('signalForm', false)
+
+            if (signalFormVersion) {
+                setFormVersion(signalFormVersion)
+            }
         }
     }
 
@@ -195,6 +268,28 @@ const Home = ({ navigation }) => {
         }
     }
 
+    const fetchData = async () => {
+        await loadSecondaryData()
+
+        verifyUserTermsConsent()
+        getCurrentLocation()
+    }
+
+    useEffect(() => {
+        if (!isLoading) {
+            fetchData()
+        }
+    }, [isLoading])
+
+    useEffect(() => {
+        getEvent()
+    }, [])
+
+    useEffect(() => {
+        showOfflineAlert(isOffline)
+        signalAnswersRoutine()
+    }, [isOffline])
+
     if (isLoading) {
         return <ScreenLoader />
     }
@@ -236,14 +331,20 @@ const Home = ({ navigation }) => {
                     <StatusContainer>
                         <TextStyle>Quer informar um sinal de alerta?</TextStyle>
                         <StatusBemMal>
-                            <Report
+                            <Bem
+                                disabled={isOffline && !hasSignalForm}
+                                onPress={() => sendEvent()}
+                            >
+                                <StatusText>Nada ocorreu</StatusText>
+                            </Bem>
+                            <Mal
                                 disabled={isOffline && !hasSignalForm}
                                 onPress={() =>
                                     navigation.navigate('EventoForm')
                                 }
                             >
                                 <StatusText>Informar</StatusText>
-                            </Report>
+                            </Mal>
                         </StatusBemMal>
                     </StatusContainer>
 
@@ -290,7 +391,7 @@ const Home = ({ navigation }) => {
                     closeOnTouchOutside={!showProgressBar}
                     closeOnHardwareBackPress={false}
                     showConfirmButton={!showProgressBar}
-                    confirmText={translate('badReport.messages.confirmText')}
+                    confirmText='Ok'
                     onConfirmPressed={() => setShowAlert(false)}
                     onDismiss={() => setShowAlert(false)}
                 />

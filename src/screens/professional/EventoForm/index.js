@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Alert } from 'react-native'
+import { Alert, Text } from 'react-native'
 
 import ScreenLoader from '../../../components/ScreenLoader'
+import { CoolAlert } from '../../../components/CoolAlert'
 import {
     Container,
     KeyboardScrollView,
@@ -11,40 +12,108 @@ import {
 } from '../../../components/NormalForms'
 import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
-import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../locales/i18n'
-import { capitalizeFirstWords } from '../../../utils/consts'
+import { getSurveyConfirmation } from '../../../utils/consts'
+import { formattedForm } from '../../../utils/formConsts'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
 const EventoForm = ({ navigation }) => {
-    const {
-        isOffline,
-        token,
-        user,
-        group,
-        storeCacheData,
-        getCacheData,
-    } = useUser()
+    const { isOffline, token, user, storeCacheData, getCacheData } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [formVersion, setFormVersion] = useState({})
 
-    const [loadingAlert, setLoadingAlert] = useState(false)
+    const [showAlert, setShowAlert] = useState(false)
+    const [showProgressBar, setShowProgressBar] = useState(false)
+    const [alertTitle, setAlertTitle] = useState(null)
+    const [alertMessage, setAlertMessage] = useState(null)
 
-    const formattedForm = (formVersion) => {
-        formVersion.data.forEach((question) => {
-            if (question.type === 'geo_country') {
-                question.value = user.country
+    const showConfirmation = (status, body) => {
+        const message = getSurveyConfirmation(status, body)
+
+        setAlertTitle(
+            <Text>
+                {message.alertTitle} {message.emojiTitle}
+            </Text>
+        )
+        setAlertMessage(
+            <Text>
+                {message.alertMessage} {message.emojiMessage}
+            </Text>
+        )
+
+        setShowProgressBar(false)
+        console.log(message.alertMessage)
+    }
+
+    const showLoadingAlert = () => {
+        setAlertMessage(null)
+        setShowAlert(true)
+        setShowProgressBar(true)
+    }
+
+    const sendEvent = async () => {
+        showLoadingAlert()
+
+        const answers = []
+        let error = false
+
+        formVersion.data.questions.forEach((question) => {
+            if (question.required && !question.value) {
+                error = true
             }
-            if (question.type === 'geo_state') {
-                question.value = capitalizeFirstWords(user.state)
-            }
-            if (question.type === 'geo_city') {
-                question.value = capitalizeFirstWords(user.city)
+            if (!error) {
+                answers.push({
+                    ...question,
+                    options: undefined,
+                    required: undefined,
+                    text: undefined,
+                    type: undefined,
+                })
             }
         })
-        return formVersion
+
+        if (error) {
+            setShowProgressBar(false)
+            Alert.alert(translate('register.fillRequired'))
+            return
+        }
+
+        const flexibleAnswer = {
+            flexible_form_version_id: formVersion.id,
+            data: JSON.stringify({ report_type: 'positive', answers }),
+            user_id: user.id,
+        }
+
+        if (!isOffline) {
+            const response = await sendFlexibleAnswer(
+                { flexible_answer: flexibleAnswer },
+                token
+            )
+            showConfirmation(response.status, response.data)
+
+            if (response.status !== 201) {
+                console.warn(response.status)
+                Alert.alert(translate('register.geralError'))
+                setShowProgressBar(false)
+            }
+        } else {
+            let newSignalAnswers = await getCacheData('pendingAnswers', false)
+
+            if (!newSignalAnswers) {
+                newSignalAnswers = []
+            }
+            newSignalAnswers.push(flexibleAnswer)
+
+            await storeCacheData('pendingAnswers', newSignalAnswers)
+
+            Alert.alert(
+                'Sem conexão com a Internet!',
+                'Seus registros ficarão armazenados no aplicativo. Quando houver conexão, por favor, abra o aplicativo e aguarde o envio dos dados.'
+            )
+            setShowProgressBar(false)
+        }
     }
 
     const getEvent = async () => {
@@ -62,7 +131,8 @@ const EventoForm = ({ navigation }) => {
                     flexible_form.latest_version.data = parsedData
 
                     const newFormVersion = formattedForm(
-                        flexible_form.latest_version
+                        flexible_form.latest_version,
+                        user
                     )
                     storeCacheData('signalForm', newFormVersion)
                     setFormVersion(newFormVersion)
@@ -82,72 +152,6 @@ const EventoForm = ({ navigation }) => {
     useEffect(() => {
         getEvent()
     }, [])
-
-    const sendEvent = async () => {
-        setLoadingAlert(true)
-
-        const answers = []
-        let error = false
-
-        formVersion.data.forEach((question) => {
-            if (question.required && !question.value) {
-                error = true
-            }
-            if (!error) {
-                answers.push({
-                    ...question,
-                    options: undefined,
-                    required: undefined,
-                    text: undefined,
-                    type: undefined,
-                })
-            }
-        })
-
-        if (error) {
-            setLoadingAlert(false)
-            Alert.alert(translate('register.fillRequired'))
-            return
-        }
-
-        const flexibleAnswer = {
-            flexible_form_version_id: formVersion.id,
-            data: JSON.stringify(answers),
-            user_id: user.id,
-        }
-
-        if (!isOffline) {
-            const response = await sendFlexibleAnswer(
-                { flexible_answer: flexibleAnswer },
-                token
-            )
-
-            if (response.status === 201) {
-                setLoadingAlert(false)
-                navigation.navigate('Home')
-            } else {
-                console.warn(response.status)
-                Alert.alert(translate('register.geralError'))
-                setLoadingAlert(false)
-            }
-        } else {
-            let newSignalAnswers = await getCacheData('pendingAnswers', false)
-
-            if (!newSignalAnswers) {
-                newSignalAnswers = []
-            }
-            newSignalAnswers.push(flexibleAnswer)
-
-            await storeCacheData('pendingAnswers', newSignalAnswers)
-
-            Alert.alert(
-                'Sem conexão com a Internet!',
-                'Seus registros ficarão armazenados no aplicativo. Quando houver conexão, por favor, abra o aplicativo e aguarde o envio dos dados.'
-            )
-            setLoadingAlert(false)
-            navigation.navigate('Home')
-        }
-    }
 
     if (isLoading) {
         return <ScreenLoader />
@@ -169,7 +173,22 @@ const EventoForm = ({ navigation }) => {
                 </Button>
             </KeyboardScrollView>
 
-            <LoadingModal show={loadingAlert} />
+            <CoolAlert
+                show={showAlert}
+                showProgress={showProgressBar}
+                title={
+                    showProgressBar
+                        ? translate('badReport.messages.sending')
+                        : alertTitle
+                }
+                message={alertMessage}
+                closeOnTouchOutside={!showProgressBar}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={!showProgressBar}
+                confirmText={translate('badReport.messages.confirmText')}
+                onConfirmPressed={() => navigation.navigate('Home')}
+                onDismiss={() => setShowAlert(false)}
+            />
         </Container>
     )
 }

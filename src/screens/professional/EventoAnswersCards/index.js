@@ -16,6 +16,7 @@ import {
     ButtonsWrapper,
     Button,
 } from '../../../components/Cards'
+import { SendContainer, SendText } from '../../../components/NormalForms'
 
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -45,6 +46,8 @@ const EventoAnswersCards = ({ navigation }) => {
     }
 
     const getAllFlexibleAnswers = async () => {
+        setIsLoading(true)
+
         if (!isOffline) {
             const response = await getFlexibleAnswers(token)
 
@@ -130,6 +133,12 @@ const EventoAnswersCards = ({ navigation }) => {
                     </CardWhite>
                 )
             })}
+
+            <Button onPress={() => getAllFlexibleAnswers()}>
+                <SendContainer>
+                    <SendText>Atualizar</SendText>
+                </SendContainer>
+            </Button>
         </ScrollViewStyled>
     )
 }
