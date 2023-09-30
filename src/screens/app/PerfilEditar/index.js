@@ -43,7 +43,8 @@ import {
     householdChoices,
 } from '../../../utils/selector'
 import { handleAvatar, getInitials, validPerson } from '../../../utils/consts'
-import { stateOptions, getCity } from '../../../utils/brasil'
+import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
+import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
@@ -422,17 +423,26 @@ const PerfilEditar = ({ navigation, route }) => {
                         <Autocomplete
                             data={countryChoices}
                             value={country}
-                            onChange={(option) => setCountry(option.key)}
+                            onChange={(option) => {
+                                setCountry(option.key)
+                                setState('')
+                                setCity('')
+                            }}
                         />
                     </FormGroupChild>
                 </FormGroup>
 
-                {country === 'Brazil' && !isHousehold ? (
+                {(country === 'Brazil' || country === 'Cabo Verde') &&
+                !isHousehold ? (
                     <FormGroup>
                         <FormGroupChild>
                             <FormLabel>Estado:</FormLabel>
                             <Autocomplete
-                                data={stateOptions}
+                                data={
+                                    country === 'Brazil'
+                                        ? stateOptionsBR
+                                        : stateOptionsCV
+                                }
                                 value={state}
                                 onChange={(option) => setState(option.key)}
                             />
@@ -441,7 +451,11 @@ const PerfilEditar = ({ navigation, route }) => {
                         <FormGroupChild>
                             <FormLabel>Município:</FormLabel>
                             <Autocomplete
-                                data={getCity(state)}
+                                data={
+                                    country === 'Brazil'
+                                        ? getCityBR(state)
+                                        : getCityCV(state)
+                                }
                                 value={city}
                                 onChange={(option) => setCity(option.key)}
                             />

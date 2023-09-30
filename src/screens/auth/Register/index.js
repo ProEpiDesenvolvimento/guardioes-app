@@ -44,7 +44,8 @@ import {
     countryChoices,
     raceChoices,
 } from '../../../utils/selector'
-import { stateOptions, getCity } from '../../../utils/brasil'
+import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
+import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
 import { getCategories } from '../../../api/categories'
@@ -357,12 +358,12 @@ const Register = ({ navigation }) => {
                         </FormGroupChild>
                     </FormGroup>
 
-                    {residence === 'Brazil' ? (
+                    {residence === 'Brazil' || residence === 'Cabo Verde' ? (
                         <FormGroup>
                             <FormGroupChild>
                                 <FormLabel>Estado:</FormLabel>
                                 <Selector
-                                    data={stateOptions}
+                                    data={residence === 'Brazil' ? stateOptionsBR : stateOptionsCV}
                                     initValue={translate('selector.label')}
                                     cancelText={translate(
                                         'selector.cancelButton'
@@ -374,7 +375,7 @@ const Register = ({ navigation }) => {
                             <FormGroupChild>
                                 <FormLabel>Município:</FormLabel>
                                 <Selector
-                                    data={getCity(state)}
+                                    data={residence === 'Brazil' ? getCityBR(state) : getCityCV(state)}
                                     initValue={
                                         city || translate('selector.label')
                                     }
