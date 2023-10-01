@@ -58,6 +58,7 @@ const Register = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [gender, setGender] = useState('')
+    const [genderOther, setGenderOther] = useState('')
     const [country, setCountry] = useState(null)
     const [residence, setResidence] = useState('')
     const [state, setState] = useState('')
@@ -70,7 +71,6 @@ const Register = ({ navigation }) => {
     const [isProfessional, setIsProfessional] = useState(false)
 
     const [countryCheckbox, setCountryCheckbox] = useState(true)
-    const [modalGender, setModalGender] = useState(false)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [key, setKey] = useState(0)
     const [institutionError, setInstituitionError] = useState(null)
@@ -204,7 +204,7 @@ const Register = ({ navigation }) => {
             password,
             user_name: name,
             birthdate: birthDate,
-            gender,
+            gender: gender === 'Outro' ? genderOther : gender,
             race,
             country,
             residence,
@@ -318,6 +318,20 @@ const Register = ({ navigation }) => {
                         </FormGroupChild>
                     </FormGroup>
 
+                    {gender === 'Outro' ? (
+                        <FormGroup>
+                            <FormGroupChild>
+                                <FormLabel>Especifique seu gênero:</FormLabel>
+                                <NormalInput
+                                    returnKeyType='next'
+                                    onChangeText={(text) =>
+                                        setGenderOther(text)
+                                    }
+                                />
+                            </FormGroupChild>
+                        </FormGroup>
+                    ) : null}
+
                     <FormGroup>
                         <FormGroupChild>
                             <FormLabel>{translate('register.birth')}</FormLabel>
@@ -353,6 +367,8 @@ const Register = ({ navigation }) => {
                                 onChange={(option) => {
                                     setResidence(option.key)
                                     setCountry(option.key)
+                                    setState('')
+                                    setCity('')
                                 }}
                             />
                         </FormGroupChild>

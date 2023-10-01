@@ -49,6 +49,7 @@ const PerfilNovo = ({ navigation }) => {
 
     const [name, setName] = useState('')
     const [gender, setGender] = useState('')
+    const [genderOther, setGenderOther] = useState('')
     const [country, setCountry] = useState('')
     const [race, setRace] = useState('')
     const [birth, setBirth] = useState('')
@@ -96,7 +97,7 @@ const PerfilNovo = ({ navigation }) => {
         const household = {
             description: name,
             birthdate: birthDate,
-            gender,
+            gender: gender === 'Outro' ? genderOther : gender,
             race,
             kinship,
             country,
@@ -194,6 +195,18 @@ const PerfilNovo = ({ navigation }) => {
                         />
                     </FormGroupChild>
                 </FormGroup>
+
+                {gender === 'Outro' ? (
+                    <FormGroup>
+                        <FormGroupChild>
+                            <FormLabel>Especifique seu gênero:</FormLabel>
+                            <NormalInput
+                                returnKeyType='next'
+                                onChangeText={(text) => setGenderOther(text)}
+                            />
+                        </FormGroupChild>
+                    </FormGroup>
+                ) : null}
 
                 <FormGroup>
                     <FormGroupChild>
