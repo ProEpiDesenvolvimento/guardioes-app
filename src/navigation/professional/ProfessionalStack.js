@@ -44,7 +44,13 @@ const ProfessionalStack = () => {
                                 <ScreenTitle>
                                     {scene.descriptor.options.title}
                                 </ScreenTitle>
-                                <Empty />
+                                {scene.descriptor.options.rightButton ? (
+                                    scene.descriptor.options.rightButton(
+                                        navigation
+                                    )
+                                ) : (
+                                    <Empty />
+                                )}
                             </HeaderNavigator>
                         </Container>
                     </>
@@ -77,7 +83,18 @@ const ProfessionalStack = () => {
             <Stack.Screen
                 name='EventoForm'
                 component={EventoForm}
-                options={{ title: 'Informar sinal' }}
+                options={({ route }) => ({
+                    title: 'Informar sinal',
+                    rightButton: () => (
+                        <Feather
+                            name={
+                                route.params?.isOffline ? 'cloud-off' : 'cloud'
+                            }
+                            size={scale(30)}
+                            color='#ffffff'
+                        />
+                    ),
+                })}
             />
             <Stack.Screen
                 name='EventoAnswer'

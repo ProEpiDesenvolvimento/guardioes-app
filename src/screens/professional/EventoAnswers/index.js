@@ -62,11 +62,10 @@ const EventoAnswers = ({ navigation, route }) => {
                                 </CardDetailsWhite>
                                 <CardDetailsWhite>
                                     Status:{' '}
-                                    {
-                                        answer.external_system_data?._embedded
-                                            ?.signals[0].dados
-                                            .signal_stage_state_id[1]
-                                    }
+                                    {answer.external_system_data?._embedded
+                                        ?.signals[0].dados
+                                        .signal_stage_state_id[1] ||
+                                        'Sem status'}
                                 </CardDetailsWhite>
                             </InfoWrapper>
                             <ButtonsWrapper>

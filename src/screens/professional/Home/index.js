@@ -340,7 +340,9 @@ const Home = ({ navigation }) => {
                             <Mal
                                 disabled={isOffline && !hasSignalForm}
                                 onPress={() =>
-                                    navigation.navigate('EventoForm')
+                                    navigation.navigate('EventoForm', {
+                                        isOffline,
+                                    })
                                 }
                             >
                                 <StatusText>Informar</StatusText>
