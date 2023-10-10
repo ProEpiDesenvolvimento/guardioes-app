@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StatusBar, Text, StyleSheet, Alert } from 'react-native'
+import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -36,7 +37,7 @@ import {
     getInitials,
     getSurveyConfirmation,
 } from '../../../utils/consts'
-import { formattedForm } from '../../../utils/formConsts'
+import { ephemOfflineData, formattedForm } from '../../../utils/formConsts'
 import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
@@ -97,9 +98,16 @@ const Home = ({ navigation }) => {
         showLoadingAlert()
 
         const flexibleAnswer = {
+            id: Math.floor(Math.random() * 1000),
+            flexible_form_version: formVersion,
             flexible_form_version_id: formVersion.id,
             data: JSON.stringify({ report_type: 'negative', answers: [] }),
+            user,
             user_id: user.id,
+            external_system_integration_id: null,
+            external_system_data: ephemOfflineData,
+            created_at: moment().local().toISOString(),
+            is_offline: true,
         }
 
         if (!isOffline) {
@@ -350,7 +358,7 @@ const Home = ({ navigation }) => {
                         </StatusBemMal>
                     </StatusContainer>
 
-                    <Tips>{translate('home.alerts')}</Tips>
+                    <Tips />
 
                     <TipButton
                         onPress={() =>

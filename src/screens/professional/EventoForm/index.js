@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Text } from 'react-native'
+import moment from 'moment'
 
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
@@ -14,7 +15,7 @@ import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
 import translate from '../../../locales/i18n'
 import { getSurveyConfirmation } from '../../../utils/consts'
-import { formattedForm } from '../../../utils/formConsts'
+import { ephemOfflineData, formattedForm } from '../../../utils/formConsts'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
@@ -81,9 +82,16 @@ const EventoForm = ({ navigation }) => {
         }
 
         const flexibleAnswer = {
+            id: Math.floor(Math.random() * 1000),
+            flexible_form_version: formVersion,
             flexible_form_version_id: formVersion.id,
             data: JSON.stringify({ report_type: 'positive', answers }),
+            user,
             user_id: user.id,
+            external_system_integration_id: null,
+            external_system_data: ephemOfflineData,
+            created_at: moment().local().toISOString(),
+            is_offline: true,
         }
 
         if (!isOffline) {

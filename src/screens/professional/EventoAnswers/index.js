@@ -28,7 +28,7 @@ const EventoAnswers = ({ navigation, route }) => {
 
     const getEventLocation = (event) => {
         if (event.data) {
-            const location = event.data.answers.find(
+            const location = event.data.answers?.find(
                 (question) => question.field === 'evento_local_ocorrencia'
             )
             if (location) {
@@ -68,21 +68,27 @@ const EventoAnswers = ({ navigation, route }) => {
                                         'Sem status'}
                                 </CardDetailsWhite>
                             </InfoWrapper>
-                            <ButtonsWrapper>
-                                <Button
-                                    onPress={() => {
-                                        navigation.navigate('EventoAnswer', {
-                                            answer,
-                                        })
-                                    }}
-                                >
-                                    <Feather
-                                        name='chevron-right'
-                                        size={scale(25)}
-                                        color='#348EAC'
-                                    />
-                                </Button>
-                            </ButtonsWrapper>
+                            {!answer.is_offline ? (
+                                <ButtonsWrapper>
+                                    <Button
+                                        onPress={() => {
+                                            console.log(answer.id)
+                                            navigation.navigate(
+                                                'EventoAnswer',
+                                                {
+                                                    answer,
+                                                }
+                                            )
+                                        }}
+                                    >
+                                        <Feather
+                                            name='chevron-right'
+                                            size={scale(25)}
+                                            color='#348EAC'
+                                        />
+                                    </Button>
+                                </ButtonsWrapper>
+                            ) : null}
                         </InfoContainer>
                     </CardWhite>
                 )

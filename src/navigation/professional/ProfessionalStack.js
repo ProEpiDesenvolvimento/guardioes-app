@@ -17,6 +17,9 @@ import EventoAnswer from '../../screens/professional/EventoAnswer'
 import EventoAnswersCards from '../../screens/professional/EventoAnswersCards'
 import EventoAnswers from '../../screens/professional/EventoAnswers'
 import EventoForm from '../../screens/professional/EventoForm'
+import Perfis from '../../screens/app/Perfis'
+import PerfilEditar from '../../screens/app/PerfilEditar'
+import PerfilNovo from '../../screens/app/PerfilNovo'
 
 import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
@@ -102,12 +105,38 @@ const ProfessionalStack = () => {
                 options={{ title: 'Sinal' }}
             />
             <Stack.Screen
+                name='PerfilNovo'
+                component={PerfilNovo}
+                options={{ title: translate('home.addProfile') }}
+            />
+            <Stack.Screen
+                name='Perfis'
+                component={Perfis}
+                options={headerOptions.editarPerfil}
+            />
+            <Stack.Screen
+                name='PerfilEditar'
+                component={PerfilEditar}
+                options={{ title: translate('register.editProfile') }}
+            />
+            <Stack.Screen
                 name='Ajuda'
                 component={Ajuda}
                 options={{ title: translate('ajuda.title') }}
             />
         </Stack.Navigator>
     )
+}
+
+const headerOptions = {
+    editarPerfil: {
+        title: translate('register.editProfile'),
+        rightButton: (navigation) => (
+            <BackButton onPress={() => navigation.navigate('PerfilNovo')}>
+                <Feather name='user-plus' size={scale(30)} color='#ffffff' />
+            </BackButton>
+        ),
+    },
 }
 
 export default ProfessionalStack

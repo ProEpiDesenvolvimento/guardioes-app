@@ -31,18 +31,38 @@ const EventoAnswersCards = ({ navigation }) => {
     const [groupedAnswers, setGroupedAnswers] = useState({})
 
     const getGroupedAnswers = (answers) => {
-        const groupAnswers = answers.reduce((acc, answer) => {
+        const groupAnswers = answers.reduce((ga, answer) => {
             const status =
                 answer.external_system_data?._embedded?.signals[0].dados
                     .signal_stage_state_id[1] || 'Sem status'
-            if (!acc[status]) {
-                acc[status] = []
+
+            if (!ga[status]) {
+                ga[status] = []
             }
-            acc[status].push(answer)
-            return acc
+            ga[status].push(answer)
+            return ga
         }, {})
 
         setGroupedAnswers(groupAnswers)
+    }
+
+    const getPendingAnswers = async (parsedAnswers) => {
+        let pendingAnswers = await getCacheData('pendingAnswers', false)
+
+        if (!pendingAnswers) {
+            pendingAnswers = []
+        }
+
+        pendingAnswers = pendingAnswers.map((answer) => {
+            const parsedData = JSON.parse(answer.data)
+            return {
+                ...answer,
+                data: parsedData,
+            }
+        })
+
+        const mergedFlexibleAnswers = [...parsedAnswers, ...pendingAnswers]
+        getGroupedAnswers(mergedFlexibleAnswers)
     }
 
     const getAllFlexibleAnswers = async () => {
@@ -64,7 +84,8 @@ const EventoAnswersCards = ({ navigation }) => {
 
                 storeCacheData('flexibleAnswers', parsedAnswers)
                 setFlexibleAnswers(parsedAnswers)
-                getGroupedAnswers(parsedAnswers)
+
+                await getPendingAnswers(parsedAnswers)
             }
             setIsLoading(false)
         } else {
@@ -72,6 +93,8 @@ const EventoAnswersCards = ({ navigation }) => {
 
             if (parsedAnswers) {
                 setFlexibleAnswers(parsedAnswers)
+
+                await getPendingAnswers(parsedAnswers)
                 setIsLoading(false)
             }
         }

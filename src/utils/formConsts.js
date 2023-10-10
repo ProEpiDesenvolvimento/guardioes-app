@@ -130,6 +130,18 @@ export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
     return valid
 }
 
+export const ephemOfflineData = {
+    _embedded: {
+        signals: [
+            {
+                dados: {
+                    signal_stage_state_id: ['', 'Offline'],
+                },
+            },
+        ],
+    },
+}
+
 export const formattedForm = (formVersion, user) => {
     formVersion.data.questions.forEach((question) => {
         if (question.type === 'geo_country') {

@@ -70,6 +70,17 @@ const LeftMenuProfessional = ({ navigation }) => {
                     </TextOption>
                 </UserOptionBlue>
             </Button>
+            <Button onPress={() => navigation.navigate('Perfis')}>
+                <UserOptionBlue>
+                    <Feather
+                        name='settings'
+                        size={scale(26)}
+                        color='#ffffff'
+                        style={styles.iconStyle}
+                    />
+                    <TextOption>{translate('drawer.toEdit')}</TextOption>
+                </UserOptionBlue>
+            </Button>
             <Button onPress={() => signOut()}>
                 <UserOptionBlue>
                     <Feather

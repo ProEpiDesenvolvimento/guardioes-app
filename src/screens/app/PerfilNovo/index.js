@@ -199,7 +199,9 @@ const PerfilNovo = ({ navigation }) => {
                 {gender === 'Outro' ? (
                     <FormGroup>
                         <FormGroupChild>
-                            <FormLabel>Especifique seu gênero:</FormLabel>
+                            <FormLabel>
+                                Especifique seu gênero: (opcional)
+                            </FormLabel>
                             <NormalInput
                                 returnKeyType='next'
                                 onChangeText={(text) => setGenderOther(text)}
