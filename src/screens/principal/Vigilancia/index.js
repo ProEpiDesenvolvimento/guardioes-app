@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Modal, ScrollView } from 'react-native'
+import { Alert, Modal } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 
 import {
@@ -8,6 +8,7 @@ import {
     ModalTitle,
     FormInlineCheck,
     CheckBoxStyled,
+    ModalScroll,
     ModalText,
     CheckLabel,
     Container,
@@ -98,11 +99,11 @@ const Vigilancia = ({ navigation }) => {
                             {translate('vigilanceTerms.title')}
                         </ModalTitle>
 
-                        <ScrollView>
+                        <ModalScroll>
                             <ModalText>
                                 {translate('vigilanceTerms.text')}
                             </ModalText>
-                        </ScrollView>
+                        </ModalScroll>
 
                         <ButtonClose
                             onPress={() => setShowModalTerms(!showModalTerms)}
