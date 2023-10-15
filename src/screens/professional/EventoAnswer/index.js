@@ -10,7 +10,6 @@ import {
 import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
 import { useUser } from '../../../hooks/user'
-import { getFlexibleAnswer } from '../../../api/events'
 
 const EventoAnswer = ({ route }) => {
     const { token } = useUser()
@@ -19,6 +18,7 @@ const EventoAnswer = ({ route }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [formVersion, setFormVersion] = useState({})
     const [formBuild, setFormBuild] = useState({})
+    const [fV2, setFV2] = useState({})
 
     const buildAnswers = async () => {
         const newData = []
@@ -45,6 +45,7 @@ const EventoAnswer = ({ route }) => {
         answer.flexible_form_version.data = parsedData
 
         setFormVersion(answer.flexible_form_version)
+        setFV2(answer.flexible_form_version)
         setIsLoading(false)
     }
 
@@ -73,7 +74,8 @@ const EventoAnswer = ({ route }) => {
 
                 <FlexibleFormBuilder
                     formVersion={formBuild}
-                    setFormVersion={setFormBuild}
+                    fV2={fV2}
+                    setFV2={setFV2}
                     disabled
                 />
             </KeyboardScrollView>

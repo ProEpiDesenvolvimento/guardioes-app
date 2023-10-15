@@ -147,11 +147,8 @@ export const formattedForm = (formVersion, user) => {
         if (question.type === 'geo_country') {
             question.value = user.country
         }
-        if (question.type === 'geo_state') {
-            question.value = capitalizeFirstWords(user.state)
-        }
-        if (question.type === 'geo_city') {
-            question.value = capitalizeFirstWords(user.city)
+        if (question.type === 'geo_city_state') {
+            question.value = `${capitalizeFirstWords(user.city)} / ${capitalizeFirstWords(user.state)}`
         }
     })
     return formVersion

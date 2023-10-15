@@ -49,7 +49,7 @@ const PlaceSelector = ({
                                     value: data.description.split(',')[0],
                                     label: data.description,
                                 }
-                                onChange(option)
+                                onChange(data)
                                 closeModal()
                             }}
                             query={{

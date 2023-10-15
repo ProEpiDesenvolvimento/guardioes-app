@@ -57,19 +57,6 @@ const LeftMenuProfessional = ({ navigation }) => {
                 ))}
             </AvatarContainer>
 
-            <Button onPress={() => setIsProfessional(false)}>
-                <UserOptionBlue>
-                    <Feather
-                        name='info'
-                        size={scale(26)}
-                        color='#ffffff'
-                        style={styles.iconStyle}
-                    />
-                    <TextOption>
-                        Alterar para Vigilância Participativa
-                    </TextOption>
-                </UserOptionBlue>
-            </Button>
             <Button onPress={() => navigation.navigate('Perfis')}>
                 <UserOptionBlue>
                     <Feather

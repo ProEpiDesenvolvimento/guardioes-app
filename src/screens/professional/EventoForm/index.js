@@ -24,6 +24,7 @@ const EventoForm = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(true)
     const [formVersion, setFormVersion] = useState({})
+    const [fV2, setFV2] = useState({})
 
     const [showAlert, setShowAlert] = useState(false)
     const [showProgressBar, setShowProgressBar] = useState(false)
@@ -60,7 +61,7 @@ const EventoForm = ({ navigation }) => {
         const answers = []
         let error = false
 
-        formVersion.data.questions.forEach((question) => {
+        fV2.data.questions.forEach((question) => {
             if (question.required && !question.value) {
                 error = true
             }
@@ -144,6 +145,7 @@ const EventoForm = ({ navigation }) => {
                     )
                     storeCacheData('signalForm', newFormVersion)
                     setFormVersion(newFormVersion)
+                    setFV2(JSON.parse(JSON.stringify(newFormVersion)))
                 }
                 setIsLoading(false)
             }
@@ -170,7 +172,8 @@ const EventoForm = ({ navigation }) => {
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
                 <FlexibleFormBuilder
                     formVersion={formVersion}
-                    setFormVersion={setFormVersion}
+                    fV2={fV2}
+                    setFV2={setFV2}
                     isOffline={isOffline}
                 />
 

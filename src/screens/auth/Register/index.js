@@ -78,6 +78,7 @@ const Register = ({ navigation }) => {
     const [category, setCategory] = useState({})
     const [allCategories, setAllCategories] = useState(null)
     const [formVersion, setFormVersion] = useState({})
+    const [fV2, setFV2] = useState({})
 
     const sendRegisterForm = async (user) => {
         const answers = []
@@ -133,6 +134,7 @@ const Register = ({ navigation }) => {
                 flexible_form.latest_version.data = parsedData
 
                 setFormVersion(flexible_form.latest_version)
+                setFV2(flexible_form.latest_version)
             }
         }
     }
@@ -493,7 +495,8 @@ const Register = ({ navigation }) => {
                     {isProfessional ? (
                         <FlexibleFormBuilder
                             formVersion={formVersion}
-                            setFormVersion={setFormVersion}
+                            fV2={fV2}
+                            setFV2={setFV2}
                             light
                         />
                     ) : null}
