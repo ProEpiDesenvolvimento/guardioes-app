@@ -272,6 +272,14 @@ export const ModalText = styled.Text`
     margin-bottom: ${scale(12)}px;
 `
 
+export const ModalScroll = styled.ScrollView.attrs({
+    contentContainerStyle: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+})``
+
 export const ModalButton = styled.View`
     width: 50%;
     align-self: center;

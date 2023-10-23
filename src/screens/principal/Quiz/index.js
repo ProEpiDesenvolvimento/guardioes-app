@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
-import { Alert, BackHandler, Modal, Linking } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
+import { Alert, Modal, Linking } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
 import SwiperFlatList from 'react-native-swiper-flatlist'
-import { useFocusEffect } from '@react-navigation/native'
 
 import {
     ModalContainer,
     ModalBox,
+    ModalScroll,
     ModalTitle,
     ModalText,
     ModalButton,
@@ -173,67 +173,12 @@ const Quiz = ({ navigation, route }) => {
         }
     }
 
-    const previousScreenAlert = (e) => {
-        if (quizStep === 2) {
-            e?.preventDefault()
-
-            Alert.alert(
-                'Sair do Quiz',
-                'Você tem certeza que deseja sair do quiz? Você NÃO poderá responder novamente.',
-                [
-                    {
-                        text: 'Cancelar',
-                        onPress: () => {},
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'Sair',
-                        onPress: async () => {
-                            if (e) {
-                                await sendQuiz(true)
-                                navigation.dispatch(e.data.action)
-                            } else {
-                                await sendQuiz(true)
-                                navigation.navigate('Quizzes')
-                            }
-                        },
-                    },
-                ]
-            )
-            return true
-        }
-        return false
-    }
-
     useEffect(() => {
         const newPercentage =
             (correctCount / formVersion.data.questions.length) * 100
 
         setPercentage(newPercentage)
     }, [correctCount])
-
-    useEffect(
-        () =>
-            navigation.addListener('beforeRemove', (e) => {
-                previousScreenAlert(e)
-            }),
-        [navigation, quizStep]
-    )
-
-    useFocusEffect(
-        useCallback(() => {
-            BackHandler.addEventListener(
-                'hardwareBackPress',
-                previousScreenAlert
-            )
-
-            return () =>
-                BackHandler.removeEventListener(
-                    'hardwareBackPress',
-                    previousScreenAlert
-                )
-        }, [quizStep])
-    )
 
     return (
         <Container>
@@ -249,7 +194,11 @@ const Quiz = ({ navigation, route }) => {
                             Conteúdo - Questão {swiperIndex + 1}
                         </ModalTitle>
 
-                        <ModalText>{questionSelected.support_text}</ModalText>
+                        <ModalScroll>
+                            <ModalText>
+                                {questionSelected.support_text}
+                            </ModalText>
+                        </ModalScroll>
 
                         <Button
                             onPress={() =>
@@ -279,7 +228,7 @@ const Quiz = ({ navigation, route }) => {
                     <QuizContainer>
                         <QuizBox>
                             <QuizTitle>
-                                Você está prestes a responder o Quiz -{' '}
+                                Você está prestes a responder o Quiz:{' \n'}
                                 {quiz.title}
                             </QuizTitle>
 
@@ -292,12 +241,12 @@ const Quiz = ({ navigation, route }) => {
 
                             <QuizBodyText>
                                 - Certifique-se de que sua conexão à internet
-                                esteja funcionando.{'\n'} - Não retorne à tela
-                                anterior após iniciar o Quiz, pois não será
-                                possível respondê-lo novamente.{'\n'} - Não é
-                                possível voltar a pergunta anterior.{'\n'} -
-                                Encontre o conteúdo de referência de cada
-                                pergunta no canto superior direito.
+                                esteja funcionando.{'\n'} - O Quiz começará do
+                                início caso você retorne à tela anterior ou
+                                feche o aplicativo.{'\n'}- Não é possível voltar
+                                a pergunta anterior.{'\n'} - Encontre o conteúdo
+                                de referência de cada pergunta no canto superior
+                                direito.
                             </QuizBodyText>
                         </QuizBox>
 

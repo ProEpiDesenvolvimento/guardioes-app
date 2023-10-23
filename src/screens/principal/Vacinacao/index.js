@@ -11,6 +11,7 @@ import {
     ModalContainer,
     ModalBox,
     ModalTitle,
+    ModalScroll,
     ModalText,
     Button,
     ModalButton,
@@ -37,7 +38,6 @@ import {
     InfoWrapper,
     ButtonsWrapper,
 } from '../../../components/Cards'
-import { VaccineScroll } from './styles'
 
 import LoadingModal from '../../../components/LoadingModal'
 import translate from '../../../../locales/i18n'
@@ -364,7 +364,7 @@ const Vacinacao = () => {
                                     : translate('vaccination.titleAddDose')}
                             </ModalTitle>
 
-                            <VaccineScroll>
+                            <ModalScroll>
                                 <FormInline>
                                     <DateSelector
                                         placeholder={translate(
@@ -390,7 +390,7 @@ const Vacinacao = () => {
                                 </FormInline>
 
                                 {vaccineSelector()}
-                            </VaccineScroll>
+                            </ModalScroll>
 
                             {doseSelected.id ? (
                                 <Button onPress={() => handleDelete()}>
