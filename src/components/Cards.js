@@ -7,9 +7,8 @@ import { scale, percentage } from '../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
-        backgroundColor: '#f4f4f4',
         flexGrow: 1,
-        paddingTop: percentage(7),
+        paddingTop: percentage(8),
         paddingHorizontal: percentage(7),
     },
 })``
@@ -50,7 +49,6 @@ const Name = `
     font-family: ArgentumSans-SemiBold;
     font-size: ${scale(16)}px;
     include-font-padding: false;
-    margin-bottom: ${scale(5)}px;
 `
 
 export const CardNameBlue = styled.Text`
@@ -67,6 +65,7 @@ const Details = `
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
     include-font-padding: false;
+    margin-top: ${scale(5)}px;
 `
 
 export const CardDetailsBlue = styled.Text`

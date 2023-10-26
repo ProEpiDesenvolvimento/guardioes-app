@@ -4,9 +4,8 @@ import { scale, percentage } from '../utils/scalling'
 
 export const ScrollViewStyled = styled.ScrollView.attrs({
     contentContainerStyle: {
-        backgroundColor: '#f4f4f4',
         flexGrow: 1,
-        paddingVertical: percentage(6),
+        paddingVertical: percentage(7),
         paddingHorizontal: percentage(7),
     },
 })``

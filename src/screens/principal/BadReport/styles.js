@@ -7,14 +7,6 @@ import { CheckBox } from 'react-native-elements'
 
 import { scale, percentage } from '../../../utils/scalling'
 
-export const ScrollViewStyled = styled(ScrollView).attrs({
-    contentContainerStyle: {
-        flexGrow: 1,
-        paddingVertical: percentage(8),
-        paddingHorizontal: percentage(7),
-    },
-})``
-
 export const User = styled(ShadowView).attrs({})`
     width: 100%;
     background-color: #ffffff;

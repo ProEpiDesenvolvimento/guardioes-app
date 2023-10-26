@@ -1,6 +1,15 @@
 import React from 'react'
 
-import { Help, Box, Button, IconWrapper, InfoWrapper, Title } from './styles'
+import { Container } from '../../../components/NormalForms'
+import {
+    ScrollViewStyled,
+    CardWhite,
+    CardNameWhite,
+    AvatarWrapper,
+    InfoContainer,
+    InfoWrapper,
+    Button,
+} from '../../../components/Cards'
 
 import translate from '../../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -14,62 +23,87 @@ import {
 
 const Ajuda = ({ navigation }) => {
     return (
-        <Help>
-            <Box>
+        <Container>
+            <ScrollViewStyled>
                 <Button onPress={() => navigation.navigate('Tutorial')}>
-                    <IconWrapper>
-                        <TutorialIcon height={scale(45)} width={scale(45)} />
-                    </IconWrapper>
-                    <InfoWrapper>
-                        <Title>{translate('ajuda.tutorialBtn')}</Title>
-                    </InfoWrapper>
+                    <CardWhite>
+                        <AvatarWrapper>
+                            <TutorialIcon
+                                height={scale(45)}
+                                width={scale(45)}
+                            />
+                        </AvatarWrapper>
+                        <InfoContainer>
+                            <InfoWrapper>
+                                <CardNameWhite>
+                                    {translate('ajuda.tutorialBtn')}
+                                </CardNameWhite>
+                            </InfoWrapper>
+                        </InfoContainer>
+                    </CardWhite>
                 </Button>
-            </Box>
 
-            <Box>
                 <Button onPress={() => navigation.navigate('FAQ')}>
-                    <IconWrapper>
-                        <FAQIcon height={scale(45)} width={scale(45)} />
-                    </IconWrapper>
-                    <InfoWrapper>
-                        <Title>{translate('ajuda.faqBtn')}</Title>
-                    </InfoWrapper>
+                    <CardWhite>
+                        <AvatarWrapper>
+                            <FAQIcon height={scale(45)} width={scale(45)} />
+                        </AvatarWrapper>
+                        <InfoContainer>
+                            <InfoWrapper>
+                                <CardNameWhite>
+                                    {translate('ajuda.faqBtn')}
+                                </CardNameWhite>
+                            </InfoWrapper>
+                        </InfoContainer>
+                    </CardWhite>
                 </Button>
-            </Box>
 
-            <Box>
                 <Button onPress={() => navigation.navigate('TermosPoliticas')}>
-                    <IconWrapper>
-                        <TermsIcon height={scale(45)} width={scale(45)} />
-                    </IconWrapper>
-                    <InfoWrapper>
-                        <Title>{translate('ajuda.useTermsBtn')}</Title>
-                    </InfoWrapper>
+                    <CardWhite>
+                        <AvatarWrapper>
+                            <TermsIcon height={scale(45)} width={scale(45)} />
+                        </AvatarWrapper>
+                        <InfoContainer>
+                            <InfoWrapper>
+                                <CardNameWhite>
+                                    {translate('ajuda.useTermsBtn')}
+                                </CardNameWhite>
+                            </InfoWrapper>
+                        </InfoContainer>
+                    </CardWhite>
                 </Button>
-            </Box>
 
-            <Box>
                 <Button onPress={() => navigation.navigate('Sobre')}>
-                    <IconWrapper>
-                        <InfoIcon height={scale(45)} width={scale(45)} />
-                    </IconWrapper>
-                    <InfoWrapper>
-                        <Title>{translate('ajuda.aboutBtn')}</Title>
-                    </InfoWrapper>
+                    <CardWhite>
+                        <AvatarWrapper>
+                            <InfoIcon height={scale(45)} width={scale(45)} />
+                        </AvatarWrapper>
+                        <InfoContainer>
+                            <InfoWrapper>
+                                <CardNameWhite>
+                                    {translate('ajuda.aboutBtn')}
+                                </CardNameWhite>
+                            </InfoWrapper>
+                        </InfoContainer>
+                    </CardWhite>
                 </Button>
-            </Box>
 
-            <Box>
                 <Button onPress={() => navigation.navigate('ExcluirConta')}>
-                    <IconWrapper>
-                        <AccountIcon height={scale(45)} width={scale(45)} />
-                    </IconWrapper>
-                    <InfoWrapper>
-                        <Title>{translate('deleteAccount.title')}</Title>
-                    </InfoWrapper>
+                    <CardWhite>
+                        <AvatarWrapper>
+                            <AccountIcon height={scale(45)} width={scale(45)} />
+                        </AvatarWrapper>
+                        <InfoContainer>
+                            <InfoWrapper>
+                                <CardNameWhite>
+                                    {translate('deleteAccount.title')}
+                                </CardNameWhite>
+                            </InfoWrapper>
+                        </InfoContainer>
+                    </CardWhite>
                 </Button>
-            </Box>
-        </Help>
+            </ScrollViewStyled>
+        </Container>
     )
 }
 
