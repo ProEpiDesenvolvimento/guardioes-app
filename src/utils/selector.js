@@ -124,6 +124,11 @@ export const countryChoices = [
     { key: 'Venezuela', label: 'Venezuela' },
 ]
 
+export const communityChoices = [
+    { key: true, label: 'Sim' },
+    { key: false, label: 'Não' },
+]
+
 export const householdChoices = [
     { key: 'Pai', label: 'Pai' },
     { key: 'Mãe', label: 'Mãe' },

@@ -43,6 +43,7 @@ import {
     genderChoices,
     countryChoices,
     raceChoices,
+    communityChoices,
 } from '../../../utils/selector'
 import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
 import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
@@ -68,7 +69,7 @@ const Register = ({ navigation }) => {
     const [groupId, setGroupId] = useState(null)
     const [idCode, setIdCode] = useState(null)
     const [riskGroup, setRiskGroup] = useState(false)
-    const [isProfessional, setIsProfessional] = useState(false)
+    const [isProfessional, setIsProfessional] = useState({})
 
     const [countryCheckbox, setCountryCheckbox] = useState(true)
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
@@ -84,7 +85,7 @@ const Register = ({ navigation }) => {
         const answers = []
         let error = false
 
-        formVersion.data.forEach((question) => {
+        formVersion.data.questions.forEach((question) => {
             if (question.required && !question.value) {
                 error = true
             }
@@ -107,7 +108,7 @@ const Register = ({ navigation }) => {
 
         const flexibleAnswer = {
             flexible_form_version_id: formVersion.id,
-            data: JSON.stringify(answers),
+            data: JSON.stringify({ answers }),
             user_id: user.id,
         }
 
@@ -140,7 +141,7 @@ const Register = ({ navigation }) => {
     }
 
     useEffect(() => {
-        if (isProfessional) {
+        if (isProfessional.key) {
             getRegisterForm()
         }
     }, [isProfessional])
@@ -183,7 +184,7 @@ const Register = ({ navigation }) => {
                 }
             )
 
-            if (isProfessional) {
+            if (isProfessional.key) {
                 await sendRegisterForm(response.data.user)
             }
 
@@ -214,7 +215,7 @@ const Register = ({ navigation }) => {
             city,
             group_id: groupId,
             identification_code: idCode,
-            is_professional: isProfessional,
+            is_professional: !!isProfessional.key,
             risk_group: riskGroup,
             policy_version: terms.version,
             category_id: category.key,
@@ -437,18 +438,23 @@ const Register = ({ navigation }) => {
                         </FormInline>
                     ) : null}
 
-                    <FormInlineCheck space={isProfessional}>
-                        <CheckBoxStyled
-                            title={translate('register.professionalLabel')}
-                            checked={isProfessional}
-                            onPress={() => {
-                                setIsProfessional(!isProfessional)
-                                // setGroupId()
-                            }}
+                    <FormInline>
+                        <FormLabel>
+                            {translate('register.professionalLabel')}
+                        </FormLabel>
+                        <Selector
+                            data={communityChoices}
+                            initValue={
+                                isProfessional.key !== undefined
+                                    ? isProfessional.label
+                                    : translate('selector.label')
+                            }
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setIsProfessional(option)}
                         />
-                    </FormInlineCheck>
+                    </FormInline>
 
-                    {!isProfessional ? (
+                    {!isProfessional.key ? (
                         <FormInlineCheck>
                             <CheckBoxStyled
                                 title={translate('register.riskGroupLabel')}
@@ -465,7 +471,7 @@ const Register = ({ navigation }) => {
                         </FormInlineCheck>
                     ) : null}
 
-                    {!isProfessional ? (
+                    {!isProfessional.key ? (
                         <InstitutionSelector
                             key={key}
                             setUserInstitutionCallback={setUserInstitutionCallback}
@@ -476,7 +482,7 @@ const Register = ({ navigation }) => {
                         />
                     ) : null}
 
-                    {allCategories && !isProfessional ? (
+                    {allCategories && !isProfessional.key ? (
                         <FormInline>
                             <FormLabel>Categoria:</FormLabel>
                             <Selector
@@ -492,7 +498,7 @@ const Register = ({ navigation }) => {
                         </FormInline>
                     ) : null}
 
-                    {isProfessional ? (
+                    {isProfessional.key ? (
                         <FlexibleFormBuilder
                             formVersion={formVersion}
                             fV2={fV2}

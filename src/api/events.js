@@ -79,3 +79,19 @@ export const sendFlexibleAnswer = async (data, token) => {
 
     return response
 }
+
+export const editFlexibleAnswer = async (id, data, token) => {
+    let response = {}
+
+    try {
+        response = await api.patch(`/flexible_answers/${id}`, data, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}

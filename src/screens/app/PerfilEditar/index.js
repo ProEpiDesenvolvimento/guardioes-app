@@ -33,6 +33,7 @@ import {
 import { Delete } from './styles'
 
 import InstitutionSelector from '../../../components/Groups/InstitutionSelector'
+import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 import LoadingModal from '../../../components/Groups/LoadingModal'
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
@@ -47,6 +48,7 @@ import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
 import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
+import { getFlexibleAnswers, editFlexibleAnswer } from '../../../api/events'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
 import { getAppGroup } from '../../../api/groups'
@@ -86,6 +88,102 @@ const PerfilEditar = ({ navigation, route }) => {
     const [modalRiskGroup, setModalRiskGroup] = useState(false)
     const [institutionError, setInstituitionError] = useState(null)
     const [loadingAlert, setLoadingAlert] = useState(false)
+    const [formVersion, setFormVersion] = useState({})
+    const [fV2, setFV2] = useState({})
+
+    const editRegisterForm = async () => {
+        const answers = []
+        let error = false
+
+        fV2.data.questions.forEach((question) => {
+            if (question.required && !question.value) {
+                error = true
+            }
+            if (!error) {
+                answers.push({
+                    ...question,
+                    options: undefined,
+                    required: undefined,
+                    text: undefined,
+                    type: undefined,
+                })
+            }
+        })
+
+        if (error) {
+            setLoadingAlert(false)
+            Alert.alert(translate('register.fillRequired'))
+            return
+        }
+
+        const flexibleAnswer = {
+            flexible_form_version_id: fV2.id,
+            data: JSON.stringify({ answers }),
+            user_id: user.id,
+        }
+
+        const response = await editFlexibleAnswer(
+            fV2.flexible_answer_id,
+            { flexible_answer: flexibleAnswer },
+            token
+        )
+
+        if (!response.status === 200) {
+            setLoadingAlert(false)
+            console.warn(response.status)
+            Alert.alert(translate('register.geralError'))
+        }
+    }
+
+    const buildRegisterAnswer = (formAnswer) => {
+        const newData = []
+
+        formAnswer.flexible_form_version.data.questions.forEach((q) => {
+            formAnswer.data.answers.forEach((a) => {
+                if (q.field === a.field) {
+                    newData.push({
+                        ...q,
+                        value: a.value,
+                    })
+                }
+            })
+        })
+
+        const newFormVersion = { ...formAnswer.flexible_form_version }
+        newFormVersion.flexible_answer_id = formAnswer.id
+        newFormVersion.data.questions = newData
+
+        setFV2(newFormVersion)
+        setFormVersion(newFormVersion)
+    }
+
+    const getRegisterAnswer = async () => {
+        const response = await getFlexibleAnswers(token)
+
+        if (response.status === 200) {
+            const { flexible_answers } = response.data
+
+            const [fa] = flexible_answers.filter(
+                (answer) => answer.flexible_form.id === 2
+                // Hardcoded flexible form id
+            )
+
+            if (fa.data) {
+                fa.data = JSON.parse(fa.data)
+                fa.flexible_form_version.data = JSON.parse(
+                    fa.flexible_form_version.data
+                )
+
+                buildRegisterAnswer(fa)
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (person.is_professional) {
+            getRegisterAnswer()
+        }
+    }, [person.is_professional])
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -273,6 +371,7 @@ const PerfilEditar = ({ navigation, route }) => {
             editHousehold()
         } else {
             editUser()
+            editRegisterForm()
         }
     }
 
@@ -473,6 +572,14 @@ const PerfilEditar = ({ navigation, route }) => {
                             onChange={(option) => setKinship(option.key)}
                         />
                     </FormInline>
+                ) : null}
+
+                {person.is_professional ? (
+                    <FlexibleFormBuilder
+                        formVersion={formVersion}
+                        fV2={fV2}
+                        setFV2={setFV2}
+                    />
                 ) : null}
 
                 <FormInlineCheck>
