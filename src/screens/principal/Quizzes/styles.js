@@ -4,13 +4,6 @@ import ShadowView from 'react-native-simple-shadow-view'
 
 import { scale, percentage } from '../../../utils/scalling'
 
-export const Help = styled.View`
-    background-color: #f4f4f4;
-    flex: 1;
-    padding-top: ${percentage(8)}px;
-    padding-horizontal: ${percentage(7)}px;
-`
-
 export const Button = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
 })`

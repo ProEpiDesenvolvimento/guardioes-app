@@ -141,7 +141,7 @@ const Quiz = ({ navigation, route }) => {
     const checkQuestion = () => {
         const currentQuestion = formVersion.data.questions[swiperIndex]
 
-        if (!currentQuestion.value) {
+        if (!currentQuestion.value && currentQuestion.required) {
             Alert.alert(
                 'Responda a pergunta',
                 'Você precisa responder a pergunta para continuar'

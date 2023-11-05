@@ -6,6 +6,7 @@ import Share from 'react-native-share'
 import { Avatar } from 'react-native-elements'
 import ScreenLoader from '../../../components/ScreenLoader'
 import { CoolAlert } from '../../../components/CoolAlert'
+import { ScrollViewStyled } from '../../../components/PageItems'
 import {
     Container,
     FormInline,
@@ -15,7 +16,6 @@ import {
     SendText,
 } from '../../../components/NormalForms'
 import {
-    ScrollViewStyled,
     User,
     IconWrapper,
     InfoWrapper,

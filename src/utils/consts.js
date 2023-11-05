@@ -99,7 +99,7 @@ export const validPerson = (person, instituitionComponentError) => {
 
 export const terms = {
     title: translate('useTerms.title'),
-    text: `${translate('useTerms.terms.textoTermosTitulo')}\n
+    text: `${translate('useTerms.terms.tituloTermos')}\n
         ${translate('useTerms.terms.textoTermos_1')}\n
         ${translate('useTerms.terms.textoTermos_2')}\n
         ${translate('useTerms.terms.textoTermos_3')}\n
@@ -112,7 +112,7 @@ export const terms = {
         ${translate('useTerms.terms.textoTermos_10')}\n
         ${translate('useTerms.terms.textoTermos_11')}\n
         ${translate('useTerms.terms.textoTermos_12')}\n
-        ${translate('useTerms.terms.textoTituloPoliticas')}\n
+        ${translate('useTerms.terms.tituloPoliticas')}\n
         ${translate('useTerms.terms.textoPoliticas_1')}\n
         ${translate('useTerms.terms.textoPoliticas_2')}\n
         ${translate('useTerms.terms.textoPoliticas_3')}\n

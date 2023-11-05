@@ -3,16 +3,7 @@ import styled from 'styled-components'
 import Feather from 'react-native-vector-icons/Feather'
 import { Image as Img } from 'react-native'
 
-import { scale, percentage } from '../../../utils/scalling'
-
-export const ScrollViewStyled = styled.ScrollView.attrs({
-    contentContainerStyle: {
-        backgroundColor: '#f4f4f4',
-        flexGrow: 1,
-        paddingVertical: percentage(7),
-        paddingHorizontal: percentage(7),
-    },
-})``
+import { scale } from '../../../utils/scalling'
 
 export const Title = styled.Text`
     font-family: ArgentumSans-SemiBold;
