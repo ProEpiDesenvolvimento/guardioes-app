@@ -1,7 +1,7 @@
 import { Alert, Linking } from 'react-native'
 import { CommonActions } from '@react-navigation/native'
 import { Emojis } from '../img/imageConst'
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
 
 export const getNameParts = (fullName, firstAndLast = false) => {
     if (typeof fullName === 'string') {
@@ -185,4 +185,10 @@ export const showSurveillanceInvite = (
             },
         },
     ])
+}
+
+export const capitalizeFirstWords = (str) => {
+    return str.replace(/\w\S*/g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    })
 }

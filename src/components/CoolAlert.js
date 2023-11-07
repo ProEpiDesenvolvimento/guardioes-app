@@ -30,7 +30,7 @@ export const CoolAlert = styled(AwesomeAlert).attrs((props) => ({
     confirmButtonColor: '#5DD39E',
     confirmButtonStyle: {
         borderRadius: scale(10),
-        paddingHorizontal: scale(10),
+        paddingHorizontal: scale(12),
         paddingVertical: scale(8),
     },
     confirmButtonTextStyle: {

@@ -19,7 +19,7 @@ import {
     RedeSocial,
 } from './styles'
 
-import translate from '../../../locales/i18n'
+import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
 import { getInitials, handleAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
@@ -34,6 +34,7 @@ const LeftMenu = ({ navigation }) => {
         signOut,
         group,
         setGroup,
+        setIsProfessional,
     } = useUser()
 
     let index = households.length
@@ -76,7 +77,7 @@ const LeftMenu = ({ navigation }) => {
             </AvatarContainer>
 
             {user.is_professional === true ? (
-                <Button onPress={() => navigation.navigate('Rumor')}>
+                <Button onPress={() => setIsProfessional(true)}>
                     <UserOptionBlue>
                         <Feather
                             name='info'
@@ -85,11 +86,12 @@ const LeftMenu = ({ navigation }) => {
                             style={styles.iconStyle}
                         />
                         <TextOption>
-                            {translate('drawer.reportRumor')}
+                            Alterar para Vigilância Comunitária
                         </TextOption>
                     </UserOptionBlue>
                 </Button>
             ) : null}
+
             <Button onPress={() => navigation.navigate('Perfis')}>
                 <UserOptionBlue>
                     <Feather

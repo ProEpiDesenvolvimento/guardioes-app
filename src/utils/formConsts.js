@@ -1,6 +1,7 @@
 import { Alert } from 'react-native'
 
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
+import { capitalizeFirstWords } from './consts'
 
 export const isQuestionAnswered = (answers, option) => {
     const answered = answers.filter(
@@ -127,4 +128,28 @@ export const validVaccination = (vaccine, newDoseDate, doseInfo) => {
         valid = false
     }
     return valid
+}
+
+export const ephemOfflineData = {
+    _embedded: {
+        signals: [
+            {
+                dados: {
+                    signal_stage_state_id: ['', 'Offline'],
+                },
+            },
+        ],
+    },
+}
+
+export const formattedForm = (formVersion, user) => {
+    formVersion.data.questions.forEach((question) => {
+        if (question.type === 'geo_country') {
+            question.value = user.country
+        }
+        if (question.type === 'geo_city_state') {
+            question.value = `${capitalizeFirstWords(user.city)} / ${capitalizeFirstWords(user.state)}`
+        }
+    })
+    return formVersion
 }

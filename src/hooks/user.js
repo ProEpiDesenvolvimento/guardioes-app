@@ -13,7 +13,7 @@ import OneSignal from 'react-native-onesignal'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import SplashScreen from 'react-native-splash-screen'
 
-import translate from '../../locales/i18n'
+import translate from '../locales/i18n'
 import { authUser } from '../api/user'
 
 const UserContext = createContext(null)
@@ -38,6 +38,7 @@ export const UserProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [isOffline, setIsOffline] = useState(false)
     const [needSignIn, setNeedSignIn] = useState(true)
+    const [isProfessional, setIsProfessional] = useState(true)
 
     useEffect(() => {
         loadStoredData()
@@ -204,6 +205,7 @@ export const UserProvider = ({ children }) => {
             city: user.city,
             group: userGroupName,
             doses: user.doses, // Check on next release
+            is_professional: user.is_professional ? 1 : 0,
         })
     }
 
@@ -226,6 +228,7 @@ export const UserProvider = ({ children }) => {
         OneSignal.deleteTag('school_unit_id') // Remove on future release
         OneSignal.deleteTag('score') // Remove on future release
         OneSignal.deleteTag('doses')
+        OneSignal.deleteTag('is_professional')
     }
 
     const signOut = async () => {
@@ -476,6 +479,8 @@ export const UserProvider = ({ children }) => {
                 isOffline,
                 needSignIn,
                 setNeedSignIn,
+                isProfessional,
+                setIsProfessional,
             }}
         >
             {children}

@@ -84,6 +84,7 @@ export const AutocompleteButton = styled.TouchableOpacity`
     min-height: ${scale(36)}px;
     border-radius: ${scale(12)}px;
     width: 100%;
+    opacity: ${({ disabled = false }) => (disabled ? 0.5 : 1)};
 `
 
 export const AutocompleteText = styled.Text`
