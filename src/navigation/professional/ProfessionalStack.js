@@ -13,13 +13,18 @@ import {
 
 import Ajuda from '../../screens/app/Ajuda'
 import HomeDrawer from './HomeDrawer'
+import ExcluirConta from '../../screens/app/ExcluirConta'
+import FAQ from '../../screens/app/FAQ'
+import Perfis from '../../screens/app/Perfis'
+import PerfilEditar from '../../screens/app/PerfilEditar'
+import PerfilNovo from '../../screens/app/PerfilNovo'
 import SignalAnswer from '../../screens/professional/SignalAnswer'
 import SignalAnswers from '../../screens/professional/SignalAnswers'
 import SignalAnswersFiltered from '../../screens/professional/SignalAnswersFiltered'
 import SignalForm from '../../screens/professional/SignalForm'
-import Perfis from '../../screens/app/Perfis'
-import PerfilEditar from '../../screens/app/PerfilEditar'
-import PerfilNovo from '../../screens/app/PerfilNovo'
+import Sobre from '../../screens/app/Sobre'
+import TermosPoliticas from '../../screens/app/TermosPoliticas'
+import Tutorial from '../../screens/app/Tutorial'
 
 import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
@@ -123,6 +128,31 @@ const ProfessionalStack = () => {
                 name='Ajuda'
                 component={Ajuda}
                 options={{ title: translate('ajuda.title') }}
+            />
+            <Stack.Screen
+                name='Tutorial'
+                component={Tutorial}
+                options={{ title: translate('tutorial.title') }}
+            />
+            <Stack.Screen
+                name='FAQ'
+                component={FAQ}
+                options={{ title: translate('faq.title') }}
+            />
+            <Stack.Screen
+                name='TermosPoliticas'
+                component={TermosPoliticas}
+                options={{ title: translate('useTerms.title') }}
+            />
+            <Stack.Screen
+                name='Sobre'
+                component={Sobre}
+                options={{ title: translate('about.title') }}
+            />
+            <Stack.Screen
+                name='ExcluirConta'
+                component={ExcluirConta}
+                options={{ title: translate('deleteAccount.title') }}
             />
         </Stack.Navigator>
     )

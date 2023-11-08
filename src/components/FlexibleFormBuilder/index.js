@@ -5,6 +5,7 @@ import PlaceSelector from '../PlaceSelector'
 import {
     FormInline,
     FormLabel,
+    FormTip,
     NormalInput,
     Selector,
     DateSelector,
@@ -57,24 +58,18 @@ const FlexibleFormBuilder = ({
         const place = option.structured_formatting.main_text
 
         newFormVersion.data.questions.forEach((question) => {
-            if (question.type === 'geo_country') {
-                if (data.length) {
-                    question.value = data[data.length - 1].value
+            if (question.type === 'geo_location') {
+                question.value = ''
+                if (place) {
+                    question.value += `${place}, `
                 }
-            }
-            if (question.type === 'geo_city_state') {
                 if (data.length) {
-                    let cityState = []
+                    const cityState = []
 
                     for (let i = 1; i < data.length - 1; i += 1) {
                         cityState.push(data[i].value)
                     }
-                    question.value = cityState.join(' / ').trim()
-                }
-            }
-            if (question.type === 'geo_location') {
-                if (place) {
-                    question.value = place
+                    question.value += cityState.join(' , ').trim()
                 }
             }
         })
@@ -156,20 +151,6 @@ const FlexibleFormBuilder = ({
                               ))
                             : null}
 
-                        {question.type === 'geo_country' ? (
-                            <NormalInput
-                                value={question.value}
-                                editable={false}
-                            />
-                        ) : null}
-
-                        {question.type === 'geo_city_state' ? (
-                            <NormalInput
-                                value={question.value}
-                                editable={false}
-                            />
-                        ) : null}
-
                         {question.type === 'geo_location' ? (
                             isOffline ? (
                                 <NormalInput
@@ -180,23 +161,34 @@ const FlexibleFormBuilder = ({
                                     editable={!disabled}
                                 />
                             ) : (
-                                <PlaceSelector
-                                    value={
-                                        question.value
-                                            ? question.value
-                                            : 'Selecionar'
-                                    }
-                                    placeholder={translate(
-                                        'autocomplete.searchBar'
-                                    )}
-                                    textCancel={translate(
-                                        'selector.cancelButton'
-                                    )}
-                                    onChange={(option) => {
-                                        handlePlace(option)
-                                    }}
-                                    disabled={disabled}
-                                />
+                                <>
+                                    <PlaceSelector
+                                        value={
+                                            question.value.split(',')[0]
+                                                ? question.value.split(',')[0]
+                                                : 'Selecionar'
+                                        }
+                                        placeholder={translate(
+                                            'autocomplete.searchBar'
+                                        )}
+                                        textCancel={translate(
+                                            'selector.cancelButton'
+                                        )}
+                                        onChange={(option) => {
+                                            handlePlace(option)
+                                        }}
+                                        disabled={disabled}
+                                    />
+                                    <FormTip
+                                        light={light}
+                                        style={{ alignSelf: 'center' }}
+                                    >
+                                        {question.value
+                                            .split(', ')
+                                            ?.slice(1)
+                                            ?.join(', ')}
+                                    </FormTip>
+                                </>
                             )
                         ) : null}
                     </FormInline>
