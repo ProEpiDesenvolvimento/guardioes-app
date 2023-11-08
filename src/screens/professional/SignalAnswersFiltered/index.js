@@ -23,7 +23,7 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleAnswers } from '../../../api/events'
 
-const EventoAnswers = ({ navigation, route }) => {
+const SignalAnswersFiltered = ({ navigation, route }) => {
     const { status, flexibleAnswers } = route.params
 
     const getEventLocation = (event) => {
@@ -74,7 +74,7 @@ const EventoAnswers = ({ navigation, route }) => {
                                         onPress={() => {
                                             console.log(answer.id)
                                             navigation.navigate(
-                                                'EventoAnswer',
+                                                'SignalAnswer',
                                                 {
                                                     answer,
                                                 }
@@ -97,4 +97,4 @@ const EventoAnswers = ({ navigation, route }) => {
     )
 }
 
-export default EventoAnswers
+export default SignalAnswersFiltered

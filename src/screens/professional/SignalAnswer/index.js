@@ -11,7 +11,7 @@ import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
 import { useUser } from '../../../hooks/user'
 
-const EventoAnswer = ({ route }) => {
+const SignalAnswer = ({ route }) => {
     const { token } = useUser()
     const { answer } = route.params
 
@@ -83,4 +83,4 @@ const EventoAnswer = ({ route }) => {
     )
 }
 
-export default EventoAnswer
+export default SignalAnswer

@@ -13,10 +13,10 @@ import {
 
 import Ajuda from '../../screens/app/Ajuda'
 import HomeDrawer from './HomeDrawer'
-import EventoAnswer from '../../screens/professional/EventoAnswer'
-import EventoAnswersCards from '../../screens/professional/EventoAnswersCards'
-import EventoAnswers from '../../screens/professional/EventoAnswers'
-import EventoForm from '../../screens/professional/EventoForm'
+import SignalAnswer from '../../screens/professional/SignalAnswer'
+import SignalAnswers from '../../screens/professional/SignalAnswers'
+import SignalAnswersFiltered from '../../screens/professional/SignalAnswersFiltered'
+import SignalForm from '../../screens/professional/SignalForm'
 import Perfis from '../../screens/app/Perfis'
 import PerfilEditar from '../../screens/app/PerfilEditar'
 import PerfilNovo from '../../screens/app/PerfilNovo'
@@ -74,18 +74,18 @@ const ProfessionalStack = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name='EventoAnswersCards'
-                component={EventoAnswersCards}
+                name='SignalAnswers'
+                component={SignalAnswers}
                 options={{ title: 'Sinais informados' }}
             />
             <Stack.Screen
-                name='EventoAnswers'
-                component={EventoAnswers}
+                name='SignalAnswersFiltered'
+                component={SignalAnswersFiltered}
                 options={{ title: 'Sinais filtrados' }}
             />
             <Stack.Screen
-                name='EventoForm'
-                component={EventoForm}
+                name='SignalForm'
+                component={SignalForm}
                 options={({ route }) => ({
                     title: 'Informar sinal',
                     rightButton: () => (
@@ -100,8 +100,8 @@ const ProfessionalStack = () => {
                 })}
             />
             <Stack.Screen
-                name='EventoAnswer'
-                component={EventoAnswer}
+                name='SignalAnswer'
+                component={SignalAnswer}
                 options={{ title: 'Sinal' }}
             />
             <Stack.Screen

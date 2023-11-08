@@ -187,19 +187,19 @@ const Home = ({ navigation }) => {
     const getEvent = async () => {
         if (!isOffline) {
             // hardcoded form id
-            const response = await getFlexibleForm(1, token)
+            const response = await getFlexibleForm(9, token)
 
             if (response.status === 200) {
                 const { flexible_form } = response.data
 
-                if (flexible_form.latest_version) {
+                if (flexible_form.flexible_form_version) {
                     const parsedData = JSON.parse(
-                        flexible_form.latest_version.data
+                        flexible_form.flexible_form_version.data
                     )
-                    flexible_form.latest_version.data = parsedData
+                    flexible_form.flexible_form_version.data = parsedData
 
                     const newFormVersion = formattedForm(
-                        flexible_form.latest_version,
+                        flexible_form.flexible_form_version,
                         user
                     )
                     storeCacheData('signalForm', newFormVersion)
@@ -348,7 +348,7 @@ const Home = ({ navigation }) => {
                             <Mal
                                 disabled={isOffline && !hasSignalForm}
                                 onPress={() =>
-                                    navigation.navigate('EventoForm', {
+                                    navigation.navigate('SignalForm', {
                                         isOffline,
                                     })
                                 }
@@ -361,9 +361,7 @@ const Home = ({ navigation }) => {
                     <Tips />
 
                     <TipButton
-                        onPress={() =>
-                            navigation.navigate('EventoAnswersCards')
-                        }
+                        onPress={() => navigation.navigate('SignalAnswers')}
                     >
                         <UserTip
                             icon={

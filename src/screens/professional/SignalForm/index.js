@@ -19,7 +19,7 @@ import { ephemOfflineData, formattedForm } from '../../../utils/formConsts'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
 
-const EventoForm = ({ navigation }) => {
+const SignalForm = ({ navigation }) => {
     const { isOffline, token, user, storeCacheData, getCacheData } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
@@ -128,19 +128,19 @@ const EventoForm = ({ navigation }) => {
     const getEvent = async () => {
         if (!isOffline) {
             // hardcoded form id
-            const response = await getFlexibleForm(1, token)
+            const response = await getFlexibleForm(9, token)
 
             if (response.status === 200) {
                 const { flexible_form } = response.data
 
-                if (flexible_form.latest_version) {
+                if (flexible_form.flexible_form_version) {
                     const parsedData = JSON.parse(
-                        flexible_form.latest_version.data
+                        flexible_form.flexible_form_version.data
                     )
-                    flexible_form.latest_version.data = parsedData
+                    flexible_form.flexible_form_version.data = parsedData
 
                     const newFormVersion = formattedForm(
-                        flexible_form.latest_version,
+                        flexible_form.flexible_form_version,
                         user
                     )
                     storeCacheData('signalForm', newFormVersion)
@@ -204,4 +204,4 @@ const EventoForm = ({ navigation }) => {
     )
 }
 
-export default EventoForm
+export default SignalForm

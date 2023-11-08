@@ -19,7 +19,7 @@ const TabBar = () => {
 
                     if (route.name === 'Home') {
                         iconName = 'home'
-                    } else if (route.name === 'EventoAnswers') {
+                    } else if (route.name === 'SignalAnswersFiltered') {
                         iconName = 'clipboard'
                     }
 

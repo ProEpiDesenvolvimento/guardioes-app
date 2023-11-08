@@ -127,17 +127,19 @@ const Register = ({ navigation }) => {
     }
 
     const getRegisterForm = async () => {
-        const response = await getFlexibleForm(2, '')
+        const response = await getFlexibleForm(8, '')
 
         if (response.status === 200) {
             const { flexible_form } = response.data
 
-            if (flexible_form.latest_version) {
-                const parsedData = JSON.parse(flexible_form.latest_version.data)
-                flexible_form.latest_version.data = parsedData
+            if (flexible_form.flexible_form_version) {
+                const parsedData = JSON.parse(
+                    flexible_form.flexible_form_version.data
+                )
+                flexible_form.flexible_form_version.data = parsedData
 
-                setFormVersion(flexible_form.latest_version)
-                setFV2(flexible_form.latest_version)
+                setFormVersion(flexible_form.flexible_form_version)
+                setFV2(flexible_form.flexible_form_version)
             }
         }
     }
@@ -330,7 +332,9 @@ const Register = ({ navigation }) => {
                     {gender === 'Outro' ? (
                         <FormGroup>
                             <FormGroupChild>
-                                <FormLabel>Especifique seu gênero:</FormLabel>
+                                <FormLabel light>
+                                    Especifique seu gênero:
+                                </FormLabel>
                                 <NormalInput
                                     returnKeyType='next'
                                     onChangeText={(text) =>
@@ -445,7 +449,7 @@ const Register = ({ navigation }) => {
                     ) : null}
 
                     <FormInline>
-                        <FormLabel>
+                        <FormLabel light>
                             {translate('register.professionalLabel')}
                         </FormLabel>
                         <Selector
@@ -460,7 +464,7 @@ const Register = ({ navigation }) => {
                         />
                     </FormInline>
 
-                    {!isProfessional.key ? (
+                    {isProfessional.key === false ? (
                         <FormInlineCheck>
                             <CheckBoxStyled
                                 title={translate('register.riskGroupLabel')}
@@ -477,7 +481,7 @@ const Register = ({ navigation }) => {
                         </FormInlineCheck>
                     ) : null}
 
-                    {!isProfessional.key ? (
+                    {isProfessional.key === false ? (
                         <InstitutionSelector
                             key={key}
                             setUserInstitutionCallback={setUserInstitutionCallback}
@@ -488,10 +492,10 @@ const Register = ({ navigation }) => {
                         />
                     ) : null}
 
-                    {!isProfessional.key && allCategories.length > 0 ? (
+                    {allCategories.length > 0 ? (
                         <FormInline>
                             <FormLabel light>
-                                {translate('register.category')} *ð
+                                {translate('register.category')} *
                             </FormLabel>
                             <Selector
                                 data={allCategories}

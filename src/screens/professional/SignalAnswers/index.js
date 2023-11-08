@@ -23,7 +23,7 @@ import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { getFlexibleAnswers } from '../../../api/events'
 
-const EventoAnswersCards = ({ navigation }) => {
+const SignalAnswers = ({ navigation }) => {
     const { isOffline, token, storeCacheData, getCacheData } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
@@ -138,7 +138,7 @@ const EventoAnswersCards = ({ navigation }) => {
                             <ButtonsWrapper>
                                 <Button
                                     onPress={() => {
-                                        navigation.navigate('EventoAnswers', {
+                                        navigation.navigate('SignalAnswersFiltered', {
                                             status: key,
                                             flexibleAnswers:
                                                 groupedAnswers[key],
@@ -166,4 +166,4 @@ const EventoAnswersCards = ({ navigation }) => {
     )
 }
 
-export default EventoAnswersCards
+export default SignalAnswers
