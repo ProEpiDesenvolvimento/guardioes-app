@@ -48,7 +48,10 @@ import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
 import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
-import { getFlexibleAnswers, editFlexibleAnswer } from '../../../api/events'
+import {
+    getFlexibleAnswers,
+    editFlexibleAnswer,
+} from '../../../api/flexibleForms'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
 import { getAppGroup } from '../../../api/groups'

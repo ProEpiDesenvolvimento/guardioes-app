@@ -21,7 +21,7 @@ import { SendContainer, SendText } from '../../../components/NormalForms'
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
-import { getFlexibleAnswers } from '../../../api/events'
+import { getFlexibleAnswers } from '../../../api/flexibleForms'
 
 const SignalAnswers = ({ navigation }) => {
     const { isOffline, token, storeCacheData, getCacheData } = useUser()

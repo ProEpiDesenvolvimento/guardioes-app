@@ -21,7 +21,7 @@ import {
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
-import { getFlexibleAnswers } from '../../../api/events'
+import { getFlexibleAnswers } from '../../../api/flexibleForms'
 
 const SignalAnswersFiltered = ({ navigation, route }) => {
     const { status, flexibleAnswers } = route.params
