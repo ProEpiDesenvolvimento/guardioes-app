@@ -86,7 +86,7 @@ const Quiz = ({ navigation, route }) => {
 
         if (error && !skipError) {
             setLoadingAlert(false)
-            Alert.alert(translate('register.fillRequired'))
+            Alert.alert(translate('register.errorMessages.fieldsMustFilled'))
             return
         }
 

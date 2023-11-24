@@ -228,7 +228,6 @@ export const UserProvider = ({ children }) => {
         OneSignal.deleteTag('school_unit_id') // Remove on future release
         OneSignal.deleteTag('score') // Remove on future release
         OneSignal.deleteTag('doses')
-        OneSignal.deleteTag('is_professional')
     }
 
     const signOut = async () => {

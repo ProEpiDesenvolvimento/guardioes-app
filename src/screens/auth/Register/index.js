@@ -52,7 +52,7 @@ import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
 import { getCategories } from '../../../api/categories'
-import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
+import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/flexibleForms'
 
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
@@ -104,7 +104,7 @@ const Register = ({ navigation }) => {
 
         if (error) {
             setLoadingAlert(false)
-            Alert.alert(translate('register.fillRequired'))
+            Alert.alert(translate('register.errorMessages.fieldsMustFilled'))
             return
         }
 
@@ -127,7 +127,7 @@ const Register = ({ navigation }) => {
     }
 
     const getRegisterForm = async () => {
-        const response = await getFlexibleForm(8, '')
+        const response = await getFlexibleForm(2, '')
 
         if (response.status === 200) {
             const { flexible_form } = response.data

@@ -42,7 +42,7 @@ import { Emojis } from '../../../img/imageConst'
 import { scale } from '../../../utils/scalling'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
-import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
+import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/flexibleForms'
 
 const Home = ({ navigation }) => {
     const {
@@ -187,7 +187,7 @@ const Home = ({ navigation }) => {
     const getEvent = async () => {
         if (!isOffline) {
             // hardcoded form id
-            const response = await getFlexibleForm(9, token)
+            const response = await getFlexibleForm(1, token)
 
             if (response.status === 200) {
                 const { flexible_form } = response.data

@@ -45,7 +45,7 @@ const Vigilancia = ({ navigation }) => {
         if (!acceptedTerms) {
             Alert.alert(
                 translate('register.errorMessages.error'),
-                translate('register.errorMessages.allFieldsAreFilled')
+                translate('register.errorMessages.fieldsMustFilled')
             )
             return
         }

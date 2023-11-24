@@ -126,8 +126,8 @@ export default {
         },
         errorMessages: {
             error: 'Erro',
-            allFieldsAreFilled:
-                'Todos os campos devem ser preenchidos corretamente',
+            fieldsMustFilledIn:
+                'Os campos obrigatórios devem ser preenchidos corretamente',
         },
         professionalLabel: 'Você é um líder comunitário?',
         riskGroupLabel: 'Faz parte do grupo de risco?',

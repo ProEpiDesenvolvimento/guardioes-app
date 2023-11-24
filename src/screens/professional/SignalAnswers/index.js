@@ -138,11 +138,14 @@ const SignalAnswers = ({ navigation }) => {
                             <ButtonsWrapper>
                                 <Button
                                     onPress={() => {
-                                        navigation.navigate('SignalAnswersFiltered', {
-                                            status: key,
-                                            flexibleAnswers:
-                                                groupedAnswers[key],
-                                        })
+                                        navigation.navigate(
+                                            'SignalAnswersFiltered',
+                                            {
+                                                status: key,
+                                                flexibleAnswers:
+                                                    groupedAnswers[key],
+                                            }
+                                        )
                                     }}
                                 >
                                     <Feather

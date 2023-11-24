@@ -17,7 +17,7 @@ import translate from '../../../locales/i18n'
 import { getSurveyConfirmation } from '../../../utils/consts'
 import { ephemOfflineData, formattedForm } from '../../../utils/formConsts'
 import { useUser } from '../../../hooks/user'
-import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/events'
+import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/flexibleForms'
 
 const SignalForm = ({ navigation }) => {
     const { isOffline, token, user, storeCacheData, getCacheData } = useUser()
@@ -77,8 +77,8 @@ const SignalForm = ({ navigation }) => {
         })
 
         if (error) {
-            setShowProgressBar(false)
-            Alert.alert(translate('register.fillRequired'))
+            setShowAlert(false)
+            Alert.alert(translate('register.errorMessages.fieldsMustFilled'))
             return
         }
 
@@ -105,7 +105,7 @@ const SignalForm = ({ navigation }) => {
             if (response.status !== 201) {
                 console.warn(response.status)
                 Alert.alert(translate('register.geralError'))
-                setShowProgressBar(false)
+                setShowAlert(false)
             }
         } else {
             let newSignalAnswers = await getCacheData('pendingAnswers', false)
@@ -121,14 +121,14 @@ const SignalForm = ({ navigation }) => {
                 'Sem conexão com a Internet!',
                 'Seus registros ficarão armazenados no aplicativo. Quando houver conexão, por favor, abra o aplicativo e aguarde o envio dos dados.'
             )
-            setShowProgressBar(false)
+            setShowAlert(false)
         }
     }
 
     const getEvent = async () => {
         if (!isOffline) {
             // hardcoded form id
-            const response = await getFlexibleForm(9, token)
+            const response = await getFlexibleForm(1, token)
 
             if (response.status === 200) {
                 const { flexible_form } = response.data

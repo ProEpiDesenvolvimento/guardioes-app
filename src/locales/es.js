@@ -127,8 +127,8 @@ export default {
         },
         errorMessages: {
             error: 'Error',
-            allFieldsAreFilled:
-                'Todos los campos deben ser llenados correctamente',
+            fieldsMustFilled:
+                'Los campos obligatorios deben ser completados correctamente',
         },
         professionalLabel: '¿Eres un profesional de la salud?',
         riskGroupLabel: '¿Formas parte del grupo de riesgo?',

@@ -72,7 +72,7 @@ const SignalAnswersFiltered = ({ navigation, route }) => {
                                 <ButtonsWrapper>
                                     <Button
                                         onPress={() => {
-                                            console.log(answer.id)
+                                            console.log('answer', answer.id)
                                             navigation.navigate(
                                                 'SignalAnswer',
                                                 {

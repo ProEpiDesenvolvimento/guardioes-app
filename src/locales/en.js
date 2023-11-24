@@ -125,7 +125,7 @@ export default {
         },
         errorMessages: {
             error: 'Error',
-            allFieldsAreFilled: 'All fields must be filled in correctly',
+            fieldsMustFilled: 'Required fields must be filled in correctly',
         },
         professionalLabel: 'Are you a community leader?',
         riskGroupLabel: 'Are you part of the risk group?',

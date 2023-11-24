@@ -42,19 +42,19 @@ export const validRumor = (rumor, marked) => {
     if (rumor.title === '' || rumor.description.length < 5) {
         Alert.alert(
             translate('register.errorMessages.error'),
-            translate('register.errorMessages.allFieldsAreFilled')
+            translate('register.errorMessages.fieldsMustFilled')
         )
         valid = false
     } else if (rumor.confirmed_cases < 0 || rumor.confirmed_deaths < 0) {
         Alert.alert(
             translate('register.errorMessages.error'),
-            translate('register.errorMessages.allFieldsAreFilled')
+            translate('register.errorMessages.fieldsMustFilled')
         )
         valid = false
     } else if (!marked) {
         Alert.alert(
             translate('register.errorMessages.error'),
-            translate('register.errorMessages.allFieldsAreFilled')
+            translate('register.errorMessages.fieldsMustFilled')
         )
         valid = false
     }
