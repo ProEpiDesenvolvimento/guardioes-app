@@ -91,7 +91,7 @@ export const AutocompleteText = styled.Text`
     width: 100%
     font-family: ArgentumSans;
     text-align: center;
-    font-size: ${scale(14)}px;
+    font-size: ${scale(13)}px;
     color: #32323b;
     padding: ${scale(10)}px;
 `

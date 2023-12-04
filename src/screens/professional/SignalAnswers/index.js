@@ -39,7 +39,9 @@ const SignalAnswers = ({ navigation }) => {
             if (!ga[status]) {
                 ga[status] = []
             }
-            ga[status].push(answer)
+            if (answer.data.report_type === 'positive') {
+                ga[status].push(answer)
+            }
             return ga
         }, {})
 
