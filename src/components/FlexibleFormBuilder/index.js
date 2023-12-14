@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
+import { Text, View } from 'react-native'
 
+import MultiSelector from '../MultiSelector'
 import PlaceSelector from '../PlaceSelector'
 import {
     FormInline,
@@ -13,6 +15,7 @@ import {
 } from '../NormalForms'
 
 import translate from '../../locales/i18n'
+import { scale } from '../../utils/scalling'
 
 const FlexibleFormBuilder = ({
     formVersion,
@@ -22,6 +25,19 @@ const FlexibleFormBuilder = ({
     disabled,
     light,
 }) => {
+    const getMultiSelectorValue = (question) => {
+        if (question.value) {
+            const selected = question.value.split(',')
+            return selected
+        }
+        return []
+    }
+
+    const setMultiSelectorValue = (question, selected) => {
+        const value = selected.join(',')
+        question.value = value
+    }
+
     const handleAnswer = (question, option) => {
         const newFormVersion = { ...fV2 }
 
@@ -55,21 +71,25 @@ const FlexibleFormBuilder = ({
         const newFormVersion = { ...fV2 }
 
         const data = option.terms
-        const place = option.structured_formatting.main_text
+        const place = option.structured_formatting?.main_text
 
         newFormVersion.data.questions.forEach((question) => {
             if (question.type === 'geo_location') {
                 question.value = ''
-                if (place) {
-                    question.value += `${place}, `
-                }
-                if (data.length) {
-                    const cityState = []
-
-                    for (let i = 1; i < data.length - 1; i += 1) {
-                        cityState.push(data[i].value)
+                if (place || data?.length) {
+                    if (place) {
+                        question.value += `${place}, `
                     }
-                    question.value += cityState.join(' , ').trim()
+                    if (data.length) {
+                        const cityState = []
+
+                        for (let i = 1; i < data.length - 1; i += 1) {
+                            cityState.push(data[i].value)
+                        }
+                        question.value += cityState.join(' , ').trim()
+                    }
+                } else {
+                    question.value = option
                 }
             }
         })
@@ -86,7 +106,16 @@ const FlexibleFormBuilder = ({
                     <FormInline key={question.field}>
                         <FormLabel light={light}>
                             {question.text}
-                            {question.required ? ' *' : ''}
+
+                            <Text
+                                style={{
+                                    fontFamily: 'ArgentumSans-SemiBold',
+                                    fontSize: scale(18),
+                                    color: '#FF0000',
+                                }}
+                            >
+                                {question.required ? ' *' : ''}
+                            </Text>
                         </FormLabel>
 
                         {question.type === 'text' ||
@@ -120,8 +149,20 @@ const FlexibleFormBuilder = ({
                             />
                         ) : null}
 
+                        {question.type === 'multi-select' ? (
+                            <MultiSelector
+                                data={question.options}
+                                value={getMultiSelectorValue(question)}
+                                onChange={(options) => {
+                                    setMultiSelectorValue(question, options)
+                                }}
+                                disabled={disabled}
+                            />
+                        ) : null}
+
                         {question.type === 'select' ? (
                             <Selector
+                                key={question.field}
                                 data={question.options}
                                 initValue={
                                     question.value
@@ -139,7 +180,7 @@ const FlexibleFormBuilder = ({
                         {question.type === 'multiple'
                             ? question.options.map((option) => (
                                   <CheckBoxStyled
-                                      key={option.id}
+                                      key={option.label}
                                       title={option.label}
                                       checked={question.value === option.value}
                                       onPress={() =>
