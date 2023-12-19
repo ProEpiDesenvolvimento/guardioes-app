@@ -23,8 +23,8 @@ const SignalAnswer = ({ route }) => {
     const buildAnswers = async () => {
         const newData = []
 
-        formVersion.data.questions.forEach((q) => {
-            answer.data.answers.forEach((a) => {
+        formVersion.data.questions?.forEach((q) => {
+            answer.data.answers?.forEach((a) => {
                 if (q.field === a.field) {
                     newData.push({
                         ...q,
@@ -41,8 +41,10 @@ const SignalAnswer = ({ route }) => {
     }
 
     const getFlexibleFormVersion = async () => {
-        const parsedData = JSON.parse(answer.flexible_form_version.data)
-        answer.flexible_form_version.data = parsedData
+        if (!answer.flexible_form_version.data?.questions) {
+            const parsedData = JSON.parse(answer.flexible_form_version.data)
+            answer.flexible_form_version.data = parsedData
+        }
 
         setFormVersion(answer.flexible_form_version)
         setFV2(answer.flexible_form_version)
