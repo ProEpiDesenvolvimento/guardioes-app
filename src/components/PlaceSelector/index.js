@@ -23,6 +23,7 @@ const PlaceSelector = ({
     textCancel,
     disabled,
 }) => {
+    const [textInputValue, setTextInputValue] = useState('')
     const [modalVisible, setModalVisible] = useState(false)
 
     const cancelText = textCancel || translate('selector.cancelButton')
@@ -91,7 +92,21 @@ const PlaceSelector = ({
                                     backgroundColor: '#fff',
                                 },
                             }}
+                            preProcess={(data) => {
+                                setTextInputValue(data)
+                                return data
+                            }}
                         />
+                        {textInputValue !== '' ? (
+                            <CancelTouch
+                                onPress={() => {
+                                    onChange(textInputValue)
+                                    closeModal()
+                                }}
+                            >
+                                <CancelText>Não encontrei na lista</CancelText>
+                            </CancelTouch>
+                        ) : null}
                         <CancelTouch onPress={() => closeModal()}>
                             <CancelText>{cancelText}</CancelText>
                         </CancelTouch>

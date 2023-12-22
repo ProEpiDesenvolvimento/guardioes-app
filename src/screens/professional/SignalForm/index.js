@@ -196,7 +196,7 @@ const SignalForm = ({ navigation }) => {
                 closeOnTouchOutside={!showProgressBar}
                 closeOnHardwareBackPress={false}
                 showConfirmButton={!showProgressBar}
-                confirmText={translate('badReport.messages.confirmText')}
+                confirmText='Ok'
                 onConfirmPressed={() => navigation.navigate('Home')}
                 onDismiss={() => setShowAlert(false)}
             />
