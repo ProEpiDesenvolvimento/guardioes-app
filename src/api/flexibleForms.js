@@ -1,5 +1,21 @@
 import api from './api'
 
+export const getFlexibleRegistration = async (appId, token) => {
+    let response = {}
+
+    try {
+        response = await api.get(`/flexible_forms/registration/${appId}`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
 export const getFlexibleQuizzes = async (token) => {
     let response = {}
 
