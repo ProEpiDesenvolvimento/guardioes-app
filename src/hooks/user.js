@@ -31,6 +31,7 @@ export const UserProvider = ({ children }) => {
     const [group, setGroup] = useState({})
     const [app, setApp] = useState({})
     const [appTips, setAppTips] = useState({ loading: true })
+    const [lastSignal, setLastSignal] = useState('')
     const [lastReport, setLastReport] = useState('')
     const [lastForm, setLastForm] = useState('')
 
@@ -179,7 +180,6 @@ export const UserProvider = ({ children }) => {
         }
         if (token) {
             setToken(token)
-
             await RNSecureStorage.set('userToken', token, {
                 accessible: ACCESSIBLE,
             })
@@ -188,7 +188,6 @@ export const UserProvider = ({ children }) => {
             await RNSecureStorage.set('userEmail', credentials.email, {
                 accessible: ACCESSIBLE,
             })
-
             await RNSecureStorage.set('userPwd', credentials.password, {
                 accessible: ACCESSIBLE,
             })
@@ -196,16 +195,16 @@ export const UserProvider = ({ children }) => {
     }
 
     const sendUserTagsToOneSignal = (user) => {
-        const userGroupName = user.group ? user.group.split('/')[3] : null
+        const userGroupName = user.group ? user.group.split('/')[3] : ''
 
         OneSignal.setExternalUserId(user.id.toString())
-        OneSignal.deleteTag('school_unit_id') // Remove on future release
-        OneSignal.deleteTag('score') // Remove on future release
         OneSignal.sendTags({
+            is_professional: user.is_professional ? '1' : '0',
             city: user.city,
             group: userGroupName,
-            doses: user.doses, // Check on next release
-            is_professional: user.is_professional ? 1 : 0,
+            doses: user.doses.toString(),
+            streak: user.streak.toString(),
+            reported_this_week: user.reported_this_week ? '1' : '0',
         })
     }
 
@@ -225,9 +224,9 @@ export const UserProvider = ({ children }) => {
         OneSignal.removeExternalUserId()
         OneSignal.deleteTag('city')
         OneSignal.deleteTag('group')
-        OneSignal.deleteTag('school_unit_id') // Remove on future release
-        OneSignal.deleteTag('score') // Remove on future release
         OneSignal.deleteTag('doses')
+        OneSignal.deleteTag('streak')
+        OneSignal.deleteTag('reported_this_week')
     }
 
     const signOut = async () => {
@@ -398,10 +397,18 @@ export const UserProvider = ({ children }) => {
         await AsyncStorage.setItem('appTips', JSON.stringify(newTips))
     }
 
-    const storeLastReport = async (score) => {
+    const storeLastSignal = async (lastSignalDate) => {
+        const newLastSignal = lastSignalDate.toISOString()
+        setLastSignal(newLastSignal)
+        await AsyncStorage.setItem('lastSignal', newLastSignal)
+
+        OneSignal.sendTag('reported_this_week', '1')
+    }
+
+    const storeLastReport = async (streak) => {
         const todayDate = new Date()
 
-        switch (score) {
+        switch (streak) {
             case 0:
                 console.warn('Did not report the day before')
                 break
@@ -415,7 +422,10 @@ export const UserProvider = ({ children }) => {
         }
 
         await AsyncStorage.setItem('lastReport', todayDate.toISOString())
-        console.warn(`User streak: ${score}`)
+        OneSignal.sendTag('streak', streak.toString())
+        OneSignal.sendTag('reported_this_week', '1')
+
+        console.warn(`User streak: ${streak}`)
     }
 
     const storeLastForm = async (lastFormDate) => {
@@ -466,6 +476,8 @@ export const UserProvider = ({ children }) => {
                 app,
                 getAppTip,
                 hideAppTip,
+                lastSignal,
+                storeLastSignal,
                 lastReport,
                 storeLastReport,
                 lastForm,
