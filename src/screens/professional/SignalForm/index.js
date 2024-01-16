@@ -20,7 +20,14 @@ import { useUser } from '../../../hooks/user'
 import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/flexibleForms'
 
 const SignalForm = ({ navigation }) => {
-    const { isOffline, token, user, storeCacheData, getCacheData } = useUser()
+    const {
+        isOffline,
+        token,
+        user,
+        storeLastSignal,
+        storeCacheData,
+        getCacheData,
+    } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [formVersion, setFormVersion] = useState({})
@@ -102,7 +109,11 @@ const SignalForm = ({ navigation }) => {
             )
             showConfirmation(response.status, response.data)
 
-            if (response.status !== 201) {
+            if (response.status === 201) {
+                const lastFormDate = new Date()
+                lastFormDate.setHours(0, 0, 0, 0)
+                storeLastSignal(lastFormDate)
+            } else {
                 console.warn(response.status)
                 Alert.alert(translate('register.geralError'))
                 setShowAlert(false)

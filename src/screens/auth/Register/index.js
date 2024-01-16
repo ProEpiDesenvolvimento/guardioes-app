@@ -52,7 +52,10 @@ import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { createUser, authUser } from '../../../api/user'
 import { getCategories } from '../../../api/categories'
-import { getFlexibleForm, sendFlexibleAnswer } from '../../../api/flexibleForms'
+import {
+    getFlexibleRegistration,
+    sendFlexibleAnswer,
+} from '../../../api/flexibleForms'
 
 const Register = ({ navigation }) => {
     const { storeUser, setIsLoggedIn, setNeedSignIn } = useUser()
@@ -127,7 +130,7 @@ const Register = ({ navigation }) => {
     }
 
     const getRegisterForm = async () => {
-        const response = await getFlexibleForm(2, '')
+        const response = await getFlexibleRegistration(1, '')
 
         if (response.status === 200) {
             const { flexible_form } = response.data
@@ -492,6 +495,15 @@ const Register = ({ navigation }) => {
                         />
                     ) : null}
 
+                    {isProfessional.key ? (
+                        <FlexibleFormBuilder
+                            formVersion={formVersion}
+                            fV2={fV2}
+                            setFV2={setFV2}
+                            light
+                        />
+                    ) : null}
+
                     {allCategories.length > 0 ? (
                         <FormInline>
                             <FormLabel light>
@@ -508,15 +520,6 @@ const Register = ({ navigation }) => {
                                 onChange={(option) => setCategory(option)}
                             />
                         </FormInline>
-                    ) : null}
-
-                    {isProfessional.key ? (
-                        <FlexibleFormBuilder
-                            formVersion={formVersion}
-                            fV2={fV2}
-                            setFV2={setFV2}
-                            light
-                        />
                     ) : null}
 
                     <FormInline>
