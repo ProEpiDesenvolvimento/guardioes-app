@@ -16,7 +16,6 @@ import Ajuda from '../../screens/app/Ajuda'
 import BadReport from '../../screens/app/BadReport'
 import BioSeguranca from '../../screens/app/BioSeguranca'
 import ExcluirConta from '../../screens/app/ExcluirConta'
-import FAQ from '../../screens/app/FAQ'
 import Perfis from '../../screens/app/Perfis'
 import PerfilEditar from '../../screens/app/PerfilEditar'
 import PerfilNovo from '../../screens/app/PerfilNovo'
@@ -156,11 +155,6 @@ const AppStack = () => {
                 name='Sobre'
                 component={Sobre}
                 options={{ title: translate('about.title') }}
-            />
-            <Stack.Screen
-                name='FAQ'
-                component={FAQ}
-                options={{ title: translate('faq.title') }}
             />
             <Stack.Screen
                 name='ExcluirConta'

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Linking } from 'react-native'
 
 import { Container } from '../../../components/NormalForms'
 import {
@@ -43,7 +44,13 @@ const Ajuda = ({ navigation }) => {
                     </CardWhite>
                 </Button>
 
-                <Button onPress={() => navigation.navigate('FAQ')}>
+                <Button
+                    onPress={() =>
+                        Linking.openURL(
+                            'https://proepi.org.br/guardioes-da-saude'
+                        )
+                    }
+                >
                     <CardWhite>
                         <AvatarWrapper>
                             <FAQIcon height={scale(45)} width={scale(45)} />

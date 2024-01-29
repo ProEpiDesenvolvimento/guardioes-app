@@ -14,7 +14,6 @@ import {
 import Ajuda from '../../screens/app/Ajuda'
 import HomeDrawer from './HomeDrawer'
 import ExcluirConta from '../../screens/app/ExcluirConta'
-import FAQ from '../../screens/app/FAQ'
 import Perfis from '../../screens/app/Perfis'
 import PerfilEditar from '../../screens/app/PerfilEditar'
 import PerfilNovo from '../../screens/app/PerfilNovo'
@@ -133,11 +132,6 @@ const ProfessionalStack = () => {
                 name='Tutorial'
                 component={Tutorial}
                 options={{ title: translate('tutorial.title') }}
-            />
-            <Stack.Screen
-                name='FAQ'
-                component={FAQ}
-                options={{ title: translate('faq.title') }}
             />
             <Stack.Screen
                 name='TermosPoliticas'
