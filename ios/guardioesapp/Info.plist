@@ -44,8 +44,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>A sua camera será usada para a fotografia do avatar.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -53,9 +51,11 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>A sua localização será usada para gerar os dados do mapa de risco. Não se preocupe, os dados são anônimos.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>A sua camera será usada para a fotografia do avatar.</string>
+	<string>A sua galeria será usada para a imagem do perfil.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>A sua camera será usada para a fotografia do avatar.</string>
+	<string>A sua galeria será usada para a imagem do perfil.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A sua camera será usada para a imagem do perfil.</string>
 	<key>OneSignal_app_groups_key</key>
 	<string>group.com.guardioesapp.onesignal</string>
 	<key>UIAppFonts</key>

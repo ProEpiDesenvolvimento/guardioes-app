@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Alert, Modal, Platform } from 'react-native'
+import { Alert, Modal } from 'react-native'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
-import ImagePicker from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { Avatar } from 'react-native-elements'
 
 import {
@@ -43,7 +43,7 @@ import {
     raceChoices,
     householdChoices,
 } from '../../../utils/selector'
-import { handleAvatar, getInitials, validPerson } from '../../../utils/consts'
+import { getAvatar, getInitials, validPerson } from '../../../utils/consts'
 import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
 import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
@@ -208,6 +208,24 @@ const PerfilEditar = ({ navigation, route }) => {
         getAppCategories()
     }, [])
 
+    const checkIfIsVigilance = async (groupId) => {
+        if (groupId) {
+            const response = await getAppGroup(groupId)
+            if (response.status === 200) {
+                const { group } = response.data
+
+                if (
+                    group.group_manager &&
+                    !group.group_manager.vigilance_email
+                ) {
+                    setIsVigilance(false)
+                }
+            }
+        } else {
+            setIsVigilance(false)
+        }
+    }
+
     useEffect(() => {
         checkIfIsVigilance(groupId)
     }, [groupId])
@@ -276,24 +294,6 @@ const PerfilEditar = ({ navigation, route }) => {
         }
     }
 
-    const checkIfIsVigilance = async (groupId) => {
-        if (groupId) {
-            const response = await getAppGroup(groupId)
-            if (response.status === 200) {
-                const { group } = response.data
-
-                if (
-                    group.group_manager &&
-                    !group.group_manager.vigilance_email
-                ) {
-                    setIsVigilance(false)
-                }
-            }
-        } else {
-            setIsVigilance(false)
-        }
-    }
-
     const editUser = async () => {
         const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         const isBrazil = country === 'Brazil'
@@ -336,39 +336,6 @@ const PerfilEditar = ({ navigation, route }) => {
         }
     }
 
-    const changeAvatar = () => {
-        ImagePicker.showImagePicker(imageOptions, (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker')
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error)
-            } else if (response.customButton === 'remove') {
-                if (isHousehold) {
-                    updateHouseholdAvatars(id, undefined)
-                } else {
-                    updateUserAvatar(undefined)
-                }
-
-                setAvatar(null)
-                Alert.alert(translate('register.removedPhoto'))
-            } else {
-                let source = response.uri
-                if (Platform.OS === 'android') {
-                    source = `content://com.guardioesapp.provider/root${response.path}`
-                }
-
-                if (isHousehold) {
-                    updateHouseholdAvatars(id, source)
-                } else {
-                    updateUserAvatar(source)
-                }
-
-                setAvatar(source)
-                Alert.alert(translate('register.updatedPhoto'))
-            }
-        })
-    }
-
     const handleEdit = () => {
         if (isHousehold) {
             editHousehold()
@@ -391,6 +358,64 @@ const PerfilEditar = ({ navigation, route }) => {
                 { text: 'OK', onPress: () => removeHousehold() },
             ],
             { cancelable: false }
+        )
+    }
+
+    const changeAvatar = (response) => {
+        if (response) {
+            if (!response.didCancel && !response.errorCode) {
+                const [image] = response.assets
+                const {uri} = image
+
+                if (isHousehold) {
+                    updateHouseholdAvatars(id, uri)
+                } else {
+                    updateUserAvatar(uri)
+                }
+                setAvatar(uri)
+                Alert.alert(translate('register.updatedPhoto'))
+            }
+        } else {
+            if (isHousehold) {
+                updateHouseholdAvatars(id, undefined)
+            } else {
+                updateUserAvatar(undefined)
+            }
+            setAvatar(null)
+            Alert.alert(translate('register.removedPhoto'))
+        }
+    }
+
+    const handleAvatar = () => {
+        Alert.alert(
+            translate('register.selectImage'),
+            '',
+            [
+                {
+                    text: translate('register.pickPhoto'),
+                    onPress: () =>
+                        launchCamera(imageOptions, (response) => {
+                            changeAvatar(response)
+                        }),
+                },
+                {
+                    text: translate('register.library'),
+                    onPress: () =>
+                        launchImageLibrary(imageOptions, (response) => {
+                            changeAvatar(response)
+                        }),
+                },
+                {
+                    text: translate('register.removePhoto'),
+                    onPress: () => changeAvatar(null),
+                },
+                {
+                    text: translate('selector.cancelButton'),
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+            ],
+            { cancelable: true }
         )
     }
 
@@ -439,7 +464,7 @@ const PerfilEditar = ({ navigation, route }) => {
                 <FormInline>
                     <Avatar
                         size={scale(110)}
-                        source={handleAvatar(avatar)}
+                        source={getAvatar(avatar)}
                         title={getInitials(name)}
                         activeOpacity={0.5}
                         showEditButton
@@ -450,7 +475,7 @@ const PerfilEditar = ({ navigation, route }) => {
                             color: '#ffffff',
                             underlayColor: '#000000',
                         }}
-                        onEditPress={() => changeAvatar()}
+                        onEditPress={() => handleAvatar()}
                     />
                     {isHousehold && (
                         <Delete onPress={() => handleDelete()}>
@@ -643,19 +668,10 @@ const PerfilEditar = ({ navigation, route }) => {
 }
 
 const imageOptions = {
-    title: translate('register.selectImage'),
-    takePhotoButtonTitle: translate('register.pickPhoto'),
-    chooseFromLibraryButtonTitle: translate('register.library'),
-    customButtons: [
-        { name: 'remove', title: translate('register.removePhoto') },
-    ],
-    cancelButtonTitle: translate('selector.cancelButton'),
-    noData: true,
-    quality: 0.5,
-    storageOptions: {
-        skipBackup: true,
-        path: 'gds',
-    },
+    mediaType: 'photo',
+    quality: 0.7,
+    includeBase64: false,
+    saveToPhotos: true,
 }
 
 export default PerfilEditar

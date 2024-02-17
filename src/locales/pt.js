@@ -110,7 +110,7 @@ export default {
         geralError: 'Ocorreu um erro, tente novamente depois.',
         confirmDeleteUser: 'Excluir perfil',
         confirmDeleteUser2: 'Deseja excluir esse perfil?',
-        selectImage: 'Selecione imagem de perfil',
+        selectImage: 'Selecione imagem do perfil',
         pickPhoto: 'Tirar uma foto',
         library: 'Selecionar da Galeria',
         removePhoto: 'Remover foto',

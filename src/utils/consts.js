@@ -28,7 +28,7 @@ export const getInitials = (string) => {
     return null
 }
 
-export const handleAvatar = (image) => {
+export const getAvatar = (image) => {
     const source = { uri: image }
 
     if (image && image !== 'default') {
