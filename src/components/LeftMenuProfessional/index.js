@@ -20,7 +20,7 @@ import {
 
 import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
-import { getInitials, handleAvatar } from '../../utils/consts'
+import { getInitials, getAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
 
 const LeftMenuProfessional = ({ navigation }) => {
@@ -41,7 +41,7 @@ const LeftMenuProfessional = ({ navigation }) => {
                 <Avatar
                     containerStyle={[styles.avatar, { zIndex: index-- }]}
                     size={scale(60)}
-                    source={handleAvatar(avatar)}
+                    source={getAvatar(avatar)}
                     title={getInitials(user.user_name)}
                     rounded
                 />
@@ -50,7 +50,7 @@ const LeftMenuProfessional = ({ navigation }) => {
                         key={household.id}
                         containerStyle={[styles.avatars, { zIndex: index-- }]}
                         size={scale(60)}
-                        source={handleAvatar(householdAvatars[household.id])}
+                        source={getAvatar(householdAvatars[household.id])}
                         title={getInitials(household.description)}
                         rounded
                     />

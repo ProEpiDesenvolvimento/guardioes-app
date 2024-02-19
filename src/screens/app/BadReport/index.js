@@ -33,7 +33,7 @@ import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
 import {
     getNameParts,
-    handleAvatar,
+    getAvatar,
     getInitials,
     redirectAlert,
     getSurveyConfirmation,
@@ -303,7 +303,7 @@ const BadReport = ({ navigation }) => {
                     <IconWrapper>
                         <Avatar
                             size={scale(58)}
-                            source={handleAvatar(person.avatar)}
+                            source={getAvatar(person.avatar)}
                             title={getInitials(person.name)}
                             rounded
                         />

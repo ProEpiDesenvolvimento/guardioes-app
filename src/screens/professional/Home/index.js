@@ -33,7 +33,7 @@ import translate from '../../../locales/i18n'
 import {
     terms,
     getNameParts,
-    handleAvatar,
+    getAvatar,
     getInitials,
     getSurveyConfirmation,
 } from '../../../utils/consts'
@@ -328,7 +328,7 @@ const Home = ({ navigation }) => {
                             <Avatar
                                 containerStyle={styles.avatar}
                                 size={scale(58)}
-                                source={handleAvatar(person.avatar)}
+                                source={getAvatar(person.avatar)}
                                 title={getInitials(person.name)}
                                 activeOpacity={0.5}
                                 rounded

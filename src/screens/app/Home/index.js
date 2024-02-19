@@ -47,7 +47,7 @@ import translate from '../../../locales/i18n'
 import {
     terms,
     getNameParts,
-    handleAvatar,
+    getAvatar,
     getInitials,
     getSurveyConfirmation,
     showSurveillanceInvite,
@@ -350,7 +350,7 @@ const Home = ({ navigation }) => {
                             <Avatar
                                 containerStyle={styles.avatar}
                                 size={scale(58)}
-                                source={handleAvatar(person.avatar)}
+                                source={getAvatar(person.avatar)}
                                 title={getInitials(person.name)}
                                 editButton={{
                                     name: null,
@@ -476,7 +476,7 @@ const Home = ({ navigation }) => {
                                     >
                                         <Avatar
                                             size={scale(60)}
-                                            source={handleAvatar(avatar)}
+                                            source={getAvatar(avatar)}
                                             title={getInitials(user.user_name)}
                                             rounded
                                         />
@@ -496,7 +496,7 @@ const Home = ({ navigation }) => {
                                         >
                                             <Avatar
                                                 size={scale(60)}
-                                                source={handleAvatar(
+                                                source={getAvatar(
                                                     householdAvatars[
                                                         household.id
                                                     ]

@@ -25,7 +25,7 @@ import {
 
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
-import { handleAvatar, getInitials } from '../../../utils/consts'
+import { getAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUser } from '../../../api/user'
 
@@ -118,7 +118,7 @@ const Perfis = ({ navigation }) => {
                     <Avatar
                         containerStyle={styles.Avatar}
                         size={scale(58)}
-                        source={handleAvatar(avatar)}
+                        source={getAvatar(avatar)}
                         title={getInitials(user.user_name)}
                         rounded
                     />
@@ -160,7 +160,7 @@ const Perfis = ({ navigation }) => {
                         <AvatarWrapper>
                             <Avatar
                                 size={scale(58)}
-                                source={handleAvatar(
+                                source={getAvatar(
                                     householdAvatars[household.id]
                                 )}
                                 title={getInitials(household.description)}

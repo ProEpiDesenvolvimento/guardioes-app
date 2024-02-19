@@ -48,7 +48,7 @@ import translate from '../../../locales/i18n'
 import { LocaleConfig } from '../../../utils/calendaryMonthNames'
 import { scale } from '../../../utils/scalling'
 import { HappyIcon, SadIcon, BadgeIcon } from '../../../img/imageConst'
-import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
+import { getNameParts, getAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUserSurveys } from '../../../api/surveys'
 
@@ -257,7 +257,7 @@ const Diario = ({ navigation }) => {
                                     borderWidth: 3,
                                 }}
                                 size={scale(50)}
-                                source={handleAvatar(person.avatar)}
+                                source={getAvatar(person.avatar)}
                                 title={getInitials(person.name)}
                                 rounded
                             />

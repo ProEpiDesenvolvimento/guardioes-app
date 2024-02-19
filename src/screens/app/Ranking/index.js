@@ -18,7 +18,7 @@ import {
 
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
-import { getNameParts, handleAvatar, getInitials } from '../../../utils/consts'
+import { getNameParts, getAvatar, getInitials } from '../../../utils/consts'
 import { useUser } from '../../../hooks/user'
 import { getUsersRanking } from '../../../api/user'
 
@@ -80,7 +80,7 @@ const Ranking = ({ navigation }) => {
             <FormInline>
                 <Avatar
                     size={scale(110)}
-                    source={handleAvatar(avatar)}
+                    source={getAvatar(avatar)}
                     title={getInitials(user.user_name)}
                     activeOpacity={0.5}
                     showEditButton
@@ -104,7 +104,7 @@ const Ranking = ({ navigation }) => {
 
                             <Avatar
                                 size={scale(58)}
-                                source={handleAvatar(null)}
+                                source={getAvatar(null)}
                                 title={getInitials(person.user_name)}
                                 activeOpacity={0.5}
                                 showEditButton
