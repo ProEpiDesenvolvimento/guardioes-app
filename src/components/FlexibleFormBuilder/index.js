@@ -1,15 +1,25 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react'
-import { Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Modal } from 'react-native'
 
+import Feather from 'react-native-vector-icons/Feather'
 import MultiSelector from '../MultiSelector'
 import PlaceSelector from '../PlaceSelector'
 import {
+    ModalContainer,
+    ModalBox,
+    ModalTitle,
+    ModalText,
+    ButtonClose,
+    ModalClose,
     FormInline,
+    FormGroup,
     FormLabel,
+    FormRequired,
     FormTip,
     NormalInput,
     Selector,
+    CheckLabel,
     DateSelector,
     CheckBoxStyled,
 } from '../NormalForms'
@@ -25,6 +35,9 @@ const FlexibleFormBuilder = ({
     disabled,
     light,
 }) => {
+    const [hintSelected, setHintSelected] = useState({})
+    const [modalHint, setModalHint] = useState(false)
+
     const getMultiSelectorValue = (question) => {
         if (question.value) {
             const selected = question.value.split(',')
@@ -103,136 +116,189 @@ const FlexibleFormBuilder = ({
                     return null
                 }
                 return (
-                    <FormInline key={question.field}>
-                        <FormLabel light={light}>
-                            {question.text}
+                    <>
+                        <Modal // Modal for Hint
+                            animationType='fade'
+                            transparent
+                            visible={modalHint}
+                            onRequestClose={() => {
+                                setModalHint(!modalHint)
+                            }}
+                        >
+                            <ModalContainer>
+                                <ModalBox>
+                                    <ModalTitle>
+                                        {hintSelected.title}
+                                    </ModalTitle>
 
-                            <Text
-                                style={{
-                                    fontFamily: 'ArgentumSans-SemiBold',
-                                    fontSize: scale(18),
-                                    color: '#FF0000',
-                                }}
-                            >
-                                {question.required ? ' *' : ''}
-                            </Text>
-                        </FormLabel>
+                                    <ModalText>{hintSelected.text}</ModalText>
 
-                        {question.type === 'text' ||
-                        question.type === 'number' ? (
-                            <NormalInput
-                                value={question.value}
-                                onChangeText={(text) =>
-                                    handleAnswer(question, text)
-                                }
-                                editable={!disabled}
-                            />
-                        ) : null}
+                                    <ButtonClose
+                                        onPress={() => setModalHint(false)}
+                                    >
+                                        <ModalClose>
+                                            <Feather
+                                                name='x'
+                                                size={scale(24)}
+                                                color='#ffffff'
+                                            />
+                                        </ModalClose>
+                                    </ButtonClose>
+                                </ModalBox>
+                            </ModalContainer>
+                        </Modal>
 
-                        {question.type === 'date' ? (
-                            <DateSelector
-                                placeholder={translate('dateSelector.format')}
-                                date={question.value}
-                                format='DD-MM-YYYY'
-                                minDate='01-01-1918'
-                                locale='pt-BR'
-                                confirmBtnText={translate(
-                                    'dateSelector.confirmButton'
-                                )}
-                                cancelBtnText={translate(
-                                    'dateSelector.cancelButton'
-                                )}
-                                onDateChange={(date) =>
-                                    handleAnswer(question, date)
-                                }
-                                disabled={disabled}
-                            />
-                        ) : null}
+                        <FormInline key={question.field}>
+                            <FormGroup>
+                                <FormLabel light={light}>
+                                    {question.text}
 
-                        {question.type === 'multi-select' ? (
-                            <MultiSelector
-                                data={question.options}
-                                value={getMultiSelectorValue(question)}
-                                onChange={(options) => {
-                                    setMultiSelectorValue(question, options)
-                                }}
-                                disabled={disabled}
-                            />
-                        ) : null}
+                                    <FormRequired>
+                                        {question.required ? ' *' : ''}
+                                    </FormRequired>
+                                </FormLabel>
 
-                        {question.type === 'select' ? (
-                            <Selector
-                                key={question.field}
-                                data={question.options}
-                                initValue={
-                                    question.value
-                                        ? question.value
-                                        : translate('selector.label')
-                                }
-                                cancelText={translate('selector.cancelButton')}
-                                onChange={(option) =>
-                                    handleAnswer(question, option)
-                                }
-                                disabled={disabled}
-                            />
-                        ) : null}
+                                {question.hint ? (
+                                    <CheckLabel
+                                        onPress={() => {
+                                            setHintSelected(question.hint)
+                                            setModalHint(true)
+                                        }}
+                                    >
+                                        <Feather
+                                            name='help-circle'
+                                            size={scale(25)}
+                                            color='#348EAC'
+                                        />
+                                    </CheckLabel>
+                                ) : null}
+                            </FormGroup>
 
-                        {question.type === 'multiple'
-                            ? question.options.map((option) => (
-                                  <CheckBoxStyled
-                                      key={option.label}
-                                      title={option.label}
-                                      checked={question.value === option.value}
-                                      onPress={() =>
-                                          handleAnswer(question, option)
-                                      }
-                                      full
-                                      disabled={disabled}
-                                  />
-                              ))
-                            : null}
-
-                        {question.type === 'geo_location' ? (
-                            isOffline ? (
+                            {question.type === 'text' ||
+                            question.type === 'number' ? (
                                 <NormalInput
                                     value={question.value}
                                     onChangeText={(text) =>
                                         handleAnswer(question, text)
                                     }
+                                    multiline={question.type === 'text'}
                                     editable={!disabled}
                                 />
-                            ) : (
-                                <>
-                                    <PlaceSelector
-                                        value={
-                                            question.value.split(',')[0]
-                                                ? question.value.split(',')[0]
-                                                : 'Selecionar'
+                            ) : null}
+
+                            {question.type === 'date' ? (
+                                <DateSelector
+                                    placeholder={translate(
+                                        'dateSelector.format'
+                                    )}
+                                    date={question.value}
+                                    format='DD-MM-YYYY'
+                                    minDate='01-01-1918'
+                                    locale='pt-BR'
+                                    confirmBtnText={translate(
+                                        'dateSelector.confirmButton'
+                                    )}
+                                    cancelBtnText={translate(
+                                        'dateSelector.cancelButton'
+                                    )}
+                                    onDateChange={(date) =>
+                                        handleAnswer(question, date)
+                                    }
+                                    disabled={disabled}
+                                />
+                            ) : null}
+
+                            {question.type === 'multi-select' ? (
+                                <MultiSelector
+                                    data={question.options}
+                                    value={getMultiSelectorValue(question)}
+                                    onChange={(options) => {
+                                        setMultiSelectorValue(question, options)
+                                    }}
+                                    disabled={disabled}
+                                />
+                            ) : null}
+
+                            {question.type === 'select' ? (
+                                <Selector
+                                    key={question.field}
+                                    data={question.options}
+                                    initValue={
+                                        question.value
+                                            ? question.value
+                                            : translate('selector.label')
+                                    }
+                                    cancelText={translate(
+                                        'selector.cancelButton'
+                                    )}
+                                    onChange={(option) =>
+                                        handleAnswer(question, option)
+                                    }
+                                    disabled={disabled}
+                                />
+                            ) : null}
+
+                            {question.type === 'multiple'
+                                ? question.options.map((option) => (
+                                      <CheckBoxStyled
+                                          key={option.label}
+                                          title={option.label}
+                                          checked={
+                                              question.value === option.value
+                                          }
+                                          onPress={() =>
+                                              handleAnswer(question, option)
+                                          }
+                                          full
+                                          disabled={disabled}
+                                      />
+                                  ))
+                                : null}
+
+                            {question.type === 'geo_location' ? (
+                                isOffline ? (
+                                    <NormalInput
+                                        value={question.value}
+                                        onChangeText={(text) =>
+                                            handleAnswer(question, text)
                                         }
-                                        placeholder={translate(
-                                            'autocomplete.searchBar'
-                                        )}
-                                        textCancel={translate(
-                                            'selector.cancelButton'
-                                        )}
-                                        onChange={(option) => {
-                                            handlePlace(option)
-                                        }}
-                                        disabled={disabled}
+                                        editable={!disabled}
                                     />
-                                    <FormTip
-                                        light={light}
-                                        style={{ alignSelf: 'center' }}
-                                    >
-                                        {question.value
-                                            .split(', ')
-                                            ?.slice(1)
-                                            ?.join(', ')}
-                                    </FormTip>
-                                </>
-                            )
-                        ) : null}
-                    </FormInline>
+                                ) : (
+                                    <>
+                                        <PlaceSelector
+                                            value={
+                                                question.value.split(',')[0]
+                                                    ? question.value.split(
+                                                          ','
+                                                      )[0]
+                                                    : 'Selecionar'
+                                            }
+                                            placeholder={translate(
+                                                'autocomplete.searchBar'
+                                            )}
+                                            textCancel={translate(
+                                                'selector.cancelButton'
+                                            )}
+                                            onChange={(option) => {
+                                                handlePlace(option)
+                                            }}
+                                            disabled={disabled}
+                                        />
+                                        <FormTip
+                                            light={light}
+                                            style={{ alignSelf: 'center' }}
+                                        >
+                                            {question.value
+                                                .split(', ')
+                                                ?.slice(1)
+                                                ?.join(', ')}
+                                        </FormTip>
+                                    </>
+                                )
+                            ) : null}
+                        </FormInline>
+                    </>
                 )
             })}
         </>
