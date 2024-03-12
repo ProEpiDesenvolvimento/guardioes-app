@@ -33,6 +33,7 @@ const MultiSelector = ({ data, value, onChange, min, max, disabled }) => {
             max={max}
             showBadgeDot={false}
             mode='BADGE'
+            listMode='SCROLLVIEW'
             textStyle={{
                 fontFamily: 'ArgentumSans',
                 fontSize: scale(13),
