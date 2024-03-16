@@ -46,9 +46,7 @@ const Ajuda = ({ navigation }) => {
 
                 <Button
                     onPress={() =>
-                        Linking.openURL(
-                            'https://proepi.org.br/guardioes-da-saude'
-                        )
+                        Linking.openURL('https://tinyurl.com/gds-faq-unb')
                     }
                 >
                     <CardWhite>
