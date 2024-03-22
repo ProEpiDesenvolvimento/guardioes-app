@@ -24,8 +24,8 @@ export default {
         cancelButton: 'Cancelar',
         groupError: 'Você deve selecionar o grupo',
         codeError: 'Você deve colocar o codigo de identificação',
-        codeFormatError: 'O código deve conter apenas dígitos',
-        codeLengthError: 'O código deve conter exatamente ',
+        codeFormatError: 'O código está em um formato incorreto',
+        codeLengthError: 'O código deve conter pelo menos ',
         codeLengthError2: ' dígitos',
     },
     dateSelector: {

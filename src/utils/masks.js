@@ -10,3 +10,9 @@ export const maskPhone = (phone) => {
     masked = masked.replace(/(\d)(\d{4})$/, '$1-$2')
     return masked
 }
+
+export const maskIdentificationCode = (code) => {
+    let masked = code
+    masked = masked.replace(/[^a-zA-Z0-9]/g, '')
+    return masked
+}
