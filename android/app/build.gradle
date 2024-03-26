@@ -132,8 +132,8 @@ android {
         applicationId "com.guardioesapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 75
-        versionName "3.3.5"
+        versionCode 83
+        versionName "3.4.0"
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
     }

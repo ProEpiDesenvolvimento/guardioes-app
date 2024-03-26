@@ -38,6 +38,13 @@ export const FormLabel = styled.Text`
     margin-bottom: ${scale(12)}px;
 `
 
+export const FormRequired = styled.Text`
+    font-family: ArgentumSans-SemiBold;
+    font-size: ${scale(18)}px;
+    color: #ff0000;
+    text-align: left;
+`
+
 export const FormTip = styled.Text`
     align-self: flex-start;
     font-family: ArgentumSans;
@@ -49,7 +56,8 @@ export const FormTip = styled.Text`
 
 export const NormalInput = styled.TextInput`
     width: 100%;
-    min-height: ${scale(36)}px;
+    min-height: ${({ multiline }) =>
+        multiline ? `${scale(100)}px` : `${scale(36)}px`};
     background-color: #ffffff;
     font-family: ArgentumSans-Medium;
     font-size: ${scale(14)}px;
@@ -96,7 +104,7 @@ export const FormInlineCheck = styled.View`
     margin-bottom: ${(props) => (props.space ? `${scale(12)}px` : '0px')};
 `
 
-export const Selector = styled(ModalSelector).attrs({
+export const Selector = styled(ModalSelector).attrs((props) => ({
     initValueTextStyle: {
         fontFamily: 'ArgentumSans',
         fontSize: scale(13),
@@ -109,6 +117,7 @@ export const Selector = styled(ModalSelector).attrs({
         borderWidth: 0,
         paddingVertical: scale(10),
         paddingHorizontal: scale(12),
+        opacity: props.disabled ? 0.5 : 1,
     },
     selectTextStyle: {
         fontFamily: 'ArgentumSans',
@@ -146,7 +155,7 @@ export const Selector = styled(ModalSelector).attrs({
         fontSize: scale(14),
         color: '#ffffff',
     },
-})`
+}))`
     width: 80%;
 `
 

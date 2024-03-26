@@ -1,7 +1,7 @@
 import React, {PureComponent, Component} from 'react';
 import clusterImages from './imgImport';
 import {Marker} from 'react-native-maps';
-import translate from '../../../locales/i18n';
+import translate from '../../locales/i18n';
 
 export default class ClusterMarker extends Component {
   constructor(props) {

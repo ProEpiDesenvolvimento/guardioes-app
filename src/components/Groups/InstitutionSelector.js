@@ -11,7 +11,8 @@ import {
 } from '../NormalForms'
 import Autocomplete from '../Autocomplete'
 
-import translate from '../../../locales/i18n'
+import translate from '../../locales/i18n'
+import { maskIdentificationCode } from '../../utils/masks'
 import {
     getAppRootGroup,
     getAppGroup,
@@ -61,11 +62,10 @@ class InstitutionSelector extends Component {
             this.setState({ currentError: translate('selector.codeError') })
         }
 
-        const isIdRightLength = true
-        /*
+        let isIdRightLength = true
         if (doesTheSelectedGroupRequireID && isIdPresentIfNeeded) {
             isIdRightLength =
-                this.state.userIdCode.length ===
+                this.state.userIdCode.length >=
                 this.state.selectedGroup.id_code_length
             if (!isIdRightLength) {
                 this.setState({
@@ -76,7 +76,6 @@ class InstitutionSelector extends Component {
                 })
             }
         }
-        */
 
         const codeIsNumber = true
         /*
@@ -322,7 +321,7 @@ class InstitutionSelector extends Component {
                     value={this.state.userIdCode}
                     onChangeText={async (text) => {
                         await this.setState({
-                            userIdCode: text,
+                            userIdCode: maskIdentificationCode(text),
                         })
                         this.updateParent()
                     }}

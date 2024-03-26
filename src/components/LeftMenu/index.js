@@ -19,9 +19,9 @@ import {
     RedeSocial,
 } from './styles'
 
-import translate from '../../../locales/i18n'
+import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
-import { getInitials, handleAvatar } from '../../utils/consts'
+import { getInitials, getAvatar } from '../../utils/consts'
 import { useUser } from '../../hooks/user'
 import { getAppGroup } from '../../api/groups'
 
@@ -34,6 +34,7 @@ const LeftMenu = ({ navigation }) => {
         signOut,
         group,
         setGroup,
+        setIsProfessional,
     } = useUser()
 
     let index = households.length
@@ -59,7 +60,7 @@ const LeftMenu = ({ navigation }) => {
                 <Avatar
                     containerStyle={[styles.avatar, { zIndex: index-- }]}
                     size={scale(60)}
-                    source={handleAvatar(avatar)}
+                    source={getAvatar(avatar)}
                     title={getInitials(user.user_name)}
                     rounded
                 />
@@ -68,7 +69,7 @@ const LeftMenu = ({ navigation }) => {
                         key={household.id}
                         containerStyle={[styles.avatars, { zIndex: index-- }]}
                         size={scale(60)}
-                        source={handleAvatar(householdAvatars[household.id])}
+                        source={getAvatar(householdAvatars[household.id])}
                         title={getInitials(household.description)}
                         rounded
                     />
@@ -76,7 +77,7 @@ const LeftMenu = ({ navigation }) => {
             </AvatarContainer>
 
             {user.is_professional === true ? (
-                <Button onPress={() => navigation.navigate('Rumor')}>
+                <Button onPress={() => setIsProfessional(true)}>
                     <UserOptionBlue>
                         <Feather
                             name='info'
@@ -85,11 +86,12 @@ const LeftMenu = ({ navigation }) => {
                             style={styles.iconStyle}
                         />
                         <TextOption>
-                            {translate('drawer.reportRumor')}
+                            Alterar para Vigilância Comunitária
                         </TextOption>
                     </UserOptionBlue>
                 </Button>
             ) : null}
+
             <Button onPress={() => navigation.navigate('Perfis')}>
                 <UserOptionBlue>
                     <Feather
