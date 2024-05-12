@@ -155,11 +155,7 @@ const ProfessionalStack = () => {
 const headerOptions = {
     editarPerfil: {
         title: translate('register.editProfile'),
-        rightButton: (navigation) => (
-            <BackButton onPress={() => navigation.navigate('PerfilNovo')}>
-                <Feather name='user-plus' size={scale(30)} color='#ffffff' />
-            </BackButton>
-        ),
+        rightButton: null,
     },
 }
 
