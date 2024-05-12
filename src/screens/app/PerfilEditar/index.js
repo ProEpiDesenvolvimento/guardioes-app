@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Alert, Modal } from 'react-native'
+import { PROFESSIONAL_FORM_ID } from 'react-native-dotenv'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
@@ -167,8 +168,7 @@ const PerfilEditar = ({ navigation, route }) => {
             const { flexible_answers } = response.data
 
             const [fa] = flexible_answers.filter(
-                (answer) => answer.flexible_form.id === 2
-                // Hardcoded flexible form id
+                (answer) => answer.flexible_form.id === PROFESSIONAL_FORM_ID
             )
 
             if (fa.data) {

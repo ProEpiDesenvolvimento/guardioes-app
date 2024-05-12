@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StatusBar, Text, StyleSheet, Alert } from 'react-native'
+import { SIGNAL_FORM_ID } from 'react-native-dotenv'
 import moment from 'moment'
 
 import Feather from 'react-native-vector-icons/Feather'
@@ -186,8 +187,7 @@ const Home = ({ navigation }) => {
 
     const getEvent = async () => {
         if (!isOffline) {
-            // hardcoded form id
-            const response = await getFlexibleForm(9, token)
+            const response = await getFlexibleForm(SIGNAL_FORM_ID, token)
 
             if (response.status === 200) {
                 const { flexible_form } = response.data

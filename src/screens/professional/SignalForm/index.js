@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Text } from 'react-native'
+import { SIGNAL_FORM_ID } from 'react-native-dotenv'
 import moment from 'moment'
 
 import ScreenLoader from '../../../components/ScreenLoader'
@@ -138,8 +139,7 @@ const SignalForm = ({ navigation }) => {
 
     const getEvent = async () => {
         if (!isOffline) {
-            // hardcoded form id
-            const response = await getFlexibleForm(9, token)
+            const response = await getFlexibleForm(SIGNAL_FORM_ID, token)
 
             if (response.status === 200) {
                 const { flexible_form } = response.data
