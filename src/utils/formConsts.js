@@ -144,6 +144,12 @@ export const ephemOfflineData = {
 
 export const formattedForm = (formVersion, user) => {
     formVersion.data.questions.forEach((question) => {
+        if (question.type === 'geo_state') {
+            question.value = user.state
+        }
+        if (question.type === 'geo_city') {
+            question.value = user.city
+        }
         if (question.type === 'geo_location') {
             question.value = `, ${capitalizeFirstWords(user.city)}, ${capitalizeFirstWords(user.state)}`
         }
