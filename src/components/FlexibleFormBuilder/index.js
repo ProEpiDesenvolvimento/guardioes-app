@@ -4,6 +4,7 @@ import { Modal } from 'react-native'
 
 import Feather from 'react-native-vector-icons/Feather'
 import MultiSelector from '../MultiSelector'
+import Autocomplete from '../Autocomplete'
 import PlaceSelector from '../PlaceSelector'
 import {
     ModalContainer,
@@ -26,6 +27,9 @@ import {
 
 import translate from '../../locales/i18n'
 import { scale } from '../../utils/scalling'
+import { useUser } from '../../hooks/user'
+import { stateOptionsBR, getCityBR } from '../../utils/brasil'
+import { stateOptionsCV, getCityCV } from '../../utils/caboverde'
 
 const FlexibleFormBuilder = ({
     formVersion,
@@ -35,8 +39,12 @@ const FlexibleFormBuilder = ({
     disabled,
     light,
 }) => {
+    const { user } = useUser()
+
     const [hintSelected, setHintSelected] = useState({})
     const [modalHint, setModalHint] = useState(false)
+
+    const [state, setState] = useState('')
 
     const getMultiSelectorValue = (question) => {
         if (question.value) {
@@ -254,6 +262,37 @@ const FlexibleFormBuilder = ({
                                       />
                                   ))
                                 : null}
+
+                            {question.type === 'geo_state' ? (
+                                <Autocomplete
+                                    data={
+                                        user.country === 'Brazil'
+                                            ? stateOptionsBR
+                                            : stateOptionsCV
+                                    }
+                                    value={question.value}
+                                    onChange={(option) => {
+                                        handleAnswer(question, option.key)
+                                        setState(option.key)
+                                    }}
+                                    disabled={disabled}
+                                />
+                            ) : null}
+
+                            {question.type === 'geo_city' ? (
+                                <Autocomplete
+                                    data={
+                                        user.country === 'Brazil'
+                                            ? getCityBR(state)
+                                            : getCityCV(state)
+                                    }
+                                    value={question.value}
+                                    onChange={(option) =>
+                                        handleAnswer(question, option.key)
+                                    }
+                                    disabled={disabled}
+                                />
+                            ) : null}
 
                             {question.type === 'geo_location' ? (
                                 isOffline ? (
