@@ -44,6 +44,7 @@ import {
     raceChoices,
     householdChoices,
 } from '../../../utils/selector'
+import { maskPhone } from '../../../utils/masks'
 import { getAvatar, getInitials, validPerson } from '../../../utils/consts'
 import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
 import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
@@ -71,6 +72,7 @@ const PerfilEditar = ({ navigation, route }) => {
     const { person } = route.params
 
     const isHousehold = person.is_household
+    const isProfessional = person.is_professional
     const { id } = person
     const [avatar, setAvatar] = useState(person.avatar)
     const [name, setName] = useState(person.name)
@@ -79,6 +81,7 @@ const PerfilEditar = ({ navigation, route }) => {
     const [country, setCountry] = useState(person.country)
     const [state, setState] = useState(person.state)
     const [city, setCity] = useState(person.city)
+    const [phone, setPhone] = useState(person.phone)
     const [race, setRace] = useState(person.race)
     const [birth, setBirth] = useState(person.birthdate)
     const [kinship, setKinship] = useState(person.kinship)
@@ -168,7 +171,9 @@ const PerfilEditar = ({ navigation, route }) => {
             const { flexible_answers } = response.data
 
             const [fa] = flexible_answers.filter(
-                (answer) => answer.flexible_form.id === PROFESSIONAL_FORM_ID
+                (answer) =>
+                    answer.flexible_form.id ===
+                    parseInt(PROFESSIONAL_FORM_ID, 10)
             )
 
             if (fa.data) {
@@ -296,7 +301,7 @@ const PerfilEditar = ({ navigation, route }) => {
 
     const editUser = async () => {
         const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
-        const isBrazil = country === 'Brazil'
+        const hasStateOrCity = country === 'Brazil' || country === 'Cabo Verde'
 
         const newUser = {
             user_name: name,
@@ -304,8 +309,10 @@ const PerfilEditar = ({ navigation, route }) => {
             gender,
             race,
             country,
-            state: isBrazil ? state : null,
-            city: isBrazil ? city : null,
+            state: hasStateOrCity ? state : null,
+            city: hasStateOrCity ? city : null,
+            phone,
+            phone_required: isProfessional,
             group_id: groupId,
             identification_code: idCode,
             risk_group: riskGroup,
@@ -571,7 +578,10 @@ const PerfilEditar = ({ navigation, route }) => {
                                         : stateOptionsCV
                                 }
                                 value={state}
-                                onChange={(option) => setState(option.key)}
+                                onChange={(option) => {
+                                    setState(option.key)
+                                    setCity('')
+                                }}
                             />
                         </FormGroupChild>
 
@@ -602,7 +612,7 @@ const PerfilEditar = ({ navigation, route }) => {
                     </FormInline>
                 ) : null}
 
-                {person.is_professional ? (
+                {isProfessional ? (
                     <FlexibleFormBuilder
                         formVersion={formVersion}
                         fV2={fV2}
@@ -610,32 +620,50 @@ const PerfilEditar = ({ navigation, route }) => {
                     />
                 ) : null}
 
-                <FormInlineCheck>
-                    <CheckBoxStyled
-                        title={translate('register.riskGroupLabel')}
-                        checked={riskGroup}
-                        onPress={() => setRiskGroup(!riskGroup)}
-                    />
-                    <CheckLabel
-                        onPress={() => {
-                            setModalRiskGroup(true)
-                        }}
-                    >
-                        <Feather
-                            name='help-circle'
-                            size={scale(25)}
-                            color='#348EAC'
+                {isProfessional ? (
+                    <FormInline>
+                        <FormLabel>Telefone: *</FormLabel>
+                        <NormalInput
+                            placeholder='(61) 98888-8888'
+                            maxLength={16}
+                            returnKeyType='done'
+                            keyboardType='number-pad'
+                            value={phone}
+                            onChangeText={(text) => setPhone(maskPhone(text))}
                         />
-                    </CheckLabel>
-                </FormInlineCheck>
+                    </FormInline>
+                ) : null}
 
-                <InstitutionSelector
-                    setUserInstitutionCallback={setUserInstitutionCallback}
-                    setAlert={setLoadingAlert}
-                    userGroupId={groupId}
-                    userIdCode={idCode}
-                    setErrorCallback={setInstituitionComponentError}
-                />
+                {!isProfessional ? (
+                    <FormInlineCheck>
+                        <CheckBoxStyled
+                            title={translate('register.riskGroupLabel')}
+                            checked={riskGroup}
+                            onPress={() => setRiskGroup(!riskGroup)}
+                        />
+                        <CheckLabel
+                            onPress={() => {
+                                setModalRiskGroup(true)
+                            }}
+                        >
+                            <Feather
+                                name='help-circle'
+                                size={scale(25)}
+                                color='#348EAC'
+                            />
+                        </CheckLabel>
+                    </FormInlineCheck>
+                ) : null}
+
+                {!isProfessional ? (
+                    <InstitutionSelector
+                        setUserInstitutionCallback={setUserInstitutionCallback}
+                        setAlert={setLoadingAlert}
+                        userGroupId={groupId}
+                        userIdCode={idCode}
+                        setErrorCallback={setInstituitionComponentError}
+                    />
+                ) : null}
 
                 {allCategories.length > 0 ? (
                     <FormInline>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import Feather from 'react-native-vector-icons/Feather'
 import {
     AutocompleteModal,
     CancelText,
@@ -95,8 +94,13 @@ const Autocomplete = (props) => {
                     </ModalView>
                 </ModalFade>
             </AutocompleteModal>
-            <AutocompleteButton onPress={() => setModalVisible(true)}>
-                <AutocompleteText>{props.value}</AutocompleteText>
+            <AutocompleteButton
+                onPress={() => setModalVisible(true)}
+                disabled={props.disabled}
+            >
+                <AutocompleteText>
+                    {props.value ? props.value : translate('selector.label')}
+                </AutocompleteText>
             </AutocompleteButton>
         </Container>
     )
