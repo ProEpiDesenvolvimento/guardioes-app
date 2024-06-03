@@ -47,6 +47,7 @@ import {
     raceChoices,
     communityChoices,
 } from '../../../utils/selector'
+import { maskPhone } from '../../../utils/masks'
 import { stateOptionsBR, getCityBR } from '../../../utils/brasil'
 import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
@@ -71,6 +72,7 @@ const Register = ({ navigation }) => {
     const [city, setCity] = useState('')
     const [race, setRace] = useState('')
     const [birth, setBirth] = useState('')
+    const [phone, setPhone] = useState('')
     const [groupId, setGroupId] = useState(null)
     const [idCode, setIdCode] = useState(null)
     const [riskGroup, setRiskGroup] = useState(false)
@@ -467,6 +469,33 @@ const Register = ({ navigation }) => {
                         />
                     </FormInline>
 
+                    {isProfessional.key ? (
+                        <FlexibleFormBuilder
+                            formVersion={formVersion}
+                            fV2={fV2}
+                            setFV2={setFV2}
+                            light
+                        />
+                    ) : null}
+
+                    {isProfessional.key ? (
+                        <FormGroup>
+                            <FormGroupChild>
+                                <FormLabel light>Telefone: *</FormLabel>
+                                <NormalInput
+                                    placeholder='(61) 98888-8888'
+                                    maxLength={16}
+                                    returnKeyType='done'
+                                    keyboardType='number-pad'
+                                    value={phone}
+                                    onChangeText={(text) =>
+                                        setPhone(maskPhone(text))
+                                    }
+                                />
+                            </FormGroupChild>
+                        </FormGroup>
+                    ) : null}
+
                     {isProfessional.key === false ? (
                         <FormInlineCheck>
                             <CheckBoxStyled
@@ -492,15 +521,6 @@ const Register = ({ navigation }) => {
                             userGroup={groupId}
                             setErrorCallback={setInstituitionComponentError}
                             lightTheme
-                        />
-                    ) : null}
-
-                    {isProfessional.key ? (
-                        <FlexibleFormBuilder
-                            formVersion={formVersion}
-                            fV2={fV2}
-                            setFV2={setFV2}
-                            light
                         />
                     ) : null}
 
