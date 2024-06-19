@@ -54,6 +54,7 @@ const Vigilancia = ({ navigation }) => {
             birthdate: user.birthdate,
             is_vigilance: !user.is_vigilance,
             phone: !user.is_vigilance ? phone : null,
+            phone_required: !user.is_vigilance,
         }
 
         if (!validPerson(vigilance, null)) return

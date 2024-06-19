@@ -71,7 +71,10 @@ export const validPerson = (person, instituitionComponentError) => {
     } else if (person.kinship === '') {
         Alert.alert(translate('register.kinshipRequired'))
         valid = false
-    } else if (person.phone === '' || person.phone?.length < 10) {
+    } else if (
+        person.phone_required &&
+        (person.phone === '' || person.phone?.length < 10)
+    ) {
         Alert.alert(translate('register.phoneRequired'))
         valid = false
     } else if (
