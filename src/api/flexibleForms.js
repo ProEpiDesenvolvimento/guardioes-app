@@ -111,3 +111,39 @@ export const editFlexibleAnswer = async (id, data, token) => {
 
     return response
 }
+
+export const getSignalComments = async (id, token) => {
+    let response = {}
+
+    try {
+        response = await api.get(`/flexible_answers/${id}/signal_comments`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
+export const sendSignalComment = async (id, data, token) => {
+    let response = {}
+
+    try {
+        response = await api.post(
+            `/flexible_answers/${id}/signal_comments`,
+            data,
+            {
+                headers: {
+                    Authorization: token,
+                },
+            }
+        )
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
