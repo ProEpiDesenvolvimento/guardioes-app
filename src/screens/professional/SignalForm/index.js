@@ -90,16 +90,21 @@ const SignalForm = ({ navigation }) => {
             return
         }
 
+        const currentDateString = moment().local().toISOString()
         const flexibleAnswer = {
             id: Math.floor(Math.random() * 1000),
             flexible_form_version: formVersion,
             flexible_form_version_id: formVersion.id,
-            data: JSON.stringify({ report_type: 'positive', answers }),
+            data: JSON.stringify({
+                report_type: 'positive',
+                send_at: currentDateString,
+                answers,
+            }),
             user,
             user_id: user.id,
-            external_system_integration_id: null,
             external_system_data: ephemOfflineData,
-            created_at: moment().local().toISOString(),
+            created_at: currentDateString,
+            updated_at: currentDateString,
             is_offline: true,
         }
 
