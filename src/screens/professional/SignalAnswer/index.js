@@ -6,13 +6,13 @@ import {
     KeyboardScrollView,
     FormInline,
     FormLabel,
+    Button,
+    SendContainer,
+    SendText,
 } from '../../../components/NormalForms'
 import FlexibleFormBuilder from '../../../components/FlexibleFormBuilder'
 
-import { useUser } from '../../../hooks/user'
-
-const SignalAnswer = ({ route }) => {
-    const { token } = useUser()
+const SignalAnswer = ({ route, navigation }) => {
     const { answer } = route.params
 
     const [isLoading, setIsLoading] = useState(true)
@@ -68,6 +68,19 @@ const SignalAnswer = ({ route }) => {
     return (
         <Container>
             <KeyboardScrollView keyboardShouldPersistTaps='always'>
+                <FormInline>
+                    <Button
+                        onPress={() =>
+                            navigation.navigate('Chat', {
+                                flexible_form_id: answer.id,
+                            })
+                        }
+                    >
+                        <SendContainer>
+                            <SendText>Comentários Adicionais</SendText>
+                        </SendContainer>
+                    </Button>
+                </FormInline>
                 <FormInline>
                     <FormLabel>
                         Respondido por: {answer.user?.user_name}

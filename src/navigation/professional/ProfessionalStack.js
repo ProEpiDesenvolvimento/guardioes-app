@@ -12,6 +12,7 @@ import {
 } from '../../components/Header'
 
 import Ajuda from '../../screens/app/Ajuda'
+import Chat from '../../screens/professional/Chat'
 import HomeDrawer from './HomeDrawer'
 import ExcluirConta from '../../screens/app/ExcluirConta'
 import Perfis from '../../screens/app/Perfis'
@@ -76,6 +77,11 @@ const ProfessionalStack = () => {
                 name='HomeDrawer'
                 component={HomeDrawer}
                 options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name='Chat'
+                component={Chat}
+                options={{ title: 'Comentários' }}
             />
             <Stack.Screen
                 name='SignalAnswers'
