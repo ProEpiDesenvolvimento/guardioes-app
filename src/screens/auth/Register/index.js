@@ -85,10 +85,11 @@ const Register = ({ navigation }) => {
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [category, setCategory] = useState({})
     const [allCategories, setAllCategories] = useState([])
+    const [hasRegistered, setHasRegistered] = useState(false)
     const [formVersion, setFormVersion] = useState({})
     const [fV2, setFV2] = useState({})
 
-    const sendRegisterForm = async (user) => {
+    const sendRegisterForm = async (user, token) => {
         const answers = []
         let error = false
 
@@ -110,7 +111,7 @@ const Register = ({ navigation }) => {
         if (error) {
             setLoadingAlert(false)
             Alert.alert(translate('register.errorMessages.fieldsMustFilled'))
-            return
+            return error
         }
 
         const flexibleAnswer = {
@@ -121,14 +122,16 @@ const Register = ({ navigation }) => {
 
         const response = await sendFlexibleAnswer(
             { flexible_answer: flexibleAnswer },
-            ''
+            token
         )
 
         if (!response.status === 201) {
             setLoadingAlert(false)
             console.warn(response.status)
             Alert.alert(translate('register.geralError'))
+            return response.status
         }
+        return false
     }
 
     const getRegisterForm = async () => {
@@ -194,7 +197,11 @@ const Register = ({ navigation }) => {
             )
 
             if (isProfessional.key) {
-                await sendRegisterForm(response.data.user)
+                const error = await sendRegisterForm(
+                    response.data.user,
+                    response.headers.authorization
+                )
+                if (error) return
             }
 
             setTimeout(() => {
@@ -208,6 +215,11 @@ const Register = ({ navigation }) => {
     }
 
     const handleCreate = async () => {
+        if (hasRegistered) {
+            loginAfterCreate()
+            return
+        }
+
         const birthDate = moment(birth, 'DD-MM-YYYY').toISOString()
         Keyboard.dismiss()
 
@@ -222,6 +234,8 @@ const Register = ({ navigation }) => {
             residence,
             state,
             city,
+            phone: isProfessional.key ? phone : null,
+            phone_required: isProfessional,
             group_id: groupId,
             identification_code: idCode,
             is_professional: !!isProfessional.key,
@@ -237,6 +251,7 @@ const Register = ({ navigation }) => {
         const response = await createUser({ user })
 
         if (response.status === 200) {
+            setHasRegistered(true)
             loginAfterCreate()
         } else {
             setLoadingAlert(false)

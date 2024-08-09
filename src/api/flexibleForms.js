@@ -112,6 +112,22 @@ export const editFlexibleAnswer = async (id, data, token) => {
     return response
 }
 
+export const deleteFlexibleAnswer = async (id, token) => {
+    let response = {}
+
+    try {
+        response = await api.delete(`/flexible_answers/${id}`, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
 export const getSignalComments = async (id, token) => {
     let response = {}
 
