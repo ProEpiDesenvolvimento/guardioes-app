@@ -43,6 +43,7 @@ import {
     countryChoices,
     raceChoices,
     householdChoices,
+    communityChoices,
 } from '../../../utils/selector'
 import { maskPhone } from '../../../utils/masks'
 import { getAvatar, getInitials, validPerson } from '../../../utils/consts'
@@ -51,8 +52,11 @@ import { stateOptionsCV, getCityCV } from '../../../utils/caboverde'
 import { useUser } from '../../../hooks/user'
 import { updateUser } from '../../../api/user'
 import {
+    getFlexibleRegistration,
     getFlexibleAnswers,
+    sendFlexibleAnswer,
     editFlexibleAnswer,
+    deleteFlexibleAnswer,
 } from '../../../api/flexibleForms'
 import { updateHousehold, deleteHousehold } from '../../../api/households'
 import Autocomplete from '../../../components/Autocomplete'
@@ -72,7 +76,6 @@ const PerfilEditar = ({ navigation, route }) => {
     const { person } = route.params
 
     const isHousehold = person.is_household
-    const isProfessional = person.is_professional
     const { id } = person
     const [avatar, setAvatar] = useState(person.avatar)
     const [name, setName] = useState(person.name)
@@ -88,6 +91,7 @@ const PerfilEditar = ({ navigation, route }) => {
     const [groupId, setGroupId] = useState(person.group_id)
     const [idCode, setIdCode] = useState(person.identification_code)
     const [riskGroup, setRiskGroup] = useState(person.risk_group)
+    const [isProfessional, setIsProfessional] = useState(person.is_professional)
     const [isVigilance, setIsVigilance] = useState(person.is_vigilance)
     const [category, setCategory] = useState(person.category)
     const [allCategories, setAllCategories] = useState([])
@@ -97,6 +101,22 @@ const PerfilEditar = ({ navigation, route }) => {
     const [loadingAlert, setLoadingAlert] = useState(false)
     const [formVersion, setFormVersion] = useState({})
     const [fV2, setFV2] = useState({})
+
+    const removeRegisterForm = async () => {
+        setLoadingAlert(true)
+
+        const response = await deleteFlexibleAnswer(
+            fV2.flexible_answer_id,
+            token
+        )
+
+        if (response.status !== 204) {
+            console.warn(response.status)
+            setLoadingAlert(false)
+            Alert.alert(translate('register.geralError'))
+            return response.status
+        }
+    }
 
     const editRegisterForm = async () => {
         const answers = []
@@ -120,7 +140,7 @@ const PerfilEditar = ({ navigation, route }) => {
         if (error) {
             setLoadingAlert(false)
             Alert.alert(translate('register.errorMessages.fieldsMustFilled'))
-            return
+            return error
         }
 
         const flexibleAnswer = {
@@ -139,29 +159,8 @@ const PerfilEditar = ({ navigation, route }) => {
             setLoadingAlert(false)
             console.warn(response.status)
             Alert.alert(translate('register.geralError'))
+            return response.status
         }
-    }
-
-    const buildRegisterAnswer = (formAnswer) => {
-        const newData = []
-
-        formAnswer.flexible_form_version.data.questions.forEach((q) => {
-            formAnswer.data.answers.forEach((a) => {
-                if (q.field === a.field) {
-                    newData.push({
-                        ...q,
-                        value: a.value,
-                    })
-                }
-            })
-        })
-
-        const newFormVersion = { ...formAnswer.flexible_form_version }
-        newFormVersion.flexible_answer_id = formAnswer.id
-        newFormVersion.data.questions = newData
-
-        setFV2(newFormVersion)
-        setFormVersion(newFormVersion)
     }
 
     const getRegisterAnswer = async () => {
@@ -182,16 +181,99 @@ const PerfilEditar = ({ navigation, route }) => {
                     fa.flexible_form_version.data
                 )
 
-                buildRegisterAnswer(fa)
+                const newData = []
+
+                fa.flexible_form_version.data.questions.forEach((q) => {
+                    fa.data.answers.forEach((a) => {
+                        if (q.field === a.field) {
+                            newData.push({
+                                ...q,
+                                value: a.value,
+                            })
+                        }
+                    })
+                })
+                const newFormVersion = { ...fa.flexible_form_version }
+                newFormVersion.flexible_answer_id = fa.id
+                newFormVersion.data.questions = newData
+
+                setFV2(newFormVersion)
+                setFormVersion(newFormVersion)
+            }
+        }
+    }
+
+    const sendRegisterForm = async () => {
+        const answers = []
+        let error = false
+
+        formVersion.data.questions.forEach((question) => {
+            if (question.required && !question.value) {
+                error = true
+            }
+            if (!error) {
+                answers.push({
+                    ...question,
+                    options: undefined,
+                    required: undefined,
+                    text: undefined,
+                    type: undefined,
+                })
+            }
+        })
+
+        if (error) {
+            setLoadingAlert(false)
+            Alert.alert(translate('register.errorMessages.fieldsMustFilled'))
+            return error
+        }
+
+        const flexibleAnswer = {
+            flexible_form_version_id: fV2.id,
+            data: JSON.stringify({ answers }),
+            user_id: user.id,
+        }
+
+        const response = await sendFlexibleAnswer(
+            { flexible_answer: flexibleAnswer },
+            token
+        )
+
+        if (!response.status === 200) {
+            setLoadingAlert(false)
+            console.warn(response.status)
+            Alert.alert(translate('register.geralError'))
+            return response.status
+        }
+    }
+
+    const getRegisterForm = async () => {
+        const response = await getFlexibleRegistration(1, '')
+
+        if (response.status === 200) {
+            const { flexible_form } = response.data
+
+            if (flexible_form.flexible_form_version) {
+                const parsedData = JSON.parse(
+                    flexible_form.flexible_form_version.data
+                )
+                flexible_form.flexible_form_version.data = parsedData
+
+                setFormVersion(flexible_form.flexible_form_version)
+                setFV2(flexible_form.flexible_form_version)
             }
         }
     }
 
     useEffect(() => {
-        if (person.is_professional) {
-            getRegisterAnswer()
+        if (isProfessional) {
+            if (person.is_professional) {
+                getRegisterAnswer()
+            } else {
+                getRegisterForm()
+            }
         }
-    }, [person.is_professional])
+    }, [isProfessional])
 
     const getAppCategories = async () => {
         const response = await getCategories()
@@ -311,12 +393,13 @@ const PerfilEditar = ({ navigation, route }) => {
             country,
             state: hasStateOrCity ? state : null,
             city: hasStateOrCity ? city : null,
-            phone,
-            phone_required: isProfessional,
-            group_id: groupId,
-            identification_code: idCode,
+            phone: isProfessional || isVigilance ? phone : null,
+            phone_required: isProfessional || isVigilance,
+            group_id: isProfessional ? null : groupId,
+            identification_code: isProfessional ? null : idCode,
+            is_professional: isProfessional,
             risk_group: riskGroup,
-            is_vigilance: isVigilance,
+            is_vigilance: isProfessional ? false : isVigilance,
             category_id: category.key,
             category_required: allCategories.length > 0,
         }
@@ -343,12 +426,25 @@ const PerfilEditar = ({ navigation, route }) => {
         }
     }
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
         if (isHousehold) {
-            editHousehold()
+            await editHousehold()
         } else {
-            editUser()
-            editRegisterForm()
+            let error = false
+
+            if (isProfessional) {
+                if (person.is_professional) {
+                    error = await editRegisterForm()
+                } else {
+                    error = await sendRegisterForm()
+                }
+            } else {
+                error = await removeRegisterForm()
+            }
+
+            if (!error) {
+                await editUser()
+            }
         }
     }
 
@@ -612,6 +708,20 @@ const PerfilEditar = ({ navigation, route }) => {
                     </FormInline>
                 ) : null}
 
+                {!isHousehold ? (
+                    <FormInline>
+                        <FormLabel>
+                            {translate('register.professionalLabel')}
+                        </FormLabel>
+                        <Selector
+                            data={communityChoices}
+                            initValue={isProfessional ? 'Sim' : 'Não'}
+                            cancelText={translate('selector.cancelButton')}
+                            onChange={(option) => setIsProfessional(option.key)}
+                        />
+                    </FormInline>
+                ) : null}
+
                 {isProfessional ? (
                     <FlexibleFormBuilder
                         formVersion={formVersion}
@@ -624,12 +734,13 @@ const PerfilEditar = ({ navigation, route }) => {
                     <FormInline>
                         <FormLabel>Telefone: *</FormLabel>
                         <NormalInput
-                            placeholder='(61) 98888-8888'
                             maxLength={16}
                             returnKeyType='done'
                             keyboardType='number-pad'
                             value={phone}
-                            onChangeText={(text) => setPhone(maskPhone(text))}
+                            onChangeText={(text) =>
+                                setPhone(maskPhone(country, text))
+                            }
                         />
                     </FormInline>
                 ) : null}
