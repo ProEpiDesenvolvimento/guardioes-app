@@ -81,17 +81,17 @@ const ProfessionalStack = () => {
             <Stack.Screen
                 name='Chat'
                 component={Chat}
-                options={{ title: 'Comentários' }}
+                options={{ title: 'Comentários Adicionais' }}
             />
             <Stack.Screen
                 name='SignalAnswers'
                 component={SignalAnswers}
-                options={{ title: 'Sinais informados' }}
+                options={{ title: 'Sinais' }}
             />
             <Stack.Screen
                 name='SignalAnswersFiltered'
                 component={SignalAnswersFiltered}
-                options={{ title: 'Sinais filtrados' }}
+                options={{ title: 'Sinais por status' }}
             />
             <Stack.Screen
                 name='SignalForm'

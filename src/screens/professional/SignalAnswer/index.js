@@ -83,7 +83,7 @@ const SignalAnswer = ({ route, navigation }) => {
                 </FormInline>
                 <FormInline>
                     <FormLabel>
-                        Respondido por: {answer.user?.user_name}
+                        Informado por: {answer.user?.user_name}
                     </FormLabel>
                 </FormInline>
 

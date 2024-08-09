@@ -127,12 +127,6 @@ const SignalAnswers = ({ navigation }) => {
 
     return (
         <ScrollViewStyled>
-            {flexibleAnswers.length > 0 ? (
-                <CardWrapper>
-                    <CardTitle>Registros por status</CardTitle>
-                </CardWrapper>
-            ) : null}
-
             {Object.keys(groupedAnswers).map((key) => {
                 return (
                     <CardWhite key={key}>

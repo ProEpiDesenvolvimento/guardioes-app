@@ -43,7 +43,7 @@ const SignalAnswersFiltered = ({ navigation, route }) => {
         <ScrollViewStyled>
             {flexibleAnswers.length > 0 ? (
                 <CardWrapper>
-                    <CardTitle>Registros</CardTitle>
+                    <CardTitle>Status: {status}</CardTitle>
                 </CardWrapper>
             ) : null}
 
