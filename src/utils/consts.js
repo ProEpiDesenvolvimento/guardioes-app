@@ -73,7 +73,7 @@ export const validPerson = (person, instituitionComponentError) => {
         valid = false
     } else if (
         person.phone_required &&
-        (person.phone === '' || person.phone?.length < 10)
+        (!person.phone || person.phone?.length < 10)
     ) {
         Alert.alert(translate('register.phoneRequired'))
         valid = false
