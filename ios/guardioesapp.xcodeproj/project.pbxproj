@@ -873,7 +873,7 @@
 				CODE_SIGN_ENTITLEMENTS = guardioesapp/GuardioesDaSaude.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 86;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 594JXPP866;
 				INFOPLIST_FILE = guardioesapp/Info.plist;
@@ -905,7 +905,7 @@
 				CODE_SIGN_ENTITLEMENTS = guardioesapp/GuardioesDaSaude.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 86;
 				DEVELOPMENT_TEAM = 594JXPP866;
 				INFOPLIST_FILE = guardioesapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
