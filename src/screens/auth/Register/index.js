@@ -66,7 +66,7 @@ const Register = ({ navigation }) => {
     const [password, setPassword] = useState('')
     const [gender, setGender] = useState('')
     const [genderOther, setGenderOther] = useState('')
-    const [country, setCountry] = useState(null)
+    const [country, setCountry] = useState('')
     const [residence, setResidence] = useState('')
     const [state, setState] = useState('')
     const [city, setCity] = useState('')
@@ -504,7 +504,7 @@ const Register = ({ navigation }) => {
                                     keyboardType='number-pad'
                                     value={phone}
                                     onChangeText={(text) =>
-                                        setPhone(maskPhone(text))
+                                        setPhone(maskPhone(country, text))
                                     }
                                 />
                             </FormGroupChild>
