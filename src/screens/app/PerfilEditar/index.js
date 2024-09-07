@@ -163,7 +163,7 @@ const PerfilEditar = ({ navigation, route }) => {
         }
     }
 
-    const getRegisterAnswer = async () => {
+    const getRegisterAnswer = async (registerFormVersion) => {
         const response = await getFlexibleAnswers(token)
 
         if (response.status === 200) {
@@ -177,13 +177,9 @@ const PerfilEditar = ({ navigation, route }) => {
 
             if (fa.data) {
                 fa.data = JSON.parse(fa.data)
-                fa.flexible_form_version.data = JSON.parse(
-                    fa.flexible_form_version.data
-                )
-
                 const newData = []
 
-                fa.flexible_form_version.data.questions.forEach((q) => {
+                registerFormVersion.data.questions.forEach((q) => {
                     fa.data.answers.forEach((a) => {
                         if (q.field === a.field) {
                             newData.push({
@@ -193,7 +189,7 @@ const PerfilEditar = ({ navigation, route }) => {
                         }
                     })
                 })
-                const newFormVersion = { ...fa.flexible_form_version }
+                const newFormVersion = { ...registerFormVersion }
                 newFormVersion.flexible_answer_id = fa.id
                 newFormVersion.data.questions = newData
 
@@ -261,16 +257,21 @@ const PerfilEditar = ({ navigation, route }) => {
 
                 setFormVersion(flexible_form.flexible_form_version)
                 setFV2(flexible_form.flexible_form_version)
+
+                return flexible_form.flexible_form_version
             }
+            return null
         }
+        return null
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         if (isProfessional) {
             if (person.is_professional) {
-                getRegisterAnswer()
+                const registerFormVersion = await getRegisterForm()
+                await getRegisterAnswer(registerFormVersion)
             } else {
-                getRegisterForm()
+                const registerFormVersion = getRegisterForm()
             }
         }
     }, [isProfessional])
