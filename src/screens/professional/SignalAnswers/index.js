@@ -6,8 +6,6 @@ import Feather from 'react-native-vector-icons/Feather'
 import ScreenLoader from '../../../components/ScreenLoader'
 import {
     ScrollViewStyled,
-    CardWrapper,
-    CardTitle,
     CardWhite,
     CardNameWhite,
     CardDetailsWhite,
@@ -24,7 +22,7 @@ import { useUser } from '../../../hooks/user'
 import { getFlexibleAnswers } from '../../../api/flexibleForms'
 
 const SignalAnswers = ({ navigation }) => {
-    const { isOffline, token, storeCacheData, getCacheData } = useUser()
+    const { isOffline, token, user, storeCacheData, getCacheData } = useUser()
 
     const [isLoading, setIsLoading] = useState(true)
     const [flexibleAnswers, setFlexibleAnswers] = useState([])
@@ -32,14 +30,18 @@ const SignalAnswers = ({ navigation }) => {
 
     const getGroupedAnswers = (answers) => {
         const groupAnswers = answers.reduce((ga, answer) => {
-            const status =
-                answer.external_system_data?._embedded?.signals[0].dados
-                    .signal_stage_state_id[1] || 'Sem status'
+            if (
+                answer.data.report_type === 'positive' &&
+                answer.data.in_training === user.in_training
+            ) {
+                const status =
+                    // eslint-disable-next-line no-underscore-dangle
+                    answer.external_system_data?._embedded?.signals[0].dados
+                        .signal_stage_state_id[1] || 'Sem status'
 
-            if (!ga[status]) {
-                ga[status] = []
-            }
-            if (answer.data.report_type === 'positive') {
+                if (!ga[status]) {
+                    ga[status] = []
+                }
                 ga[status].push(answer)
             }
             return ga
