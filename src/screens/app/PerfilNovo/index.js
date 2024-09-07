@@ -114,10 +114,10 @@ const PerfilNovo = ({ navigation }) => {
         const response = await createHousehold(household, user.id, token)
 
         if (response.status === 201) {
-            console.warn(response.status)
             setShowAlert(false)
             navigation.navigate('Home')
         } else {
+            console.warn(response.status)
             Alert.alert(translate('register.geralError'))
             setShowAlert(false)
         }

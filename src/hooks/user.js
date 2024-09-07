@@ -206,6 +206,7 @@ export const UserProvider = ({ children }) => {
             streak: user.streak.toString(),
             reported_this_week: user.reported_this_week ? '1' : '0',
         })
+        console.log('User tags sent to OneSignal')
     }
 
     const signIn = async ({ email, password }) => {

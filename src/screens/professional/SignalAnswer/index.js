@@ -76,9 +76,11 @@ const SignalAnswer = ({ route, navigation }) => {
                             })
                         }
                     >
-                        <SendContainer>
-                            <SendText>Comentários Adicionais</SendText>
-                        </SendContainer>
+                        {answer.external_system_integration_id ? (
+                            <SendContainer>
+                                <SendText>Comentários Adicionais</SendText>
+                            </SendContainer>
+                        ) : null}
                     </Button>
                 </FormInline>
                 <FormInline>
