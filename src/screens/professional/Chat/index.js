@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
     Alert,
-    KeyboardAvoidingView,
     Platform,
     SafeAreaView,
     ScrollView,
@@ -13,6 +12,8 @@ import {
 } from 'react-native'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 
+import { KeyboardScrollView } from './styles'
+
 import Balloon from '../../../components/Balloon'
 import LoadingModal from '../../../components/LoadingModal'
 import {
@@ -21,17 +22,12 @@ import {
 } from '../../../api/flexibleForms'
 import { useUser } from '../../../hooks/user'
 
-const KEYBOARD_AVOIDING_BEHAVIOR = Platform.select({
-    ios: 'padding',
-    android: 'height',
-})
-
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 16,
-        marginHorizontal: 16,
+    disabled: {
+        opacity: 0.2,
     },
     scrollViewContainer: {
+        flex: 1,
         paddingHorizontal: 10,
         paddingVertical: 10,
         top: 10,
@@ -45,12 +41,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 20,
         marginRight: 5,
+        opacity: 1,
     },
     sendButtonText: {
         color: Colors.white,
         fontSize: 16,
     },
     messageTextInputContainer: {
+        width: '100%',
         justifyContent: 'flex-end',
         paddingHorizontal: 5,
         paddingVertical: 5,
@@ -95,6 +93,10 @@ const Chat = ({ route }) => {
     }
 
     const sendMessage = async () => {
+        if (!messageText) {
+            return
+        }
+
         setIsSending(true)
 
         const newMessage = {
@@ -124,40 +126,39 @@ const Chat = ({ route }) => {
     }, [flexible_form_id])
 
     return (
-        <>
+        <KeyboardScrollView style={{ flexGrow: 1 }}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 {messages.map((message) => (
                     <Balloon key={message.id} message={message} />
                 ))}
             </ScrollView>
 
-            <KeyboardAvoidingView
-                behavior={KEYBOARD_AVOIDING_BEHAVIOR}
-                keyboardVerticalOffset={76}
-            >
-                <SafeAreaView>
-                    <View style={styles.messageTextInputContainer}>
-                        <TextInput
-                            style={styles.messageTextInput}
-                            placeholder='Digite sua mensagem...'
-                            placeholderTextColor={Colors.light}
-                            multiline
-                            onChangeText={(text) => setMessageText(text)}
-                            value={messageText}
-                        />
-                        <TouchableOpacity
-                            style={styles.sendButton}
-                            disabled={!messageText || isSending}
-                            onPress={() => sendMessage()}
-                        >
-                            <Text style={styles.sendButtonText}>Enviar</Text>
-                        </TouchableOpacity>
-                    </View>
-                </SafeAreaView>
-            </KeyboardAvoidingView>
+            <SafeAreaView>
+                <View style={styles.messageTextInputContainer}>
+                    <TextInput
+                        style={styles.messageTextInput}
+                        returnKeyType='done'
+                        placeholder='Digite sua mensagem...'
+                        placeholderTextColor={Colors.light}
+                        multiline
+                        onChangeText={(text) => setMessageText(text)}
+                        value={messageText}
+                    />
+                    <TouchableOpacity
+                        style={[
+                            styles.sendButton,
+                            isSending && styles.disabled,
+                        ]}
+                        disabled={isSending}
+                        onPress={() => sendMessage()}
+                    >
+                        <Text style={styles.sendButtonText}>Enviar</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
 
             <LoadingModal show={loadingAlert} />
-        </>
+        </KeyboardScrollView>
     )
 }
 

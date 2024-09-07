@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { Modal } from 'react-native'
+import { Modal, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 
 import Feather from 'react-native-vector-icons/Feather'
 import MultiSelector from '../MultiSelector'
@@ -119,43 +120,39 @@ const FlexibleFormBuilder = ({
 
     return (
         <>
-            {fV2.data?.questions?.map((question) => {
-                if (question.hidden) {
-                    return null
-                }
-                return (
-                    <>
-                        <Modal // Modal for Hint
-                            animationType='fade'
-                            transparent
-                            visible={modalHint}
-                            onRequestClose={() => {
-                                setModalHint(!modalHint)
-                            }}
-                        >
-                            <ModalContainer>
-                                <ModalBox>
-                                    <ModalTitle>
-                                        {hintSelected.title}
-                                    </ModalTitle>
+            <Modal // Modal for Hint
+                animationType='fade'
+                transparent
+                visible={modalHint}
+                onRequestClose={() => {
+                    setModalHint(!modalHint)
+                }}
+            >
+                <ModalContainer>
+                    <ModalBox>
+                        <ModalTitle>{hintSelected.title}</ModalTitle>
 
-                                    <ModalText>{hintSelected.text}</ModalText>
+                        <ModalText>{hintSelected.text}</ModalText>
 
-                                    <ButtonClose
-                                        onPress={() => setModalHint(false)}
-                                    >
-                                        <ModalClose>
-                                            <Feather
-                                                name='x'
-                                                size={scale(24)}
-                                                color='#ffffff'
-                                            />
-                                        </ModalClose>
-                                    </ButtonClose>
-                                </ModalBox>
-                            </ModalContainer>
-                        </Modal>
+                        <ButtonClose onPress={() => setModalHint(false)}>
+                            <ModalClose>
+                                <Feather
+                                    name='x'
+                                    size={scale(24)}
+                                    color='#ffffff'
+                                />
+                            </ModalClose>
+                        </ButtonClose>
+                    </ModalBox>
+                </ModalContainer>
+            </Modal>
 
+            <>
+                {fV2.data?.questions?.map((question) => {
+                    if (question.hidden) {
+                        return null
+                    }
+                    return (
                         <FormInline key={question.field}>
                             <FormGroup>
                                 <FormLabel light={light}>
@@ -189,6 +186,7 @@ const FlexibleFormBuilder = ({
                                     onChangeText={(text) =>
                                         handleAnswer(question, text)
                                     }
+                                    returnKeyType='done'
                                     multiline={question.type === 'text'}
                                     editable={!disabled}
                                 />
@@ -337,9 +335,9 @@ const FlexibleFormBuilder = ({
                                 )
                             ) : null}
                         </FormInline>
-                    </>
-                )
-            })}
+                    )
+                })}
+            </>
         </>
     )
 }
