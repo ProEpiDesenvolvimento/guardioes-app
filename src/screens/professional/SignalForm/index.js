@@ -97,6 +97,7 @@ const SignalForm = ({ navigation }) => {
             flexible_form_version_id: formVersion.id,
             data: JSON.stringify({
                 report_type: 'positive',
+                in_training: user.in_training,
                 send_at: currentDateString,
                 answers,
             }),

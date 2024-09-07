@@ -105,6 +105,7 @@ const Home = ({ navigation }) => {
             flexible_form_version_id: formVersion.id,
             data: JSON.stringify({
                 report_type: 'negative',
+                in_training: user.in_training,
                 send_at: currentDateString,
                 answers: [],
             }),
@@ -329,6 +330,9 @@ const Home = ({ navigation }) => {
                                         getNameParts(person.name)}
                                 </TextName>
                                 <AppName>Líderança Comunitária</AppName>
+                                {user.in_training && (
+                                    <AppName>Em treinamento</AppName>
+                                )}
                             </NamesContainer>
                             <Avatar
                                 containerStyle={styles.avatar}
@@ -377,7 +381,7 @@ const Home = ({ navigation }) => {
                                 />
                             }
                             title='Sinais:'
-                            message='Veja os sinais de alerta já informados'
+                            message='Veja os sinais de alerta já informados por você'
                         />
                     </TipButton>
                 </ScrollViewStyled>
