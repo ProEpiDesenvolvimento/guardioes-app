@@ -75,11 +75,9 @@ const SignalForm = ({ navigation }) => {
             }
             if (!error) {
                 answers.push({
-                    ...question,
-                    options: undefined,
-                    required: undefined,
-                    text: undefined,
-                    type: undefined,
+                    id: question.id,
+                    field: question.field,
+                    value: question.value,
                 })
             }
         })

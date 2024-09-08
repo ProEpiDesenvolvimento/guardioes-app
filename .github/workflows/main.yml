@@ -24,8 +24,11 @@ jobs:
                   distribution: 'adopt'
                   cache: 'gradle'
 
-            - name: Validate Gradle wrapper
-              uses: gradle/wrapper-validation-action@v1
+            - name: Setup Android SDK
+              uses: android-actions/setup-android@v2
+              with:
+                  api-level: 33
+                  build-tools: '33.0.0'
 
             - name: Setup Node
               uses: actions/setup-node@v3
@@ -52,7 +55,7 @@ jobs:
               id: tag
               run: echo "::set-output name=release_tag::$(date "+%Y.%m.%d_%H-%M")"
 
-            - name: Rename the .apk to the tag version
+            - name: Rename the .apk to match the tag version
               run: mv ./android/app/build/outputs/apk/release/app-release.apk ./android/app/build/outputs/apk/release/guardioesdasaude_${{ steps.tag.outputs.release_tag }}.apk
 
             - name: Create Release and upload file
