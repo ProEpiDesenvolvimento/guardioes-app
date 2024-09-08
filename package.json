@@ -1,13 +1,14 @@
 {
   "name": "guardioesapp",
-  "version": "3.3.5",
+  "version": "3.4.3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "release": "npx jetify && cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@mapbox/geo-viewport": "^0.5.0",

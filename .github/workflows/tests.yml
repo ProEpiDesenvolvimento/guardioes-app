@@ -1,0 +1,29 @@
+name: Check the source code
+
+run-name: 'Testing the code'
+
+on:
+    pull_request:
+        branches: [master, development]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16'
+
+            - name: Run NPM install
+              run: npm install --legacy-peer-deps
+
+            #- name: Lint & Prettier
+            #  run: npm run lint
+
+            - name: Test
+              run: npm test

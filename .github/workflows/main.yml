@@ -1,0 +1,62 @@
+name: Build Android .apk and create a release
+
+run-name: 'Building the .apk'
+
+permissions:
+    contents: write
+
+on:
+    push:
+        branches: [master, development]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Install Java
+              uses: actions/setup-java@v3
+              with:
+                  java-version: '11'
+                  distribution: 'adopt'
+                  cache: 'gradle'
+
+            - name: Validate Gradle wrapper
+              uses: gradle/wrapper-validation-action@v1
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16'
+
+            - name: Run NPM install
+              run: npm install --legacy-peer-deps
+
+            - name: Prepare environment
+              run: |
+                  touch .env
+                  echo "API_URL=${{ secrets.API_URL }}" > .env
+                  echo "ONESIGNAL_APP_ID=${{ secrets.ONESIGNAL_APP_ID }}" >> .env
+                  echo "GOOGLE_CLOUD_API_KEY=${{ secrets.GOOGLE_CLOUD_API_KEY }}" >> .env
+                  echo "PROFESSIONAL_FORM_ID=${{ secrets.PROFESSIONAL_FORM_ID }}" >> .env
+                  echo "SIGNAL_FORM_ID=${{ secrets.SIGNAL_FORM_ID }}" >> .env
+                  openssl aes-256-cbc -K ${{ secrets.ENCRYPTION_KEY }} -iv ${{ secrets.ENCRYPTION_IV }} -in android/app/gds-upload-keystore.jks.enc -out android/app/gds-upload-keystore.jks -d
+
+            - name: Build application
+              run: npm run release
+
+            - name: Generate Release tag
+              id: tag
+              run: echo "::set-output name=release_tag::$(date "+%Y.%m.%d_%H-%M")"
+
+            - name: Rename the .apk to the tag version
+              run: mv ./android/app/build/outputs/apk/release/app-release.apk ./android/app/build/outputs/apk/release/guardioesdasaude_${{ steps.tag.outputs.release_tag }}.apk
+
+            - name: Create Release and upload file
+              uses: softprops/action-gh-release@v1
+              with:
+                  tag_name: ${{ steps.tag.outputs.release_tag }}
+                  files: android/app/build/outputs/apk/release/guardioesdasaude_${{ steps.tag.outputs.release_tag }}.apk
