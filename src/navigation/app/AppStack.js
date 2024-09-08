@@ -15,7 +15,7 @@ import HomeDrawer from './HomeDrawer'
 import Ajuda from '../../screens/app/Ajuda'
 import BadReport from '../../screens/app/BadReport'
 import BioSeguranca from '../../screens/app/BioSeguranca'
-import ExcluirConta from '../../screens/app/ExcluirConta'
+import ContaExcluir from '../../screens/app/ContaExcluir'
 import Perfis from '../../screens/app/Perfis'
 import PerfilEditar from '../../screens/app/PerfilEditar'
 import PerfilNovo from '../../screens/app/PerfilNovo'
@@ -157,8 +157,8 @@ const AppStack = () => {
                 options={{ title: translate('about.title') }}
             />
             <Stack.Screen
-                name='ExcluirConta'
-                component={ExcluirConta}
+                name='ContaExcluir'
+                component={ContaExcluir}
                 options={{ title: translate('deleteAccount.title') }}
             />
         </Stack.Navigator>

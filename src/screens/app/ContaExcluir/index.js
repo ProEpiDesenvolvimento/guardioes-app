@@ -18,7 +18,7 @@ import translate from '../../../locales/i18n'
 import { useUser } from '../../../hooks/user'
 import { requestDeletionUser } from '../../../api/user'
 
-const ExcluirConta = ({ navigation }) => {
+const ContaExcluir = ({ navigation }) => {
     const { user, token, signOut } = useUser()
 
     const [loadingAlert, setLoadingAlert] = useState(false)
@@ -78,4 +78,4 @@ const ExcluirConta = ({ navigation }) => {
     )
 }
 
-export default ExcluirConta
+export default ContaExcluir

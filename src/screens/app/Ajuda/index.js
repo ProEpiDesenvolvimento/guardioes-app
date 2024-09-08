@@ -93,7 +93,7 @@ const Ajuda = ({ navigation }) => {
                     </CardWhite>
                 </Button>
 
-                <Button onPress={() => navigation.navigate('ExcluirConta')}>
+                <Button onPress={() => navigation.navigate('ContaExcluir')}>
                     <CardWhite>
                         <AvatarWrapper>
                             <AccountIcon height={scale(45)} width={scale(45)} />

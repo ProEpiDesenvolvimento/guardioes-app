@@ -402,7 +402,7 @@ const PerfilEditar = ({ navigation, route }) => {
             risk_group: riskGroup,
             is_vigilance: isProfessional ? false : isVigilance,
             category_id: category.key,
-            category_required: allCategories.length > 0,
+            category_required: !isProfessional && allCategories.length > 0,
         }
 
         if (!validPerson(newUser, institutionError)) return
@@ -777,7 +777,7 @@ const PerfilEditar = ({ navigation, route }) => {
                     />
                 ) : null}
 
-                {allCategories.length > 0 ? (
+                {!isProfessional && allCategories.length > 0 ? (
                     <FormInline>
                         <FormLabel>
                             {translate('register.category')} *
