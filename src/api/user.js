@@ -101,6 +101,22 @@ export const resetPassword = async (data) => {
     return response
 }
 
+export const changePassword = async (data, token) => {
+    let response = {}
+
+    try {
+        response = await api.post(`/change_password/`, data, {
+            headers: {
+                Authorization: token,
+            },
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+    return response
+}
+
 export const requestDeletionUser = async (id, token) => {
     const response = await api.get(`/user/request_deletion/${id}`, {
         headers: {

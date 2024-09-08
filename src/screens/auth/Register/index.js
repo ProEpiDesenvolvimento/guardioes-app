@@ -235,14 +235,14 @@ const Register = ({ navigation }) => {
             state,
             city,
             phone: isProfessional.key ? phone : null,
-            phone_required: isProfessional,
+            phone_required: !!isProfessional.key,
             group_id: groupId,
             identification_code: idCode,
             is_professional: !!isProfessional.key,
             risk_group: riskGroup,
             policy_version: terms.version,
             category_id: category.key,
-            category_required: allCategories.length > 0,
+            category_required: !isProfessional.key && allCategories.length > 0,
         }
 
         if (!validPerson(user, institutionError)) return
@@ -539,7 +539,8 @@ const Register = ({ navigation }) => {
                         />
                     ) : null}
 
-                    {allCategories.length > 0 ? (
+                    {isProfessional.key === false &&
+                    allCategories.length > 0 ? (
                         <FormInline>
                             <FormLabel light>
                                 {translate('register.category')} *

@@ -76,22 +76,6 @@ const LeftMenu = ({ navigation }) => {
                 ))}
             </AvatarContainer>
 
-            {user.is_professional === true ? (
-                <Button onPress={() => setIsProfessional(true)}>
-                    <UserOptionBlue>
-                        <Feather
-                            name='info'
-                            size={scale(26)}
-                            color='#ffffff'
-                            style={styles.iconStyle}
-                        />
-                        <TextOption>
-                            Alterar para Vigilância Comunitária
-                        </TextOption>
-                    </UserOptionBlue>
-                </Button>
-            ) : null}
-
             <Button onPress={() => navigation.navigate('Perfis')}>
                 <UserOptionBlue>
                     <Feather
@@ -101,6 +85,17 @@ const LeftMenu = ({ navigation }) => {
                         style={styles.iconStyle}
                     />
                     <TextOption>{translate('drawer.profiles')}</TextOption>
+                </UserOptionBlue>
+            </Button>
+            <Button onPress={() => navigation.navigate('ContaSenha')}>
+                <UserOptionBlue>
+                    <Feather
+                        name='key'
+                        size={scale(26)}
+                        color='#ffffff'
+                        style={styles.iconStyle}
+                    />
+                    <TextOption>Alterar senha</TextOption>
                 </UserOptionBlue>
             </Button>
             <Button onPress={() => signOut()}>

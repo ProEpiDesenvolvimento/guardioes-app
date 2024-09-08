@@ -15,6 +15,7 @@ import HomeDrawer from './HomeDrawer'
 import Ajuda from '../../screens/app/Ajuda'
 import BadReport from '../../screens/app/BadReport'
 import BioSeguranca from '../../screens/app/BioSeguranca'
+import ContaSenha from '../../screens/app/ContaSenha'
 import ContaExcluir from '../../screens/app/ContaExcluir'
 import Perfis from '../../screens/app/Perfis'
 import PerfilEditar from '../../screens/app/PerfilEditar'
@@ -125,6 +126,11 @@ const AppStack = () => {
                 name='PerfilEditar'
                 component={PerfilEditar}
                 options={{ title: translate('register.editProfile') }}
+            />
+            <Stack.Screen
+                name='ContaSenha'
+                component={ContaSenha}
+                options={{ title: 'Alterar senha' }}
             />
             <Stack.Screen
                 name='Vigilancia'

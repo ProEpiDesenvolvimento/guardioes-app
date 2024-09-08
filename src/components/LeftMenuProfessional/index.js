@@ -68,6 +68,17 @@ const LeftMenuProfessional = ({ navigation }) => {
                     <TextOption>{translate('drawer.profiles')}</TextOption>
                 </UserOptionBlue>
             </Button>
+            <Button onPress={() => navigation.navigate('ContaSenha')}>
+                <UserOptionBlue>
+                    <Feather
+                        name='key'
+                        size={scale(26)}
+                        color='#ffffff'
+                        style={styles.iconStyle}
+                    />
+                    <TextOption>Alterar senha</TextOption>
+                </UserOptionBlue>
+            </Button>
             <Button onPress={() => signOut()}>
                 <UserOptionBlue>
                     <Feather

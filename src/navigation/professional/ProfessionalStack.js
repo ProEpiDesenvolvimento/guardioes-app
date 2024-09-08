@@ -14,7 +14,8 @@ import {
 import Ajuda from '../../screens/app/Ajuda'
 import Chat from '../../screens/professional/Chat'
 import HomeDrawer from './HomeDrawer'
-import ExcluirConta from '../../screens/app/ExcluirConta'
+import ContaSenha from '../../screens/app/ContaSenha'
+import ContaExcluir from '../../screens/app/ContaExcluir'
 import Perfis from '../../screens/app/Perfis'
 import PerfilEditar from '../../screens/app/PerfilEditar'
 import PerfilNovo from '../../screens/app/PerfilNovo'
@@ -130,6 +131,11 @@ const ProfessionalStack = () => {
                 options={{ title: translate('register.editProfile') }}
             />
             <Stack.Screen
+                name='ContaSenha'
+                component={ContaSenha}
+                options={{ title: 'Alterar senha' }}
+            />
+            <Stack.Screen
                 name='Ajuda'
                 component={Ajuda}
                 options={{ title: translate('ajuda.title') }}
@@ -150,8 +156,8 @@ const ProfessionalStack = () => {
                 options={{ title: translate('about.title') }}
             />
             <Stack.Screen
-                name='ExcluirConta'
-                component={ExcluirConta}
+                name='ContaExcluir'
+                component={ContaExcluir}
                 options={{ title: translate('deleteAccount.title') }}
             />
         </Stack.Navigator>
