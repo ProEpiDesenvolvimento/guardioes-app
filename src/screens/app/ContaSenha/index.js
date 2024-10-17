@@ -69,6 +69,7 @@ const ContaSenha = ({ navigation }) => {
                 <FormInline>
                     <FormLabel>Senha atual</FormLabel>
                     <NormalInput
+                        autoCapitalize='none'
                         autoCorrect={false}
                         secureTextEntry
                         returnKeyType='next'
@@ -82,6 +83,7 @@ const ContaSenha = ({ navigation }) => {
                     <FormLabel>Nova senha</FormLabel>
                     <NormalInput
                         ref={passwordInput}
+                        autoCapitalize='none'
                         autoCorrect={false}
                         secureTextEntry
                         returnKeyType='next'
@@ -97,6 +99,7 @@ const ContaSenha = ({ navigation }) => {
                     <FormLabel>Confirmar nova senha</FormLabel>
                     <NormalInput
                         ref={confirmPasswordInput}
+                        autoCapitalize='none'
                         autoCorrect={false}
                         secureTextEntry
                         returnKeyType='done'
