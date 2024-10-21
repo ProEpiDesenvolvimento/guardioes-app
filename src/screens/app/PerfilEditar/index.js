@@ -439,7 +439,7 @@ const PerfilEditar = ({ navigation, route }) => {
                 } else {
                     error = await sendRegisterForm()
                 }
-            } else {
+            } else if (fV2.flexible_answer_id) {
                 error = await removeRegisterForm()
             }
 
