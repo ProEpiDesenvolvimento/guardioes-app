@@ -14,6 +14,7 @@ import {
 
 import translate from '../../../locales/i18n'
 import { scale } from '../../../utils/scalling'
+import { useUser } from '../../../hooks/user'
 import {
     FAQIcon,
     TermsIcon,
@@ -23,26 +24,54 @@ import {
 } from '../../../img/imageConst'
 
 const Ajuda = ({ navigation }) => {
+    const { user } = useUser()
+
     return (
         <Container>
             <ScrollViewStyled>
-                <Button onPress={() => navigation.navigate('Tutorial')}>
-                    <CardWhite>
-                        <AvatarWrapper>
-                            <TutorialIcon
-                                height={scale(45)}
-                                width={scale(45)}
-                            />
-                        </AvatarWrapper>
-                        <InfoContainer>
-                            <InfoWrapper>
-                                <CardNameWhite>
-                                    {translate('ajuda.tutorialBtn')}
-                                </CardNameWhite>
-                            </InfoWrapper>
-                        </InfoContainer>
-                    </CardWhite>
-                </Button>
+                {!user.is_professional ? (
+                    <Button onPress={() => navigation.navigate('Tutorial')}>
+                        <CardWhite>
+                            <AvatarWrapper>
+                                <TutorialIcon
+                                    height={scale(45)}
+                                    width={scale(45)}
+                                />
+                            </AvatarWrapper>
+                            <InfoContainer>
+                                <InfoWrapper>
+                                    <CardNameWhite>
+                                        {translate('ajuda.tutorialBtn')}
+                                    </CardNameWhite>
+                                </InfoWrapper>
+                            </InfoContainer>
+                        </CardWhite>
+                    </Button>
+                ) : null}
+
+                {user.is_professional ? (
+                    <Button
+                        onPress={() =>
+                            Linking.openURL('https://ajuda.gds.sds.unb.br')
+                        }
+                    >
+                        <CardWhite>
+                            <AvatarWrapper>
+                                <TutorialIcon
+                                    height={scale(45)}
+                                    width={scale(45)}
+                                />
+                            </AvatarWrapper>
+                            <InfoContainer>
+                                <InfoWrapper>
+                                    <CardNameWhite>
+                                        Tutorial para Líderes Comunitários
+                                    </CardNameWhite>
+                                </InfoWrapper>
+                            </InfoContainer>
+                        </CardWhite>
+                    </Button>
+                ) : null}
 
                 <Button
                     onPress={() =>
