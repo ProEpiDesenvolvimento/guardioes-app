@@ -139,7 +139,9 @@ const Vigilancia = ({ navigation }) => {
                         keyboardType='number-pad'
                         editable={!user.is_vigilance}
                         value={phone}
-                        onChangeText={(text) => setPhone(maskPhone(text))}
+                        onChangeText={(text) =>
+                            setPhone(maskPhone(user.country, text))
+                        }
                     />
                 </FormInline>
 
