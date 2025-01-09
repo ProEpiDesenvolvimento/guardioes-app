@@ -12,6 +12,10 @@ import NetInfo from '@react-native-community/netinfo'
 import OneSignal from 'react-native-onesignal'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import SplashScreen from 'react-native-splash-screen'
+import SpInAppUpdates, {
+    IAUUpdateKind,
+    IAUInstallStatus,
+} from 'sp-react-native-in-app-updates'
 
 import translate from '../locales/i18n'
 import { authUser } from '../api/user'
@@ -47,6 +51,8 @@ export const UserProvider = ({ children }) => {
         const internetInfo = NetInfo.addEventListener((state) => {
             verifyInternetState(state)
         })
+
+        checkForUpdate()
 
         return () => {
             internetInfo()
@@ -161,6 +167,56 @@ export const UserProvider = ({ children }) => {
         }
     }
 
+    const checkForUpdate = async () => {
+        const inAppUpdates = new SpInAppUpdates(false)
+        try {
+            await inAppUpdates.checkNeedsUpdate().then((result) => {
+                try {
+                    if (result.shouldUpdate) {
+                        let updateOptions = {}
+                        if (Platform.OS === 'android') {
+                            updateOptions = {
+                                updateType: IAUUpdateKind.IMMEDIATE,
+                            }
+                        }
+                        if (Platform.OS === 'ios') {
+                            updateOptions = {
+                                title: 'Atualização disponível',
+                                message:
+                                    'Uma nova versão do aplicativo está disponível. Atualize para continuar usando.',
+                                buttonUpgradeText: 'Atualizar',
+                                buttonCancelText: 'Cancelar',
+                            }
+                        }
+                        inAppUpdates.addStatusUpdateListener(
+                            (downloadStatus) => {
+                                if (
+                                    downloadStatus.status ===
+                                    IAUInstallStatus.DOWNLOADED
+                                ) {
+                                    inAppUpdates.installUpdate()
+                                    inAppUpdates.removeStatusUpdateListener(
+                                        (finalStatus) => {
+                                            console.log(
+                                                'Final status',
+                                                finalStatus
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                        inAppUpdates.startUpdate(updateOptions)
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const storeUser = async (user, token = null, credentials = null) => {
         if (user) {
             const { households } = user
@@ -199,11 +255,11 @@ export const UserProvider = ({ children }) => {
 
         OneSignal.setExternalUserId(user.id.toString())
         OneSignal.sendTags({
-            is_professional: user.is_professional ? '1' : '0',
-            city: user.city,
+            // is_professional: user.is_professional ? '1' : '0',
+            // city: user.city,
             group: userGroupName,
-            doses: user.doses.toString(),
-            streak: user.streak.toString(),
+            // doses: user.doses.toString(),
+            // streak: user.streak.toString(),
             reported_this_week: user.reported_this_week ? '1' : '0',
         })
         console.log('User tags sent to OneSignal')
