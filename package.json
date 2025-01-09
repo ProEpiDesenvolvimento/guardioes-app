@@ -26,6 +26,7 @@
     "react-native-awesome-alerts": "^1.4.2",
     "react-native-calendars": "^1.403.0",
     "react-native-datepicker": "^1.7.2",
+    "react-native-device-info": "^8.7.1",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-elements": "^1.2.7",
     "react-native-emoji": "^1.8.0",
@@ -51,6 +52,7 @@
     "react-native-swiper-flatlist": "^2.0.4",
     "react-native-vector-icons": "^8.1.0",
     "rn-secure-storage": "^2.0.7",
+    "sp-react-native-in-app-updates": "^1.1.7",
     "styled-components": "^5.2.0",
     "supercluster": "^7.1.5"
   },

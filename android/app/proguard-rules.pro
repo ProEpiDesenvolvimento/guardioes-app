@@ -10,3 +10,4 @@
 # Add any project specific keep options here:
 -keep class com.facebook.** {*;}
 -keep public class com.horcrux.svg.** {*;}
+-keep class com.android.installreferrer.api.** {*;}
