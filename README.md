@@ -1,79 +1,93 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Guardiões da Saúde App
 
-# Getting Started
+Repositório do aplicativo [Guardiões da Saúde](https://linktr.ee/guardioesdasaude).
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Como baixar a última versão do app
 
-## Step 1: Start the Metro Server
+Por enquanto o procedimento funciona apenas para celulares android.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Entre em [releases](https://github.com/proepidesenvolvimento/guardioes-app/releases) e procure pelo link com uma tag verde chamada 'lastest release'. Ao encontrar, desinstale o aplicativo que já está no seu celular (caso exista) e baixe o arquivo 'app-release.apk'.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Possivelmente essa versão tem bugs que serão consertados no futuro e é instável, ou seja, pode dar erros.
 
-```bash
-# using npm
-npm start
+## Instalar dependências
 
-# OR using Yarn
-yarn start
+```shell
+$ npm install
 ```
 
-## Step 2: Start your Application
+## Configurando variáveis de ambiente
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Crie um arquivo **.env** na pasta do projeto com as linhas:
 
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```shell
+API_URL=
+ONESIGNAL_APP_ID=
+GOOGLE_CLOUD_API_KEY=
+PROFESSIONAL_FORM_ID=
+SIGNAL_FORM_ID=
 ```
 
-### For iOS
+**O API_URL é a url da sua aplicação rodando no repositório [guardioes_api](https://github.com/ProEpiDesenvolvimento/guardioes-api).**
 
-```bash
-# using npm
-npm run ios
+Para atualizar as edições no arquivo, basta modificar o _import_ ou executar o comando:
 
-# OR using Yarn
-yarn ios
+```shell
+$ npx react-native start --reset-cache
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+E então, execute o app novamente.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+É possível criar configurações diferentes para produção e desenvolvimento com arquivos **.env.production** e **.env.development**.
 
-## Step 3: Modifying your App
+Caso você queira usar o live reload, abra outro terminal e rode o seguinte comando e deixe ele rodando:
 
-Now that you have successfully run the app, let's modify it.
+```shell
+npx react-native start
+```
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+ou para resetar o cache antes de iniciar:
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+```shell
+npx react-native start --reset-cache
+```
 
-## Congratulations! :tada:
+## Executando
 
-You've successfully run and modified your React Native App. :partying_face:
+```shell
+$ npx react-native run-android
+```
 
-### Now what?
+ou
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+```shell
+$ npx react-native run-ios
+```
 
-# Troubleshooting
+Caso a sua máquina não possa rodar a aplicação, nesse [link](https://reactnative.dev/docs/running-on-device) tem uma tutorial de como usar seu celular como plataforma para rodar o aplicativo.
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## Possíveis erros:
 
-# Learn More
+### Node:
 
-To learn more about React Native, take a look at the following resources:
+Se certifique que a sua versão do **node** e do **npm** estão atualizadas. Neste [link](https://nodejs.org/pt-br/download/releases/) você poderá ver as relações entre as versões do node e do npm.
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### NPM:
+
+O node pode apresentar algumas vulnerabilidades que serão acusadas pelo próprio node ao rodar o comando _npm install_. Essa vulnerabilidades podem gerar problemas então recomenda-se rodar o comando:
+
+```Shell
+npm audit fix --force
+```
+
+O node também recomenda alguns comandos para consertar as vulnerabilidades.
+
+### VS Code:
+
+Um possível erro pode ser relacionado ao VS Code. Ao usar o VS Code para ativar o live reload pelo celular pode dar alguns erros de compatibilidade e por isso recomenda-se o uso do terminal nativo da maquina.
+
+## License & copyright
+
+ProEpi, Associação Brasileira de Profissionais de Epidemiologia de Campo
+
+Licensed under the [Apache License 2.0](LICENSE.md).

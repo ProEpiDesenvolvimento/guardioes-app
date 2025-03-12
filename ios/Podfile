@@ -23,6 +23,12 @@ target 'guardioesapp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Pods
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'react-native-spinkit', :path => '../node_modules/react-native-spinkit'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'guardioesappTests' do
     inherit! :complete
     # Pods for testing
@@ -37,4 +43,8 @@ target 'guardioesapp' do
       # :ccache_enabled => true
     )
   end
+end
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
 end

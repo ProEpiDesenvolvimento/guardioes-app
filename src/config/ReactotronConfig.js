@@ -1,0 +1,21 @@
+import Reactotron, {
+    networking,
+    trackGlobalErrors,
+} from 'reactotron-react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+if (__DEV__) {
+    const tron = Reactotron.setAsyncStorageHandler(AsyncStorage)
+        .configure()
+        .use(
+            networking(),
+            trackGlobalErrors({
+                offline: true,
+            })
+        )
+        .useReactNative()
+        .connect()
+
+    console.tron = tron
+    tron.clear()
+}

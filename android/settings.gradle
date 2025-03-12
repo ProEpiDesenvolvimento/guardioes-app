@@ -4,3 +4,11 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autoli
 rootProject.name = 'guardioesapp'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
+include ':react-native-spinkit'
+project(':react-native-spinkit').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-spinkit/android')
+include ':react-native-simple-shadow-view'
+project(':react-native-simple-shadow-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-simple-shadow-view/android')
+include ':rn-secure-storage'
+project(':rn-secure-storage').projectDir = new File(rootProject.projectDir, '../node_modules/rn-secure-storage/android')
+include ':react-native-splash-screen'   
+project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')

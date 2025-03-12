@@ -1,3 +1,11 @@
 module.exports = {
-  presets: ['module:@react-native/babel-preset'],
+  presets: [
+    'module:metro-react-native-babel-preset',
+    'module:react-native-dotenv',
+  ],
+  plugins: [
+    '@babel/plugin-transform-private-methods',
+    '@babel/plugin-proposal-class-properties',
+    'react-native-reanimated/plugin',
+  ],
 };
