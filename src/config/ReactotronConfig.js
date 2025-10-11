@@ -2,7 +2,7 @@ import Reactotron, {
     networking,
     trackGlobalErrors,
 } from 'reactotron-react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 if (__DEV__) {
     const tron = Reactotron.setAsyncStorageHandler(AsyncStorage)

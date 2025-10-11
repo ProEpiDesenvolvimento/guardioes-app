@@ -6,7 +6,7 @@ import React, {
     useContext,
 } from 'react'
 import { Alert, PermissionsAndroid, Platform } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Geolocation from 'react-native-geolocation-service'
 import NetInfo from '@react-native-community/netinfo'
 import OneSignal from 'react-native-onesignal'
