@@ -116,6 +116,9 @@ const PerfilEditar = ({ navigation, route }) => {
             Alert.alert(translate('register.geralError'))
             return response.status
         }
+
+        setLoadingAlert(false)
+        return false
     }
 
     const editRegisterForm = async () => {
@@ -155,12 +158,15 @@ const PerfilEditar = ({ navigation, route }) => {
             token
         )
 
-        if (!response.status === 200) {
+        if (response.status !== 200) {
             setLoadingAlert(false)
             console.warn(response.status)
             Alert.alert(translate('register.geralError'))
             return response.status
         }
+
+        setLoadingAlert(false)
+        return false
     }
 
     const getRegisterAnswer = async (registerFormVersion) => {
@@ -235,12 +241,15 @@ const PerfilEditar = ({ navigation, route }) => {
             token
         )
 
-        if (!response.status === 200) {
+        if (response.status !== 200) {
             setLoadingAlert(false)
             console.warn(response.status)
             Alert.alert(translate('register.geralError'))
             return response.status
         }
+
+        setLoadingAlert(false)
+        return false
     }
 
     const getRegisterForm = async () => {
