@@ -41,7 +41,10 @@ const SignalAnswer = ({ route }) => {
     }
 
     const getFlexibleFormVersion = async () => {
-        if (!answer.flexible_form_version.data?.questions) {
+        if (answer.flexible_form_version.data?.questions) {
+            // Already parsed, use as-is
+        } else {
+            // Data is a JSON string, parse it
             const parsedData = JSON.parse(answer.flexible_form_version.data)
             answer.flexible_form_version.data = parsedData
         }
